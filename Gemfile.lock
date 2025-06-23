@@ -381,7 +381,7 @@ DEPENDENCIES
   capybara
   debug
   importmap-rails
-  inline_svg
+  inline_svg (~> 1.10)
   jbuilder
   kamal
   propshaft
