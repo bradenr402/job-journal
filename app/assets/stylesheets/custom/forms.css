@@ -1,0 +1,7 @@
+@utility form-input {
+  @apply appearance-none block shadow-sm rounded-lg border border-gray-300 focus:outline-hidden focus:ring-2 focus:ring-primary-600 px-3 py-2 w-full caret-primary-600 placeholder:text-gray-400 placeholder:select-none placeholder:font-normal;
+}
+
+@utility form-label {
+  @apply text-neutral-600 block mb-1 text-sm font-medium select-none;
+}

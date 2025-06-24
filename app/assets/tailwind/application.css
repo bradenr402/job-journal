@@ -1,1 +1,27 @@
-@import "tailwindcss";
+/* Custom styles */
+@import '../stylesheets/custom/custom.css';
+
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+
+@theme {
+  /* Primary color scale */
+  --color-primary-50: oklch(96.87% 0.046 159.79);
+  --color-primary-100: oklch(94.68% 0.081 160.08);
+  --color-primary-200: oklch(88.21% 0.201 159.58);
+  --color-primary-300: oklch(83.98% 0.191 159.53);
+  --color-primary-400: oklch(79.7% 0.182 159.48);
+  --color-primary-500: oklch(74.82% 0.17 159.52);
+  --color-primary-600: oklch(62.83% 0.143 159.54);
+  --color-primary-700: oklch(50.21% 0.114 159.6);
+  --color-primary-800: oklch(37.72% 0.086 159.66);
+  --color-primary-900: oklch(25.88% 0.058 160.55);
+  --color-primary-950: oklch(19.21% 0.044 159.49);
+}
+
+@layer base {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+}

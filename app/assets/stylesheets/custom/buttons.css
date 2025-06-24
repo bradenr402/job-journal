@@ -1,0 +1,47 @@
+@utility btn {
+  @apply inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none;
+
+  &.btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+}
+
+@utility btn-primary {
+  &:not(.btn-muted) {
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 active:bg-primary-800;
+  }
+
+  &.btn-muted {
+    @apply bg-primary-100 text-primary-600 hover:bg-primary-200 focus:ring-primary-500 active:bg-primary-300;
+  }
+}
+
+@utility btn-secondary {
+  @apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-500 active:bg-neutral-400;
+
+  &.btn-muted {
+    @apply bg-neutral-100 text-neutral-600 hover:bg-neutral-200 focus:ring-neutral-500 active:bg-neutral-300;
+  }
+}
+
+@utility btn-destructive {
+  @apply bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 active:bg-rose-800;
+
+  &.btn-muted {
+    @apply bg-rose-200 text-rose-600 hover:bg-rose-300 focus:ring-rose-500 active:bg-rose-400;
+  }
+}
+
+@utility btn-transparent {
+  @apply bg-transparent text-primary-600 hover:bg-primary-100 focus:ring-primary-500 active:bg-primary-200;
+}
+
+@utility btn-link {
+  &:not(.btn-muted) {
+    @apply cursor-pointer text-sm text-light underline transition-colors duration-150 hover:text-soft;
+  }
+
+  &.btn-muted {
+    @apply cursor-pointer text-sm text-muted transition-colors duration-150 hover:text-soft;
+  }
+}

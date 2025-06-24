@@ -1,0 +1,23 @@
+@utility heading {
+  @apply text-2xl font-bold text-neutral-900 tracking-tight;
+}
+
+@utility subheading {
+  @apply text-xl font-bold text-neutral-900 tracking-tight;
+}
+
+@utility text-normal {
+  @apply text-neutral-800;
+}
+
+@utility text-light {
+  @apply text-neutral-600;
+}
+
+@utility text-soft {
+  @apply text-neutral-500;
+}
+
+@utility text-muted {
+  @apply text-neutral-400;
+}
