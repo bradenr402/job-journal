@@ -1,0 +1,33 @@
+<div class="mt-24">
+  <div class="max-w-lg mx-auto md:w-2/3 w-full">
+    <div class="card">
+      <h1 class="font-bold text-2xl">Sign In</h1>
+      <p class="text-soft">
+        Sign in to continue your job search.
+      </p>
+
+      <%= form_with url: session_url, model: false, method: :post, class: 'contents' do |form| %>
+        <div class="my-5">
+          <%= form.label :email_address, class: 'form-label' %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
+        </div>
+
+        <div class="my-5">
+          <%= form.label :password, class: 'form-label' %>
+          <%= form.password_field :password, required: true, autocomplete: 'current-password', placeholder: 'Enter your password', maxlength: 72, class: 'form-input' %>
+        </div>
+
+        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+          <div class="flex w-full items-center justify-between gap-2">
+            <%= form.submit 'Sign In', class: 'grow btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="flex flex-col items-center gap-2 mt-4">
+        <%= link_to 'Forgot password?', new_password_path, class: 'btn-link' %>
+        <%= link_to "Don’t have an account? Sign up", new_registrations_path, class: 'btn-link btn-muted' %>
+      </div>
+    </div>
+  </div>
+</div>

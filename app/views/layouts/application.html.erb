@@ -18,12 +18,18 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, 'data-turbo-track': 'reload' %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <% if Current.user.present? %>
+      <%= button_to 'Sign Out', session_path, method: :delete, class: 'btn-link btn-muted' %>
+    <% elsif !(controller_name.in? %w[sessions registrations passwords]) %>
+      <%= link_to 'Sign In', new_session_path, class: 'btn-link btn-muted' %>
+    <% end %>
+
+    <main class="container mx-auto mt-28 px-5">
       <%= yield %>
     </main>
   </body>

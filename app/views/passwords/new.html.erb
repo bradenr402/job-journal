@@ -1,0 +1,31 @@
+<div class="mt-24">
+  <div class="max-w-lg mx-auto md:w-2/3 w-full">
+    <div class="card">
+      <% if alert = flash[:alert] %>
+        <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
+      <% end %>
+
+      <h1 class="font-bold text-2xl">Forgot Your Password?</h1>
+      <p class="text-soft">
+        Enter your email address and we&#8217;ll send you instructions to reset your password.
+      </p>
+
+      <%= form_with url: passwords_path, class: 'contents' do |form| %>
+        <div class="my-5">
+          <%= form.label :email_address, class: 'form-label' %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
+        </div>
+
+        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+          <div class="flex w-full items-center justify-between">
+            <%= form.submit 'Email Reset Instructions', class: 'grow btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="flex flex-col items-center gap-2 mt-4">
+          <%= link_to 'Back to sign in', new_session_path, class: 'btn-link btn-muted' %>
+      </div>
+    </div>
+  </div>
+</div>
