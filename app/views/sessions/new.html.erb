@@ -8,7 +8,7 @@
 
       <%= form_with url: session_url, model: false, method: :post, class: 'contents' do |form| %>
         <div class="my-5">
-          <%= form.label :email_address, class: 'form-label' %>
+          <%= form.label :email_address, 'Email Address', class: 'form-label' %>
           <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
         </div>
 
