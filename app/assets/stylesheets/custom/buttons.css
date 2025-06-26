@@ -4,6 +4,13 @@
   &.btn-sm {
     @apply px-3 py-1.5 text-xs;
   }
+
+  svg:first-child {
+    @apply -ml-0.75;
+  }
+  svg:last-child {
+    @apply -mr-0.75;
+  }
 }
 
 @utility btn-primary {
@@ -20,7 +27,7 @@
   @apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-500 active:bg-neutral-400;
 
   &.btn-muted {
-    @apply bg-neutral-100 text-neutral-600 hover:bg-neutral-200 focus:ring-neutral-500 active:bg-neutral-300;
+    @apply bg-neutral-200/70 text-neutral-600 hover:bg-neutral-300/70 focus:ring-neutral-500 active:bg-neutral-300;
   }
 }
 
@@ -28,12 +35,16 @@
   @apply bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 active:bg-rose-800;
 
   &.btn-muted {
-    @apply bg-rose-200 text-rose-600 hover:bg-rose-300 focus:ring-rose-500 active:bg-rose-400;
+    @apply bg-rose-200/70 text-rose-600 hover:bg-rose-300/70 focus:ring-rose-500 active:bg-rose-300;
   }
 }
 
 @utility btn-transparent {
   @apply bg-transparent text-primary-600 hover:bg-primary-100 focus:ring-primary-500 active:bg-primary-200;
+
+  &.btn-muted {
+    @apply bg-transparent text-soft hover:bg-neutral-200/50 focus:ring-primary-500 active:bg-neutral-300;
+  }
 }
 
 @utility btn-link {
@@ -44,4 +55,8 @@
   &.btn-muted {
     @apply cursor-pointer text-sm text-muted transition-colors duration-150 hover:text-soft;
   }
+}
+
+@utility btn-link-primary {
+  @apply text-primary-600 focus:ring-primary-500 underline transition-colors duration-150 hover:text-primary-700;
 }
