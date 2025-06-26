@@ -2,6 +2,10 @@ class RegistrationsController < ApplicationController
   allow_unauthenticated_access only: [ :new, :create ]
   before_action :resume_session, only: [ :new, :create ]
 
+  before_action only: %i[new create] do
+    redirect_to root_path, notice: 'You are already signed in.' if authenticated?
+  end
+
   def new
     @user = User.new
   end

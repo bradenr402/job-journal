@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_23_195527) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_25_025823) do
+  create_table "job_leads", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "company", null: false
+    t.string "title", null: false
+    t.text "application_url"
+    t.text "source"
+    t.text "contact"
+    t.string "salary"
+    t.decimal "offer_amount", precision: 12, scale: 2
+    t.string "location"
+    t.integer "status", default: 0, null: false
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archived_at"], name: "index_job_leads_on_archived_at"
+    t.index ["status"], name: "index_job_leads_on_status"
+    t.index ["user_id"], name: "index_job_leads_on_user_id"
+    t.check_constraint "offer_amount IS NULL OR offer_amount >= 0", name: "offer_amount_non_negative"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -28,5 +48,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_195527) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "job_leads", "users"
   add_foreign_key "sessions", "users"
 end

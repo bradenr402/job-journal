@@ -1,0 +1,76 @@
+<%= form_with(model: job_lead, class: "mx-auto mt-6") do |form| %>
+  <% if job_lead.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
+      <h2 class="text-lg font-bold mb-2"><%= pluralize(job_lead.errors.count, "error") %> prohibited this job lead from being saved:</h2>
+      <ul class="list-disc ml-6 text-red-600">
+        <% job_lead.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <%= form.label :title, 'Job title', class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'e.g. Software Engineer' %>
+    </div>
+    <div>
+      <%= form.label :company, class: 'form-label' %>
+      <%= form.text_field :company, class: 'form-input', placeholder: 'e.g. Acme Corp' %>
+    </div>
+    <div>
+      <%= form.label :application_url, 'Application URL', class: 'form-label' %>
+      <%= form.url_field :application_url, class: 'form-input', placeholder: 'https://company.com/careers/123' %>
+    </div>
+    <div>
+      <%= form.label :salary, class: 'form-label' do %>
+        Salary
+        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+      <% end %>
+      <%= form.text_field :salary, class: 'form-input', placeholder: '$100,000 - $120,000' %>
+      <p class="text-xs text-muted mt-1">Salary range or estimate.</p>
+    </div>
+    <% if job_lead.persisted? %>
+      <div>
+        <%= form.label :offer_amount, class: 'form-label' do %>
+          Offer Amount
+          <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+        <% end %>
+        <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: 'e.g. 105000' %>
+      </div>
+    <% end %>
+    <div>
+      <%= form.label :contact, class: 'form-label' do %>
+        Contact
+        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+      <% end %>
+      <%= form.text_field :contact, class: 'form-input', placeholder: 'Jane Doe or jane@email.com' %>
+      <p class="text-xs text-muted mt-1">Name or email of your contact, if any.</p>
+    </div>
+    <div>
+      <%= form.label :location, class: 'form-label' do %>
+      Location
+      <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+      <% end %>
+      <%= form.text_field :location, class: 'form-input', placeholder: 'e.g. Remote or New York, NY' %>
+    </div>
+    <div>
+      <%= form.label :source, class: 'form-label' do %>
+        Source
+        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+      <% end %>
+      <%= form.text_field :source, class: 'form-input', placeholder: 'e.g. LinkedIn, referral' %>
+      <p class="text-xs text-muted mt-1">Where you found the job (e.g., LinkedIn, company site, referral).</p>
+    </div>
+    <% if job_lead.persisted? %>
+      <div>
+        <%= form.label :status, class: 'form-label' %>
+        <%= form.select :status, JobLead.statuses.keys.map { |s| [s.titleize, s] }, {}, class: 'form-select' %>
+      </div>
+    <% end %>
+    <div class="md:col-span-2">
+      <%= form.submit job_lead.persisted? ? 'Save Changes' : 'Create Job Lead', class: "btn btn-primary w-full sm:w-auto" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+module JobLeadsHelper
+end

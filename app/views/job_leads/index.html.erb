@@ -1,0 +1,20 @@
+<% content_for :title, 'Job Leads' %>
+
+<div class="md:w-2/3 w-full mx-auto">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="heading">Job Leads</h1>
+    <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
+  </div>
+
+  <div id="job_leads" class="space-y-6">
+    <% if @job_leads.any? %>
+      <% @job_leads.each do |job_lead| %>
+        <%= render job_lead %>
+      <% end %>
+    <% else %>
+      <div class="text-center my-24 text-muted">
+        No job leads found.
+      </div>
+    <% end %>
+  </div>
+</div>

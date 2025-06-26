@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  company: MyString
+  title: MyString
+  application_url: MyString
+  source: MyString
+  salary: MyString
+  contact: MyString
+  offer_amount: 9.99
+  location: MyString
+  status: 1
+  archived_at: 2025-06-24 22:58:23
+
+two:
+  user: two
+  company: MyString
+  title: MyString
+  application_url: MyString
+  source: MyString
+  salary: MyString
+  contact: MyString
+  offer_amount: 9.99
+  location: MyString
+  status: 1
+  archived_at: 2025-06-24 22:58:23

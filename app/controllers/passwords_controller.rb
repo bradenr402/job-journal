@@ -2,6 +2,10 @@ class PasswordsController < ApplicationController
   allow_unauthenticated_access
   before_action :set_user_by_token, only: %i[ edit update ]
 
+  before_action only: %i[new create] do
+    redirect_to root_path, notice: 'You are already signed in.' if authenticated?
+  end
+
   def new
   end
 
