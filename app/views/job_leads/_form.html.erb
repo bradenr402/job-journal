@@ -38,7 +38,7 @@
           Offer Amount
           <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
         <% end %>
-        <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: 'e.g. 105000' %>
+        <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: 'e.g. 105000', value: (job_lead.offer_amount? ? number_with_precision(job_lead.offer_amount, precision: 2) : nil) %>
       </div>
     <% end %>
     <div>
