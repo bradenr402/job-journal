@@ -1,16 +1,32 @@
 <% content_for :title, 'Job Leads' %>
 
 <div class="md:w-2/3 w-full mx-auto">
-  <div class="flex justify-between items-center mb-8">
-    <h1 class="heading">Job Leads</h1>
-    <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h1 class="heading">
+        Job Leads
+      </h1>
+      <div class="ml-1 text-sm text-muted font-normal align-middle">
+        <%= params[:archived] == 'true' ? '(Archived)' : '(Active)' %>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <% if params[:archived] == 'true' %>
+        <%= link_to 'View Active', job_leads_path, class: 'btn btn-secondary btn-muted' %>
+      <% else %>
+        <%= link_to 'View Archive', job_leads_path(archived: true), class: 'btn btn-secondary btn-muted' %>
+      <% end %>
+      <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
+    </div>
   </div>
 
   <div id="job_leads" class="space-y-6">
     <% if @job_leads.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <% @job_leads.each do |job_lead| %>
         <%= render job_lead %>
       <% end %>
+      </div>
     <% else %>
       <div class="text-center my-24 text-muted">
         No job leads found.

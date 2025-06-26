@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   resource :registrations, only: [ :new, :create ]
   resources :passwords, only: [ :new, :create, :edit, :update ], param: :token
 
-  resources :job_leads
+  resources :job_leads do
+    member do
+      patch :archive
+      patch :unarchive
+    end
+  end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

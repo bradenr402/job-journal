@@ -1,9 +1,13 @@
 class JobLeadsController < ApplicationController
-  before_action :set_job_lead, only: %i[ show edit update destroy ]
+  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive ]
 
   # GET /job_leads
   def index
-    @job_leads = JobLead.all
+    if params[:archived] == 'true'
+      @job_leads = JobLead.archived
+    else
+      @job_leads = JobLead.active
+    end
   end
 
   # GET /job_leads/1
@@ -45,6 +49,24 @@ class JobLeadsController < ApplicationController
       redirect_to job_leads_path, status: :see_other, notice: 'Job lead was successfully destroyed.'
     else
       redirect_to @job_lead, alert: 'Failed to destroy job lead.'
+    end
+  end
+
+  # PATCH /job_leads/1/archive
+  def archive
+    if @job_lead.update(archived_at: Time.current)
+      redirect_to @job_lead, notice: 'Job lead was archived.'
+    else
+      redirect_to @job_lead, alert: 'Failed to archive job lead.'
+    end
+  end
+
+  # PATCH /job_leads/1/unarchive
+  def unarchive
+    if @job_lead.update(archived_at: nil)
+      redirect_to @job_lead, notice: 'Job lead was unarchived.'
+    else
+      redirect_to @job_lead, alert: 'Failed to unarchive job lead.'
     end
   end
 

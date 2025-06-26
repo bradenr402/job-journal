@@ -1,29 +1,42 @@
-<div id="<%= dom_id job_lead %>" class="card w-full sm:w-auto my-5">
-  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 w-full mb-2">
-    <div class="heading mb-1"><%= job_lead.title %></div>
-    <%
-      status_colors = {
-        'lead' => 'bg-neutral-200/60 text-neutral-500',
-        'applied' => 'bg-blue-200/60 text-blue-600',
-        'phone_screen' => 'bg-amber-200/60 text-amber-600',
-        'interview' => 'bg-purple-200/60 text-purple-600',
-        'offer' => 'bg-green-200/60 text-green-600',
-        'rejected' => 'bg-red-200/60 text-red-600',
-        'accepted' => 'bg-emerald-200/60 text-emerald-600'
-      }
-    %>
-    <span class="flex items-center gap-2 whitespace-nowrap px-2.5 py-1 rounded-full text-xs <%= status_colors[job_lead.status] %>">
-      <%= job_lead.status.humanize %>
-    </span>
+<div id="<%= dom_id job_lead %>" class="card w-full sm:w-auto">
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 w-full mb-2 max-lg:mb-6">
+    <div class="heading mb-2">
+      <%= job_lead.title %>
+      <%
+        status_colors = {
+          'lead' => 'bg-neutral-200/60 text-neutral-500',
+          'applied' => 'bg-blue-200/60 text-blue-600',
+          'phone_screen' => 'bg-amber-200/60 text-amber-600',
+          'interview' => 'bg-purple-200/60 text-purple-600',
+          'offer' => 'bg-green-200/60 text-green-600',
+          'rejected' => 'bg-red-200/60 text-red-600',
+          'accepted' => 'bg-emerald-200/60 text-emerald-600'
+        }
+      %>
+      <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal <%= status_colors[job_lead.status] %>">
+        <%= job_lead.status.humanize %>
+      </span>
+    </div>
     <% if current_page?(job_lead_path(job_lead)) %>
-      <div class="flex gap-2 ml-auto justify-self-end">
-        <%= link_to edit_job_lead_path(job_lead), class: 'btn btn-sm btn-secondary btn-muted gap-2' do %>
+      <div class="grow flex gap-2 justify-end">
+        <%= link_to edit_job_lead_path(job_lead), class: 'max-sm:grow btn btn-sm btn-primary btn-muted gap-2' do %>
           <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
           <span>Edit</span>
         <% end %>
-        <%= button_to job_lead, method: :delete, form_class: '', class: 'btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure?' } do %>
+        <%= button_to job_lead, method: :delete, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure?' } do %>
           <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
           <span>Delete</span>
+        <% end %>
+        <% if job_lead.archived_at.present? %>
+          <%= button_to unarchive_job_lead_path(job_lead), method: :patch, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-secondary btn-muted gap-2', data: { turbo_confirm: 'Unarchive this job lead?' } do %>
+            <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
+            <span>Unarchive</span>
+          <% end %>
+        <% else %>
+          <%= button_to archive_job_lead_path(job_lead), method: :patch, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-secondary btn-muted gap-2', data: { turbo_confirm: 'Archive this job lead?' } do %>
+            <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
+            <span>Archive</span>
+          <% end %>
         <% end %>
       </div>
     <% else %>
@@ -107,9 +120,15 @@
 
   <div class="text-xs text-muted text-right">
     <% if job_lead.archived_at.present? %>
-      Archived: <%= pretty_datetime job_lead.archived_at %>
+      <span class="inline-flex items-center gap-1">
+        <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
+        Archived: <%= pretty_datetime job_lead.archived_at %>
+      </span>
     <% else %>
-      Updated: <%= pretty_datetime job_lead.updated_at %>
+      <span class="inline-flex items-center gap-1">
+        <%= inline_svg_tag 'icons/clock.svg', class: 'size-4 shrink-0' %>
+        Updated: <%= pretty_datetime job_lead.updated_at %>
+      </span>
     <% end %>
   </div>
 </div>
