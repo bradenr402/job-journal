@@ -130,9 +130,6 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.13.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     json (2.12.2)
     kamal (2.7.0)
       activesupport (>= 7.0)
@@ -391,7 +388,6 @@ DEPENDENCIES
   debug
   importmap-rails
   inline_svg (~> 1.10)
-  jbuilder
   kamal
   letter_opener
   propshaft
