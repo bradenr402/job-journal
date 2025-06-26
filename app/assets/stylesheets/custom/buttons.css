@@ -19,7 +19,7 @@
   }
 
   &.btn-muted {
-    @apply bg-primary-100 text-primary-600 hover:bg-primary-200 focus:ring-primary-500 active:bg-primary-300;
+    @apply bg-primary-100 text-primary-600 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-200;
   }
 }
 
@@ -35,7 +35,7 @@
   @apply bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 active:bg-rose-800;
 
   &.btn-muted {
-    @apply bg-rose-200/70 text-rose-600 hover:bg-rose-300/70 focus:ring-rose-500 active:bg-rose-300;
+    @apply bg-rose-200/70 text-rose-600 hover:bg-rose-300/60 focus:ring-rose-500 active:bg-rose-300;
   }
 }
 
