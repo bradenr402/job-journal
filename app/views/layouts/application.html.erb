@@ -23,13 +23,15 @@
   </head>
 
   <body>
-    <% if Current.user.present? %>
+    <%= render 'components/flash' %>
+
+    <% if authenticated? %>
       <%= button_to 'Sign Out', session_path, method: :delete, class: 'btn-link btn-muted' %>
     <% elsif !(controller_name.in? %w[sessions registrations passwords]) %>
       <%= link_to 'Sign In', new_session_path, class: 'btn-link btn-muted' %>
     <% end %>
 
-    <main class="container mx-auto mt-28 px-5">
+    <main class="container mx-auto mt-28 mb-16 px-5">
       <%= yield %>
     </main>
   </body>
