@@ -24,10 +24,6 @@
   navigation: auto;
 }
 
-:root {
-  view-transition-name: root;
-}
-
 @layer base {
   :root {
     interpolate-size: allow-keywords;
