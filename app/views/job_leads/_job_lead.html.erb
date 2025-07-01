@@ -24,7 +24,8 @@
           <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
           <span>Edit</span>
         <% end %>
-        <%= button_to job_lead, method: :delete, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure?' } do %>
+
+        <%= button_to job_lead, method: :delete, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure you want to delete this job lead?' } do %>
           <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
           <span>Delete</span>
         <% end %>
