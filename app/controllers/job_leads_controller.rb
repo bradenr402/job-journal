@@ -3,11 +3,12 @@ class JobLeadsController < ApplicationController
 
   # GET /job_leads
   def index
-    if params[:archived] == 'true'
-      @job_leads = JobLead.archived
-    else
-      @job_leads = JobLead.active
-    end
+    @job_leads =
+      if params[:archived] == 'true'
+        JobLead.archived.order(archived_at: :desc)
+      else
+        JobLead.active.order(updated_at: :desc)
+      end
   end
 
   # GET /job_leads/1
