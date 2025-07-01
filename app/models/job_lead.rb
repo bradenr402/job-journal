@@ -25,6 +25,9 @@ class JobLead < ApplicationRecord
   validates :offer_amount, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :status, presence: true, inclusion: { in: statuses.keys }
 
+  # Callbacks
+  before_validation :update_status, on: :update
+
   # Scopes
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
@@ -42,4 +45,12 @@ class JobLead < ApplicationRecord
   def archived? = archived_at.present?
 
   # def all_notes = Note.where(notable: [ self ] + interviews)
+
+  private
+
+  def update_status
+    if offer_amount_changed? && offer_amount.present?
+      self.status = :offer
+    end
+  end
 end
