@@ -20,6 +20,14 @@
   --color-primary-950: oklch(19.21% 0.044 159.49);
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+:root {
+  view-transition-name: root;
+}
+
 @layer base {
   :root {
     interpolate-size: allow-keywords;
