@@ -12,4 +12,7 @@ class User < ApplicationRecord
   # Validations
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true
+
+  # Aliases
+  alias_attribute :email, :email_address
 end
