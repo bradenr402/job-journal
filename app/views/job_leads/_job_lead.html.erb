@@ -1,4 +1,4 @@
-<div id="<%= dom_id job_lead %>" class="card w-full sm:w-auto flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">
+<div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'group hover:bg-neutral-100/80 hover:shadow-sm transition-all duration-150' unless current_page?(job_lead_path(job_lead)) %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
   <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2 max-lg:mb-6 <%= 'flex-wrap' if current_page?(job_lead_path(job_lead)) %>">
     <div class="subheading mb-2">
       <%= job_lead.title %>
@@ -30,7 +30,7 @@
           <span>Delete</span>
         <% end %>
 
-        <% if job_lead.archived_at.present? %>
+        <% if job_lead.archived_at? %>
           <%= button_to unarchive_job_lead_path(job_lead), method: :patch, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-secondary btn-muted gap-2' do %>
             <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
             <span>Unarchive</span>
@@ -43,16 +43,13 @@
         <% end %>
       </div>
     <% else %>
-      <div class="flex gap-2 ml-auto justify-self-end">
-        <%= link_to job_lead_path(job_lead), class: 'btn btn-sm btn-secondary btn-muted gap-2' do %>
-          <span>View</span>
-          <%= inline_svg_tag 'icons/link-square.svg', class: 'size-4 shrink-0' %>
-        <% end %>
-      </div>
+      <%= link_to job_lead_path(job_lead), class: 'absolute inset-0 z-10' do %>
+        <span class="sr-only">View</span>
+      <% end %>
     <% end %>
   </div>
 
-  <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-6">
+  <div class="flex flex-wrap items-start gap-x-6 gap-y-2 mb-6">
     <div class="flex items-center gap-1 text-sm text-soft">
       <%= inline_svg_tag 'icons/company.svg', class: 'size-4 shrink-0' %>
       <%= job_lead.company %>
@@ -60,9 +57,9 @@
 
     <% if job_lead.application_url.present? %>
       <div class="flex items-center gap-1 text-sm text-soft">
-        <%= link_to job_lead.application_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1' do %>
+        <%= link_to job_lead.application_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
           <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
-          <%= job_lead.application_url %>
+          <span class="w-min"><%= job_lead.application_url %></span>
         <% end %>
       </div>
     <% end %>
