@@ -68,3 +68,4 @@ group :test do
 end
 
 gem 'inline_svg', '~> 1.10'
+gem 'local_time'

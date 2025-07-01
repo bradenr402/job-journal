@@ -149,6 +149,7 @@ GEM
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     lint_roller (1.1.0)
+    local_time (3.0.3)
     logger (1.7.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
@@ -390,6 +391,7 @@ DEPENDENCIES
   inline_svg (~> 1.10)
   kamal
   letter_opener
+  local_time
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
