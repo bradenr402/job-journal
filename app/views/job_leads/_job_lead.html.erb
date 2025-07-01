@@ -51,7 +51,7 @@
 
   <div class="space-y-2 mb-6">
     <div class="flex items-center gap-1 text-sm text-soft">
-      <%= inline_svg_tag 'icons/company.svg', class: 'size-4 shrink-0' %>
+      <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
       <%= job_lead.company %>
     </div>
 
@@ -71,7 +71,7 @@
         <% if job_lead.offer_amount? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
-              <%= inline_svg_tag 'icons/offer.svg', class: 'size-4 shrink-0' %>
+              <%= inline_svg_tag 'icons/offer.svg', class: 'size-3.75 shrink-0' %>
               <dt>Offer Amount</dt>
             </div>
             <dd class="text-xl text-normal font-bold"><%= number_to_currency(job_lead.offer_amount, precision: 2) %></dd>
@@ -81,7 +81,7 @@
         <% if job_lead.salary? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
-              <%= inline_svg_tag 'icons/money.svg', class: 'size-4 shrink-0' %>
+              <%= inline_svg_tag 'icons/money.svg', class: 'size-3.75 shrink-0' %>
               <dt><%= 'Posted' if job_lead.offer_amount? %> Salary</dt>
             </div>
             <dd class="text-xl text-normal font-bold"><%= job_lead.salary %></dd>
@@ -94,7 +94,7 @@
       <% if job_lead.contact.present? %>
         <div>
           <div class="text-muted text-sm flex items-center gap-1">
-            <%= inline_svg_tag 'icons/contact.svg', class: 'size-4 shrink-0' %>
+            <%= inline_svg_tag 'icons/contact.svg', class: 'size-3.75 shrink-0' %>
             <dt>Contact</dt>
           </div>
           <dd><%= job_lead.contact %></dd>
@@ -104,7 +104,7 @@
       <% if job_lead.location.present? %>
         <div>
           <div class="text-muted text-sm flex items-center gap-1">
-            <%= inline_svg_tag 'icons/location.svg', class: 'size-4 shrink-0' %>
+            <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
             <dt>Location</dt>
           </div>
           <dd><%= job_lead.location %></dd>
@@ -114,7 +114,7 @@
       <% if job_lead.source.present? %>
         <div>
           <div class="text-muted text-sm flex items-center gap-1">
-            <%= inline_svg_tag 'icons/globe.svg', class: 'size-4 shrink-0' %>
+            <%= inline_svg_tag 'icons/globe.svg', class: 'size-3.75 shrink-0' %>
             <dt>Source</dt>
           </div>
           <dd><%= job_lead.source %></dd>
