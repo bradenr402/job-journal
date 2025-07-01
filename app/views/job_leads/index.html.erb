@@ -1,6 +1,6 @@
-<% content_for :title, 'Job Leads' %>
+<% content_for :title, "#{params[:archived] == 'true' ? 'Archived' : 'Active'} Job Leads" %>
 
-<div class="md:w-2/3 w-full mx-auto">
+<div class="lg:w-7/8 w-full mx-auto">
   <div class="flex justify-between items-center mb-4">
     <div>
       <h1 class="heading">
@@ -20,15 +20,15 @@
     </div>
   </div>
 
-  <div id="job_leads" class="space-y-6">
+  <div id="job_leads" class="space-y-6 @container">
     <% if @job_leads.any? %>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 @4xl:grid-cols-2 gap-6">
       <% @job_leads.each do |job_lead| %>
         <%= render job_lead %>
       <% end %>
       </div>
     <% else %>
-      <div class="text-center my-24 text-muted">
+      <div class="text-center my-16 text-muted">
         No job leads found.
       </div>
     <% end %>
