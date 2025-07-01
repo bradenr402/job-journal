@@ -1,5 +1,5 @@
 class JobLeadsController < ApplicationController
-  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive ]
+  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive ]
 
   # GET /job_leads
   def index
@@ -28,45 +28,45 @@ class JobLeadsController < ApplicationController
     @job_lead = Current.user.job_leads.build(job_lead_params)
 
     if @job_lead.save
-      redirect_to @job_lead, notice: 'Job lead was successfully created.'
+      redirect_to @job_lead, success: 'Job lead was successfully created.'
     else
-      render :new, status: :unprocessable_entity, alert: 'Failed to create job lead.'
+      render :new, status: :unprocessable_entity, error: 'Failed to create job lead.'
     end
   end
 
   # PATCH/PUT /job_leads/1
   def update
     if @job_lead.update(job_lead_params)
-      redirect_to @job_lead, notice: 'Job lead was successfully updated.'
+      redirect_to @job_lead, success: 'Job lead was successfully updated.'
     else
-      render :edit, status: :unprocessable_entity, alert: 'Failed to update job lead.'
+      render :edit, status: :unprocessable_entity, error: 'Failed to update job lead.'
     end
   end
 
   # DELETE /job_leads/1
   def destroy
     if @job_lead.destroy
-      redirect_to job_leads_path, status: :see_other, notice: 'Job lead was successfully destroyed.'
+      redirect_to job_leads_path, status: :see_other, success: 'Job lead was successfully destroyed.'
     else
-      redirect_to @job_lead, alert: 'Failed to destroy job lead.'
+      redirect_to @job_lead, error: 'Failed to destroy job lead.'
     end
   end
 
   # PATCH /job_leads/1/archive
   def archive
     if @job_lead.update(archived_at: Time.current)
-      redirect_to @job_lead, notice: 'Job lead was archived.'
+      redirect_to @job_lead, success: 'Job lead was archived.'
     else
-      redirect_to @job_lead, alert: 'Failed to archive job lead.'
+      redirect_to @job_lead, error: 'Failed to archive job lead.'
     end
   end
 
   # PATCH /job_leads/1/unarchive
   def unarchive
     if @job_lead.update(archived_at: nil)
-      redirect_to @job_lead, notice: 'Job lead was unarchived.'
+      redirect_to @job_lead, success: 'Job lead was unarchived.'
     else
-      redirect_to @job_lead, alert: 'Failed to unarchive job lead.'
+      redirect_to @job_lead, error: 'Failed to unarchive job lead.'
     end
   end
 
@@ -74,6 +74,8 @@ class JobLeadsController < ApplicationController
 
   def set_job_lead
     @job_lead = JobLead.find(params.expect(:id))
+  rescue ActiveRecord::RecordNotFound
+    redirect_back fallback_location: root_path, alert: 'Job lead not found.', status: :not_found
   end
 
   def job_lead_params
