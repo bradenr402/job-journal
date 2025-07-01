@@ -32,13 +32,8 @@ class JobLead < ApplicationRecord
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
 
-  scope :recently_applied, -> {
-    joins(:applications).where('applications.applied_on > ?', 30.days.ago)
-  }
-
-  scope :interviewing_this_week, -> {
-    joins(:interviews).where(interviews: { date: Time.current.all_week })
-  }
+  # scope :recently_applied, -> { joins(:applications).where('applications.applied_on > ?', 30.days.ago) }
+  # scope :interviewing_this_week, -> { joins(:interviews).where(interviews: { date: Time.current.all_week }) }
 
   # Instance Methods
   def active? = archived_at.nil?
