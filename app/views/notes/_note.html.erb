@@ -1,4 +1,4 @@
-<div id="<%= dom_id note %>" class="relative <%= current_page?(note_path(note)) ? 'card flex flex-col gap-3' : 'card-sm group hover:bg-neutral-100/80 hover:shadow-sm transition-all duration-150' %>" style="view-transition-name: note-<%= note.id %>;">
+<div id="<%= dom_id note %>" class="relative <%= current_page?(note_path(note)) ? 'card flex flex-col gap-3' : 'card-sm group hover:bg-neutral-100/80 hover:shadow-xs transition-all duration-150' %>" style="view-transition-name: note-<%= note.id %>;">
   <% unless current_page?(note_path(note)) %>
     <%= link_to note_path(note), class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
