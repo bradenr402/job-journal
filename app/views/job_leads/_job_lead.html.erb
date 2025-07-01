@@ -133,12 +133,12 @@
     <% if job_lead.archived_at.present? %>
       <span class="ml-auto inline-flex items-center gap-1">
         <%= inline_svg_tag 'icons/archive.svg', class: 'size-3.5 shrink-0' %>
-        Archived: <%= pretty_datetime job_lead.archived_at %>
+        Archived: <%= local_time job_lead.archived_at %>
       </span>
     <% else %>
       <span class="ml-auto inline-flex items-center gap-1">
         <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
-        Updated: <%= pretty_datetime job_lead.updated_at %>
+        Updated: <%= local_time job_lead.updated_at %>
       </span>
     <% end %>
   </div>

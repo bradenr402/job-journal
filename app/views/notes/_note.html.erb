@@ -17,12 +17,12 @@
       <% if note.edited? %>
         <span class="inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-          Updated: <%= pretty_datetime(note.updated_at) %>
+          Updated: <%= local_time note.updated_at %>
         </span>
       <% else %>
         <span class="inline-flex items-center gap-1">
           <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-          Created: <%= pretty_datetime(note.created_at) %>
+          Created: <%= local_time note.created_at %>
         </span>
       <% end %>
     </div>
