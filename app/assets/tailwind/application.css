@@ -33,3 +33,8 @@
     interpolate-size: allow-keywords;
   }
 }
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  height: 100%;
+}
