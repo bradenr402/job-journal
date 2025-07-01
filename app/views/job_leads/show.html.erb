@@ -11,7 +11,7 @@
   <%= render @job_lead %>
 
   <!-- Notes -->
-  <div class="mt-12">
+  <div class="mt-12 @container">
     <div class="flex items-center justify-between mb-4">
       <h2 class="subheading">Notes</h2>
       <%= link_to new_note_path(notable_type: 'JobLead', notable_id: @job_lead.id), class: 'btn btn-primary gap-2' do %>
@@ -20,7 +20,7 @@
       <% end %>
     </div>
     <% if @notes.any? %>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @notes.size >= 2 %> <%= '@4xl:grid-cols-3' if @notes.size >= 3 %> gap-4">
         <% @notes.each do |note| %>
           <%= render note %>
         <% end %>
