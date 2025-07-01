@@ -27,9 +27,9 @@
   <body>
     <%= render 'components/sidebar' if authenticated? %>
 
-    <div class="<%= 'ml-64' if authenticated? %>">
+    <div class="px-4 ml-64">
       <%= render 'components/flash' %>
-      <main class="flex-1 container mx-auto mt-28 mb-16 px-5">
+      <main class="container mx-auto mt-28 mb-16">
         <%= yield %>
       </main>
     </div>
