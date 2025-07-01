@@ -126,15 +126,21 @@
     </div>
   </div>
 
-  <div class="text-xs text-muted text-right">
-    <% if job_lead.archived_at.present? %>
+  <div class="flex items-end justify-between text-xs text-muted mt-auto">
+    <% if job_lead.notes.any? && !current_page?(job_lead_path(job_lead)) %>
       <span class="inline-flex items-center gap-1">
-        <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
+        <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+        <%= pluralize(job_lead.notes.count, 'note') %>
+      </span>
+    <% end %>
+    <% if job_lead.archived_at.present? %>
+      <span class="ml-auto inline-flex items-center gap-1">
+        <%= inline_svg_tag 'icons/archive.svg', class: 'size-3.5 shrink-0' %>
         Archived: <%= pretty_datetime job_lead.archived_at %>
       </span>
     <% else %>
-      <span class="inline-flex items-center gap-1">
-        <%= inline_svg_tag 'icons/clock.svg', class: 'size-4 shrink-0' %>
+      <span class="ml-auto inline-flex items-center gap-1">
+        <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
         Updated: <%= pretty_datetime job_lead.updated_at %>
       </span>
     <% end %>

@@ -9,3 +9,34 @@
 @utility form-select {
   @apply block shadow-sm rounded-lg border border-neutral-300 focus:outline-hidden focus:ring-2 focus:ring-primary-600 pl-3 pr-6 py-2 w-full caret-primary-600 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal;
 }
+
+@utility form-textarea {
+  @apply appearance-none block shadow-sm rounded-lg border border-neutral-300 focus:outline-hidden focus:ring-2 focus:ring-primary-600 p-4 w-full min-h-[120px] resize-y caret-primary-600 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal;
+}
+
+.form-textarea-wrap {
+  display: grid;
+  position: relative;
+}
+
+.form-textarea-wrap::after {
+  content: attr(data-replicated-value) ' ';
+  white-space: pre-wrap;
+  visibility: hidden;
+  /* Match textarea styling */
+  border-radius: 0.5rem; /* matches rounded-lg */
+  border-width: 1px;
+  border-color: rgb(212 212 216); /* matches border-neutral-300 */
+  padding: 1rem; /* matches p-4 */
+  font: inherit;
+  grid-area: 1 / 1 / 2 / 2;
+  box-sizing: border-box;
+  min-height: 120px;
+}
+
+.form-textarea-wrap > textarea {
+  resize: none !important;
+  overflow: hidden;
+  grid-area: 1 / 1 / 2 / 2;
+  /* Inherit all other styles from .form-textarea */
+}

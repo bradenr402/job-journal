@@ -9,4 +9,26 @@
   </div>
 
   <%= render @job_lead %>
+
+  <!-- Notes -->
+  <div class="mt-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="subheading">Notes</h2>
+      <%= link_to new_note_path(notable_type: 'JobLead', notable_id: @job_lead.id), class: 'btn btn-primary gap-2' do %>
+        <%= inline_svg_tag 'icons/note.svg', class: 'size-4 shrink-0' %>
+        <span>New Note</span>
+      <% end %>
+    </div>
+    <% if @notes.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @notes.each do |note| %>
+          <%= render note %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center my-16 text-muted">
+        No notes yet.
+      </div>
+    <% end %>
+  </div>
 </div>

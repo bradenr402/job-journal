@@ -12,6 +12,7 @@ class JobLeadsController < ApplicationController
 
   # GET /job_leads/1
   def show
+    @notes = @job_lead.notes.order(updated_at: :desc)
   end
 
   # GET /job_leads/new

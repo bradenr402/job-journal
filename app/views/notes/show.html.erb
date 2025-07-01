@@ -1,0 +1,27 @@
+<% content_for :title, 'Note' %>
+
+<div class="md:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex gap-2 items-center justify-between">
+    <% if @note.notable_type == 'JobLead' && @note.notable.present? %>
+      <%= link_to job_lead_path(@note.notable), class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
+        <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+        <span>Back to Job Lead</span>
+      <% end %>
+    <% else %>
+      <%# TODO: other notable types (application, interview, etc.) %>
+    <% end %>
+
+    <div class="flex items-center gap-2">
+      <%= link_to edit_note_path(@note), class: 'btn btn-sm btn-primary btn-muted gap-2' do %>
+        <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
+        <span>Edit Note</span>
+      <% end %>
+      <%= button_to @note, method: :delete, class: 'btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure you want to delete this note?' } do %>
+        <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
+        <span>Delete Note</span>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render @note %>
+</div>
