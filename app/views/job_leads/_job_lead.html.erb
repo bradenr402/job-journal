@@ -1,7 +1,7 @@
-<div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'group hover:bg-neutral-100/80 hover:shadow-sm transition-all duration-150' unless current_page?(job_lead_path(job_lead)) %>">
+<div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'group hover:bg-neutral-100/80 hover:shadow-sm transition-all duration-150' unless current_page?(job_lead_path(job_lead)) %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
   <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2 max-lg:mb-6 <%= 'flex-wrap' if current_page?(job_lead_path(job_lead)) %>">
     <div class="subheading mb-2">
-      <span style="view-transition-name: job_lead-<%= job_lead.id %>-title;"><%= job_lead.title %></span>
+      <span><%= job_lead.title %></span>
 
       <%
         status_colors = {
@@ -14,7 +14,7 @@
           'accepted' => 'bg-emerald-200/60 text-emerald-600'
         }
       %>
-      <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal <%= status_colors[job_lead.status] %>" style="view-transition-name: job_lead-<%= job_lead.id %>-status;">
+      <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal <%= status_colors[job_lead.status] %>">
         <%= job_lead.status.humanize %>
       </span>
     </div>
