@@ -5,10 +5,10 @@
     <% end %>
   <% end %>
 
-  <div class="relative">
+  <div class="max-h-24 overflow-hidden relative">
     <%= content_tag(:div, note.content, class: "text-light whitespace-pre-line #{'line-clamp-4 select-none' unless current_page?(note_path(note))}") %>
     <% unless current_page?(note_path(note)) %>
-      <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white/90 group-hover:from-neutral-100/80 to-transparent transition-colors duration-150"></div>
+      <div class="pointer-events-none absolute top-14 inset-x-0 h-10 bg-gradient-to-t from-white/90 group-hover:from-neutral-100/80 to-transparent transition-colors duration-150" style="inset-block-end:0; max-height:100%;"></div>
     <% end %>
   </div>
 
