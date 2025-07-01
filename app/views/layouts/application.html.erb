@@ -25,16 +25,13 @@
   </head>
 
   <body>
-    <%= render 'components/flash' %>
+    <%= render 'components/sidebar' if authenticated? %>
 
-    <% if authenticated? %>
-      <%= button_to 'Sign Out', session_path, method: :delete, class: 'btn-link btn-muted' %>
-    <% elsif !(controller_name.in? %w[sessions registrations passwords]) %>
-      <%= link_to 'Sign In', new_session_path, class: 'btn-link btn-muted' %>
-    <% end %>
-
-    <main class="container mx-auto mt-28 mb-16 px-5">
-      <%= yield %>
-    </main>
+    <div class="<%= 'ml-64' if authenticated? %>">
+      <%= render 'components/flash' %>
+      <main class="flex-1 container mx-auto mt-28 mb-16 px-5">
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

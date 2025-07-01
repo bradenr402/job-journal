@@ -1,0 +1,30 @@
+<nav class="fixed top-0 left-0 h-full w-64 p-2 bg-white border-r border-neutral-200 shadow-sm flex flex-col z-30">
+  <div class="my-4 mx-3">
+    <span class="text-2xl font-extrabold text-primary-600 tracking-tight">JobJournal</span>
+  </div>
+
+  <div class="grow pt-2 border-t border-neutral-100">
+    <ul class="*:flex *:items-center *:px-3 *:py-2 *:rounded-lg *:text-sm *:font-medium *:hover:bg-neutral-100 *:hover:text-primary-600 *:transition-colors *:duration-150">
+      <%= link_to job_leads_path do %>
+        <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-4 shrink-0 mr-2' %>
+        <span>Job Leads</span>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary w-full' %>
+  </div>
+
+  <% if Current.user %>
+    <div class="mt-2 pt-2 border-t border-neutral-100">
+      <%= link_to nil, class: 'flex flex-col items-start gap-0 px-3 py-2 rounded-lg text-light text-sm hover:bg-neutral-100 hover:text-primary-600 transition-colors duration-150' do %>
+        <span class="block text-xs text-muted">Logged in as</span>
+        <span class="font-medium"><%= Current.user.email_address %></span>
+      <% end %>
+    </div>
+
+    <%# TODO: make logged in button above a dropdown with sign out option inside %>
+    <%= button_to 'Sign Out', session_path, method: :delete, form_class: 'mt-2 w-full', class: 'btn btn-destructive btn-muted w-full' if authenticated? %>
+  <% end %>
+</nav>
