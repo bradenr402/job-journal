@@ -1,4 +1,4 @@
-<%= form_with(model: note, class: "mx-auto mt-6") do |form| %>
+<%= form_with(model: note, class: 'mx-auto mt-6') do |form| %>
   <% if note.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
       <h2 class="text-lg font-bold mb-2"><%= pluralize(note.errors.count, "error") %> prohibited this note from being saved:</h2>
@@ -20,10 +20,10 @@
   } %>
 
   <div class="space-y-6">
-    <div>
+    <div style="view-transition-name: note-<%= note.id %>;">
       <%= form.label :content, 'Note', class: 'sr-only' %>
       <div class="form-textarea-wrap" data-replicated-value="<%= form.object.content.to_s %>">
-        <%= form.text_area :content, class: 'form-textarea', rows: 6, placeholder: placeholder[note.notable_type], oninput: "this.parentNode.dataset.replicatedValue = this.value" %>
+        <%= form.text_area :content, class: 'form-textarea', rows: 6, placeholder: placeholder[note.notable_type], oninput: 'this.parentNode.dataset.replicatedValue = this.value' %>
       </div>
     </div>
     <div>
