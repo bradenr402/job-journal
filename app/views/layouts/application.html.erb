@@ -27,7 +27,7 @@
   <body class="[--sidebar-width:18rem]">
     <%= render 'components/sidebar' if authenticated? %>
 
-    <div class="px-4 ml-[var(--sidebar-width)]">
+    <div class="ml-[var(--sidebar-width)]">
       <%= render 'components/flash' %>
       <main class="container mx-auto mt-28 mb-16">
         <%= yield %>
