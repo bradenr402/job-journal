@@ -20,10 +20,6 @@ class InterviewsController < ApplicationController
   def create
     @interview = Interview.new(interview_params)
 
-    Rails.logger.info "\n\n\n\n\n"
-    Rails.logger.info interview_params
-    Rails.logger.info "\n\n\n\n\n"
-
     if @interview.save
       redirect_to @interview, success: 'Interview was successfully created.'
     else
