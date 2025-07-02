@@ -5,6 +5,7 @@ class User < ApplicationRecord
   # Associations
   has_many :sessions, dependent: :destroy
   has_many :job_leads, dependent: :destroy
+  has_many :interviews, through: :job_leads
 
   # Normalizations
   normalizes :email_address, with: -> { it.strip.downcase }

@@ -6,6 +6,7 @@ class Interview < ApplicationRecord
   # Validations
   validates :job_lead, presence: true
   validates :scheduled_at, presence: true
+  delegate :user, to: :job_lead
 
   validates :interviewer, length: { maximum: 255 }, allow_blank: true
   validates :location, length: { maximum: 255 }, allow_blank: true
