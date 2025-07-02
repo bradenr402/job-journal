@@ -1,0 +1,14 @@
+<% content_for :title, "Editing Interview - #{@interview.job_lead.title} @ #{@interview.job_lead.company}" %>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div class="mb-4">
+    <%= link_to @interview, class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back to Interview</span>
+    <% end %>
+  </div>
+
+  <h1 class="heading mb-6">Edit Interview</h1>
+
+  <%= render 'form', interview: @interview %>
+</div>

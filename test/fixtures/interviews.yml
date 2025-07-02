@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job_lead: one
+  interviewer: MyString
+  scheduled_at: 2025-07-01 17:04:20
+  location: MyString
+  rating: 1
+  call_url: MyString
+
+two:
+  job_lead: two
+  interviewer: MyString
+  scheduled_at: 2025-07-01 17:04:20
+  location: MyString
+  rating: 1
+  call_url: MyString

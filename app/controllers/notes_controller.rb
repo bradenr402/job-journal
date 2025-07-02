@@ -42,7 +42,7 @@ class NotesController < ApplicationController
   # DELETE /notes/1
   def destroy
     if @note.destroy
-      redirect_to notes_path, success: 'Note was successfully destroyed.', status: :see_other
+      redirect_to @note.notable, success: 'Note was successfully destroyed.', status: :see_other
     else
       redirect_to @note, error: 'Failed to destroy the note.', status: :unprocessable_entity
     end

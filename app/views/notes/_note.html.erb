@@ -1,18 +1,20 @@
-<div id="<%= dom_id note %>" class="relative <%= current_page?(note_path(note)) ? 'card flex flex-col gap-3' : 'card-sm group hover:bg-neutral-100/80 hover:shadow-xs transition-all duration-150' %>" style="view-transition-name: note-<%= note.id %>;">
-  <% unless current_page?(note_path(note)) %>
+<% note_preview = current_page?(note_path(note)) %>
+
+<div id="<%= dom_id note %>" class="relative <%= note_preview ? 'card flex flex-col gap-3' : 'card-sm group hover:bg-neutral-100/80 hover:shadow-xs transition-all duration-150' %>" style="view-transition-name: note-<%= note.id %>;">
+  <% unless note_preview %>
     <%= link_to note_path(note), class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
     <% end %>
   <% end %>
 
-  <div class="max-h-24 overflow-hidden relative">
-    <%= content_tag(:div, note.content, class: "text-light whitespace-pre-line #{'line-clamp-4 select-none' unless current_page?(note_path(note))}") %>
-    <% unless current_page?(note_path(note)) %>
+  <div class="<%= 'max-h-24' unless note_preview %> overflow-hidden relative">
+    <%= content_tag(:div, note.content, class: "text-light whitespace-pre-line #{'line-clamp-4 select-none' unless note_preview}") %>
+    <% unless note_preview %>
       <div class="pointer-events-none absolute top-14 inset-x-0 h-10 bg-gradient-to-t from-white/90 group-hover:from-neutral-100/80 to-transparent transition-colors duration-150"></div>
     <% end %>
   </div>
 
-  <% if current_page?(note_path(note)) %>
+  <% if note_preview %>
     <div class="text-xs text-muted text-right">
       <% if note.edited? %>
         <span class="inline-flex items-center gap-1">

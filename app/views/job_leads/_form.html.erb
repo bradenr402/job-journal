@@ -1,4 +1,4 @@
-<%= form_with(model: job_lead, class: "mx-auto mt-6") do |form| %>
+<%= form_with(model: job_lead, class: '@container mx-auto mt-6') do |form| %>
   <% if job_lead.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
       <h2 class="text-lg font-bold mb-2"><%= pluralize(job_lead.errors.count, "error") %> prohibited this job lead from being saved:</h2>
@@ -10,7 +10,7 @@
     </div>
   <% end %>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-6">
     <div>
       <%= form.label :title, 'Job Title', class: 'form-label' %>
       <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'e.g. Software Engineer' %>
@@ -70,7 +70,7 @@
         <%= form.select :status, JobLead.statuses.keys.map { |s| [s.titleize, s] }, {}, class: 'form-select' %>
       </div>
     <% end %>
-    <div class="md:col-span-2">
+    <div class="@2xl:col-span-2">
       <%= form.submit job_lead.persisted? ? 'Save Changes' : 'Create Job Lead', class: 'btn btn-primary w-full sm:w-auto' %>
     </div>
   </div>

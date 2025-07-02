@@ -1,0 +1,14 @@
+<% content_for :title, "Interview - #{@interview.job_lead.title} @ #{@interview.job_lead.company}" %>
+
+<div class="md:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to job_lead_path(@interview.job_lead), class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back to Job Lead</span>
+    <% end %>
+  </div>
+
+  <%= render @interview %>
+
+  <%= render 'shared/notes', notable: @interview, notes: @notes %>
+</div>

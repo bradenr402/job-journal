@@ -2,13 +2,9 @@
 
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex gap-2 items-center justify-between">
-    <% if @note.notable_type == 'JobLead' && @note.notable.present? %>
-      <%= link_to job_lead_path(@note.notable), class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
-        <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
-        <span>Back to Job Lead</span>
-      <% end %>
-    <% else %>
-      <%# TODO: other notable types (application, interview, etc.) %>
+    <%= link_to @note.notable, class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back to <%= @note.notable.model_name.human.titleize %></span>
     <% end %>
 
     <div class="flex items-center gap-2">

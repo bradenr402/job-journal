@@ -2,8 +2,8 @@ class JobLead < ApplicationRecord
   # Associations
   belongs_to :user
   has_many :notes, as: :notable, dependent: :destroy
+  has_many :interviews, dependent: :destroy
   # has_many :applications, dependent: :destroy
-  # has_many :interviews, dependent: :destroy
   # has_many :job_lead_tags, dependent: :destroy
   # has_many :tags, through: :job_lead_tags
 

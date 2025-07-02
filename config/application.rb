@@ -23,5 +23,11 @@ module JobJournal
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # config.assets.enabled = false
+
+    # Set the default timezone
+    config.time_zone = 'Eastern Time (US & Canada)'
+
   end
 end

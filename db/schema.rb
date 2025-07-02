@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_26_145628) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_01_210420) do
+  create_table "interviews", force: :cascade do |t|
+    t.integer "job_lead_id", null: false
+    t.string "interviewer"
+    t.datetime "scheduled_at", null: false
+    t.string "location"
+    t.integer "rating"
+    t.string "call_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_lead_id"], name: "index_interviews_on_job_lead_id"
+    t.check_constraint "(rating BETWEEN 1 AND 5) OR rating IS NULL", name: "rating_between_1_and_5"
+  end
+
   create_table "job_leads", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "company", null: false
@@ -60,6 +73,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_26_145628) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "interviews", "job_leads"
   add_foreign_key "job_leads", "users"
   add_foreign_key "notes", "users"
   add_foreign_key "sessions", "users"
