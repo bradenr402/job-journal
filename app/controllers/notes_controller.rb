@@ -20,8 +20,7 @@ class NotesController < ApplicationController
 
   # POST /notes
   def create
-    @note = Note.new(note_params)
-    @note.user = Current.user
+    @note = Current.user.notes.build(note_params)
 
     if @note.save
       redirect_to @note.notable, success: 'Note was successfully created.'
@@ -51,7 +50,7 @@ class NotesController < ApplicationController
   private
 
   def set_note
-    @note = Note.find(params.expect(:id))
+    @note = Current.user.notes.find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
     redirect_back fallback_location: root_path, alert: 'Note not found.', status: :not_found
   end

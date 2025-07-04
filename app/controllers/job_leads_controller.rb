@@ -5,9 +5,9 @@ class JobLeadsController < ApplicationController
   def index
     @job_leads =
       if params[:archived] == 'true'
-        JobLead.archived.order(archived_at: :desc)
+        Current.user.job_leads.archived.order(archived_at: :desc)
       else
-        JobLead.active.order(updated_at: :desc)
+        Current.user.job_leads.active.order(updated_at: :desc)
       end
   end
 
