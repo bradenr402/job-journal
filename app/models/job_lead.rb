@@ -62,18 +62,16 @@ class JobLead < ApplicationRecord
   def self.top_sources_by_quality(limit = 4)
     leads = where.not(source: [ nil, '' ])
 
-    grouped = leads.group_by { |lead| lead.source.downcase }
+    ranked = leads.group_by { it.source.downcase }.map do |_, group|
+      most_common_casing = group.group_by(&:source).max_by { |_, leads| leads.size }.first
+      count = group.size
 
-    ranked = grouped.map do |source_downcased, leads_for_source|
-      most_common_casing = leads_for_source.group_by(&:source).max_by { |_, v| v.size }[0]
-      count = leads_for_source.size
+      highest_quality = group.map { |lead| status_quality(lead.status) }.max
 
-      highest_quality = leads_for_source.map { |lead| status_quality(lead.status) }.max
+      latest_created_at = group.max_by(&:created_at)&.created_at
 
-      latest_created_at = leads_for_source.max_by(&:created_at)&.created_at
-
-      interview_count = leads_for_source.count { |lead| status_quality(lead.status) >= STATUS_QUALITY[:interview] }
-      offer_count     = leads_for_source.count { |lead| status_quality(lead.status) >= STATUS_QUALITY[:offer] }
+      interview_count = group.count { |lead| status_quality(lead.status) >= STATUS_QUALITY[:interview] }
+      offer_count     = group.count { |lead| status_quality(lead.status) >= STATUS_QUALITY[:offer] }
 
       [
         most_common_casing,
@@ -93,7 +91,7 @@ class JobLead < ApplicationRecord
 
     # Return a hash: { 'Source Name' => { count:, interview_count:, offer_count: }, ... }
     sorted.first(limit).to_h do |source, count, _, _, interview_count, offer_count|
-      [ source, { count: count, interview_count: interview_count, offer_count: offer_count } ]
+      [ source, { count:, interview_count:, offer_count: } ]
     end
   end
 
