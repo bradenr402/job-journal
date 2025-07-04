@@ -52,6 +52,9 @@ class JobLead < ApplicationRecord
   def active? = archived_at.nil?
   def archived? = archived_at.present?
 
+  def archive! = update(archived_at: Time.current)
+  def unarchive! = update(archived_at: nil)
+
   # def all_notes = Note.where(notable: [ self ] + interviews)
 
   # Class Methods

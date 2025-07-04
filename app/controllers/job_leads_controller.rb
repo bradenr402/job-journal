@@ -58,7 +58,7 @@ class JobLeadsController < ApplicationController
 
   # PATCH /job_leads/1/archive
   def archive
-    if @job_lead.update(archived_at: Time.current)
+    if @job_lead.archive!
       redirect_to @job_lead, success: 'Job lead was archived.'
     else
       redirect_to @job_lead, error: 'Failed to archive job lead.'
@@ -67,7 +67,7 @@ class JobLeadsController < ApplicationController
 
   # PATCH /job_leads/1/unarchive
   def unarchive
-    if @job_lead.update(archived_at: nil)
+    if @job_lead.unarchive!
       redirect_to @job_lead, success: 'Job lead was unarchived.'
     else
       redirect_to @job_lead, error: 'Failed to unarchive job lead.'
