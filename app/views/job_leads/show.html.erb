@@ -6,10 +6,6 @@
       <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
       <span>Back to Job Leads</span>
     <% end %>
-    <%= link_to new_interview_path(job_lead_id: @job_lead.id), class: 'btn btn-primary btn-muted gap-2' do %>
-      <%= inline_svg_tag 'icons/interview.svg', class: 'size-4 shrink-0' %>
-      <span>New Interview</span>
-    <% end %>
   </div>
 
   <%= render @job_lead %>
