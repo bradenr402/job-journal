@@ -1,4 +1,3 @@
-<!-- Notes -->
 <div class="mt-12 @container">
   <div class="flex items-center justify-between mb-4">
     <h2 class="subheading">Notes</h2>
@@ -8,7 +7,7 @@
     <% end %>
   </div>
   <% if notes.any? %>
-    <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if notes.size >= 2 %> <%= '@4xl:grid-cols-3' if notes.size >= 3 && notes.size != 4 %> gap-3">
+    <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if notes.size >= 2 %> <%= '@3xl:grid-cols-3' if notes.size >= 3 && notes.size != 4 %> gap-3">
       <% notes.each do |note| %>
         <%= render note %>
       <% end %>
