@@ -17,10 +17,8 @@
           <%= form.password_field :password_confirmation, required: true, autocomplete: 'new-password', placeholder: 'Repeat new password', maxlength: 72, class: 'form-input' %>
         </div>
 
-        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-          <div class="flex w-full items-center justify-between">
-            <%= form.submit 'Save Password', class: 'grow btn btn-primary' %>
-          </div>
+        <div class="flex w-full items-center justify-between">
+          <%= form.submit 'Save Password', class: 'grow btn btn-primary' %>
         </div>
       <% end %>
 

@@ -12,10 +12,8 @@
           <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
         </div>
 
-        <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-          <div class="flex w-full items-center justify-between">
-            <%= form.submit 'Send Reset Instructions', class: 'grow btn btn-primary' %>
-          </div>
+        <div class="flex w-full items-center justify-between">
+          <%= form.submit 'Send Reset Instructions', class: 'grow btn btn-primary' %>
         </div>
       <% end %>
 
