@@ -1,0 +1,43 @@
+<% content_for :title, 'Interviews' %>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to root_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back Home</span>
+    <% end %>
+  </div>
+
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h1 class="heading">
+        Interviews
+      </h1>
+      <div class="ml-1 text-sm text-muted font-normal align-middle">
+        <%= params[:upcoming] == 'true' ? 'Upcoming' : 'All' %>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <% if params[:upcoming] == 'true' %>
+        <%= link_to 'View All', interviews_path, class: 'btn btn-secondary btn-muted' %>
+      <% else %>
+        <%= link_to 'View Upcoming', interviews_path(upcoming: true), class: 'btn btn-secondary btn-muted' %>
+      <% end %>
+      <%= link_to 'New Job Lead', new_interview_path, class: 'btn btn-primary' %>
+    </div>
+  </div>
+
+  <div id="interviews" class="@container">
+    <% if @interviews.any? %>
+      <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @interviews.size >= 2 %> gap-5">
+      <% @interviews.each do |interview| %>
+        <%= render interview %>
+      <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        No interviews found.
+      </div>
+    <% end %>
+  </div>
+</div>

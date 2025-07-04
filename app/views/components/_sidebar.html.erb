@@ -22,6 +22,14 @@
           <%= inline_svg_tag "icons/#{active_pages[:job_leads] ? 'briefcase-filled' : 'briefcase'}.svg", class: 'size-4 shrink-0 mr-2' %>
           <span>Job Leads</span>
         <% end %>
+        <%= link_to interviews_path, class: "#{'bg-neutral-100 text-primary-600' if active_pages[:interviews]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:interviews] ? 'interview-filled' : 'interview'}.svg", class: 'size-4 shrink-0 mr-2' %>
+          <span>Interviews</span>
+        <% end %>
+        <%= link_to notes_path, class: "#{'bg-neutral-100 text-primary-600' if active_pages[:notes]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:notes] ? 'note-filled' : 'note'}.svg", class: 'size-4 shrink-0 mr-2' %>
+          <span>Notes</span>
+        <% end %>
       </ul>
     </div>
 

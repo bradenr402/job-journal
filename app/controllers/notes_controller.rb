@@ -1,6 +1,11 @@
 class NotesController < ApplicationController
   before_action :set_note, only: %i[ show edit update destroy ]
 
+  # GET /notes
+  def index
+    @notes = Current.user.notes.order(updated_at: :desc)
+  end
+
   # GET /notes/new
   def new
     @note = Note.new

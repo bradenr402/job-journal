@@ -1,6 +1,16 @@
 class InterviewsController < ApplicationController
   before_action :set_interview, only: %i[ show edit update destroy ]
 
+  # GET /interviews
+  def index
+    @interviews =
+      if params[:upcoming] == 'true'
+        Current.user.interviews.upcoming.order(scheduled_at: :desc)
+      else
+        Current.user.interviews.order(scheduled_at: :desc)
+      end
+  end
+
   # GET /interviews/1
   def show
     @job_lead = @interview.job_lead
