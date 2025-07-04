@@ -5,3 +5,7 @@
 @utility card-sm {
   @apply bg-white p-4 border border-neutral-300 rounded-2xl shadow-sm;
 }
+
+@utility empty-state {
+  @apply flex flex-col items-center justify-center text-center my-12 text-muted;
+}
