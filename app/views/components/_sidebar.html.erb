@@ -1,13 +1,25 @@
 <nav class="fixed top-0 left-0 z-40 w-[var(--sidebar-width)] h-screen">
   <div class="h-full overflow-y-auto p-2 bg-white border-r border-neutral-200 shadow-sm flex flex-col">
-    <div class="my-4 mx-3">
-      <span class="text-2xl font-extrabold text-primary-600 tracking-tight">JobJournal</span>
-    </div>
+    <%= link_to root_path, class: 'my-4 mx-3 flex items-center gap-1 text-primary-600' do %>
+      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
+      <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
+    <% end %>
+
+    <% active_pages = {
+      root: current_page?(root_path),
+      job_leads: current_page?(job_leads_path),
+      interviews: current_page?(interviews_path),
+      notes: current_page?(notes_path)
+    } %>
 
     <div class="grow pt-2 border-t border-neutral-100">
       <ul class="*:flex *:items-center *:px-3 *:py-2 *:rounded-lg *:text-sm *:font-medium *:hover:bg-neutral-100 *:hover:text-primary-600 *:transition-colors *:duration-150">
-        <%= link_to job_leads_path do %>
-          <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-4 shrink-0 mr-2' %>
+        <%= link_to root_path, class: "#{'bg-neutral-100 text-primary-600' if active_pages[:root]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:root] ? 'home-filled' : 'home'}.svg", class: 'size-4 shrink-0 mr-2' %>
+          <span>Home</span>
+        <% end %>
+        <%= link_to job_leads_path, class: "#{'bg-neutral-100 text-primary-600' if active_pages[:job_leads]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:job_leads] ? 'briefcase-filled' : 'briefcase'}.svg", class: 'size-4 shrink-0 mr-2' %>
           <span>Job Leads</span>
         <% end %>
       </ul>

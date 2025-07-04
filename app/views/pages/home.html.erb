@@ -1,0 +1,201 @@
+<div class="sm:w-7/8 w-full mx-auto space-y-20">
+  <div>
+    <div class="mb-4">
+      <h2 class="heading">Welcome Back!</h2>
+      <p class="text-sm text-muted mt-1">Here&#8217;s what&#8217;s happening with your job search.</p>
+    </div>
+
+    <div class="@container">
+      <div class="grid grid-cols-1 @4xl:grid-cols-2 gap-5">
+        <div class="relative card card-hover">
+          <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Job Leads</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Job Leads Last 7 Days</p>
+            <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <p class="font-extrabold text-4xl mb-1"><%= @job_leads_this_week.size %></p>
+          <p class="text-xs text-muted"><%= number_with_sign(@job_leads_this_week.size - @job_leads_last_week.size, precision: 0) %> from last week</p>
+        </div>
+
+        <div class="relative card card-hover">
+          <%= link_to interviews_path, class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Interviews</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Interviews This Week</p>
+            <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <p class="font-extrabold text-4xl mb-1"><%= @interviews_this_week.size %></p>
+          <p class="text-xs text-muted"><%= number_with_sign(@job_leads_this_week.size - @job_leads_last_week.size, precision: 0) %> from last week</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @stale_leads.any? %>
+    <div>
+      <div class="mb-4">
+        <h2 class="subheading">Stale Job Leads</h2>
+        <p class="text-sm text-muted mt-1">Job leads from more than 10 days ago that you haven&#8217;t applied to yet.</p>
+      </div>
+      <div id="job_leads" class="@container">
+        <% if @stale_leads.any? %>
+          <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @stale_leads.size >= 2 %> gap-5">
+          <% @stale_leads.each do |job_lead| %>
+            <%= render job_lead %>
+          <% end %>
+          </div>
+        <% else %>
+          <div class="empty-state">
+            No stale leads.
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <div class="mb-4">
+      <h2 class="subheading">Upcoming Interviews</h2>
+      <p class="text-sm text-muted mt-1">Interviews scheduled in the next 7 days.</p>
+    </div>
+    <div id="interviews" class="@container">
+      <% if @interviews_upcoming.any? %>
+        <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @interviews_upcoming.size >= 2 %> gap-5">
+        <% @interviews_upcoming.each do |interview| %>
+          <%= render interview %>
+        <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          No upcoming interviews.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <div class="mb-4">
+      <h2 class="subheading">Recent Notes</h2>
+      <p class="text-sm text-muted mt-1">Your 10 most recent notes created or edited in the last 7 days.</p>
+    </div>
+    <div id="notes" class="@container">
+      <% if @recent_notes.any? %>
+        <div class="grid grid-cols-1 <%= ' @xl:grid-cols-2' if @recent_notes.size >= 2 %> <%= '@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4 %> gap-3">
+        <% @recent_notes.each do |note| %>
+          <%= render note %>
+        <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          No recent notes.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <div class="mb-4">
+      <h2 class="subheading">Stats</h2>
+      <p class="text-sm text-muted mt-1">A quick overview of all your job search activity to help you track progress and spot trends.</p>
+    </div>
+
+    <div class="@container">
+      <div class="grid grid-cols-1 @xl:grid-cols-2 @3xl:grid-cols-3 gap-5">
+        <div class="relative card card-hover @xl:col-span-2 @3xl:col-span-1">
+          <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Job Leads</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Total Job Leads</p>
+            <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <p class="font-extrabold text-4xl mb-1"><%= @all_job_leads.size %></p>
+          <p class="text-xs text-muted"><%= @all_job_leads.active.size %> active, <%= @all_job_leads.archived.size %> archived</p>
+        </div>
+
+        <div class="relative card card-hover">
+          <%= link_to interviews_path, class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Interviews</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Total Interviews</p>
+            <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <p class="font-extrabold text-4xl mb-1"><%= @all_interviews.size %></p>
+          <% offers = @all_interviews.map(&:job_lead).uniq.reject { it.offer_amount.nil? }.size %>
+          <p class="text-xs text-muted"><%= pluralize(offers, 'offer') %> received</p>
+        </div>
+
+        <div class="relative card card-hover">
+          <%= link_to notes_path, class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Notes</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Total Notes</p>
+            <%= inline_svg_tag 'icons/note.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <p class="font-extrabold text-4xl mb-1"><%= @all_notes.size %></p>
+          <p class="text-xs text-muted">Across all leads, applications, &amp; interviews</p>
+        </div>
+
+        <div class="card @xl:col-span-2 @3xl:col-span-3">
+          <div class="mb-5">
+            <div class="flex items-start justify-between">
+              <p class="font-semibold">Top Sources</p>
+              <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 shrink-0' %>
+            </div>
+            <p class="text-xs text-muted">Where your best job leads are coming from</p>
+          </div>
+
+          <% if @top_sources.any? %>
+            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 %> <%= '@4xl:grid-cols-4' if @top_sources.size >= 4 %> gap-3">
+              <% @top_sources.each_with_index do |(source, data), index| %>
+                <div class="flex flex-col gap-4 bg-neutral-100 p-3 rounded-md">
+                  <div class="flex items-center gap-2.5">
+                    <div class="text-sm/none text-soft font-semibold size-8 grid place-items-center rounded-full bg-neutral-200/70">
+                      #<%= index + 1 %>
+                    </div>
+                    <div class="flex flex-col">
+                      <p class="font-bold text-lg"><%= source %></p>
+                      <p class="text-xs text-muted leading-none">
+                        <%= pluralize(data[:count], 'lead') %>
+                      </p>
+                    </div>
+                  </div>
+
+                  <% if data[:interview_count] > 0 || data[:offer_count] > 0 %>
+                    <div class="leading-tight">
+                      <p class="text-sm text-soft">
+                        <% offers_interviews = [] %>
+                        <% if data[:interview_count] > 0 %>
+                          <% offers_interviews << content_tag(:span, pluralize(data[:interview_count], 'interview')) %>
+                        <% end %>
+                        <% if data[:offer_count] > 0 %>
+                          <% offers_interviews << content_tag(:span, pluralize(data[:offer_count], 'offer')) %>
+                        <% end %>
+                        <%= safe_join(offers_interviews, ', ') %>
+                      </p>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <% if @top_sources.size == 1 %>
+              <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
+            <% end %>
+          <% else %>
+            <p class="text-sm text-muted">No sources recorded yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,9 @@ class Interview < ApplicationRecord
   before_validation :convert_zero_rating_to_nil
   after_save :update_job_lead_status
 
+  # Scopes
+  scope :upcoming, -> { where(scheduled_at: Time.current..7.days.from_now) }
+
   # Instance Methods
   private
 

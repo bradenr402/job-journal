@@ -1,21 +1,27 @@
-<% interview_preview = current_page?(interview_path(interview)) %>
+<% interview_page = current_page?(interview_path(interview)) %>
+<% job_lead = interview.job_lead %>
 
-<div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'group hover:bg-neutral-100/80 hover:shadow-sm transition-all duration-150' unless interview_preview %>" style="view-transition-name: interview-<%= interview.id %>;">
+<div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless interview_page %>" style="view-transition-name: interview-<%= interview.id %>;">
   <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2">
-    <div class="subheading mb-2">
-      <span>Interview with <%= interview.interviewer.presence || "Unknown" %></span>
-      <% if interview.scheduled_at.past? %>
-        <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-green-200/60 text-green-600">
-          Completed
-        </span>
-      <% else %>
-        <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-purple-200/60 text-purple-600">
-          Scheduled
-        </span>
+    <div class="mb-2">
+      <div class="subheading">
+        <span>Interview with <%= interview.interviewer.presence || 'Unknown' %></span>
+        <% if interview.scheduled_at.past? %>
+          <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-green-200/60 text-green-600">
+            Completed
+          </span>
+        <% else %>
+          <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-purple-200/60 text-purple-600">
+            Scheduled
+          </span>
+        <% end %>
+      </div>
+      <% unless current_page?(job_lead_path(job_lead)) %>
+        <p class="text-xs text-muted">for <%= job_lead.title %> @ <%= job_lead.company %></p>
       <% end %>
     </div>
     <div class="grow flex gap-2 justify-end">
-      <% if interview_preview %>
+      <% if interview_page %>
         <%= link_to edit_interview_path(interview), class: 'btn btn-sm btn-primary btn-muted gap-2' do %>
           <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
           <span>Edit</span>
@@ -70,10 +76,10 @@
   </div>
 
   <div class="flex items-end justify-between text-xs text-muted mt-auto">
-    <% if interview.notes.any? && !interview_preview %>
+    <% if interview.notes.any? && !interview_page %>
       <span class="inline-flex items-center gap-1">
         <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-        <%= pluralize(interview.notes.count, 'note') %>
+        <%= pluralize(interview.notes.size, 'note') %>
       </span>
     <% end %>
     <span class="ml-auto inline-flex items-center gap-1">

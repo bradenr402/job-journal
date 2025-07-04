@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # Defines the root path route ("/")
-  root 'job_leads#index'
+  root 'pages#home'
 
   resource :session, only: [ :new, :create, :destroy ]
   resource :registrations, only: [ :new, :create ]

@@ -1,20 +1,49 @@
-<% note_preview = current_page?(note_path(note)) %>
+<%
+  display_title = current_page?(notes_path) || current_page?(root_path)
 
-<div id="<%= dom_id note %>" class="relative <%= note_preview ? 'card flex flex-col gap-3' : 'card-sm group hover:bg-neutral-100/80 hover:shadow-xs transition-all duration-150' %>" style="view-transition-name: note-<%= note.id %>;">
-  <% unless note_preview %>
+  if display_title
+    if note.notable.is_a?(JobLead)
+      notable_title = "#{note.notable.title} @ #{note.notable.company}"
+      note_title = "#{notable_title}"
+    elsif note.notable.is_a?(Interview)
+      job_lead = note.notable.job_lead
+      notable_title = "#{job_lead.title} @ #{job_lead.company}"
+      note_title = "Interview - #{notable_title}"
+    else
+      notable_title = note.notable.model_name.human.titleize
+      note_title = "#{notable_title}"
+    end
+  end
+%>
+
+<% note_page = current_page?(note_path(note)) %>
+
+<div id="<%= dom_id note %>" class="relative <%= note_page ? 'card flex flex-col gap-3' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
+  <% unless note_page %>
     <%= link_to note_path(note), class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
     <% end %>
   <% end %>
 
-  <div class="<%= 'max-h-24' unless note_preview %> overflow-hidden relative">
-    <%= content_tag(:div, note.content, class: "text-light whitespace-pre-line #{'line-clamp-4 select-none' unless note_preview}") %>
-    <% unless note_preview %>
+  <% if display_title %>
+    <p class="text-xs font-semibold mb-2 inline-flex items-start gap-1">
+      <% if note.notable.is_a?(Interview) %>
+        <%= inline_svg_tag 'icons/interview-filled.svg', class: 'size-3 shrink-0 mt-0.5' %>
+      <% elsif note.notable.is_a?(JobLead) %>
+        <%= inline_svg_tag 'icons/briefcase-filled.svg', class: 'size-3 shrink-0 mt-0.5' %>
+      <% end %>
+      <%= note_title %>
+    </p>
+  <% end %>
+
+  <div class="<%= 'max-h-24' unless note_page %> overflow-hidden relative">
+    <%= content_tag(:div, note.content, class: "text-light whitespace-pre-line #{'line-clamp-4 select-none' unless note_page}") %>
+    <% unless note_page %>
       <div class="pointer-events-none absolute top-14 inset-x-0 h-10 bg-gradient-to-t from-white/90 group-hover:from-neutral-100/80 to-transparent transition-colors duration-150"></div>
     <% end %>
   </div>
 
-  <% if note_preview %>
+  <% if note_page %>
     <div class="text-xs text-muted text-right">
       <% if note.edited? %>
         <span class="inline-flex items-center gap-1">
