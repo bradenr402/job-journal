@@ -15,15 +15,26 @@
       <%= form.label :title, 'Job Title', class: 'form-label' %>
       <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'e.g. Software Engineer' %>
     </div>
+
     <div>
+      <% recent_companies = Current.user.job_leads.where(created_at: 30.days.ago..).distinct.pluck(:company).sort %>
+
       <%= form.label :company, class: 'form-label' %>
-      <%= form.text_field :company, class: 'form-input', placeholder: 'e.g. Acme Corp' %>
+      <%= form.text_field :company, class: 'form-input', placeholder: 'e.g. Acme Corp', list: 'recent-companies' %>
+
+      <datalist id="recent-companies">
+        <% recent_companies.each do |company| %>
+          <option value="<%= company %>">
+        <% end %>
+      </datalist>
     </div>
+
     <div>
       <%= form.label :application_url, 'Application URL', class: 'form-label' %>
       <%= form.url_field :application_url, class: 'form-input', placeholder: 'https://company.com/careers/123' %>
       <p class="text-xs text-muted mt-1">Link to the job posting or application page.</p>
     </div>
+
     <div>
       <%= form.label :salary, class: 'form-label' do %>
         Salary
@@ -32,6 +43,7 @@
       <%= form.text_field :salary, class: 'form-input', placeholder: '$100,000 - $120,000' %>
       <p class="text-xs text-muted mt-1">Salary range or estimate.</p>
     </div>
+
     <% if job_lead.persisted? %>
       <div>
         <%= form.label :offer_amount, class: 'form-label' do %>
@@ -41,6 +53,7 @@
         <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: 'e.g. 105000', value: (job_lead.offer_amount? ? number_with_precision(job_lead.offer_amount, precision: 2) : nil) %>
       </div>
     <% end %>
+
     <div>
       <%= form.label :contact, class: 'form-label' do %>
         Contact
@@ -49,27 +62,47 @@
       <%= form.text_field :contact, class: 'form-input', placeholder: 'Jane Doe or jane@email.com' %>
       <p class="text-xs text-muted mt-1">Name or email of your contact, if any.</p>
     </div>
+
     <div>
+      <% recent_locations = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(location: [ nil, '' ]).distinct.pluck(:location).sort %>
+
       <%= form.label :location, class: 'form-label' do %>
-      Location
-      <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+        Location
+        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
-      <%= form.text_field :location, class: 'form-input', placeholder: 'e.g. Remote or New York, NY' %>
+      <%= form.text_field :location, class: 'form-input', placeholder: 'e.g. Remote or New York, NY', list: 'recent-locations' %>
+
+      <datalist id="recent-locations">
+        <% recent_locations.each do |location| %>
+          <option value="<%= location %>">
+        <% end %>
+      </datalist>
     </div>
+
     <div>
+      <% recent_sources = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(source: [ nil, '' ]).distinct.pluck(:source).sort %>
+
       <%= form.label :source, class: 'form-label' do %>
         Source
         <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
-      <%= form.text_field :source, class: 'form-input', placeholder: 'e.g. LinkedIn, referral' %>
+      <%= form.text_field :source, class: 'form-input', placeholder: 'e.g. LinkedIn, referral', list: 'recent-sources' %>
+
+      <datalist id="recent-sources">
+        <% recent_sources.each do |source| %>
+          <option value="<%= source %>">
+        <% end %>
+      </datalist>
       <p class="text-xs text-muted mt-1">Where you found the job (e.g., LinkedIn, company site, referral).</p>
     </div>
+
     <% if job_lead.persisted? %>
       <div>
         <%= form.label :status, class: 'form-label' %>
         <%= form.select :status, JobLead.statuses.keys.map { |s| [s.titleize, s] }, {}, class: 'form-select' %>
       </div>
     <% end %>
+
     <div class="@2xl:col-span-2">
       <%= form.submit job_lead.persisted? ? 'Save Changes' : 'Create Job Lead', class: 'btn btn-primary w-full sm:w-auto' %>
     </div>
