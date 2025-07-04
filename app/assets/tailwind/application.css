@@ -18,6 +18,10 @@
   --color-primary-800: oklch(37.72% 0.086 159.66);
   --color-primary-900: oklch(25.88% 0.058 160.55);
   --color-primary-950: oklch(19.21% 0.044 159.49);
+
+  /* Sans font stack */
+  --font-sans: 'Aspekta', ui-sans-serif, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Noto Color Emoji';
 }
 
 @view-transition {
