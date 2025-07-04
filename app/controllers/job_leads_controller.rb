@@ -41,6 +41,7 @@ class JobLeadsController < ApplicationController
   # PATCH/PUT /job_leads/1
   def update
     if @job_lead.update(job_lead_params)
+      flash[:notice] = 'Job lead automatically archived.' if @job_lead.rejected? && @job_lead.archived_at.after?(10.seconds.ago)
       redirect_to @job_lead, success: 'Job lead was successfully updated.'
     else
       render :edit, status: :unprocessable_entity, error: 'Failed to update job lead.'

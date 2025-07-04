@@ -104,5 +104,9 @@ class JobLead < ApplicationRecord
     if offer_amount_changed? && offer_amount.present?
       self.status = :offer
     end
+
+    if status_changed? && rejected? && !archived?
+      self.archive!
+    end
   end
 end
