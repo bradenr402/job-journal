@@ -44,47 +44,49 @@
       <p class="text-xs text-muted mt-1">Link to the video call or meeting.</p>
     </div>
 
-    <div>
-      <%= form.label :rating, class: 'form-label' do %>
-        Rating
-        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
-      <% end %>
-      <div
-        class="flex flex-wrap items-center gap-x-4 gap-y-2"
-        data-controller="star-rating"
-        data-star-rating-initial-value="<%= interview.rating || 0 %>"
-      >
-        <div
-          class="select-none flex items-center gap-x-2"
-          role="radiogroup"
-          aria-label="Star rating"
-        >
-        <% 1.upto(5) do |star| %>
-          <label
-            class="cursor-pointer transition-transform hover:scale-110 relative group"
-            data-star-rating-target="label"
-            data-action="mouseenter->star-rating#hoverIn mouseleave->star-rating#hoverOut focusin->star-rating#hoverIn focusout->star-rating#hoverOut"
-          >
-          <%= form.radio_button :rating,
-                                star,
-                                aria: { label: "#{star} #{'star'.pluralize(star)}" },
-                                class: 'sr-only',
-                                data: { action: 'star-rating#select', star_rating_target: 'radio' } %>
-          <%= inline_svg_tag 'icons/star.svg', class: 'size-9 transition-all duration-200 fill-transparent text-muted cursor-pointer', data: { star_rating_target: 'star', value: star } %>
-          </label>
+    <% if interview.persisted? %>
+      <div>
+        <%= form.label :rating, class: 'form-label' do %>
+          Rating
+          <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
         <% end %>
-        </div>
-        <button
-          type="button"
-          data-action="star-rating#clear"
-          class="btn btn-sm btn-secondary btn-muted ml-2"
+        <div
+          class="flex flex-wrap items-center gap-x-4 gap-y-2"
+          data-controller="star-rating"
+          data-star-rating-initial-value="<%= interview.rating || 0 %>"
         >
-          Clear Rating
-        </button>
-      </div>
+          <div
+            class="select-none flex items-center gap-x-2"
+            role="radiogroup"
+            aria-label="Star rating"
+          >
+          <% 1.upto(5) do |star| %>
+            <label
+              class="cursor-pointer transition-transform hover:scale-110 relative group"
+              data-star-rating-target="label"
+              data-action="mouseenter->star-rating#hoverIn mouseleave->star-rating#hoverOut focusin->star-rating#hoverIn focusout->star-rating#hoverOut"
+            >
+            <%= form.radio_button :rating,
+                                  star,
+                                  aria: { label: "#{star} #{'star'.pluralize(star)}" },
+                                  class: 'sr-only',
+                                  data: { action: 'star-rating#select', star_rating_target: 'radio' } %>
+            <%= inline_svg_tag 'icons/star.svg', class: 'size-9 transition-all duration-200 fill-transparent text-muted cursor-pointer', data: { star_rating_target: 'star', value: star } %>
+            </label>
+          <% end %>
+          </div>
+          <button
+            type="button"
+            data-action="star-rating#clear"
+            class="btn btn-sm btn-secondary btn-muted ml-2"
+          >
+            Clear Rating
+          </button>
+        </div>
 
-      <p class="text-xs text-muted mt-1">Rate how you felt about this interview.</p>
-    </div>
+        <p class="text-xs text-muted mt-1">Rate how you felt about this interview.</p>
+      </div>
+    <% end %>
 
     <div class="@2xl:col-span-2">
       <%= form.submit interview.persisted? ? 'Save Changes' : 'Save Interview', class: 'btn btn-primary w-full sm:w-auto' %>
