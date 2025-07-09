@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="[--sidebar-width:18rem] <%= authenticated? ? '[--tab-bar-height:3.6rem]' : '[--tab-bar-height:0rem]' %> [--body-padding:0.375rem] max-md:[--main-padding:1rem]">
   <head>
     <title><%= content_for(:title) || 'JobJournal' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,12 +24,12 @@
     <meta name="view-transition" content="same-origin" />
   </head>
 
-  <body class="bg-neutral-200/80 [--sidebar-width:18rem] [--body-padding:0.375rem] p-(--body-padding)">
-    <%= render 'components/sidebar' if authenticated? %>
+  <body class="bg-neutral-200/80 md:p-(--body-padding)">
+    <%= render 'components/nav' if authenticated? %>
 
-    <div class="bg-white rounded-xl <%= 'ml-(--sidebar-width)' if authenticated? %>">
+    <div class="bg-white md:rounded-xl px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
       <%= render 'components/flash' %>
-      <main class="container mx-auto pt-28 pb-16 min-h-[calc(100vh-var(--body-padding)*2)]">
+      <main class="container mx-auto pt-28 pb-16 min-h-[calc(100vh-var(--tab-bar-height))] md:min-h-[calc(100vh-var(--body-padding)*2)]">
         <%= yield %>
       </main>
     </div>

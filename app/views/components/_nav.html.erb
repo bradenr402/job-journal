@@ -1,0 +1,51 @@
+<nav class="fixed bottom-5 inset-x-5 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
+  <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 bg-white/60 md:bg-white max-md:rounded-[1.25rem] md:rounded-xl max-md:backdrop-blur-md border md:border-l-0 md:border-y-0 border-neutral-200 flex flex-col max-sm:justify-center">
+    <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600' do %>
+      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
+      <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
+    <% end %>
+
+    <% active_pages = {
+      root: current_page?(root_path),
+      job_leads: current_page?(job_leads_path),
+      interviews: current_page?(interviews_path),
+      notes: current_page?(notes_path)
+    } %>
+
+    <div class="md:grow md:pt-2 md:border-t md:border-neutral-100">
+      <ul class="grid max-md:grid-cols-4 md:flex md:flex-col md:gap-0.25">
+        <%= link_to root_path, class: "nav-link #{'nav-link-active' if active_pages[:root]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:root] ? 'home-filled' : 'home'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
+          <span>Home</span>
+        <% end %>
+        <%= link_to job_leads_path, class: "nav-link #{'nav-link-active' if active_pages[:job_leads]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:job_leads] ? 'briefcase-filled' : 'briefcase'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
+          <span>Job Leads</span>
+        <% end %>
+        <%= link_to interviews_path, class: "nav-link #{'nav-link-active' if active_pages[:interviews]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:interviews] ? 'interview-filled' : 'interview'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
+          <span>Interviews</span>
+        <% end %>
+        <%= link_to notes_path, class: "nav-link #{'nav-link-active' if active_pages[:notes]}" do %>
+          <%= inline_svg_tag "icons/#{active_pages[:notes] ? 'note-filled' : 'note'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
+          <span>Notes</span>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="max-md:hidden mt-4">
+      <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary w-full' %>
+    </div>
+
+    <% if Current.user %>
+      <div class="max-md:hidden mt-2 pt-2 border-t border-neutral-100">
+        <%= link_to nil, class: 'flex flex-col items-start gap-0 px-3 py-2 rounded-lg text-light text-sm hover:bg-neutral-100 hover:text-primary-600 transition-colors duration-150' do %>
+          <span class="block text-xs text-muted">Logged in as</span>
+          <span class="font-medium"><%= Current.user.email_address %></span>
+        <% end %>
+      </div>
+      <%# TODO: make logged in button above a dropdown with sign out option inside %>
+      <%= button_to 'Sign Out', session_path, method: :delete, form_class: 'max-md:hidden mt-2 w-full', class: 'btn btn-destructive btn-muted w-full' if authenticated? %>
+    <% end %>
+  </div>
+</nav>

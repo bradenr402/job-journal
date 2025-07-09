@@ -22,6 +22,8 @@
   /* Sans font stack */
   --font-sans: 'Aspekta', ui-sans-serif, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Noto Color Emoji';
+
+  --text-2xs: 0.675rem;
 }
 
 @view-transition {

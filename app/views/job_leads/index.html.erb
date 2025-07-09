@@ -8,20 +8,22 @@
     <% end %>
   </div>
 
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
     <div>
       <h1 class="heading">
         Job Leads
       </h1>
-      <div class="ml-1 text-sm text-muted font-normal align-middle">
+      <span class="ml-1 text-sm text-muted font-normal align-middle">
         <%= params[:archived] == 'true' ? 'Archived' : 'Active' %>
-      </div>
+        <span class="text-2xs">&nbsp;&bull;&nbsp;</span>
+        <span class="[view-transition-name:job-lead-count]"><%= pluralize(@job_leads.size, 'job lead') %></span>
+      </span>
     </div>
-    <div class="flex gap-2">
+    <div class="flex gap-2 ml-auto">
       <% if params[:archived] == 'true' %>
-        <%= link_to 'View Active', job_leads_path, class: 'btn btn-secondary btn-muted' %>
+        <%= link_to 'View Active', job_leads_path, class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
       <% else %>
-        <%= link_to 'View Archive', job_leads_path(archived: true), class: 'btn btn-secondary btn-muted' %>
+        <%= link_to 'View Archived', job_leads_path(archived: true), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
       <% end %>
       <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
     </div>
