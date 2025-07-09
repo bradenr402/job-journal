@@ -27,7 +27,8 @@
         <%= form.text_area :content, class: 'form-textarea', rows: 6, placeholder: placeholder[note.notable_type], oninput: 'this.parentNode.dataset.replicatedValue = this.value' %>
       </div>
     </div>
-    <div>
+
+    <div class="pt-4 border-t border-neutral-200">
       <%= form.submit note.persisted? ? 'Save Changes' : 'Save Note', class: 'btn btn-primary w-full sm:w-auto' %>
     </div>
   </div>

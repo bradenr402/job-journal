@@ -96,7 +96,7 @@
       </div>
     <% end %>
 
-    <div class="@2xl:col-span-2">
+    <div class="@2xl:col-span-2 sticky bottom-0 bg-white py-4 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200">
       <%= form.submit interview.persisted? ? 'Save Changes' : 'Save Interview', class: 'btn btn-primary w-full sm:w-auto' %>
     </div>
   </div>
