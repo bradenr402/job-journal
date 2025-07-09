@@ -58,12 +58,10 @@
     </div>
 
     <% if job_lead.application_url.present? %>
-      <div class="flex items-center gap-1 text-sm text-soft">
-        <%= link_to job_lead.application_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
-          <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
-          <span class="<%= 'w-min' unless job_lead_page %>"><%= job_lead.application_url %></span>
-        <% end %>
-      </div>
+      <%= link_to job_lead.application_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary text-sm inline-block align-middle relative z-20 max-w-fit' do %>
+        <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 inline' %>
+        <span class="wrap-anywhere"><%= line_wrap_url job_lead.application_url %></span>
+      <% end %>
     <% end %>
   </div>
 
