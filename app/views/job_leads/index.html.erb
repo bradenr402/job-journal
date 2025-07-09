@@ -32,9 +32,9 @@
   <div id="job_leads" class="@container">
     <% if @job_leads.any? %>
       <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @job_leads.size >= 2 %> gap-5">
-      <% @job_leads.each do |job_lead| %>
-        <%= render job_lead %>
-      <% end %>
+        <% @job_leads.each do |job_lead| %>
+          <%= render job_lead %>
+        <% end %>
       </div>
     <% else %>
       <div class="empty-state">

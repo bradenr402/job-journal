@@ -57,20 +57,20 @@
             role="radiogroup"
             aria-label="Star rating"
           >
-          <% 1.upto(5) do |star| %>
-            <label
-              class="cursor-pointer transition-transform hover:scale-110 relative group"
-              data-star-rating-target="label"
-              data-action="mouseenter->star-rating#hoverIn mouseleave->star-rating#hoverOut focusin->star-rating#hoverIn focusout->star-rating#hoverOut"
-            >
-            <%= form.radio_button :rating,
-                                  star,
-                                  aria: { label: "#{star} #{'star'.pluralize(star)}" },
-                                  class: 'sr-only',
-                                  data: { action: 'star-rating#select', star_rating_target: 'radio' } %>
-            <%= inline_svg_tag 'icons/star.svg', class: 'size-9 transition-all duration-200 fill-transparent text-muted cursor-pointer', data: { star_rating_target: 'star', value: star } %>
-            </label>
-          <% end %>
+            <% 1.upto(5) do |star| %>
+              <label
+                class="cursor-pointer transition-transform hover:scale-110 relative group"
+                data-star-rating-target="label"
+                data-action="mouseenter->star-rating#hoverIn mouseleave->star-rating#hoverOut focusin->star-rating#hoverIn focusout->star-rating#hoverOut"
+              >
+                <%= form.radio_button :rating,
+                                      star,
+                                      aria: { label: "#{star} #{'star'.pluralize(star)}" },
+                                      class: 'sr-only',
+                                      data: { action: 'star-rating#select', star_rating_target: 'radio' } %>
+                <%= inline_svg_tag 'icons/star.svg', class: 'size-9 transition-all duration-200 fill-transparent text-muted cursor-pointer', data: { star_rating_target: 'star', value: star } %>
+              </label>
+            <% end %>
           </div>
           <button
             type="button"
