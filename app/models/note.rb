@@ -3,6 +3,9 @@ class Note < ApplicationRecord
   belongs_to :user
   belongs_to :notable, polymorphic: true, touch: true
 
+  # Validations
+  validates :content, presence: true
+
   # Instance Methods
   def job_lead
     notable if notable.is_a? JobLead

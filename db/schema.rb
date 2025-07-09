@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_01_210420) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_09_033854) do
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer"
@@ -48,7 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_210420) do
     t.integer "user_id", null: false
     t.string "notable_type", null: false
     t.integer "notable_id", null: false
-    t.text "content"
+    t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["notable_type", "notable_id"], name: "index_notes_on_notable"
