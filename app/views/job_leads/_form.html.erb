@@ -17,13 +17,11 @@
     </div>
 
     <div>
-      <% recent_companies = Current.user.job_leads.where(created_at: 30.days.ago..).distinct.pluck(:company).sort %>
-
       <%= form.label :company, class: 'form-label' %>
       <%= form.text_field :company, class: 'form-input', placeholder: 'e.g. Acme Corp', list: 'recent-companies' %>
 
       <datalist id="recent-companies">
-        <% recent_companies.each do |company| %>
+        <% @recent_companies.each do |company| %>
           <option value="<%= company %>">
         <% end %>
       </datalist>
@@ -72,8 +70,6 @@
     </div>
 
     <div>
-      <% recent_locations = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(location: [ nil, '' ]).distinct.pluck(:location).sort %>
-
       <%= form.label :location, class: 'form-label' do %>
         Location
         <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
@@ -81,15 +77,13 @@
       <%= form.text_field :location, class: 'form-input', placeholder: 'e.g. Remote or New York, NY', list: 'recent-locations' %>
 
       <datalist id="recent-locations">
-        <% recent_locations.each do |location| %>
+        <% @recent_locations.each do |location| %>
           <option value="<%= location %>">
         <% end %>
       </datalist>
     </div>
 
     <div>
-      <% recent_sources = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(source: [ nil, '' ]).distinct.pluck(:source).sort %>
-
       <%= form.label :source, class: 'form-label' do %>
         Source
         <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
@@ -97,7 +91,7 @@
       <%= form.text_field :source, class: 'form-input', placeholder: 'e.g. LinkedIn, referral', list: 'recent-sources' %>
 
       <datalist id="recent-sources">
-        <% recent_sources.each do |source| %>
+        <% @recent_sources.each do |source| %>
           <option value="<%= source %>">
         <% end %>
       </datalist>

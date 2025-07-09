@@ -21,6 +21,10 @@ class JobLeadsController < ApplicationController
   # GET /job_leads/new
   def new
     @job_lead = Current.user.job_leads.build
+
+    @recent_companies = Current.user.job_leads.where(created_at: 30.days.ago..).distinct.pluck(:company).sort
+    @recent_locations = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(location: [ nil, '' ]).distinct.pluck(:location).sort
+    @recent_sources = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(source: [ nil, '' ]).distinct.pluck(:source).sort
   end
 
   # GET /job_leads/1/edit
