@@ -1,14 +1,5 @@
 <%= form_with(model: note, class: 'mx-auto mt-6') do |form| %>
-  <% if note.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
-      <h2 class="text-lg font-bold mb-2"><%= pluralize(note.errors.count, "error") %> prohibited this note from being saved:</h2>
-      <ul class="list-disc ml-6 text-red-600">
-        <% note.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'components/errors', resource: note %>
 
   <% if note.notable_type.present? && note.notable_id.present? %>
     <%= form.hidden_field :notable_type %>

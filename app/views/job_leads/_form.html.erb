@@ -1,14 +1,5 @@
 <%= form_with(model: job_lead, class: '@container mx-auto mt-6') do |form| %>
-  <% if job_lead.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
-      <h2 class="text-lg font-bold mb-2"><%= pluralize(job_lead.errors.count, "error") %> prohibited this job lead from being saved:</h2>
-      <ul class="list-disc ml-6 text-red-600">
-        <% job_lead.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'components/errors', resource: job_lead %>
 
   <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-5">
     <div>

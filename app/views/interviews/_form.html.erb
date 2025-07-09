@@ -1,19 +1,8 @@
 <%= form_with(model: interview, class: '@container mx-auto mt-6') do |form| %>
-  <% if interview.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-4">
-      <h2 class="text-lg font-bold mb-2"><%= pluralize(interview.errors.count, "error") %> prohibited this interview from being saved:</h2>
-      <ul class="list-disc ml-6 text-red-600">
-        <% interview.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'components/errors', resource: interview %>
 
-  <%= form.hidden_field :rating, value: 0 %>
-  <% if interview.job_lead_id.present? %>
-    <%= form.hidden_field :job_lead_id %>
-  <% end %>
+  <%= form.hidden_field :rating, value: 0 if interview.persisted? %>
+  <%= form.hidden_field :job_lead_id if interview.job_lead_id.present? %>
 
   <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-5">
     <div>
