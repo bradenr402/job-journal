@@ -1,25 +1,23 @@
-<div class="mt-24">
-  <div class="max-w-lg mx-auto sm:w-7/8 w-full">
-    <div class="card">
-      <h1 class="font-bold text-2xl">Forgot Your Password?</h1>
-      <p class="text-soft">
-        Enter your email address and we&#8217;ll send you instructions to reset your password.
-      </p>
+<div class="max-w-lg mx-auto sm:w-7/8 w-full">
+  <div class="card">
+    <h1 class="font-bold text-2xl">Forgot Your Password?</h1>
+    <p class="text-soft">
+      Enter your email address and we&#8217;ll send you instructions to reset your password.
+    </p>
 
-      <%= form_with url: passwords_path, class: 'contents' do |form| %>
-        <div class="my-5">
-          <%= form.label :email_address, 'Email Address', class: 'form-label' %>
-          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
-        </div>
-
-        <div class="flex w-full items-center justify-between">
-          <%= form.submit 'Send Reset Instructions', class: 'grow btn btn-primary' %>
-        </div>
-      <% end %>
-
-      <div class="flex flex-col items-center gap-2 mt-4">
-          <%= link_to 'Back to sign in', new_session_path, class: 'btn-link btn-muted' %>
+    <%= form_with url: passwords_path, class: 'contents' do |form| %>
+      <div class="my-5">
+        <%= form.label :email_address, 'Email Address', class: 'form-label' %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
       </div>
+
+      <div class="flex w-full items-center justify-between">
+        <%= form.submit 'Send Reset Instructions', class: 'grow btn btn-primary' %>
+      </div>
+    <% end %>
+
+    <div class="flex flex-col items-center gap-2 mt-4">
+        <%= link_to 'Back to sign in', new_session_path, class: 'btn-link btn-muted' %>
     </div>
   </div>
 </div>
