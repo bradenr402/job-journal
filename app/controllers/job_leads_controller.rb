@@ -22,13 +22,12 @@ class JobLeadsController < ApplicationController
   def new
     @job_lead = Current.user.job_leads.build
 
-    @recent_companies = Current.user.job_leads.where(created_at: 30.days.ago..).distinct.pluck(:company).sort
-    @recent_locations = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(location: [ nil, '' ]).distinct.pluck(:location).sort
-    @recent_sources = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(source: [ nil, '' ]).distinct.pluck(:source).sort
+    set_recents
   end
 
   # GET /job_leads/1/edit
   def edit
+    set_recents
   end
 
   # POST /job_leads
@@ -38,6 +37,7 @@ class JobLeadsController < ApplicationController
     if @job_lead.save
       redirect_to @job_lead, success: 'Job lead was successfully created.'
     else
+      set_recents
       render :new, status: :unprocessable_entity, error: 'Failed to create job lead.'
     end
   end
@@ -48,6 +48,7 @@ class JobLeadsController < ApplicationController
       flash[:notice] = 'Job lead automatically archived.' if @job_lead.rejected? && @job_lead.archived_at.after?(10.seconds.ago)
       redirect_to @job_lead, success: 'Job lead was successfully updated.'
     else
+      set_recents
       render :edit, status: :unprocessable_entity, error: 'Failed to update job lead.'
     end
   end
@@ -89,5 +90,11 @@ class JobLeadsController < ApplicationController
 
   def job_lead_params
     params.expect(job_lead: [ :title, :company, :application_url, :source, :salary, :contact, :offer_amount, :location, :status ])
+  end
+
+  def set_recents
+    @recent_companies = Current.user.job_leads.where(created_at: 30.days.ago..).distinct.pluck(:company).sort
+    @recent_locations = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(location: [ nil, '' ]).distinct.pluck(:location).sort
+    @recent_sources = Current.user.job_leads.where(created_at: 30.days.ago..).where.not(source: [ nil, '' ]).distinct.pluck(:source).sort
   end
 end
