@@ -29,3 +29,13 @@
 
 en:
   hello: "Hello world"
+
+en:
+  activerecord:
+    attributes:
+      job_lead:
+        title: "Job Title"
+        application_url: "Application URL"
+      interview:
+        scheduled_at: "Scheduled Date & Time"
+        call_url: "Call URL"
