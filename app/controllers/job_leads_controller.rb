@@ -15,7 +15,6 @@ class JobLeadsController < ApplicationController
   def show
     @notes = @job_lead.notes.order(updated_at: :desc)
     @interviews = @job_lead.interviews.order(scheduled_at: :desc)
-    # @applications = @job_lead.applications.order(applied_at: :desc)
   end
 
   # GET /job_leads/new

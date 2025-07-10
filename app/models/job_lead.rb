@@ -16,7 +16,6 @@ class JobLead < ApplicationRecord
   belongs_to :user
   has_many :notes, as: :notable, dependent: :destroy
   has_many :interviews, dependent: :destroy
-  # has_many :applications, dependent: :destroy
   # has_many :job_lead_tags, dependent: :destroy
   # has_many :tags, through: :job_lead_tags
 
@@ -45,7 +44,6 @@ class JobLead < ApplicationRecord
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
 
-  # scope :recently_applied, -> { joins(:applications).where('applications.applied_on > ?', 30.days.ago) }
   # scope :interviewing_this_week, -> { joins(:interviews).where(interviews: { date: Time.current.all_week }) }
 
   # Instance Methods
