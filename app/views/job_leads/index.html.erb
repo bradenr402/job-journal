@@ -39,7 +39,7 @@
     <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
       Filter job leads by status:
     </p>
-    <div class="flex flex-wrap items-center gap-2">
+    <div class="flex flex-wrap items-center gap-1">
       <% if @selected_status.present? %>
         <%= link_to job_leads_path(status: nil, tags: @selected_tag_names.join(','), archived: params[:archived]), class: 'inline-block', style: "view-transition-name: status-#{@selected_status}" do %>
           <span class="tag tag-filter tag-selected tag-<%= @selected_status %>">
@@ -61,7 +61,7 @@
     <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:tags-filter-label]">
       Filter job leads by tags:
     </p>
-    <div class="flex flex-wrap items-center gap-2">
+    <div class="flex flex-wrap items-center gap-1">
       <% @selected_tags.each do |tag| %>
         <% remaining_tags = @selected_tag_names - [tag.name] %>
         <%= link_to job_leads_path(tags: remaining_tags.join(','), archived: params[:archived], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
