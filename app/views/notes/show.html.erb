@@ -9,7 +9,7 @@
     page_title = "Note for Interview - #{notable_title}"
     back_text = "Interview - #{notable_title}"
   else
-    notable_title = @note.notable.model_name.human.titleize
+    notable_title = @note.notable.model_name.human.titlecase
     page_title = "Note for #{notable_title}"
     back_text = notable_title
   end
@@ -21,7 +21,7 @@
   <div class="mb-4 flex gap-2 items-center justify-between">
     <%= link_to @note.notable, class: 'btn btn-sm btn-secondary btn-muted gap-1.5' do %>
       <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
-      <span>Back to <%= @note.notable.model_name.human.titleize %></span>
+      <span>Back to <%= @note.notable.model_name.human.titlecase %></span>
     <% end %>
 
     <div class="flex items-center gap-2">

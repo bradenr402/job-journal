@@ -21,17 +21,69 @@
     </div>
     <div class="flex gap-2 ml-auto">
       <% if params[:archived] == 'true' %>
-        <%= link_to 'View Active', job_leads_path, class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
+        <%= link_to 'View Active', job_leads_path(tags: @selected_tag_names.join(','), status: @selected_status_name), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
       <% else %>
-        <%= link_to 'View Archived', job_leads_path(archived: true), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
+        <%= link_to 'View Archived', job_leads_path(archived: true, tags: @selected_tag_names.join(','), status: @selected_status_name), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
       <% end %>
       <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
     </div>
   </div>
 
+  <% if @selected_tags.any? || @selected_status.present? %>
+    <div class="mb-4">
+      <%= link_to 'Clear Filters', job_leads_path(archived: params[:archived]), class: 'btn btn-sm btn-destructive btn-muted' %>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
+      Filter job leads by status:
+    </p>
+    <div class="flex flex-wrap items-center gap-2">
+      <% if @selected_status.present? %>
+        <%= link_to job_leads_path(status: nil, tags: @selected_tag_names.join(','), archived: params[:archived]), class: 'inline-block', style: "view-transition-name: status-#{@selected_status}" do %>
+          <span class="tag tag-filter tag-selected tag-<%= @selected_status %>">
+            <%= @selected_status.titlecase %>
+            <%= inline_svg_tag 'icons/x-mini.svg' %>
+          </span>
+        <% end %>
+      <% end %>
+
+      <% @unselected_statuses.each do |status| %>
+        <%= link_to job_leads_path(status:, tags: @selected_tag_names.join(','), archived: params[:archived]), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
+          <span class="tag tag-filter tag-<%= status %>"><%= status.titlecase %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:tags-filter-label]">
+      Filter job leads by tags:
+    </p>
+    <div class="flex flex-wrap items-center gap-2">
+      <% @selected_tags.each do |tag| %>
+        <% remaining_tags = @selected_tag_names - [tag.name] %>
+        <%= link_to job_leads_path(tags: remaining_tags.join(','), archived: params[:archived], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
+          <span class="tag tag-filter tag-selected">
+            <%= tag.name %>
+            <%= inline_svg_tag 'icons/x-mini.svg' %>
+          </span>
+        <% end %>
+      <% end %>
+
+      <% @unselected_tags.each do |tag| %>
+        <% new_tags = (@selected_tag_names + [tag.name]).uniq %>
+        <%= link_to job_leads_path(tags: new_tags.join(','), archived: params[:archived], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
+          <span class="tag tag-filter"><%= tag.name %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
   <div id="job_leads" class="@container">
     <% if @job_leads.any? %>
-      <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @job_leads.size >= 2 %> gap-5">
+      <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @job_leads.size >= 2 %> gap-5">
         <% @job_leads.each do |job_lead| %>
           <%= render job_lead %>
         <% end %>

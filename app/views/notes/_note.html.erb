@@ -10,7 +10,7 @@
       notable_title = "#{job_lead.title} @ #{job_lead.company}"
       note_title = "Interview - #{notable_title}"
     else
-      notable_title = note.notable.model_name.human.titleize
+      notable_title = note.notable.model_name.human.titlecase
       note_title = "#{notable_title}"
     end
   end

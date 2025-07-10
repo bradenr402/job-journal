@@ -16,8 +16,8 @@ class JobLead < ApplicationRecord
   belongs_to :user
   has_many :notes, as: :notable, dependent: :destroy
   has_many :interviews, dependent: :destroy
-  # has_many :job_lead_tags, dependent: :destroy
-  # has_many :tags, through: :job_lead_tags
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
 
   # Enums
   enum :status, {
@@ -43,6 +43,27 @@ class JobLead < ApplicationRecord
   # Scopes
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
+  scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name.downcase }) }
+  scope :with_tags, ->(tag_names) {
+    tag_names = tag_names.map(&:downcase)
+    return none if tag_names.empty?
+
+    matching_ids = joins(:tags)
+      .where('LOWER(tags.name) IN (?)', tag_names)
+      .group('job_leads.id')
+      .having('COUNT(DISTINCT tags.id) = ?', tag_names.size)
+      .pluck(:id)
+
+    where(id: matching_ids)
+  }
+  scope :with_any_tags, ->(tag_names) {
+    tag_names = tag_names.map(&:downcase)
+    return none if tag_names.empty?
+
+    joins(:tags)
+      .where('LOWER(tags.name) IN (?)', tag_names)
+      .distinct
+  }
 
   # Instance Methods
   def active? = archived_at.nil?
@@ -51,7 +72,12 @@ class JobLead < ApplicationRecord
   def archive! = update(archived_at: Time.current)
   def unarchive! = update(archived_at: nil)
 
-  # def all_notes = Note.where(notable: [ self ] + interviews)
+  def tag_list = tags.pluck(:name).join(', ')
+
+  def tag_list=(names)
+    tag_names = names.to_s.split(',').map { it.strip.downcase }.reject(&:blank?).uniq
+    self.tags = tag_names.map { |name| user.tags.find_or_create_by(name:) }
+  end
 
   # Class Methods
   def self.status_quality(status)

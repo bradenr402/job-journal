@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :job_leads, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :interviews, through: :job_leads
+  has_many :tags, dependent: :destroy
 
   # Normalizations
   normalizes :email_address, with: -> { it.strip.downcase }

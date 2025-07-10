@@ -9,7 +9,7 @@
     page_title = "New Note for Interview - #{notable_title}"
     back_text = "Interview - #{notable_title}"
   else
-    notable_title = @note.notable.model_name.human.titleize
+    notable_title = @note.notable.model_name.human.titlecase
     page_title = "New Note for #{notable_title}"
     back_text = notable_title
   end

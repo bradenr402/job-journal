@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_09_033854) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_172047) do
+  create_table "applications", force: :cascade do |t|
+    t.integer "job_lead_id", null: false
+    t.datetime "applied_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_lead_id"], name: "index_applications_on_job_lead_id"
+  end
+
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer"
@@ -65,6 +73,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_09_033854) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.integer "job_lead_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_lead_id"], name: "index_taggings_on_job_lead_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "user_id"], name: "index_tags_on_name_and_user_id", unique: true
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -73,8 +99,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_09_033854) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "applications", "job_leads"
   add_foreign_key "interviews", "job_leads"
   add_foreign_key "job_leads", "users"
   add_foreign_key "notes", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "taggings", "job_leads"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tags", "users"
 end

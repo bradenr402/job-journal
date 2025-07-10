@@ -4,12 +4,12 @@
   <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-5">
     <div>
       <%= form.label :title, 'Job Title', class: 'form-label' %>
-      <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'e.g. Software Engineer' %>
+      <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'Software Engineer' %>
     </div>
 
     <div>
       <%= form.label :company, class: 'form-label' %>
-      <%= form.text_field :company, class: 'form-input', placeholder: 'e.g. Acme Corp', list: 'recent-companies' %>
+      <%= form.text_field :company, class: 'form-input', placeholder: 'Acme Corp', list: 'recent-companies' %>
 
       <datalist id="recent-companies">
         <% @recent_companies.each do |company| %>
@@ -20,7 +20,7 @@
 
     <div>
       <%= form.label :application_url, 'Application URL', class: 'form-label' %>
-      <%= form.url_field :application_url, class: 'form-input', placeholder: 'https://company.com/careers/123' %>
+      <%= form.url_field :application_url, class: 'form-input', placeholder: 'https://company.com/careers' %>
       <p class="text-xs text-muted mt-1">Link to the job posting or application page.</p>
     </div>
 
@@ -35,7 +35,7 @@
     <div>
       <%= form.label :salary, class: 'form-label' do %>
         Salary
-        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+        <span class="font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
       <%= form.text_field :salary, class: 'form-input', placeholder: '$100,000 - $120,000' %>
       <p class="text-xs text-muted mt-1">Salary range or estimate.</p>
@@ -45,16 +45,16 @@
       <div>
         <%= form.label :offer_amount, class: 'form-label' do %>
           Offer Amount
-          <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+          <span class="font-normal text-muted text-xs ml-1">(optional)</span>
         <% end %>
-        <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: 'e.g. 105000', value: (job_lead.offer_amount? ? number_with_precision(job_lead.offer_amount, precision: 2) : nil) %>
+        <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: '105000', value: (job_lead.offer_amount? ? number_with_precision(job_lead.offer_amount, precision: 2) : nil) %>
       </div>
     <% end %>
 
     <div>
       <%= form.label :contact, class: 'form-label' do %>
         Contact
-        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+        <span class="font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
       <%= form.text_field :contact, class: 'form-input', placeholder: 'Jane Doe or jane@email.com' %>
       <p class="text-xs text-muted mt-1">Name or email of your contact, if any.</p>
@@ -63,9 +63,9 @@
     <div>
       <%= form.label :location, class: 'form-label' do %>
         Location
-        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+        <span class="font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
-      <%= form.text_field :location, class: 'form-input', placeholder: 'e.g. Remote or New York, NY', list: 'recent-locations' %>
+      <%= form.text_field :location, class: 'form-input', placeholder: 'Remote; New York, NY', list: 'recent-locations' %>
 
       <datalist id="recent-locations">
         <% @recent_locations.each do |location| %>
@@ -77,9 +77,9 @@
     <div>
       <%= form.label :source, class: 'form-label' do %>
         Source
-        <span class="italic font-normal text-muted text-xs ml-1">(optional)</span>
+        <span class="font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
-      <%= form.text_field :source, class: 'form-input', placeholder: 'e.g. LinkedIn, referral', list: 'recent-sources' %>
+      <%= form.text_field :source, class: 'form-input', placeholder: 'LinkedIn, referral', list: 'recent-sources' %>
 
       <datalist id="recent-sources">
         <% @recent_sources.each do |source| %>
@@ -92,9 +92,48 @@
     <% if job_lead.persisted? %>
       <div>
         <%= form.label :status, class: 'form-label' %>
-        <%= form.select :status, JobLead.statuses.keys.map { |s| [s.titleize, s] }, {}, class: 'form-select' %>
+        <%= form.select :status, JobLead.statuses.keys.map { |s| [s.titlecase, s] }, {}, class: 'form-select' %>
       </div>
     <% end %>
+
+    <div data-controller="tags-input">
+      <%= form.label :tag_list, class: 'form-label' do %>
+        Tags
+        <span class="font-normal text-muted text-xs ml-1">(optional)</span>
+      <% end %>
+
+      <div data-tags-input-target="container" data-action="click->tags-input#focusTextBox" class="form-input p-1.5 min-h-[2.5rem] flex flex-wrap items-center gap-1 cursor-text focus-within:ring-2 focus-within:ring-primary-600">
+        <!-- Existing tags will render here -->
+        <input type="text"
+               placeholder="Add tags"
+               data-action="keydown->tags-input#handleKeydown"
+               data-tags-input-target="input"
+               class="[view-transition-name:tags-input] bg-transparent border-none focus:outline-none grow ml-1.5 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal" />
+      </div>
+
+      <%= form.hidden_field :tag_list, value: job_lead.tag_list, data: { tags_input_target: 'hiddenField' } %>
+
+      <p class="text-xs text-muted mt-1">Add tags to this job lead to help filter and group your job leads.</p>
+      <p class="text-xs text-muted mt-1">
+        Add tags by pressing <span class="pointer-coarse:hidden"><kbd>Tab</kbd>,</span> <kbd>Enter</kbd><span class="pointer-coarse:hidden">,</span> or <kbd>,</kbd>.
+        You can also select a tag from the list below.
+      </p>
+
+      <% if @tags.present? %>
+        <div class="mt-3 flex flex-wrap gap-1">
+          <% @tags.each do |tag| %>
+            <span
+              class="tag-chip cursor-pointer <%= 'hidden' if tag.in? @job_lead.tags %>"
+              style="view-transition-name: <%= tag.name.parameterize %>"
+              data-action="click->tags-input#addTagFromList"
+              data-value="<%= tag.name %>"
+            >
+              <%= tag.name %>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
     <div class="@2xl:col-span-2 sticky bottom-0 bg-white py-4 max-md:-mx-4 max-md:px-4 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200">
       <%= form.submit job_lead.persisted? ? 'Save Changes' : 'Create Job Lead', class: 'btn btn-primary w-full sm:w-auto' %>

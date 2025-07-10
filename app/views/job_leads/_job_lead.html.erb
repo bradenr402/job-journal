@@ -4,20 +4,8 @@
   <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2 max-lg:mb-6 <%= 'flex-wrap' if job_lead_page %>">
     <div class="subheading mb-2">
       <span><%= job_lead.title %></span>
-
-      <%
-        status_colors = {
-          'lead' => 'bg-neutral-200/60 text-neutral-500',
-          'applied' => 'bg-blue-200/60 text-blue-600',
-          'phone_screen' => 'bg-amber-200/60 text-amber-600',
-          'interview' => 'bg-purple-200/60 text-purple-600',
-          'offer' => 'bg-green-200/60 text-green-600',
-          'rejected' => 'bg-red-200/60 text-red-600',
-          'accepted' => 'bg-emerald-200/60 text-emerald-600'
-        }
-      %>
-      <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal <%= status_colors[job_lead.status] %>">
-        <%= job_lead.status.humanize %>
+      <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-<%= job_lead.status %>">
+        <%= job_lead.status.titlecase %>
       </span>
     </div>
     <% if job_lead_page %>
@@ -122,6 +110,14 @@
       <% end %>
     </div>
   </div>
+
+  <% if job_lead.tags.present? %>
+    <div class="flex flex-wrap items-center gap-1.5 mb-6">
+      <% job_lead.tags.each do |tag| %>
+        <span class="tag"><%= tag.name %></span>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="flex items-end justify-between text-xs text-muted mt-auto">
     <% if job_lead.notes.any? && !job_lead_page %>

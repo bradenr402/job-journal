@@ -4,6 +4,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/aspect-ratio';
+@source '../../javascript/controllers/';
 
 @theme {
   /* Primary color scale */
@@ -33,6 +34,10 @@
 @layer base {
   :root {
     interpolate-size: allow-keywords;
+  }
+
+  kbd {
+    @apply [font-size:0.95em] mr-[0.05rem] font-mono text-soft bg-neutral-200 rounded-sm px-[0.3rem] py-[0.1rem] shadow-2xs border-[0.75px] border-neutral-200;
   }
 }
 

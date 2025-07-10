@@ -25,3 +25,199 @@
     @apply md:bg-neutral-100 text-primary-600;
   }
 }
+
+@utility tag-chip {
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white border border-neutral-300 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none;
+
+  > button {
+    @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 hover:bg-neutral-300/60 hover:text-light transition-all duration-150;
+
+    > svg {
+      @apply size-3;
+    }
+  }
+}
+
+@utility tag {
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-150;
+
+  /* Default (neutral) tag style */
+  @apply bg-neutral-50 border-neutral-200;
+
+  /* Filterable tags */
+  &.tag-filter {
+    @apply cursor-pointer hover:border-primary-100 hover:bg-primary-50/80 hover:text-primary-500;
+  }
+
+  /* Selected state for non-status tags */
+  &.tag-selected:not(
+      .tag-lead,
+      .tag-applied,
+      .tag-phone_screen,
+      .tag-interview,
+      .tag-offer,
+      .tag-rejected,
+      .tag-accepted
+    ) {
+    @apply border-primary-200 bg-primary-100/80 pr-1.5 text-primary-600;
+
+    & > svg {
+      @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+    }
+  }
+
+  /* Status tags with preserved colors and chip-like style */
+  &.tag-lead {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-orange-200/60 text-orange-600 border-orange-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-orange-300/60 hover:text-orange-700 hover:border-orange-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+
+  &.tag-applied {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-blue-200/60 text-blue-600 border-blue-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-blue-300/60 hover:text-blue-700 hover:border-blue-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+
+  &.tag-phone_screen {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-amber-200/60 text-amber-600 border-amber-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-amber-300/60 hover:text-amber-700 hover:border-amber-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+
+  &.tag-interview {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-purple-200/60 text-purple-600 border-purple-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-purple-300/60 hover:text-purple-700 hover:border-purple-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+
+  &.tag-offer {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-green-200/60 text-green-600 border-green-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-green-300/60 hover:text-green-700 hover:border-green-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+
+  &.tag-rejected {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-rose-200/60 text-rose-600 border-rose-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-rose-300/60 hover:text-rose-700 hover:border-rose-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+
+  &.tag-accepted {
+    &.tag-selected,
+    &:not(.tag-filter) {
+      @apply bg-emerald-200/60 text-emerald-600 border-emerald-300/60;
+    }
+
+    &.tag-selected.tag-filter {
+      @apply pr-1.5;
+    }
+
+    &.tag-filter {
+      @apply hover:bg-emerald-300/60 hover:text-emerald-700 hover:border-emerald-300/60;
+    }
+
+    &.tag-selected,
+    &:not(.tag-filter) {
+      & > svg {
+        @apply ml-1.75 size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      }
+    }
+  }
+}

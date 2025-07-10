@@ -1,14 +1,31 @@
 class JobLeadsController < ApplicationController
   before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive ]
+  before_action :cleanup_tags, only: [ :index, :new, :edit ]
 
   # GET /job_leads
   def index
+    @tags = Current.user.tags.order(:name)
+
+    @selected_tag_names = params[:tags].to_s.split(',').map(&:strip).uniq
+    @selected_status_name = params[:status].presence
+
+    @job_leads = Current.user.job_leads
     @job_leads =
       if params[:archived] == 'true'
-        Current.user.job_leads.archived.order(archived_at: :desc)
+        @job_leads.archived.order(archived_at: :desc)
       else
-        Current.user.job_leads.active.order(updated_at: :desc)
+        @job_leads.active.order(updated_at: :desc)
       end
+
+    @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
+    @job_leads = @job_leads.where(status: @selected_status_name) if @selected_status_name.present?
+
+    @selected_tags = @tags.select { it.name.in? @selected_tag_names }
+    @unselected_tags = @tags - @selected_tags
+
+    all_status_names = JobLead.statuses.keys.map(&:to_s)
+    @selected_status = @selected_status_name if all_status_names.include?(@selected_status_name)
+    @unselected_statuses = all_status_names - [ @selected_status_name ].compact
   end
 
   # GET /job_leads/1
@@ -22,16 +39,19 @@ class JobLeadsController < ApplicationController
     @job_lead = Current.user.job_leads.build
 
     set_recents
+    @tags = Current.user.tags.order(:name)
   end
 
   # GET /job_leads/1/edit
   def edit
     set_recents
+    @tags = Current.user.tags.order(:name)
   end
 
   # POST /job_leads
   def create
     @job_lead = Current.user.job_leads.build(job_lead_params)
+    @tags = Current.user.tags.order(:name)
 
     if @job_lead.save
       redirect_to @job_lead, success: 'Job lead was successfully created.'
@@ -88,7 +108,11 @@ class JobLeadsController < ApplicationController
   end
 
   def job_lead_params
-    params.expect(job_lead: [ :title, :company, :application_url, :source, :salary, :contact, :offer_amount, :location, :status ])
+    params.expect(job_lead: [ :title, :company, :application_url, :source, :salary, :contact, :offer_amount, :location, :status, :tag_list ])
+  end
+
+  def cleanup_tags
+    Tag.cleanup_unused_for_user(Current.user)
   end
 
   def set_recents
