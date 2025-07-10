@@ -8,7 +8,7 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+  <div class="flex flex-wrap justify-between items-end gap-2 mb-4">
     <div>
       <h1 class="heading">
         Notes
@@ -17,7 +17,7 @@
         <span class="[view-transition-name:note-count]"><%= pluralize(@notes.size, 'note') %></span>
       </span>
     </div>
-    <div class="flex gap-2 ml-auto">
+    <div class="flex gap-2">
       <%= link_to 'All Notes', notes_path, class: 'btn btn-primary btn-muted [view-transition-name:filter-btn-all-notes]' if params[:notable_type].present? %>
       <%= link_to 'Job Lead Notes', notes_path(notable_type: 'JobLead'), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-lead-notes]' unless params[:notable_type] == 'JobLead' %>
       <%= link_to 'Interview Notes', notes_path(notable_type: 'Interview'), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-interview-notes]' unless params[:notable_type] == 'Interview' %>
