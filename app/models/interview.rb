@@ -20,6 +20,8 @@ class Interview < ApplicationRecord
 
   # Scopes
   scope :upcoming, -> { where(scheduled_at: Time.current..7.days.from_now) }
+  scope :future, -> { where(scheduled_at: Time.current..) }
+  scope :past, -> { where(scheduled_at: ..Time.current) }
 
   # Instance Methods
   private

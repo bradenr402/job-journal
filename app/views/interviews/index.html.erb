@@ -8,22 +8,35 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap justify-between items-end gap-2 mb-4">
-    <div>
-      <h1 class="heading">
-        Interviews
-      </h1>
-      <span class="ml-1 text-sm text-muted font-normal align-middle">
-        <%= params[:upcoming] == 'true' ? 'Upcoming' : 'All' %>
-        <span class="text-2xs">&nbsp;&bull;&nbsp;</span>
-        <span class="[view-transition-name:interview-count]"><%= pluralize(@interviews.size, 'interview') %></span>
-      </span>
-    </div>
-    <div class="flex gap-2">
-      <% if params[:upcoming] == 'true' %>
-        <%= link_to 'View All', interviews_path, class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-interviews]' %>
-      <% else %>
-        <%= link_to 'View Upcoming', interviews_path(upcoming: true), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-interviews]' %>
+  <div class="mb-4">
+    <h1 class="heading">
+      Interviews
+    </h1>
+    <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:interview-count]">
+      <%= pluralize(@interviews.size, "#{params[:scheduled].presence || 'total'} interview") %>
+    </span>
+  </div>
+
+  <div class="mb-4">
+    <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:interview-filters-label]">
+      Filter interviews by date:
+    </p>
+    <div class="flex flex-wrap items-center gap-1">
+      <%= link_to interviews_path(scheduled: nil), class: 'inline-block', style: "view-transition-name: all-interviews" do %>
+        <span class="tag tag-filter <%= 'tag-selected' unless params[:scheduled].present? %>">All</span>
+      <% end %>
+
+      <%= link_to interviews_path(scheduled: 'upcoming'), class: 'inline-block', style: "view-transition-name: upcoming-interviews" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if params[:scheduled] == 'upcoming' %>">
+          <span>Upcoming</span>
+          <%= inline_svg_tag 'icons/x-mini.svg' if params[:scheduled] == 'upcoming' %>
+        </span>
+      <% end %>
+      <%= link_to interviews_path(scheduled: 'completed'), class: 'inline-block', style: "view-transition-name: completed-interviews" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if params[:scheduled] == 'completed' %>">
+          <span>Completed</span>
+          <%= inline_svg_tag 'icons/x-mini.svg' if params[:scheduled] == 'completed' %>
+        </span>
       <% end %>
     </div>
   </div>

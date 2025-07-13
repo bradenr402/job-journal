@@ -8,19 +8,46 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap justify-between items-end gap-2 mb-4">
-    <div>
-      <h1 class="heading">
-        Notes
-      </h1>
-      <span class="ml-1 text-sm text-muted font-normal align-middle">
-        <span class="[view-transition-name:note-count]"><%= pluralize(@notes.size, 'note') %></span>
-      </span>
-    </div>
-    <div class="flex gap-2">
-      <%= link_to 'All Notes', notes_path, class: 'btn btn-primary btn-muted [view-transition-name:filter-btn-all-notes]' if params[:notable_type].present? %>
-      <%= link_to 'Job Lead Notes', notes_path(notable_type: 'JobLead'), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-lead-notes]' unless params[:notable_type] == 'JobLead' %>
-      <%= link_to 'Interview Notes', notes_path(notable_type: 'Interview'), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-interview-notes]' unless params[:notable_type] == 'Interview' %>
+  <div class="mb-4">
+    <h1 class="heading">
+      Notes
+    </h1>
+    <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:note-count]">
+      <%
+        singular_note_text =
+          if params[:notable_type] == 'JobLead'
+            'job lead note'
+          elsif params[:notable_type] == 'Interview'
+            'interview note'
+          else
+            'total note'
+          end
+      %>
+      <%= pluralize(@notes.size, singular_note_text) %>
+    </span>
+  </div>
+
+  <div class="mb-4">
+    <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:note-filters-label]">
+      Show notes for:
+    </p>
+    <div class="flex flex-wrap items-center gap-1">
+      <%= link_to notes_path(notable_type: nil), class: 'inline-block', style: "view-transition-name: all-notes" do %>
+        <span class="tag tag-filter <%= 'tag-selected' unless params[:notable_type].present? %>">All</span>
+      <% end %>
+
+      <%= link_to notes_path(notable_type: 'JobLead'), class: 'inline-block', style: "view-transition-name: job-lead-notes" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'JobLead' %>">
+          <span>Job Leads</span>
+          <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'JobLead' %>
+        </span>
+      <% end %>
+      <%= link_to notes_path(notable_type: 'Interview'), class: 'inline-block', style: "view-transition-name: interview-notes" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'Interview' %>">
+          <span>Interviews</span>
+          <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'Interview' %>
+        </span>
+      <% end %>
     </div>
   </div>
 

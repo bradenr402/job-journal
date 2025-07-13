@@ -4,8 +4,10 @@ class InterviewsController < ApplicationController
   # GET /interviews
   def index
     @interviews =
-      if params[:upcoming] == 'true'
-        Current.user.interviews.upcoming.order(scheduled_at: :desc)
+      if params[:scheduled] == 'upcoming'
+        Current.user.interviews.future.order(scheduled_at: :desc)
+      elsif params[:scheduled] == 'completed'
+        Current.user.interviews.past.order(scheduled_at: :desc)
       else
         Current.user.interviews.order(scheduled_at: :desc)
       end

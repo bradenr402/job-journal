@@ -1,4 +1,12 @@
-<% content_for :title, "#{params[:archived] == 'true' ? 'Archived' : 'Active'} Job Leads" %>
+<%
+  content_for :title,
+    [
+      "#{params[:job_lead_type].presence&.titlecase} ",
+      'Job Leads',
+      (@selected_status.presence&.titlecase&.prepend(' - ')),
+      (@selected_tag_names.any? ? " - #{@selected_tag_names.join(', ')}" : nil)
+    ].compact.join
+%>
 
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
@@ -13,27 +21,43 @@
       <h1 class="heading">
         Job Leads
       </h1>
-      <span class="ml-1 text-sm text-muted font-normal align-middle">
-        <%= params[:archived] == 'true' ? 'Archived' : 'Active' %>
-        <span class="text-2xs">&nbsp;&bull;&nbsp;</span>
-        <span class="[view-transition-name:job-lead-count]"><%= pluralize(@job_leads.size, 'job lead') %></span>
+      <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:job-lead-count]">
+        <%= pluralize(@job_leads.size, "#{params[:job_lead_type].presence || 'total'} job lead") %>
       </span>
     </div>
-    <div class="flex gap-2">
-      <% if params[:archived] == 'true' %>
-        <%= link_to 'View Active', job_leads_path(tags: @selected_tag_names.join(','), status: @selected_status_name), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
-      <% else %>
-        <%= link_to 'View Archived', job_leads_path(archived: true, tags: @selected_tag_names.join(','), status: @selected_status_name), class: 'btn btn-secondary btn-muted [view-transition-name:filter-btn-job-leads]' %>
-      <% end %>
-      <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
-    </div>
+
+    <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
   </div>
 
   <% if @selected_tags.any? || @selected_status.present? %>
     <div class="mb-4">
-      <%= link_to 'Clear Filters', job_leads_path(archived: params[:archived]), class: 'btn btn-sm btn-destructive btn-muted' %>
+      <%= link_to 'Clear Filters', job_leads_path, class: 'btn btn-sm btn-destructive btn-muted' %>
     </div>
   <% end %>
+
+  <div class="mb-4">
+    <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:job-lead-type-filters-label]">
+      Filter job leads by type:
+    </p>
+    <div class="flex flex-wrap items-center gap-1">
+      <%= link_to job_leads_path(job_lead_type: nil), class: 'inline-block', style: "view-transition-name: all-job-leads" do %>
+        <span class="tag tag-filter <%= 'tag-selected' unless params[:job_lead_type].present? %>">All</span>
+      <% end %>
+
+      <%= link_to job_leads_path(job_lead_type: 'active', tags: @selected_tag_names.join(', '), status: @selected_status_name), class: 'inline-block', style: "view-transition-name: active-job-leads" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if params[:job_lead_type] == 'active' %>">
+          <span>Active</span>
+          <%= inline_svg_tag 'icons/x-mini.svg' if params[:job_lead_type] == 'active' %>
+        </span>
+      <% end %>
+      <%= link_to job_leads_path(job_lead_type: 'archived', tags: @selected_tag_names.join(', '), status: @selected_status_name), class: 'inline-block', style: "view-transition-name: archived-job-leads" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if params[:job_lead_type] == 'archived' %>">
+          <span>Archived</span>
+          <%= inline_svg_tag 'icons/x-mini.svg' if params[:job_lead_type] == 'archived' %>
+        </span>
+      <% end %>
+    </div>
+  </div>
 
   <div class="mb-4">
     <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
@@ -41,7 +65,7 @@
     </p>
     <div class="flex flex-wrap items-center gap-1">
       <% if @selected_status.present? %>
-        <%= link_to job_leads_path(status: nil, tags: @selected_tag_names.join(','), archived: params[:archived]), class: 'inline-block', style: "view-transition-name: status-#{@selected_status}" do %>
+        <%= link_to job_leads_path(status: nil, tags: @selected_tag_names.join(','), job_lead_type: params[:job_lead_type]), class: 'inline-block', style: "view-transition-name: status-#{@selected_status}" do %>
           <span class="tag tag-filter tag-selected tag-<%= @selected_status %>">
             <%= @selected_status.titlecase %>
             <%= inline_svg_tag 'icons/x-mini.svg' %>
@@ -50,7 +74,7 @@
       <% end %>
 
       <% @unselected_statuses.each do |status| %>
-        <%= link_to job_leads_path(status:, tags: @selected_tag_names.join(','), archived: params[:archived]), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
+        <%= link_to job_leads_path(status:, tags: @selected_tag_names.join(','), job_lead_type: params[:job_lead_type]), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
           <span class="tag tag-filter tag-<%= status %>"><%= status.titlecase %></span>
         <% end %>
       <% end %>
@@ -64,7 +88,7 @@
     <div class="flex flex-wrap items-center gap-1">
       <% @selected_tags.each do |tag| %>
         <% remaining_tags = @selected_tag_names - [tag.name] %>
-        <%= link_to job_leads_path(tags: remaining_tags.join(','), archived: params[:archived], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
+        <%= link_to job_leads_path(tags: remaining_tags.join(','), job_lead_type: params[:job_lead_type], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
           <span class="tag tag-filter tag-selected">
             <%= tag.name %>
             <%= inline_svg_tag 'icons/x-mini.svg' %>
@@ -74,7 +98,7 @@
 
       <% @unselected_tags.each do |tag| %>
         <% new_tags = (@selected_tag_names + [tag.name]).uniq %>
-        <%= link_to job_leads_path(tags: new_tags.join(','), archived: params[:archived], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
+        <%= link_to job_leads_path(tags: new_tags.join(','), job_lead_type: params[:job_lead_type], status: @selected_status_name), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
           <span class="tag tag-filter"><%= tag.name %></span>
         <% end %>
       <% end %>
