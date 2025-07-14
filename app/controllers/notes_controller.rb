@@ -3,13 +3,15 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    if params[:notable_type].present?
-      @notes = Current.user.notes.where(notable_type: params[:notable_type]).includes(:notable).order(updated_at: :desc)
-    else
-      @notes = Current.user.notes.includes(:notable).order(updated_at: :desc)
-    end
-
-    @notes = @notes.reject { it.notable.is_a?(JobLead) && it.notable.archived? }
+    @notes =
+      Current.user.notes
+        .includes(:notable)
+        .order(updated_at: :desc)
+        .yield_self { |scope| params[:notable_type].present? ? scope.where(notable_type: params[:notable_type]) : scope }
+        .where.not(
+          notable_type: 'JobLead',
+          notable_id: JobLead.archived.select(:id)
+        )
   end
 
   # GET /notes/new
