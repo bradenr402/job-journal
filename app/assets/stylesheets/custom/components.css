@@ -2,7 +2,7 @@
   @apply bg-white p-6 border border-neutral-300 rounded-2xl shadow-xs;
 
   &.card-hover {
-    @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150;
+    @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
   }
 }
 
@@ -10,7 +10,7 @@
   @apply bg-white p-4 border border-neutral-300 rounded-2xl shadow-2xs;
 
   &.card-hover {
-    @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150;
+    @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
   }
 }
 
@@ -19,7 +19,7 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center gap-0.5 md:gap-2 p-2 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-soft hover:bg-neutral-100 hover:text-primary-600 transition-colors duration-150;
+  @apply flex max-md:flex-col items-center gap-0.5 md:gap-2 p-2 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-soft md:hover:bg-neutral-100 hover:text-primary-600 transition-all duration-150 active:scale-97;
 
   &.nav-link-active {
     @apply md:bg-neutral-100 text-primary-600;
@@ -27,7 +27,7 @@
 }
 
 @utility tag-chip {
-  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white border border-neutral-300 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none;
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white border border-neutral-300 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-150 active:scale-94;
 
   > button {
     @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 hover:bg-neutral-300/60 hover:text-light transition-all duration-150;
@@ -46,7 +46,7 @@
 
   /* Filterable tags */
   &.tag-filter {
-    @apply cursor-pointer hover:border-primary-100 hover:bg-primary-50/80 hover:text-primary-500;
+    @apply cursor-pointer hover:border-primary-100 hover:bg-primary-50/80 hover:text-primary-500 active:scale-94;
   }
 
   /* Selected state for non-status tags */

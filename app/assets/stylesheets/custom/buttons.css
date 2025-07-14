@@ -1,5 +1,5 @@
 @utility btn {
-  @apply inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none;
+  @apply inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none active:scale-96;
 
   &.btn-sm {
     @apply px-3 py-1.5 text-xs;
