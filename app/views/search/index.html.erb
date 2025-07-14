@@ -1,4 +1,4 @@
-<% content_for :title, 'Search' %>
+<% content_for :title, "Search#{' - ' + @query if @query}" %>
 
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
@@ -8,12 +8,14 @@
     <% end %>
   </div>
 
-  <div class="mb-4">
+  <div>
     <h1 class="heading mb-2">
       Search
     </h1>
 
-    <%= render 'form', query: @query %>
+    <div class="card-sm rounded-3xl">
+      <%= render 'form', query: @query %>
+    </div>
   </div>
 
   <%= render 'results', query: @query, results: @results %>

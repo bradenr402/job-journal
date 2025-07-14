@@ -1,5 +1,5 @@
-<div id="search-filters">
-  <div class="mb-4">
+<div id="search-filters" class="mt-4 space-y-4">
+  <div>
     <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:search-filters-label]">
       Filter search results by type:
     </p>
@@ -14,7 +14,7 @@
   </div>
 
   <% if @selected_filter == 'job_leads' %>
-    <div class="mb-4">
+    <div>
       <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
         Filter job leads by status:
       </p>
@@ -30,7 +30,7 @@
       </div>
     </div>
   <% elsif @selected_filter == 'interviews' %>
-    <div class="mb-4">
+    <div>
       <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
         Filter interviews by date:
       </p>
@@ -46,7 +46,7 @@
       </div>
     </div>
   <% elsif @selected_filter == 'notes' %>
-    <div class="mb-4">
+    <div>
       <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
         Show notes for:
       </p>

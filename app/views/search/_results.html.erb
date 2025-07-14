@@ -1,14 +1,12 @@
+<% any_results = @results[:job_leads].any? || @results[:interviews].any? || @results[:notes].any? %>
+
 <%= turbo_frame_tag 'search-results' do %>
-  <div class="@container">
+  <div class="@container <%= 'mt-6' if @selected_filter.present? && @selected_filter != 'all' %>">
     <% if @query.blank? %>
       <div class="empty-state">
         Start typing to find your job leads, interviews, or notes.
       </div>
-    <% elsif @results[:job_leads].any? || @results[:interviews].any? || @results[:notes].any? %>
-      <p class="ml-1 text-sm text-muted mb-1">
-        Results for &#8220;<%= @query %>&#8221;:
-      </p>
-
+    <% elsif any_results %>
       <% if @results[:job_leads].any? %>
         <% unless @selected_filter == 'job_leads' %>
           <p class="ml-1 text-lg font-semibold mt-6 mb-1">
