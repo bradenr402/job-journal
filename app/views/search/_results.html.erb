@@ -1,0 +1,58 @@
+<%= turbo_frame_tag 'search-results' do %>
+  <div class="@container">
+    <% if @query.blank? %>
+      <div class="empty-state">
+        Start typing to find your job leads, interviews, or notes.
+      </div>
+    <% elsif @results[:job_leads].any? || @results[:interviews].any? || @results[:notes].any? %>
+      <p class="ml-1 text-sm text-muted mb-1">
+        Results for &#8220;<%= @query %>&#8221;:
+      </p>
+
+      <% if @results[:job_leads].any? %>
+        <% unless @selected_filter == 'job_leads' %>
+          <p class="ml-1 text-lg font-semibold mt-6 mb-1">
+            Job Leads:
+          </p>
+        <% end %>
+
+        <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @results[:job_leads].size >= 2 %> <%= '@xl:grid-cols-2' if @results[:job_leads].size >= 2 %> <%= '@4xl:grid-cols-3' if @results[:job_leads].size >= 3 && @results[:job_leads].size != 4 %> gap-3">
+          <% @results[:job_leads].each do |job_lead| %>
+            <%= render job_lead %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @results[:interviews].any? %>
+        <% unless @selected_filter == 'interviews' %>
+          <p class="ml-1 text-lg font-semibold mt-6 mb-1">
+            Interviews:
+          </p>
+        <% end %>
+
+        <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @results[:interviews].size >= 2 %> <%= '@xl:grid-cols-2' if @results[:interviews].size >= 2 %> <%= '@4xl:grid-cols-3' if @results[:interviews].size >= 3 && @results[:interviews].size != 4 %> gap-3">
+          <% @results[:interviews].each do |interview| %>
+            <%= render interview %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @results[:notes].any? %>
+        <% unless @selected_filter == 'notes' %>
+          <p class="ml-1 text-lg font-semibold mt-6 mb-1">
+            Notes:
+          </p>
+        <% end %>
+        <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @results[:notes].size >= 2 %> <%= '@xl:grid-cols-2' if @results[:notes].size >= 2 %> <%= '@4xl:grid-cols-3' if @results[:notes].size >= 3 && @results[:notes].size != 4 %> gap-3">
+          <% @results[:notes].each do |note| %>
+            <%= render note %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="empty-state">
+        No results for &#8220;<%= @query %>&#8221;.
+      </div>
+    <% end %>
+  </div>
+<% end %>

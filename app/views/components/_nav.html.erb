@@ -5,30 +5,23 @@
       <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
     <% end %>
 
-    <% active_pages = {
-      root: current_page?(root_path),
-      job_leads: current_page?(job_leads_path),
-      interviews: current_page?(interviews_path),
-      notes: current_page?(notes_path)
-    } %>
+    <% nav_links = [
+      { key: :root, path: root_path, label: 'Home', icon: 'home' },
+      { key: :job_leads, path: job_leads_path, label: 'Job Leads', icon: 'briefcase' },
+      { key: :interviews, path: interviews_path, label: 'Interviews', icon: 'interview' },
+      { key: :notes, path: notes_path, label: 'Notes', icon: 'note' },
+      { key: :search, path: search_path, label: 'Search', icon: 'search' },
+    ] %>
 
     <div class="md:grow md:pt-2 md:border-t md:border-neutral-100">
-      <ul class="grid max-md:grid-cols-4 md:flex md:flex-col md:gap-0.25">
-        <%= link_to root_path, class: "nav-link #{'nav-link-active' if active_pages[:root]}" do %>
-          <%= inline_svg_tag "icons/#{active_pages[:root] ? 'home-filled' : 'home'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
-          <span>Home</span>
-        <% end %>
-        <%= link_to job_leads_path, class: "nav-link #{'nav-link-active' if active_pages[:job_leads]}" do %>
-          <%= inline_svg_tag "icons/#{active_pages[:job_leads] ? 'briefcase-filled' : 'briefcase'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
-          <span>Job Leads</span>
-        <% end %>
-        <%= link_to interviews_path, class: "nav-link #{'nav-link-active' if active_pages[:interviews]}" do %>
-          <%= inline_svg_tag "icons/#{active_pages[:interviews] ? 'interview-filled' : 'interview'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
-          <span>Interviews</span>
-        <% end %>
-        <%= link_to notes_path, class: "nav-link #{'nav-link-active' if active_pages[:notes]}" do %>
-          <%= inline_svg_tag "icons/#{active_pages[:notes] ? 'note-filled' : 'note'}.svg", class: 'size-5 sm:size-4 shrink-0' %>
-          <span>Notes</span>
+      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-0.25">
+        <% nav_links.each do |link| %>
+          <% active = current_page?(link[:path]) %>
+
+          <%= link_to link[:path], class: "nav-link #{'nav-link-active' if active}" do %>
+            <%= inline_svg_tag "icons/#{active ? "#{link[:icon]}-filled" : link[:icon]}.svg", class: 'size-5 sm:size-4 shrink-0' %>
+            <span><%= link[:label] %></span>
+          <% end %>
         <% end %>
       </ul>
     </div>

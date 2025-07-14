@@ -1,0 +1,8 @@
+<%= form_with url: search_path, method: :get, data: { controller: 'auto-submit', auto_submit_target: 'form', turbo_frame: 'search-results', turbo_action: 'advance', turbo_stream: true } do |form| %>
+  <div class="relative">
+    <%= form.search_field :q, value: query, autofocus: true, placeholder: 'Search job leads, interviews, notes...', class: 'form-input mb-4 pl-10', data: { action: 'input->auto-submit#submit' } %>
+    <%= inline_svg_tag 'icons/search.svg', class: 'size-5 shrink-0 absolute left-3 top-1/2 -translate-y-1/2 text-muted' %>
+  </div>
+
+  <%= render 'filters' %>
+<% end %>

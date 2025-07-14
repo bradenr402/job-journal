@@ -4,8 +4,8 @@
 <div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless interview_page %>" style="view-transition-name: interview-<%= interview.id %>;">
   <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2">
     <div class="mb-2">
-      <div class="subheading">
-        <span>Interview with <%= interview.interviewer.presence || 'Unknown' %></span>
+      <div class="<%= current_page?(search_path) ? 'text-lg font-semibold' : 'subheading' %>">
+        <span>Interview with <%= interview.interviewer %></span>
         <% if interview.scheduled_at.past? %>
           <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-green-200/60 text-green-600">
             Completed
@@ -38,51 +38,53 @@
     </div>
   </div>
 
-  <div class="space-y-2 mb-6">
-    <div class="flex items-center gap-x-6 gap-y-2">
-      <div class="flex items-center gap-1 text-sm text-soft">
-        <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.75 shrink-0' %>
-        <%= interview.scheduled_at ? local_time(interview.scheduled_at) : "Not scheduled" %>
-      </div>
-      <% if interview.location.present? %>
+  <% unless current_page?(search_path) %>
+    <div class="space-y-2 mb-6">
+      <div class="flex items-center gap-x-6 gap-y-2">
         <div class="flex items-center gap-1 text-sm text-soft">
-          <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
-          <%= interview.location %>
+          <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.75 shrink-0' %>
+          <%= interview.scheduled_at ? local_time(interview.scheduled_at) : "Not scheduled" %>
+        </div>
+        <% if interview.location.present? %>
+          <div class="flex items-center gap-1 text-sm text-soft">
+            <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
+            <%= interview.location %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if interview.call_url.present? %>
+        <div class="flex items-center gap-1 text-sm text-soft">
+          <%= link_to interview.call_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
+            <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
+            <span><%= interview.call_url %></span>
+          <% end %>
         </div>
       <% end %>
     </div>
 
-    <% if interview.call_url.present? %>
-      <div class="flex items-center gap-1 text-sm text-soft">
-        <%= link_to interview.call_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
-          <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
-          <span><%= interview.call_url %></span>
+    <div class="mb-3">
+      <dt class="text-muted text-sm flex items-center gap-1">Rating</dt>
+      <dd class="text-xl text-normal font-bold flex items-center gap-x-2">
+        <% if interview.rating? %>
+          <% 1.upto(5) do |star| %>
+            <%= inline_svg_tag 'icons/star.svg', class: "size-9 transition-all duration-200 cursor-pointer #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+          <% end %>
+        <% else %>
+          <span class="text-sm text-muted">No rating</span>
         <% end %>
-      </div>
-    <% end %>
-  </div>
+      </dd>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <dt class="text-muted text-sm flex items-center gap-1">Rating</dt>
-    <dd class="text-xl text-normal font-bold flex items-center gap-x-2">
-      <% if interview.rating? %>
-        <% 1.upto(5) do |star| %>
-          <%= inline_svg_tag 'icons/star.svg', class: "size-9 transition-all duration-200 cursor-pointer #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
-        <% end %>
-      <% else %>
-        <span class="text-sm text-muted">No rating</span>
-      <% end %>
-    </dd>
-  </div>
-
-  <div class="flex items-end justify-between text-xs text-muted mt-auto">
+  <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
     <% if interview.notes.any? && !interview_page %>
       <span class="inline-flex items-center gap-1">
         <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
         <%= pluralize(interview.notes.size, 'note') %>
       </span>
     <% end %>
-    <span class="ml-auto inline-flex items-center gap-1">
+    <span class="inline-flex items-center gap-1">
       <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
       Updated: <%= local_time interview.updated_at %>
     </span>

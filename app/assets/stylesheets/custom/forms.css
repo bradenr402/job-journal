@@ -35,3 +35,27 @@
   grid-area: 1 / 1 / 2 / 2;
   /* Inherit all other styles from .form-textarea */
 }
+
+.form-radio-tag,
+.form-checkbox-tag {
+  @apply rounded-md;
+
+  > input[type='radio'],
+  > input[type='checkbox'] {
+    @apply sr-only;
+  }
+
+  > label {
+    @apply inline-flex cursor-default items-center gap-1.25 rounded-lg border px-2 py-1 text-xs whitespace-nowrap text-soft transition-all duration-150 select-none;
+
+    /* Default (neutral) tag style */
+    @apply cursor-pointer border-neutral-200 bg-neutral-50 hover:border-primary-100 hover:bg-primary-50/80 hover:text-primary-500;
+
+    /* Selected state for non-status tags */
+    @apply peer-checked:border-primary-200 peer-checked:bg-primary-100/80 peer-checked:text-primary-600 has-[svg]:peer-checked:pr-1.5 not-peer-checked:[&_svg]:hidden peer-checked:hover:[&_svg]:bg-rose-200/70 peer-checked:hover:[&_svg]:text-rose-600;
+
+    & > svg {
+      @apply size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150;
+    }
+  }
+}
