@@ -9,7 +9,7 @@
       </span>
     </div>
     <% if job_lead_page %>
-      <div class="grow flex gap-2 justify-end">
+      <div class="grow flex gap-2 justify-end mt-2">
         <%= link_to edit_job_lead_path(job_lead), class: 'max-sm:grow btn btn-sm btn-primary btn-muted gap-2' do %>
           <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
           <span>Edit</span>
@@ -39,7 +39,7 @@
     <% end %>
   </div>
 
-  <div class="space-y-2 mb-6">
+  <div class="space-y-2 mb-4">
     <div class="flex items-center gap-1 text-sm text-soft">
       <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
       <%= job_lead.company %>
