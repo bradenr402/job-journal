@@ -1,9 +1,9 @@
 @utility heading {
-  @apply text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight;
+  @apply text-[clamp(1.5rem,2vw+1rem,1.875rem)] font-bold text-neutral-900 tracking-tight;
 }
 
 @utility subheading {
-  @apply text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight;
+  @apply text-[clamp(1.25rem,1.5vw+1rem,1.5rem)] font-bold text-neutral-900 tracking-tight;
 }
 
 @utility text-normal {
