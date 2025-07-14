@@ -13,7 +13,7 @@ class PagesController < ApplicationController
     @interviews_this_week = @all_interviews.where(scheduled_at: this_week)
     @interviews_last_week = @all_interviews.where(scheduled_at: last_week)
 
-    @stale_leads = @all_job_leads.lead.where(updated_at: ..10.days.ago).order(updated_at: :asc)
+    @stale_leads = @all_job_leads.lead.where(updated_at: ..7.days.ago).order(updated_at: :asc)
     @interviews_upcoming = @all_interviews.upcoming.order(scheduled_at: :asc)
     @recent_notes = @all_notes.where(updated_at: 7.days.ago..).order(updated_at: :desc).limit(10)
 
