@@ -1,8 +1,6 @@
 class SearchQuery
   EMPTY_RESULTS = { job_leads: [], interviews: [], notes: [] }.freeze
 
-  # attr_reader :user, :query, :filter, :status, :date_range
-
   def initialize(user, query, filter: nil, status: nil, date_range: nil, notable_type: nil)
     @user = user
     @query = query.to_s.strip
@@ -41,7 +39,7 @@ class SearchQuery
   end
 
   def terms
-    @terms ||= @query.split(/\s+/).map(&:downcase)
+    @terms ||= @query.scan(/"([^"]+)"|'([^']+)'|(\S+)/).map { |dq, sq, unq| (dq || sq || unq).downcase }
   end
 
   def search_job_leads
