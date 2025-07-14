@@ -52,11 +52,11 @@ class JobLeadsController < ApplicationController
   # POST /job_leads
   def create
     @job_lead = Current.user.job_leads.build(job_lead_params)
-    @tags = Current.user.tags.order(:name)
 
     if @job_lead.save
       redirect_to @job_lead, success: 'Job lead was successfully created.'
     else
+      @tags = Current.user.tags.order(:name)
       set_recents
       render :new, status: :unprocessable_entity, error: 'Failed to create job lead.'
     end
