@@ -13,7 +13,7 @@
       Search
     </h1>
 
-    <%= render 'form', query: @query, selected_filter: @selected_filter, selected_status: @selected_status, selected_date_range: @selected_date_range, selected_notable_type: @selected_notable_type %>
+    <%= render 'form', query: @query %>
   </div>
 
   <%= render 'results', query: @query, results: @results %>

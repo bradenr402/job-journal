@@ -35,16 +35,9 @@
         Filter interviews by date:
       </p>
       <div class="flex flex-wrap items-center gap-1">
-        <% if @selected_date_range.present? %>
-          <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' %>
+        <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_date_range.present? %>
 
-          <div class="form-radio-tag" style="view-transition-name: interviews-filter-<%= @selected_date_range %>">
-            <%= radio_button_tag :date_range, @selected_date_range, checked: true, data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
-            <%= label_tag "date_range_#{@selected_date_range}", @selected_date_range.titlecase %>
-          </div>
-        <% end %>
-
-        <% @unselected_date_ranges.each do |date_range| %>
+        <% @all_date_ranges.each do |date_range| %>
           <div class="form-radio-tag" style="view-transition-name: interviews-filter-<%= date_range %>">
             <%= radio_button_tag :date_range, date_range, checked: (@selected_date_range == date_range), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
             <%= label_tag "date_range_#{date_range}", date_range.titlecase %>
@@ -58,16 +51,9 @@
         Show notes for:
       </p>
       <div class="flex flex-wrap items-center gap-1">
-        <% if @selected_notable_type.present? %>
-          <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' %>
+        <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_notable_type.present? %>
 
-          <div class="form-radio-tag" style="view-transition-name: notes-filter-<%= @selected_notable_type %>">
-            <%= radio_button_tag :notable_type, @selected_notable_type, checked: true, data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
-            <%= label_tag "notable_type_#{@selected_notable_type}", @selected_notable_type.titlecase %>
-          </div>
-        <% end %>
-
-        <% @unselected_notable_types.each do |notable_type| %>
+        <% @all_notable_types.each do |notable_type| %>
           <div class="form-radio-tag" style="view-transition-name: notes-filter-<%= notable_type %>">
             <%= radio_button_tag :notable_type, notable_type, checked: (@selected_notable_type == notable_type), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
             <%= label_tag "notable_type_#{notable_type}", notable_type.titlecase %>
