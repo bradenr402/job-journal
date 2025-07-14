@@ -15,7 +15,7 @@
 }
 
 @utility empty-state {
-  @apply flex flex-col items-center justify-center text-center my-12 text-muted;
+  @apply flex flex-col items-center justify-center text-center text-pretty my-12 text-muted;
 }
 
 @utility nav-link {
