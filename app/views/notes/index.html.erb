@@ -53,7 +53,7 @@
 
   <div id="notes" class="@container">
     <% if @notes.any? %>
-      <div class="grid grid-cols-1 <%= ' @xl:grid-cols-2' if @notes.size >= 2 %> <%= '@3xl:grid-cols-3' if @notes.size >= 3 && @notes.size != 4 %> gap-3">
+      <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @notes.size >= 2 %> <%= '@3xl:grid-cols-3' if @notes.size >= 3 && @notes.size != 4 %> gap-3">
         <% @notes.each do |note| %>
           <%= render note %>
         <% end %>

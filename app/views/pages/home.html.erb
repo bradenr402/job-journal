@@ -43,7 +43,7 @@
     </div>
     <div id="interviews" class="@container">
       <% if @interviews_upcoming.any? %>
-        <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @interviews_upcoming.size >= 2 %> gap-5">
+        <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @interviews_upcoming.size >= 2 %> gap-5">
           <% @interviews_upcoming.each do |interview| %>
             <%= render interview %>
           <% end %>
@@ -63,7 +63,7 @@
     </div>
     <div id="job_leads" class="@container">
       <% if @stale_leads.any? %>
-        <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @stale_leads.size >= 2 %> gap-5">
+        <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @stale_leads.size >= 2 %> gap-5">
           <% @stale_leads.each do |job_lead| %>
             <%= render job_lead %>
           <% end %>
@@ -83,7 +83,7 @@
     </div>
     <div id="notes" class="@container">
       <% if @recent_notes.any? %>
-        <div class="grid grid-cols-1 <%= ' @xl:grid-cols-2' if @recent_notes.size >= 2 %> <%= '@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4 %> gap-3">
+        <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @recent_notes.size >= 2 %> <%= '@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4 %> gap-3">
           <% @recent_notes.each do |note| %>
             <%= render note %>
           <% end %>

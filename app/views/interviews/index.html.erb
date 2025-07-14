@@ -43,7 +43,7 @@
 
   <div id="interviews" class="@container">
     <% if @interviews.any? %>
-      <div class="grid grid-cols-1 <%= ' @4xl:grid-cols-2' if @interviews.size >= 2 %> gap-5">
+      <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @interviews.size >= 2 %> gap-5">
         <% @interviews.each do |interview| %>
           <%= render interview %>
         <% end %>
