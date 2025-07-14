@@ -19,7 +19,7 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center gap-0.5 md:gap-2 px-3 py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-soft hover:bg-neutral-100 hover:text-primary-600 transition-colors duration-150;
+  @apply flex max-md:flex-col items-center gap-0.5 md:gap-2 p-2 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-soft hover:bg-neutral-100 hover:text-primary-600 transition-colors duration-150;
 
   &.nav-link-active {
     @apply md:bg-neutral-100 text-primary-600;
