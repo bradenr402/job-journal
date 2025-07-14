@@ -12,6 +12,9 @@ class JobLead < ApplicationRecord
     rejected:     0
   }.freeze
 
+  # Attributes
+  attr_reader :pending_tag_names
+
   # Associations
   belongs_to :user
   has_many :notes, as: :notable, dependent: :destroy
@@ -39,6 +42,7 @@ class JobLead < ApplicationRecord
 
   # Callbacks
   before_validation :update_status, on: :update
+  after_save_commit :assign_tags
 
   # Scopes
   scope :active, -> { where(archived_at: nil) }
@@ -75,8 +79,7 @@ class JobLead < ApplicationRecord
   def tag_list = tags.pluck(:name).join(', ')
 
   def tag_list=(names)
-    tag_names = names.to_s.split(',').map { it.strip.downcase }.reject(&:blank?).uniq
-    self.tags = tag_names.map { |name| user.tags.find_or_create_by(name:) }
+    @pending_tag_names = names.to_s.split(',').map { it.strip.downcase }.reject(&:blank?).uniq
   end
 
   # Class Methods
@@ -130,5 +133,11 @@ class JobLead < ApplicationRecord
     if status_changed? && rejected? && !archived?
       self.archive!
     end
+  end
+
+  def assign_tags
+    return if @pending_tag_names.blank?
+
+    self.tags = @pending_tag_names.map { |name| user.tags.find_or_create_by(name:) }
   end
 end
