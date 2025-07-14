@@ -2,26 +2,26 @@
 <% job_lead = interview.job_lead %>
 
 <div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless interview_page %>" style="view-transition-name: interview-<%= interview.id %>;">
-  <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2">
+  <div class="flex flex-wrap items-start gap-x-4 gap-y-1 w-full mb-2">
     <div class="mb-2">
       <div class="<%= current_page?(search_path) ? 'text-lg font-semibold' : 'subheading' %>">
         <span>Interview with <%= interview.interviewer %></span>
         <% if interview.scheduled_at.past? %>
-          <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-green-200/60 text-green-600">
+          <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-offer">
             Completed
           </span>
         <% else %>
-          <span class="align-middle whitespace-nowrap px-2.5 py-1 ml-1 rounded-full text-xs font-normal bg-purple-200/60 text-purple-600">
+          <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-interview">
             Scheduled
           </span>
         <% end %>
       </div>
       <% unless current_page?(job_lead_path(job_lead)) %>
-        <p class="text-xs text-muted">for <%= job_lead.title %> @ <%= job_lead.company %></p>
+        <p class="text-xs text-muted mt-2">for <%= job_lead.title %> @ <%= job_lead.company %></p>
       <% end %>
     </div>
-    <div class="grow flex gap-2 justify-end">
-      <% if interview_page %>
+    <% if interview_page %>
+      <div class="grow flex gap-2 justify-end">
         <%= link_to edit_interview_path(interview), class: 'btn btn-sm btn-primary btn-muted gap-2' do %>
           <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
           <span>Edit</span>
@@ -30,12 +30,12 @@
           <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
           <span>Delete</span>
         <% end %>
-      <% else %>
-        <%= link_to interview_path(interview), class: 'absolute inset-0 z-10' do %>
-          <span class="sr-only">View</span>
-        <% end %>
+      </div>
+    <% else %>
+      <%= link_to interview_path(interview), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
+        <span class="sr-only">View</span>
       <% end %>
-    </div>
+    <% end %>
   </div>
 
   <% unless current_page?(search_path) %>
