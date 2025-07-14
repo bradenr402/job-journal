@@ -24,7 +24,7 @@
     <meta name="view-transition" content="same-origin" />
   </head>
 
-  <body class="bg-neutral-200/80 md:p-(--body-padding)">
+  <body class="bg-neutral-200/80 md:p-(--body-padding) selection:bg-primary-500/30">
     <%= render 'components/nav' if authenticated? %>
 
     <div class="bg-white md:rounded-xl px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
