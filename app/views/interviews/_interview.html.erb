@@ -63,12 +63,12 @@
       <% end %>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <dt class="text-muted text-sm flex items-center gap-1">Rating</dt>
-      <dd class="text-xl text-normal font-bold flex items-center gap-x-2">
+      <dd class="text-xl text-normal font-bold flex items-center gap-x-1">
         <% if interview.rating? %>
           <% 1.upto(5) do |star| %>
-            <%= inline_svg_tag 'icons/star.svg', class: "size-9 transition-all duration-200 cursor-pointer #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+            <%= inline_svg_tag 'icons/star.svg', class: "size-6 transition-all duration-200 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
           <% end %>
         <% else %>
           <span class="text-sm text-muted">No rating</span>
