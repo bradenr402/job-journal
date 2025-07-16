@@ -60,7 +60,7 @@ class SearchQuery
       OR LOWER(salary) LIKE :term
       OR LOWER(contact) LIKE :term
       OR CAST(offer_amount AS TEXT) LIKE :term
-      OR LOWER(location) LIKE :term
+      OR LOWER(job_leads.location) LIKE :term
       OR EXISTS (
         SELECT 1 FROM taggings
         JOIN tags ON tags.id = taggings.tag_id
