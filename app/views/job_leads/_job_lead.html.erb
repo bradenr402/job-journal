@@ -29,8 +29,8 @@
     <% end %>
   </div>
 
-  <div class="space-y-2 mb-4">
-    <div class="flex items-center gap-1 text-sm text-soft">
+  <div class="flex items-end flex-wrap gap-x-6 gap-y-2 mb-4">
+    <div class="flex items-center gap-1 text-sm text-light">
       <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
       <%= job_lead.company %>
     </div>
@@ -44,9 +44,9 @@
   </div>
 
   <% unless current_page?(search_path) %>
-    <div class="flex flex-wrap items-start gap-x-18 gap-y-4 mb-3">
+    <div class="flex flex-wrap items-start gap-x-14 gap-y-4 mb-4">
       <% if job_lead.offer_amount? || job_lead.salary? %>
-        <div class="flex flex-wrap items-start gap-x-18 gap-y-4">
+        <div class="flex flex-wrap items-start gap-x-14 gap-y-4">
           <% if job_lead.offer_amount? %>
             <div>
               <div class="text-muted text-sm flex items-center gap-1">
@@ -69,7 +69,7 @@
         </div>
       <% end %>
 
-      <div class="flex flex-wrap items-start gap-x-18 gap-y-4">
+      <div class="flex flex-wrap items-start gap-x-14 gap-y-4">
         <% if job_lead.contact.present? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
@@ -104,7 +104,7 @@
   <% end %>
 
   <% if job_lead.tags.present? %>
-    <div class="flex flex-wrap items-center gap-1 mb-6">
+    <div class="flex flex-wrap items-center gap-1 mb-4">
       <% job_lead.tags.order(:name).each do |tag| %>
         <span class="tag"><%= tag.name %></span>
       <% end %>
@@ -119,11 +119,9 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-1.5 mt-auto">
-        <div class="flex items-center gap-1">
-          <span class="tag tag-lead">
-            Lead: <span class="text-xs opacity-65"><%= local_date_short job_lead.created_at %></span>
-          </span>
-        </div>
+        <span class="tag tag-lead">
+          Lead: <span class="text-xs opacity-65"><%= local_date_short job_lead.created_at %></span>
+        </span>
 
         <%
           status_history = []
@@ -131,17 +129,17 @@
           job_lead.interviews.each do |interview|
             status_history << { status: 'interview', timestamp: interview.scheduled_at }
           end
-          status_history << { status: 'offer',     timestamp: job_lead.offer_at }
-          status_history << { status: 'accepted',  timestamp: job_lead.accepted_at }
-          status_history << { status: 'rejected',  timestamp: job_lead.rejected_at }
+          status_history << { status: 'offer', timestamp: job_lead.offer_at }
+          status_history << { status: 'accepted', timestamp: job_lead.accepted_at }
+          status_history << { status: 'rejected', timestamp: job_lead.rejected_at }
 
           status_history.compact!
           status_history.select! { it[:timestamp].present? }
         %>
 
         <% status_history.each do |status_entry| %>
-          <div class="flex items-center gap-1">
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0 mr-0.75' %>
+          <div class="flex items-center gap-1.5">
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0' %>
             <span class="tag tag-<%= status_entry[:status] %>">
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
             </span>
