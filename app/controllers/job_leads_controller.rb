@@ -1,5 +1,5 @@
 class JobLeadsController < ApplicationController
-  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive ]
+  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :reject ]
   before_action :cleanup_tags, only: [ :index, :new, :edit ]
 
   # GET /job_leads
@@ -19,12 +19,12 @@ class JobLeadsController < ApplicationController
       end
 
     @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
-    @job_leads = @job_leads.where(status: @selected_status_name) if @selected_status_name.present?
+    @job_leads = @job_leads.with_status(@selected_status_name) if @selected_status_name.present?
 
     @selected_tags = @tags.select { it.name.in? @selected_tag_names }
     @unselected_tags = @tags - @selected_tags
 
-    all_status_names = JobLead.statuses.keys.map(&:to_s)
+    all_status_names = JobLead::STATUSES
     @selected_status = @selected_status_name if all_status_names.include?(@selected_status_name)
     @unselected_statuses = all_status_names - [ @selected_status_name ].compact
   end
@@ -65,7 +65,6 @@ class JobLeadsController < ApplicationController
   # PATCH/PUT /job_leads/1
   def update
     if @job_lead.update(job_lead_params)
-      flash[:notice] = 'Job lead automatically archived.' if @job_lead.rejected? && @job_lead.archived_at.after?(10.seconds.ago)
       redirect_to @job_lead, success: 'Job lead was successfully updated.'
     else
       set_recents
@@ -98,6 +97,39 @@ class JobLeadsController < ApplicationController
     else
       redirect_to @job_lead, error: 'Failed to unarchive job lead.'
     end
+  end
+
+  def advance_status
+    case @job_lead.status
+    when 'lead'
+      @job_lead.applied!
+    when 'offer'
+      @job_lead.accepted!
+    end
+
+    redirect_to @job_lead, success: "Status advanced to #{@job_lead.status.titlecase}."
+  end
+
+  def reject
+    @job_lead.rejected!
+    redirect_to @job_lead, notice: 'Job lead marked as Rejected and automatically archived.'
+  end
+
+  def revert_status
+    case @job_lead.status
+    when 'applied'
+      @job_lead.update!(applied_at: nil)
+    when 'interview'
+      @job_lead.interviews.destroy_all
+    when 'offer'
+      @job_lead.update!(offer_at: nil, offer_amount: nil)
+    when 'rejected'
+      @job_lead.update!(rejected_at: nil)
+    when 'accepted'
+      @job_lead.update!(accepted_at: nil)
+    end
+
+    redirect_to @job_lead, notice: "Status reverted to #{@job_lead.status.titlecase}."
   end
 
   private

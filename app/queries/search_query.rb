@@ -44,19 +44,10 @@ class SearchQuery
 
   def search_job_leads
     scope = @user.job_leads.includes(:tags)
-    scope = scope.where(status: @status) if @status.present?
+    scope = scope.with_status(@status) if @status.present?
 
     terms.reduce(scope) do |current_scope, term|
-      matching_statuses = matching_status_values(term)
-      if matching_statuses.any?
-        current_scope.where(
-          "(#{job_lead_conditions}) OR status IN (:statuses)",
-          term: "%#{term}%",
-          statuses: matching_statuses
-        )
-      else
-        current_scope.where(job_lead_conditions, term: "%#{term}%")
-      end
+      current_scope.where(job_lead_conditions, term: "%#{term}%")
     end
   end
 
@@ -120,13 +111,6 @@ class SearchQuery
 
     terms.reduce(scope) do |current_scope, term|
       current_scope.where('LOWER(content) LIKE ?', "%#{term}%")
-    end
-  end
-
-  # Returns an array of status values matching the search term.
-  def matching_status_values(term)
-    JobLead.statuses.filter_map do |key, value|
-      value if key.tr('_', ' ').downcase.include?(term)
     end
   end
 end

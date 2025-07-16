@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     member do
       patch :archive
       patch :unarchive
+      patch :advance_status
+      patch :revert_status
+      patch :reject
     end
   end
 

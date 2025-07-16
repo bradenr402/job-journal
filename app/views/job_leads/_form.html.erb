@@ -4,7 +4,7 @@
   <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-5">
     <div>
       <%= form.label :title, 'Job Title', class: 'form-label' %>
-      <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'Software Engineer' %>
+      <%= form.text_field :title, class: 'form-input', autofocus: (true unless params[:focus_offer].present? && params[:focus_offer]), placeholder: 'Software Engineer' %>
     </div>
 
     <div>
@@ -47,7 +47,12 @@
           Offer Amount
           <span class="font-normal text-muted text-xs ml-1">(optional)</span>
         <% end %>
-        <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: '105000', value: (job_lead.offer_amount? ? number_with_precision(job_lead.offer_amount, precision: 2) : nil) %>
+        <%= form.number_field :offer_amount, autofocus: (params[:focus_offer].present? && params[:focus_offer]), class: 'form-input', step: '0.01', min: 0, placeholder: '105000', value: (job_lead.offer_amount? ? number_with_precision(job_lead.offer_amount, precision: 2) : nil) %>
+        <% if params[:focus_offer].present? && params[:focus_offer] %>
+          <p class="text-xs text-primary-600 mt-1">Set an offer amount to advance this job lead to Offer.</p>
+        <% else %>
+          <p class="text-xs text-muted mt-1">Setting an offer amount will automatically advance this job lead to Offer.</p>
+        <% end %>
       </div>
     <% end %>
 
@@ -88,13 +93,6 @@
       </datalist>
       <p class="text-xs text-muted mt-1">Where you found the job (e.g., LinkedIn, company site, referral).</p>
     </div>
-
-    <% if job_lead.persisted? %>
-      <div>
-        <%= form.label :status, class: 'form-label' %>
-        <%= form.select :status, JobLead.statuses.keys.map { |s| [s.titlecase, s] }, {}, class: 'form-select' %>
-      </div>
-    <% end %>
 
     <div data-controller="tags-input">
       <%= form.label :tag_list, class: 'form-label' do %>

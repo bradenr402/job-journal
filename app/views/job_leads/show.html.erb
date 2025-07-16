@@ -10,15 +10,79 @@
 
   <%= render @job_lead %>
 
+  <% buttons = [] %>
+
+  <%
+    case @job_lead.status
+    when 'lead'
+      buttons << button_to('Advance to Applied', advance_status_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-primary btn-muted')
+    when 'applied'
+      buttons << button_to('Revert to Lead', revert_status_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted')
+      buttons << link_to('Advance to Interview', new_interview_path(job_lead_id: @job_lead.id), class: 'btn btn-sm btn-primary btn-muted')
+    when 'interview'
+      buttons << button_to(
+        'Revert to Applied',
+        revert_status_job_lead_path(@job_lead),
+        method: :patch,
+        data: { confirm: 'Are you sure you want to revert the status to Applied? This will delete all interviews for this job lead.' },
+        class: 'btn btn-sm btn-destructive btn-muted'
+      )
+      buttons << link_to('Advance to Offer', edit_job_lead_path(@job_lead, focus_offer: true), class: 'btn btn-sm btn-primary btn-muted')
+    when 'offer'
+      buttons << button_to('Revert to Interview', revert_status_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted')
+      buttons << button_to('Advance to Accepted', advance_status_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-primary btn-muted')
+    when 'accepted'
+      buttons << button_to('Revert to Offer', revert_status_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted')
+    end
+  %>
+
+  <div class="mt-4 space-y-2">
+    <% if buttons.any? %>
+      <div class="flex items-center gap-2">
+        <%= safe_join(buttons) %>
+      </div>
+    <% end %>
+
+    <div class="flex items-center gap-2">
+      <% if @job_lead.rejected? %>
+        <%= button_to "Revert to #{@job_lead.previous_status.titlecase}", revert_status_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' %>
+      <% else %>
+        <% unless @job_lead.accepted? %>
+          <%= button_to(
+                'Mark as Rejected',
+                reject_job_lead_path(@job_lead),
+                method: :patch,
+                data: { confirm: 'Are you sure you want to mark this as rejected?' },
+                class: 'btn btn-sm btn-destructive btn-muted'
+              ) %>
+        <% end %>
+      <% end %>
+
+      <% if @job_lead.archived_at? %>
+        <%= button_to unarchive_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-secondary btn-muted gap-1' do %>
+          <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
+          <span>Unarchive</span>
+        <% end %>
+      <% else %>
+        <%= button_to archive_job_lead_path(@job_lead), method: :patch, class: 'btn btn-sm btn-secondary btn-muted gap-1' do %>
+          <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
+          <span>Archive</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
   <%= render 'shared/notes', notable: @job_lead, notes: @notes %>
 
   <!-- Interviews -->
   <div class="mt-12 @container">
     <div class="flex items-center justify-between mb-4">
       <h2 class="subheading">Interviews</h2>
-      <%= link_to new_interview_path(job_lead_id: @job_lead.id), class: 'btn btn-primary gap-2' do %>
-        <%= inline_svg_tag 'icons/interview.svg', class: 'size-4 shrink-0' %>
-        <span>New Interview</span>
+      <% if @job_lead.interview? %>
+        <%= link_to new_interview_path(job_lead_id: @job_lead.id), class: 'btn btn-primary gap-2' do %>
+          <%= inline_svg_tag 'icons/interview.svg', class: 'size-4 shrink-0' %>
+          <span>New Interview</span>
+        <% end %>
       <% end %>
     </div>
     <% if @interviews.any? %>

@@ -1,35 +1,25 @@
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
 <div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless job_lead_page %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
-  <div class="flex items-start gap-x-4 gap-y-1 w-full mb-2 <%= 'flex-wrap' if job_lead_page %>">
+  <div class="flex items-end gap-x-4 gap-y-2 w-full mb-2 <%= 'flex-wrap-reverse' if job_lead_page %>">
     <div class="<%= current_page?(search_path) ? 'text-lg font-semibold' : 'subheading' %>">
       <span><%= job_lead.title %></span>
-      <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-<%= job_lead.status %>">
-        <%= job_lead.status.titlecase %>
-      </span>
+      <% unless job_lead_page %>
+        <span class="font-normal ml-0.5 tag tag-<%= job_lead.status %>">
+          <%= job_lead.status.titlecase %>: <span class="text-xs opacity-65"><%= local_date_short job_lead.latest_status_at %></span>
+        </span>
+      <% end %>
     </div>
     <% if job_lead_page %>
-      <div class="grow flex gap-2 justify-end mt-2">
-        <%= link_to edit_job_lead_path(job_lead), class: 'max-sm:grow btn btn-sm btn-primary btn-muted gap-2' do %>
+      <div class="grow flex gap-2 justify-end">
+        <%= link_to edit_job_lead_path(job_lead), class: 'max-sm:grow btn btn-sm btn-primary btn-muted gap-1' do %>
           <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
           <span>Edit</span>
         <% end %>
 
-        <%= button_to job_lead, method: :delete, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure you want to delete this job lead?' } do %>
+        <%= button_to job_lead, method: :delete, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-destructive btn-muted gap-1', data: { turbo_confirm: 'Are you sure you want to delete this job lead?' } do %>
           <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
           <span>Delete</span>
-        <% end %>
-
-        <% if job_lead.archived_at? %>
-          <%= button_to unarchive_job_lead_path(job_lead), method: :patch, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-secondary btn-muted gap-2' do %>
-            <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
-            <span>Unarchive</span>
-          <% end %>
-        <% else %>
-          <%= button_to archive_job_lead_path(job_lead), method: :patch, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-secondary btn-muted gap-2' do %>
-            <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
-            <span>Archive</span>
-          <% end %>
         <% end %>
       </div>
     <% else %>
@@ -118,6 +108,46 @@
       <% job_lead.tags.each do |tag| %>
         <span class="tag"><%= tag.name %></span>
       <% end %>
+    </div>
+  <% end %>
+
+  <% if job_lead_page %>
+    <div class="mb-4">
+      <div class="text-muted text-sm flex items-center gap-1 mb-1">
+        <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.75 shrink-0' %>
+        <dt>History</dt>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1.5 mt-auto">
+        <div class="flex items-center gap-1">
+          <span class="tag tag-lead">
+            Lead: <span class="text-xs opacity-65"><%= local_date_short job_lead.created_at %></span>
+          </span>
+        </div>
+
+        <%
+          status_history = []
+          status_history << { status: 'applied', timestamp: job_lead.applied_at }
+          job_lead.interviews.each do |interview|
+            status_history << { status: 'interview', timestamp: interview.scheduled_at }
+          end
+          status_history << { status: 'offer',     timestamp: job_lead.offer_at }
+          status_history << { status: 'accepted',  timestamp: job_lead.accepted_at }
+          status_history << { status: 'rejected',  timestamp: job_lead.rejected_at }
+
+          status_history.compact!
+          status_history.select! { it[:timestamp].present? }
+        %>
+
+        <% status_history.each do |status_entry| %>
+          <div class="flex items-center gap-1">
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0 mr-0.75' %>
+            <span class="tag tag-<%= status_entry[:status] %>">
+              <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
+            </span>
+          </div>
+        <% end %>
+      </div>
     </div>
   <% end %>
 

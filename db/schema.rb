@@ -10,15 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_10_172047) do
-  create_table "applications", force: :cascade do |t|
-    t.integer "job_lead_id", null: false
-    t.datetime "applied_at", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["job_lead_id"], name: "index_applications_on_job_lead_id"
-  end
-
+ActiveRecord::Schema[8.0].define(version: 2025_07_15_163158) do
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer"
@@ -42,12 +34,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_172047) do
     t.string "salary"
     t.decimal "offer_amount", precision: 12, scale: 2
     t.string "location"
-    t.integer "status", default: 0, null: false
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "applied_at"
+    t.datetime "offer_at"
+    t.datetime "rejected_at"
+    t.datetime "accepted_at"
+    t.index ["accepted_at"], name: "index_job_leads_on_accepted_at"
+    t.index ["applied_at"], name: "index_job_leads_on_applied_at"
     t.index ["archived_at"], name: "index_job_leads_on_archived_at"
-    t.index ["status"], name: "index_job_leads_on_status"
+    t.index ["offer_at"], name: "index_job_leads_on_offer_at"
+    t.index ["rejected_at"], name: "index_job_leads_on_rejected_at"
     t.index ["user_id"], name: "index_job_leads_on_user_id"
     t.check_constraint "offer_amount IS NULL OR offer_amount >= 0", name: "offer_amount_non_negative"
   end
@@ -99,7 +97,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_172047) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
-  add_foreign_key "applications", "job_leads"
   add_foreign_key "interviews", "job_leads"
   add_foreign_key "job_leads", "users"
   add_foreign_key "notes", "users"

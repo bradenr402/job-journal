@@ -4,7 +4,7 @@ class SearchController < ApplicationController
 
     selected_status_name = params[:status].presence
 
-    @all_status_names = JobLead.statuses.keys.map(&:to_s)
+    @all_status_names = JobLead::STATUSES
     @selected_status = selected_status_name if @all_status_names.include?(selected_status_name)
 
     @selected_date_range_param = params[:date_range].presence

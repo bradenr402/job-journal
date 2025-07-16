@@ -1,11 +1,13 @@
 class JobLead < ApplicationRecord
   # Constants
 
-  # Statuses ranked by progression/quality.
+  # Array of status types for filtering
+  STATUSES = %w[lead applied interview offer rejected accepted].freeze
+
+  # Statuses ranked by progression/quality
   STATUS_QUALITY = {
     lead:         1,
     applied:      2,
-    phone_screen: 3,
     interview:    5,
     offer:        8,
     accepted:    13,
@@ -22,29 +24,60 @@ class JobLead < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
-  # Enums
-  enum :status, {
-    lead: 0,
-    applied: 1,
-    phone_screen: 2,
-    interview: 3,
-    offer: 4,
-    rejected: 5,
-    accepted: 6
-  }
-
   # Validations
   validates :company, presence: true
   validates :title, presence: true
   validates :application_url, presence: true, uniqueness: true, format: URI::DEFAULT_PARSER.make_regexp(%w[http https])
   validates :offer_amount, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :status, presence: true, inclusion: { in: statuses.keys }
+
+  validates :applied_at, comparison: { less_than_or_equal_to: -> { Time.current } }, allow_nil: true
+  validates :offer_at, comparison: { less_than_or_equal_to: -> { Time.current } }, allow_nil: true
+  validates :rejected_at, comparison: { less_than_or_equal_to: -> { Time.current } }, allow_nil: true
+  validates :accepted_at, comparison: { less_than_or_equal_to: -> { Time.current } }, allow_nil: true
+
+  validate :single_terminal_status
+  validate :offer_amount_presence_for_offer_at
 
   # Callbacks
   before_validation :update_status, on: :update
   after_save_commit :assign_tags
 
   # Scopes
+  scope :lead, -> {
+    where(applied_at: nil, offer_at: nil, rejected_at: nil, accepted_at: nil)
+      .where.not(id: JobLead.joins(:interviews).select(:id))
+  }
+
+  scope :applied, -> {
+    where.not(applied_at: nil)
+      .where(offer_at: nil, rejected_at: nil, accepted_at: nil)
+      .left_outer_joins(:interviews)
+      .where(interviews: { id: nil })
+  }
+
+  scope :interview, -> {
+    joins(:interviews).distinct
+      .where(offer_at: nil, rejected_at: nil, accepted_at: nil)
+  }
+
+  scope :offer, -> {
+    where.not(offer_at: nil)
+      .where(rejected_at: nil, accepted_at: nil)
+  }
+
+  scope :rejected, -> {
+    where.not(rejected_at: nil)
+  }
+
+  scope :accepted, -> {
+    where.not(accepted_at: nil)
+  }
+
+  scope :with_status, ->(status) {
+    raise ArgumentError, 'Invalid status' unless STATUSES.include?(status.to_s)
+    public_send(status.to_s)
+  }
+
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
   scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name.downcase }) }
@@ -70,6 +103,65 @@ class JobLead < ApplicationRecord
   }
 
   # Instance Methods
+  def inferred_status
+    return 'accepted' if accepted_at?
+    return 'rejected' if rejected_at?
+    return 'offer' if offer_at?
+    return 'interview' if interviews.exists?
+    return 'applied' if applied_at?
+    'lead'
+  end
+  alias status inferred_status
+
+  STATUSES.each do |status|
+    define_method("#{status}?") { inferred_status == status }
+  end
+
+  STATUSES.reject { it.in? %w[ lead interview ] }.each do |status|
+    define_method("#{status}!") do
+      update!("#{status}_at": Time.current)
+    end
+  end
+
+  def previous_status
+    timeline = {
+      'lead' => created_at,
+      'applied' => applied_at,
+      'interview' => interviews.minimum(:scheduled_at),
+      'offer' => offer_at,
+      'rejected' => rejected_at,
+      'accepted' => accepted_at
+    }.compact
+
+    sorted_statuses = timeline.sort_by { |_, time| time }.map(&:first)
+
+    current_index = sorted_statuses.index(inferred_status)
+
+    return sorted_statuses[current_index - 1] if current_index && current_index > 0
+
+    nil
+  end
+
+  def latest_status_at
+    case inferred_status
+    when 'lead' then  created_at
+    when 'applied' then  applied_at
+    when 'interview'
+      upcoming_interview = interviews.where(scheduled_at: Time.current..).order(:scheduled_at).first
+      return upcoming_interview.scheduled_at if upcoming_interview
+
+      last_past_interview = interviews.where(scheduled_at: ..Time.current).order(scheduled_at: :desc).first
+      return last_past_interview.scheduled_at if last_past_interview
+
+      nil
+    when 'offer' then  offer_at
+    when 'rejected' then  rejected_at
+    when 'accepted' then  accepted_at
+    else
+      nil
+    end
+  end
+
   def active? = archived_at.nil?
   def archived? = archived_at.present?
 
@@ -126,11 +218,11 @@ class JobLead < ApplicationRecord
   private
 
   def update_status
-    if offer_amount_changed? && offer_amount.present?
-      self.status = :offer
+    if offer_amount_changed? && offer_amount.present? && !offer_at.present?
+      self.offer!
     end
 
-    if status_changed? && rejected? && !archived?
+    if rejected_at_changed? && rejected? && !archived?
       self.archive!
     end
   end
@@ -139,5 +231,13 @@ class JobLead < ApplicationRecord
     return if @pending_tag_names.blank?
 
     self.tags = @pending_tag_names.map { |name| user.tags.find_or_create_by(name:) }
+  end
+
+  def single_terminal_status
+    errors.add(:base, 'cannot be both rejected and accepted') if rejected_at? && accepted_at?
+  end
+
+  def offer_amount_presence_for_offer_at
+    errors.add(:base, 'cannot advance to Offer without specifying an offer amount') if offer_at? && !offer_amount?
   end
 end

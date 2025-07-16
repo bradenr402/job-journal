@@ -53,7 +53,6 @@
   &.tag-selected:not(
       .tag-lead,
       .tag-applied,
-      .tag-phone_screen,
       .tag-interview,
       .tag-offer,
       .tag-rejected,
@@ -70,7 +69,7 @@
   &.tag-lead {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-orange-200/60 text-orange-600 border-orange-300/60;
+      @apply bg-yellow-200/60 text-yellow-600 border-yellow-300/60;
     }
 
     &.tag-selected.tag-filter {
@@ -78,7 +77,7 @@
     }
 
     &.tag-filter:not(.tag-selected) {
-      @apply hover:bg-orange-100/80 hover:text-orange-500 hover:border-orange-200;
+      @apply hover:bg-yellow-100/80 hover:text-yellow-500 hover:border-yellow-200;
     }
 
     &.tag-selected,
@@ -101,28 +100,6 @@
 
     &.tag-filter {
       @apply hover:bg-blue-100/80 hover:text-blue-500 hover:border-blue-200;
-    }
-
-    &.tag-selected,
-    &:not(.tag-filter) {
-      & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
-      }
-    }
-  }
-
-  &.tag-phone_screen {
-    &.tag-selected,
-    &:not(.tag-filter) {
-      @apply bg-amber-200/60 text-amber-600 border-amber-300/60;
-    }
-
-    &.tag-selected.tag-filter {
-      @apply has-[svg]:pr-1.5;
-    }
-
-    &.tag-filter {
-      @apply hover:bg-amber-100/80 hover:text-amber-500 hover:border-amber-200;
     }
 
     &.tag-selected,
