@@ -1,6 +1,14 @@
 module ApplicationHelper
   def number_with_sign(number, **options)
-    sign = number.positive? ? '+' : number.negative? ? '-' : ''
+    sign =
+      if number.zero?
+        options[:zero_sign].presence
+      elsif number.positive?
+        '+'
+      else
+        '-'
+      end
+
     formatted = number_with_precision(number.abs, **options)
     "#{sign}#{formatted}"
   end
