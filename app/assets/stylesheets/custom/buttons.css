@@ -5,11 +5,8 @@
     @apply px-3 py-1.5 text-xs;
   }
 
-  svg:first-child {
-    @apply -ml-0.75;
-  }
-  svg:last-child {
-    @apply -mr-0.75;
+  > svg {
+    @apply first:-ml-0.75 last:-mr-0.75;
   }
 }
 

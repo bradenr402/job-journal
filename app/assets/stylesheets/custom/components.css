@@ -58,10 +58,10 @@
       .tag-rejected,
       .tag-accepted
     ) {
-    @apply border-primary-200 bg-primary-100/80 has-[svg]:pr-1.5 text-primary-600;
+    @apply border-primary-200 bg-primary-100/80 text-primary-600;
 
     & > svg {
-      @apply size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
     }
   }
 
