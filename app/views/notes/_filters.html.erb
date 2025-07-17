@@ -1,0 +1,23 @@
+<div class="mb-4">
+  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:note-filters-label]">
+    Show notes for:
+  </p>
+  <div class="flex flex-wrap items-center gap-1">
+    <%= link_to notes_path(notable_type: nil), class: 'inline-block', style: "view-transition-name: all-notes" do %>
+      <span class="tag tag-filter <%= 'tag-selected' unless params[:notable_type].present? %>">All</span>
+    <% end %>
+
+    <%= link_to notes_path(notable_type: params[:notable_type] == 'JobLead' ? nil : 'JobLead'), class: 'inline-block', style: "view-transition-name: job-lead-notes" do %>
+      <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'JobLead' %>">
+        <span>Job Leads</span>
+        <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'JobLead' %>
+      </span>
+    <% end %>
+    <%= link_to notes_path(notable_type: params[:notable_type] == 'Interview' ? nil : 'Interview'), class: 'inline-block', style: "view-transition-name: interview-notes" do %>
+      <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'Interview' %>">
+        <span>Interviews</span>
+        <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'Interview' %>
+      </span>
+    <% end %>
+  </div>
+</div>
