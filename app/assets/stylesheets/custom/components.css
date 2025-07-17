@@ -1,5 +1,5 @@
 @utility card {
-  @apply bg-white p-6 border border-neutral-300 rounded-2xl shadow-xs;
+  @apply bg-white p-3.75 border border-neutral-300 rounded-2xl shadow-xs;
 
   &.card-hover {
     @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
@@ -7,7 +7,7 @@
 }
 
 @utility card-sm {
-  @apply bg-white p-4 border border-neutral-300 rounded-2xl shadow-2xs;
+  @apply bg-white p-2.5 border border-neutral-300 rounded-2xl shadow-2xs;
 
   &.card-hover {
     @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
