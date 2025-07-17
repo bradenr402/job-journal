@@ -55,24 +55,16 @@
         concat content_tag(:span, 'Revert to Offer')
       end
     )
+    when 'rejected'
+    buttons << (
+      button_to revert_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' do
+        concat inline_svg_tag('icons/arrow-left.svg', class: 'size-4 shrink-0')
+        concat content_tag(:span, "Revert to #{job_lead.previous_status.titlecase}")
+      end
+    )
   end
 %>
 
-<div class="mt-4 space-y-2">
-  <% if buttons.any? %>
-    <div class="flex items-center <%= job_lead.lead? ? 'justify-end' : 'justify-between' %> gap-2">
-      <%= safe_join(buttons) %>
-    </div>
-  <% end %>
-
-  <div class="flex items-center gap-2">
-    <% if job_lead.rejected? %>
-      <%= button_to revert_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' do %>
-        <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-4 shrink-0' %>
-        <%= content_tag :span, "Revert to #{job_lead.previous_status.titlecase}" %>
-      <% end %>
-    <% elsif !(job_lead.accepted? || job_lead.lead?) %>
-      <%= button_to 'Mark as Rejected', reject_job_lead_path(job_lead), method: :patch, data: { turbo_confirm: 'Are you sure you want to mark this job lead as rejected?' }, class: 'btn btn-sm btn-destructive btn-muted' %>
-    <% end %>
-  </div>
+<div class="mt-4 flex items-center <%= job_lead.lead? ? 'justify-end' : 'justify-between' %> gap-2">
+  <%= safe_join(buttons) %>
 </div>

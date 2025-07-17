@@ -1,7 +1,7 @@
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
 <div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless job_lead_page %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
-  <div class="flex items-end gap-x-4 gap-y-2 w-full mb-2 <%= 'flex-wrap-reverse' if job_lead_page %>">
+  <div class="flex gap-x-4 gap-y-2 w-full mb-2">
     <div class="<%= job_lead_page ? 'subheading' : 'text-lg font-semibold' %>">
       <span><%= job_lead.title %></span>
       <% unless job_lead_page %>
@@ -11,28 +11,44 @@
       <% end %>
     </div>
     <% if job_lead_page %>
-      <div class="grow flex gap-2 justify-end">
-        <%= link_to edit_job_lead_path(job_lead), class: 'max-sm:grow btn btn-sm btn-primary btn-muted gap-1' do %>
-          <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
-          <span>Edit</span>
-        <% end %>
+      <div class="ml-auto relative" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+        <button class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+          <span class="sr-only">Actions</span>
+          <%= inline_svg_tag 'icons/more-horizontal.svg', class: '-m-1! size-6' %>
+        </button>
 
-        <%= button_to job_lead, method: :delete, form_class: 'max-sm:grow', class: 'max-sm:w-full btn btn-sm btn-destructive btn-muted gap-1', data: { turbo_confirm: 'Are you sure you want to delete this job lead?' } do %>
-          <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
-          <span>Delete</span>
-        <% end %>
+        <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
+          <%= link_to edit_job_lead_path(job_lead), class: 'dropdown-option dropdown-option-secondary' do %>
+            <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
+            <span>Edit</span>
+          <% end %>
 
-        <% if job_lead.archived_at? %>
-          <%= button_to unarchive_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-secondary btn-muted gap-1' do %>
-            <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
-            <span>Unarchive</span>
+          <% if job_lead.archived_at? %>
+            <%= button_to unarchive_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-secondary' do %>
+              <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
+              <span>Unarchive</span>
+            <% end %>
+          <% else %>
+            <%= button_to archive_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-secondary' do %>
+              <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
+              <span>Archive</span>
+            <% end %>
           <% end %>
-        <% else %>
-          <%= button_to archive_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-secondary btn-muted gap-1' do %>
-            <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
-            <span>Archive</span>
+
+          <% unless job_lead.accepted? || job_lead.lead? %>
+            <%= button_to reject_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to mark this job lead as rejected?' } do %>
+              <%= inline_svg_tag 'icons/x.svg', class: 'size-4 shrink-0' %>
+              <span>Rejected</span>
+            <% end %>
           <% end %>
-        <% end %>
+
+          <div class="dropdown-divider"></div>
+
+          <%= button_to job_lead, method: :delete, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to delete this job lead?' } do %>
+            <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
+            <span>Delete</span>
+          <% end %>
+        </div>
       </div>
     <% else %>
       <%= link_to job_lead_path(job_lead), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>

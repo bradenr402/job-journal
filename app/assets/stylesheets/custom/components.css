@@ -198,3 +198,112 @@
     }
   }
 }
+
+/*
+
+Dropdown Usage Example:
+
+<div class="relative">
+  <button class="dropdown-trigger" type="button">Actions</button>
+
+  <div class="dropdown-menu dropdown-menu-bottom-left">
+    <a class="dropdown-option dropdown-option-primary">Edit</a>
+    <a class="dropdown-option dropdown-option-secondary">Share</a>
+    <a class="dropdown-option dropdown-option-secondary">Archive</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-option dropdown-option-destructive">Delete</a>
+  </div>
+</div>
+
+Position options:
+- dropdown-menu-top-left    / dropdown-menu-top-center    / dropdown-menu-top-right
+- dropdown-menu-middle-left / dropdown-menu-middle-center / dropdown-menu-middle-right
+- dropdown-menu-bottom-left / dropdown-menu-bottom-center / dropdown-menu-bottom-right
+
+State options:
+- Use .dropdown-show to display the menu
+- Use .dropdown-hidden to hide the menu
+
+Option variants:
+- .dropdown-option-primary
+- .dropdown-option-secondary
+- .dropdown-option-destructive
+
+*/
+
+@utility dropdown-trigger {
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-2 text-sm font-medium bg-neutral-200/70 text-neutral-600 hover:bg-neutral-300/70 focus:ring-neutral-500 active:bg-neutral-300 transition-all duration-150 focus:ring-2 focus:outline-none active:scale-96;
+}
+
+@utility dropdown-menu {
+  @apply absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col gap-1 rounded-xl bg-white shadow-sm border border-neutral-200 z-50 transition-all duration-150;
+
+  &.dropdown-hidden {
+    @apply scale-90 opacity-0 pointer-events-none;
+  }
+
+  &.dropdown-show {
+    @apply scale-100 opacity-100 pointer-events-auto;
+  }
+
+  /* Position utilities */
+  &.dropdown-menu-top-left {
+    @apply bottom-full right-0 origin-bottom-right;
+  }
+
+  &.dropdown-menu-top-center {
+    @apply bottom-full left-1/2 -translate-x-1/2 origin-bottom;
+  }
+
+  &.dropdown-menu-top-right {
+    @apply bottom-full left-0 origin-bottom-left;
+  }
+
+  &.dropdown-menu-middle-left {
+    @apply top-1/2 right-full -translate-y-1/2 origin-right;
+  }
+
+  &.dropdown-menu-middle-center {
+    @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 origin-center;
+  }
+
+  &.dropdown-menu-middle-right {
+    @apply top-1/2 left-full -translate-y-1/2 origin-left;
+  }
+
+  &.dropdown-menu-bottom-left {
+    @apply top-full right-0 origin-top-right;
+  }
+
+  &.dropdown-menu-bottom-center {
+    @apply top-full left-1/2 -translate-x-1/2 origin-top;
+  }
+
+  &.dropdown-menu-bottom-right {
+    @apply top-full left-0 origin-top-left;
+  }
+
+  .dropdown-option {
+    @apply inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none;
+
+    &.dropdown-option-primary {
+      @apply text-primary-600 hover:bg-primary-100 focus:ring-primary-500 active:bg-primary-200/70;
+    }
+
+    &.dropdown-option-secondary {
+      @apply text-neutral-600 hover:bg-neutral-200/70 focus:ring-neutral-500 active:bg-neutral-300/70;
+    }
+
+    &.dropdown-option-destructive {
+      @apply hover:bg-rose-200/70 text-rose-600 focus:ring-rose-500 active:bg-rose-300/60;
+    }
+
+    > svg {
+      @apply first:-ml-0.75 last:-mr-0.75;
+    }
+  }
+
+  .dropdown-divider {
+    @apply h-px w-full bg-neutral-200;
+  }
+}
