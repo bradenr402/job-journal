@@ -1,0 +1,23 @@
+<div class="mb-4">
+  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:interview-filters-label]">
+    Filter interviews by date:
+  </p>
+  <div class="flex flex-wrap items-center gap-1">
+    <%= link_to interviews_path(scheduled: nil), class: 'inline-block', style: "view-transition-name: all-interviews" do %>
+      <span class="tag tag-filter <%= 'tag-selected' unless params[:scheduled].present? %>">All</span>
+    <% end %>
+
+    <%= link_to interviews_path(scheduled: params[:scheduled] == 'upcoming' ? nil : 'upcoming'), class: 'inline-block', style: "view-transition-name: upcoming-interviews" do %>
+      <span class="tag tag-filter <%= 'tag-selected' if params[:scheduled] == 'upcoming' %>">
+        <span>Upcoming</span>
+        <%= inline_svg_tag 'icons/x-mini.svg' if params[:scheduled] == 'upcoming' %>
+      </span>
+    <% end %>
+    <%= link_to interviews_path(scheduled: params[:scheduled] == 'completed' ? nil : 'completed'), class: 'inline-block', style: "view-transition-name: completed-interviews" do %>
+      <span class="tag tag-filter <%= 'tag-selected' if params[:scheduled] == 'completed' %>">
+        <span>Completed</span>
+        <%= inline_svg_tag 'icons/x-mini.svg' if params[:scheduled] == 'completed' %>
+      </span>
+    <% end %>
+  </div>
+</div>
