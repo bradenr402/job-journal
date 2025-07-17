@@ -2,7 +2,7 @@
 
 <div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless job_lead_page %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
   <div class="flex items-end gap-x-4 gap-y-2 w-full mb-2 <%= 'flex-wrap-reverse' if job_lead_page %>">
-    <div class="<%= current_page?(search_path) ? 'text-lg font-semibold' : 'subheading' %>">
+    <div class="<%= job_lead_page ? 'subheading' : 'text-lg font-semibold' %>">
       <span><%= job_lead.title %></span>
       <% unless job_lead_page %>
         <span class="font-normal ml-0.5 tag tag-<%= job_lead.status %>">
@@ -21,6 +21,18 @@
           <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
           <span>Delete</span>
         <% end %>
+
+        <% if job_lead.archived_at? %>
+          <%= button_to unarchive_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-secondary btn-muted gap-1' do %>
+            <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-4 shrink-0' %>
+            <span>Unarchive</span>
+          <% end %>
+        <% else %>
+          <%= button_to archive_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-secondary btn-muted gap-1' do %>
+            <%= inline_svg_tag 'icons/archive.svg', class: 'size-4 shrink-0' %>
+            <span>Archive</span>
+          <% end %>
+        <% end %>
       </div>
     <% else %>
       <%= link_to job_lead_path(job_lead), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
@@ -35,7 +47,7 @@
       <%= job_lead.company %>
     </div>
 
-    <% if job_lead.application_url.present? && !current_page?(search_path) %>
+    <% if job_lead.application_url.present? && job_lead_page %>
       <%= link_to job_lead.application_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary text-sm inline-block align-middle relative z-20 max-w-fit' do %>
         <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 inline' %>
         <span class="wrap-anywhere"><%= line_wrap_url job_lead.application_url %></span>
@@ -43,7 +55,7 @@
     <% end %>
   </div>
 
-  <% unless current_page?(search_path) %>
+  <% if job_lead_page %>
     <div class="flex flex-wrap items-start gap-x-14 gap-y-4 mb-4">
       <% if job_lead.offer_amount? || job_lead.salary? %>
         <div class="flex flex-wrap items-start gap-x-14 gap-y-4">
