@@ -126,7 +126,7 @@
         <%
           status_history = []
           status_history << { status: 'applied', timestamp: job_lead.applied_at }
-          job_lead.interviews.each do |interview|
+          job_lead.interviews.order(:scheduled_at).each do |interview|
             status_history << { status: 'interview', timestamp: interview.scheduled_at }
           end
           status_history << { status: 'offer', timestamp: job_lead.offer_at }
