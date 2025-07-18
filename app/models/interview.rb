@@ -18,7 +18,7 @@ class Interview < ApplicationRecord
   before_validation :convert_zero_rating_to_nil
 
   # Scopes
-  scope :upcoming, -> { where(scheduled_at: Time.current..7.days.from_now) }
+  scope :upcoming, -> { where(scheduled_at: Time.current.beginning_of_day..7.days.from_now) }
   scope :future, -> { where(scheduled_at: Time.current..) }
   scope :past, -> { where(scheduled_at: ..Time.current) }
 
