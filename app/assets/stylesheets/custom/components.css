@@ -304,6 +304,6 @@ Option variants:
   }
 
   .dropdown-divider {
-    @apply h-px w-full bg-neutral-200;
+    @apply h-px w-[calc(100%)-0.25rem] mx-0.5 bg-neutral-200;
   }
 }
