@@ -177,9 +177,9 @@
           <% if @top_sources.any? %>
             <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 && @top_sources.size != 4 %> gap-1.5">
               <% @top_sources.each_with_index do |(source, data), index| %>
-                <div class="flex flex-col gap-4 bg-neutral-100 p-3 rounded-md">
+                <div class="flex flex-col gap-5 bg-neutral-100 p-3 rounded-md">
                   <div class="flex items-center gap-2.5">
-                    <div class="text-sm/none text-soft font-semibold size-8 grid place-items-center rounded-full bg-neutral-200/70">
+                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70">
                       #<%= index + 1 %>
                     </div>
                     <div class="flex flex-col">
@@ -190,19 +190,20 @@
                     </div>
                   </div>
 
-                  <% if data[:interview_count] > 0 || data[:offer_count] > 0 %>
-                    <div class="leading-tight">
-                      <p class="text-sm text-soft">
-                        <% offers_interviews = [] %>
-                        <% if data[:interview_count] > 0 %>
-                          <% offers_interviews << content_tag(:span, pluralize(data[:interview_count], 'interview')) %>
-                        <% end %>
-                        <% if data[:offer_count] > 0 %>
-                          <% offers_interviews << content_tag(:span, pluralize(data[:offer_count], 'offer')) %>
-                        <% end %>
-                        <%= safe_join(offers_interviews, ', ') %>
-                      </p>
-                    </div>
+                  <%
+                    items = [
+                      [data[:interview_count], 'interview'],
+                      [data[:offer_count], 'offer']
+                    ].select { |count, _| count.positive? }
+                  %>
+
+                  <% if items.any? %>
+                    <p class="leading-none text-sm text-soft">
+                      <%= safe_join(
+                        items.map { |count, label| content_tag(:span, pluralize(count, label)) },
+                        ', '
+                      ) %>
+                    </p>
                   <% end %>
                 </div>
               <% end %>
