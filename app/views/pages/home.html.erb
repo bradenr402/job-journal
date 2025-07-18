@@ -6,7 +6,7 @@
     </div>
 
     <div class="@container">
-      <div class="grid grid-cols-1 @xl:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 @xl:grid-cols-2 gap-3">
         <div class="relative card card-hover">
           <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Job Leads</span>
@@ -43,7 +43,7 @@
     </div>
     <div id="interviews" class="@container">
       <% if @interviews_upcoming.any? %>
-        <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @interviews_upcoming.size >= 2 %> gap-5">
+        <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @interviews_upcoming.size >= 2 %> gap-3">
           <% @interviews_upcoming.each do |interview| %>
             <%= render interview %>
           <% end %>
@@ -99,7 +99,7 @@
     </div>
 
     <div class="@container">
-      <div class="grid grid-cols-1 @xl:grid-cols-2 @3xl:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 @xl:grid-cols-2 @3xl:grid-cols-3 gap-3">
         <div class="relative card card-hover @xl:col-span-2 @3xl:col-span-1">
           <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Job Leads</span>
@@ -175,7 +175,7 @@
           </div>
 
           <% if @top_sources.any? %>
-            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 %> <%= '@4xl:grid-cols-4' if @top_sources.size >= 4 %> gap-3">
+            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 && @top_sources.size != 4 %> gap-1.5">
               <% @top_sources.each_with_index do |(source, data), index| %>
                 <div class="flex flex-col gap-4 bg-neutral-100 p-3 rounded-md">
                   <div class="flex items-center gap-2.5">
