@@ -93,6 +93,8 @@ class JobLead < ApplicationRecord
 
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
+  scope :stale, -> { where(updated_at: ..7.days.ago) }
+
   scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name.downcase }) }
   scope :with_tags, ->(tag_names) {
     tag_names = tag_names.map(&:downcase)
