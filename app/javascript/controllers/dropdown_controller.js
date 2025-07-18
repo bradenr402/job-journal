@@ -7,6 +7,7 @@ export default class extends Controller {
 
   connect() {
     this.outsideClickListener = this.handleOutsideClick.bind(this);
+    if (this.menuTarget.classList.contains(this.hideDropdownClass)) this.menuTarget.inert = true;
   }
 
   toggle() {
@@ -21,6 +22,7 @@ export default class extends Controller {
   open() {
     this.menuTarget.classList.add(this.showDropdownClass);
     this.menuTarget.classList.remove(this.hideDropdownClass);
+    this.menuTarget.inert = false;
 
     document.addEventListener('mousedown', this.outsideClickListener);
     document.addEventListener('keydown', this.handleEscape);
@@ -29,6 +31,7 @@ export default class extends Controller {
   close() {
     this.menuTarget.classList.add(this.hideDropdownClass);
     this.menuTarget.classList.remove(this.showDropdownClass);
+    this.menuTarget.inert = true;
 
     document.removeEventListener('mousedown', this.outsideClickListener);
     document.removeEventListener('keydown', this.handleEscape);
