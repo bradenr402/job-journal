@@ -44,18 +44,9 @@
   </div>
 
   <% if note_page %>
-    <div class="text-xs text-muted text-right">
-      <% if note.edited? %>
-        <span class="inline-flex items-center gap-1">
-          <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-          Updated: <%= local_time note.updated_at %>
-        </span>
-      <% else %>
-        <span class="inline-flex items-center gap-1">
-          <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-          Created: <%= local_time note.created_at %>
-        </span>
-      <% end %>
+    <div class="text-xs text-muted text-right flex items-center justify-end gap-1">
+      <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+      <%== note.edited? ? "Updated: #{local_time note.updated_at}" : "Created: #{local_time note.created_at}" %>
     </div>
   <% end %>
 </div>
