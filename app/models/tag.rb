@@ -13,6 +13,11 @@ class Tag < ApplicationRecord
 
   # Scopes
   scope :unused, -> { left_outer_joins(:taggings).where(taggings: { id: nil }) }
+  scope :top_by_usage, -> {
+    joins(:taggings)
+      .group(:id, :name)
+      .order(Arel.sql('COUNT(taggings.id) DESC'))
+  }
 
   # Class Methods
   def self.cleanup_unused_for_user(user)

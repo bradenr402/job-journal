@@ -18,6 +18,6 @@ class PagesController < ApplicationController
     @recent_notes = @all_notes.recent.order(updated_at: :desc).limit(10)
 
     @top_sources = @all_job_leads.top_sources_by_quality
-    @top_tags = Current.user.tags.joins(:taggings).group(:id, :name).order(Arel.sql('COUNT(taggings.id) DESC')).limit(15).pluck(:name)
+    @top_tags = Current.user.tags.top_by_usage.limit(15).pluck(:name)
   end
 end
