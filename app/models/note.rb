@@ -6,6 +6,9 @@ class Note < ApplicationRecord
   # Validations
   validates :content, presence: true
 
+  # Scope
+  scope :recent, -> { where(updated_at: 7.days.ago..) }
+
   # Instance Methods
   def job_lead
     notable if notable.is_a? JobLead

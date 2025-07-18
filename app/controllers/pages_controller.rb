@@ -15,7 +15,7 @@ class PagesController < ApplicationController
 
     @stale_leads = @all_job_leads.lead.stale.order(updated_at: :asc)
     @interviews_upcoming = @all_interviews.upcoming.order(scheduled_at: :asc)
-    @recent_notes = @all_notes.where(updated_at: 7.days.ago..).order(updated_at: :desc).limit(10)
+    @recent_notes = @all_notes.recent.order(updated_at: :desc).limit(10)
 
     @top_sources = @all_job_leads.top_sources_by_quality
     @top_tags = Current.user.tags.joins(:taggings).group(:id, :name).order(Arel.sql('COUNT(taggings.id) DESC')).limit(15).pluck(:name)
