@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -25,5 +25,8 @@ module JobJournal
     # config.eager_load_paths << Rails.root.join("extras")
 
     # config.assets.enabled = false
+
+    # Set default week start to Sunday for all date calculations
+    config.beginning_of_week = :sunday
   end
 end
