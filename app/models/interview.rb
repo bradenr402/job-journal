@@ -3,6 +3,11 @@ class Interview < ApplicationRecord
   belongs_to :job_lead
   has_many :notes, as: :notable, dependent: :destroy
 
+  # Normalizations
+  %i[interviewer location].each do |attribute|
+    normalizes attribute, with: :squish.to_proc
+  end
+
   # Validations
   validates :job_lead, presence: true
   validates :scheduled_at, presence: true
