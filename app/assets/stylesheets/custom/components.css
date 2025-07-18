@@ -232,7 +232,7 @@ Option variants:
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-2 text-sm font-medium bg-neutral-100 text-neutral-600 hover:bg-neutral-200 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 active:bg-neutral-300 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 text-neutral-600 hover:bg-neutral-200 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 active:bg-neutral-300 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 }
 
 @utility dropdown-menu {
