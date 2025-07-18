@@ -1,5 +1,5 @@
 @utility card {
-  @apply bg-white p-3.75 border border-neutral-300 rounded-2xl shadow-xs;
+  @apply bg-white p-3.75 border border-neutral-300 rounded-2xl shadow-xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
 
   &.card-hover {
     @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
@@ -7,7 +7,7 @@
 }
 
 @utility card-sm {
-  @apply bg-white p-2.5 border border-neutral-300 rounded-2xl shadow-2xs;
+  @apply bg-white p-2.5 border border-neutral-300 rounded-2xl shadow-2xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
 
   &.card-hover {
     @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
@@ -19,7 +19,7 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center gap-0.5 md:gap-2 p-2 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-soft md:hover:bg-neutral-100 hover:text-primary-600 transition-all duration-150 active:scale-97;
+  @apply flex max-md:flex-col items-center gap-0.75 md:gap-2 pt-2.25 pb-1.75 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-light md:hover:bg-neutral-100 focus-visible:bg-neutral-100 hover:text-primary-600 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none  active:scale-97;
 
   &.nav-link-active {
     @apply md:bg-neutral-100 text-primary-600;
@@ -232,7 +232,7 @@ Option variants:
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-2 text-sm font-medium bg-neutral-200/70 text-neutral-600 hover:bg-neutral-300/70 focus:ring-neutral-500 active:bg-neutral-300 transition-all duration-150 focus:ring-2 focus:outline-none active:scale-96;
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-2 text-sm font-medium bg-neutral-100 text-neutral-600 hover:bg-neutral-200 active:bg-neutral-300 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 }
 
 @utility dropdown-menu {
