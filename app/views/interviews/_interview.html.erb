@@ -21,15 +21,25 @@
       <% end %>
     </div>
     <% if interview_page %>
-      <div class="grow flex gap-2 justify-end">
-        <%= link_to edit_interview_path(interview), class: 'btn btn-sm btn-primary btn-muted gap-2' do %>
-          <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
-          <span>Edit</span>
-        <% end %>
-        <%= button_to interview, method: :delete, class: 'btn btn-sm btn-destructive btn-muted gap-2', data: { turbo_confirm: 'Are you sure you want to delete this interview?' } do %>
-          <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
-          <span>Delete</span>
-        <% end %>
+      <div class="ml-auto relative" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+        <button class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+          <span class="sr-only">Actions for this interview</span>
+          <%= inline_svg_tag 'icons/more-horizontal.svg', class: '-m-1! size-6' %>
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
+          <%= link_to edit_interview_path(interview), class: 'dropdown-option dropdown-option-secondary' do %>
+            <%= inline_svg_tag 'icons/edit.svg', class: 'size-5 shrink-0' %>
+            <span>Edit</span>
+          <% end %>
+
+          <div class="dropdown-divider"></div>
+
+          <%= button_to interview, method: :delete, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to delete this interview?' } do %>
+            <%= inline_svg_tag 'icons/trash.svg', class: 'size-5 shrink-0' %>
+            <span>Delete</span>
+          <% end %>
+        </div>
       </div>
     <% else %>
       <%= link_to interview_path(interview), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
