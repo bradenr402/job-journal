@@ -56,25 +56,21 @@
     </div>
   </div>
 
-  <div>
-    <div class="mb-4">
-      <h2 class="subheading">Stale Job Leads</h2>
-      <p class="text-sm text-muted mt-1">Job leads from more than 7 days ago that you haven&#8217;t applied to yet.</p>
-    </div>
-    <div id="job_leads" class="@container">
-      <% if @stale_leads.any? %>
-        <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @stale_leads.size >= 2 %> gap-5">
+  <% if @stale_leads.any? %>
+    <div>
+      <div class="mb-4">
+        <h2 class="subheading">Stale Job Leads</h2>
+        <p class="text-sm text-muted mt-1">Job leads from more than 7 days ago that you haven&#8217;t applied to yet.</p>
+      </div>
+      <div id="job_leads" class="@container">
+        <div class="grid grid-cols-1 <%= '@4xl:grid-cols-2' if @stale_leads.size >= 2 %> gap-3">
           <% @stale_leads.each do |job_lead| %>
             <%= render job_lead %>
           <% end %>
         </div>
-      <% else %>
-        <div class="empty-state">
-          No stale leads.
-        </div>
-      <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div>
     <div class="mb-4">
