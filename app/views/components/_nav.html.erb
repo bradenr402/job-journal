@@ -1,6 +1,6 @@
 <nav class="fixed bottom-5 inset-x-5 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
-  <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 bg-white/60 md:bg-white max-md:rounded-[1.25rem] md:rounded-xl max-md:backdrop-blur-md border md:border-l-0 md:border-y-0 border-neutral-200 flex flex-col max-sm:justify-center">
-    <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600' do %>
+  <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 md:space-y-2 bg-white/60 md:bg-white rounded-[1.25rem] md:rounded-2xl md:shadow-2xs max-md:backdrop-blur-md border border-neutral-200 flex flex-col">
+    <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600', tabindex: -1 do %>
       <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
       <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
     <% end %>
@@ -26,19 +26,32 @@
       </ul>
     </div>
 
-    <div class="max-md:hidden mt-4">
+    <div class="max-md:hidden">
       <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary w-full' %>
     </div>
 
-    <% if Current.user %>
-      <div class="max-md:hidden mt-2 pt-2 border-t border-neutral-100">
-        <%= link_to nil, class: 'flex flex-col items-start gap-0 px-3 py-2 rounded-lg text-light text-sm hover:bg-neutral-100 hover:text-primary-600 transition-colors duration-150' do %>
-          <span class="block text-xs text-muted">Logged in as</span>
-          <span class="font-medium"><%= Current.user.email_address %></span>
+    <div class="relative max-md:hidden md:pt-2 md:border-t md:border-neutral-100" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+      <button class="w-full flex flex-col items-start px-3 py-2 rounded-lg text-sm hover:bg-neutral-100 focus-visible:bg-neutral-100 active:bg-neutral-200 transition-all duration-150 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+        <span class="block text-xs text-soft">Logged in as</span>
+        <span class="font-medium text-light"><%= Current.user.email_address %></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
+        <%= link_to nil, class: 'dropdown-option dropdown-option-secondary' do %>
+          <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 shrink-0' %>
+          <span>Profile</span>
+        <% end %>
+        <%= link_to nil, class: 'dropdown-option dropdown-option-secondary' do %>
+          <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 shrink-0' %>
+          <span>Settings</span>
+        <% end %>
+
+        <div class="dropdown-divider"></div>
+
+        <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
+          <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+          <span>Sign Out</span>
         <% end %>
       </div>
-      <%# TODO: make logged in button above a dropdown with sign out option inside %>
-      <%= button_to 'Sign Out', session_path, method: :delete, form_class: 'max-md:hidden mt-2 w-full', class: 'btn btn-destructive btn-muted w-full' if authenticated? %>
-    <% end %>
+    </div>
   </div>
 </nav>

@@ -27,11 +27,36 @@
   <body class="bg-neutral-200/80 md:p-(--body-padding) selection:bg-primary-500/30">
     <%= render 'components/nav' if authenticated? %>
 
-    <div class="bg-white md:rounded-xl px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
+    <div class="bg-white md:rounded-2xl md:shadow-2xs px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
       <%= render 'components/flash' %>
       <main class="container mx-auto pt-28 pb-16 min-h-[calc(100vh-var(--tab-bar-height))] md:min-h-[calc(100vh-var(--body-padding)*2)]">
         <%= yield %>
       </main>
     </div>
+
+    <% if authenticated? %>
+      <div class="absolute top-3 left-3 md:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+        <button class="dropdown-trigger" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+          <span class="sr-only">Menu</span>
+          <%= inline_svg_tag 'icons/menu.svg', class: 'size-6' %>
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden" data-dropdown-target="menu">
+          <%= link_to '#', class: 'dropdown-option dropdown-option-secondary' do %>
+            <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 shrink-0' %>
+            <span>Profile</span>
+          <% end %>
+          <%= link_to '#', class: 'dropdown-option dropdown-option-secondary' do %>
+            <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 shrink-0' %>
+            <span>Settings</span>
+          <% end %>
+          <div class="dropdown-divider"></div>
+          <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
+            <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+            <span>Sign Out</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </body>
 </html>
