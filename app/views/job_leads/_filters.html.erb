@@ -33,18 +33,12 @@
     Filter job leads by status:
   </p>
   <div class="flex flex-wrap items-center gap-1">
-    <% if @selected_status.present? %>
-      <%= link_to job_leads_path(params.permit(:tags, :status).merge(status: nil)), class: 'inline-block', style: "view-transition-name: status-#{@selected_status}" do %>
-        <span class="tag tag-filter tag-selected tag-<%= @selected_status %>">
-          <%= @selected_status.titlecase %>
-          <%= inline_svg_tag 'icons/x-mini.svg' %>
+    <% @all_status_names.each do |status| %>
+      <%= link_to job_leads_path(params.permit(:tags, :status).merge(status: status == @selected_status ? nil : status)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if status == @selected_status %> tag-<%= status %>">
+          <%= status.titlecase %>
+          <%= inline_svg_tag 'icons/x-mini.svg' if status == @selected_status %>
         </span>
-      <% end %>
-    <% end %>
-
-    <% @unselected_statuses.each do |status| %>
-      <%= link_to job_leads_path(params.permit(:tags, :status).merge(status:)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
-        <span class="tag tag-filter tag-<%= status %>"><%= status.titlecase %></span>
       <% end %>
     <% end %>
   </div>

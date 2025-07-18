@@ -24,9 +24,8 @@ class JobLeadsController < ApplicationController
     @selected_tags = @tags.select { it.name.in? @selected_tag_names }
     @unselected_tags = @tags - @selected_tags
 
-    all_status_names = JobLead::STATUSES
-    @selected_status = @selected_status_name if all_status_names.include?(@selected_status_name)
-    @unselected_statuses = all_status_names - [ @selected_status_name ].compact
+    @all_status_names = JobLead::STATUSES
+    @selected_status = @selected_status_name if @all_status_names.include?(@selected_status_name)
   end
 
   # GET /job_leads/1
