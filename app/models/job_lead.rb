@@ -4,14 +4,22 @@ class JobLead < ApplicationRecord
   # Array of status types for filtering
   STATUSES = %w[lead applied interview offer rejected accepted].freeze
 
-  # Statuses ranked by progression/quality
+  # STATUS_QUALITY maps each job lead status to a numeric weight representing its value
+  # when comparing the effectiveness of job lead sources.
+  #
+  # - :lead      (5):   A saved opportunity, but no action taken yet. Low value, as many leads never progress.
+  # - :applied   (20):  Indicates user effort, but most applications do not result in interviews.
+  # - :interview (50):  A significant milestone; the source produced a real opportunity.
+  # - :offer     (90):  The source led to a job offer, which is a strong indicator of quality.
+  # - :accepted  (100): The ultimate goal; the source resulted in a successful hire.
+  # - :rejected  (0):   No longer an active or valuable lead for comparison purposes.
   STATUS_QUALITY = {
-    lead:         1,
-    applied:      2,
-    interview:    5,
-    offer:        8,
-    accepted:    13,
-    rejected:     0
+    lead:      5,
+    applied:   20,
+    interview: 50,
+    offer:     90,
+    accepted:  100,
+    rejected:  0
   }.freeze
 
   # Attributes
