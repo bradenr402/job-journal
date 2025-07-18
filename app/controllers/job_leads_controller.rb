@@ -9,13 +9,18 @@ class JobLeadsController < ApplicationController
     @selected_tag_names = params[:tags].to_s.split(',').map(&:strip).uniq
     @selected_status_name = params[:status].presence
 
+    @selected_job_lead_type = params[:job_lead_type].presence
+
+    scope = Current.user.job_leads
+
     @job_leads =
-      if params[:job_lead_type] == 'active'
-        Current.user.job_leads.active.order(updated_at: :desc)
-      elsif params[:job_lead_type] == 'archived'
-        Current.user.job_leads.archived.order(archived_at: :desc)
+      case @selected_job_lead_type
+      when 'active'
+        scope.active.order(updated_at: :desc)
+      when 'archived'
+        scope.archived.order(archived_at: :desc)
       else
-        Current.user.job_leads.order(updated_at: :desc)
+        scope.order(updated_at: :desc)
       end
 
     @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
