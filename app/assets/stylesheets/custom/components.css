@@ -287,7 +287,7 @@ Option variants:
     @apply inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
-      @apply text-primary-600 hover:bg-primary-100 focus:ring-primary-500 active:bg-primary-200/70;
+      @apply text-primary-600 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-300/60;
     }
 
     &.dropdown-option-secondary {
@@ -295,7 +295,7 @@ Option variants:
     }
 
     &.dropdown-option-destructive {
-      @apply hover:bg-rose-200/70 text-rose-600 focus:ring-rose-500 active:bg-rose-300/60;
+      @apply text-rose-600 hover:bg-rose-200/70 focus:ring-rose-500 active:bg-rose-300/60;
     }
 
     > svg {

@@ -16,7 +16,7 @@
   }
 
   &.btn-muted {
-    @apply bg-primary-100 text-primary-600 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-200;
+    @apply bg-primary-200/70 text-primary-600 hover:bg-primary-300/60 focus:ring-primary-500 active:bg-primary-300;
   }
 }
 
