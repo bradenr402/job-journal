@@ -14,7 +14,7 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       start_new_session_for @user
-      redirect_to root_path, notice: "You've successfully signed up to JobJournal. Welcome!"
+      redirect_to root_path, notice: 'You&#8217;ve successfully signed up to JobJournal. Welcome!'
     else
       flash[:alert] = @user.errors.full_messages.join(', ')
       render :new, status: :unprocessable_entity

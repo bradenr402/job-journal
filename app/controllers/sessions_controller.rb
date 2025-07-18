@@ -14,13 +14,12 @@ class SessionsController < ApplicationController
       start_new_session_for user
       redirect_to after_authentication_url
     else
-      redirect_to new_session_path, alert: 'Try another email address or password.'
+      redirect_to new_session_path, error: 'Try another email address or password.'
     end
   end
 
   def destroy
     terminate_session
-    flash[:notice] = 'You have been signed out.'
-    redirect_to new_session_path
+    redirect_to new_session_path, notice: 'You have been signed out.'
   end
 end
