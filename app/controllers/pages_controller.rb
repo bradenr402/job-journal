@@ -5,7 +5,7 @@ class PagesController < ApplicationController
     @all_notes = Current.user.notes
 
     this_week = Time.current.all_week
-    last_week = 1.week.ago.all_week
+    last_week = Time.current.last_week.all_week
 
     @job_leads_this_week = @all_job_leads.where(created_at: this_week)
     @job_leads_last_week = @all_job_leads.where(created_at: last_week)
