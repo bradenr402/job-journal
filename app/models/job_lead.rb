@@ -24,6 +24,11 @@ class JobLead < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
+  # Normalizations
+  %i[title company salary contact location source].each do |attribute|
+    normalizes attribute, with: :squish.to_proc
+  end
+
   # Validations
   validates :company, presence: true
   validates :title, presence: true
