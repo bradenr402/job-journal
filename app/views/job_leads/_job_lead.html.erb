@@ -131,7 +131,7 @@
     </div>
   <% end %>
 
-  <% if job_lead.tags.present? %>
+  <% if job_lead.tags.any? %>
     <div class="flex flex-wrap items-center gap-1 mb-4">
       <% job_lead.tags.order(:name).each do |tag| %>
         <span class="tag"><%= tag.name %></span>
