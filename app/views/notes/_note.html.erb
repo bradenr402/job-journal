@@ -1,5 +1,5 @@
 <%
-  display_title = current_page?(notes_path) || current_page?(root_path) || current_page?(search_path)
+  display_title = current_page?(note_path(note)) || current_page?(notes_path) || current_page?(root_path) || current_page?(search_path)
 
   if display_title
     if note.notable.is_a?(JobLead)
