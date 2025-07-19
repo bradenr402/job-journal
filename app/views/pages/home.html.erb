@@ -123,7 +123,7 @@
             <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
           </div>
           <p class="font-extrabold text-4xl mb-1"><%= @all_interviews.size %></p>
-          <% offers = @all_interviews.map(&:job_lead).uniq.reject { it.offer_amount.nil? }.size %>
+          <% offers = @all_interviews.map(&:job_lead).uniq.count(&:offer_amount?) %>
           <p class="text-xs text-muted"><%= pluralize(offers, 'offer') %> received</p>
         </div>
 
