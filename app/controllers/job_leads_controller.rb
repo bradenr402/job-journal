@@ -12,6 +12,20 @@ class JobLeadsController < ApplicationController
     @selected_job_lead_type = params[:job_lead_type].presence
 
     scope = Current.user.job_leads
+      .includes(:notes, :tags)
+      .select(
+        :id,
+        :created_at,
+        :updated_at,
+        :applied_at,
+        :offer_at,
+        :rejected_at,
+        :accepted_at,
+        :archived_at,
+        :title,
+        :company,
+        :application_url
+      )
 
     @job_leads =
       case @selected_job_lead_type
@@ -139,7 +153,7 @@ class JobLeadsController < ApplicationController
   private
 
   def set_job_lead
-    @job_lead = JobLead.find(params.expect(:id))
+    @job_lead = Current.user.job_leads.includes(:notes, :tags, interviews: :notes).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
     redirect_back fallback_location: root_path, alert: 'Job lead not found.', status: :not_found
   end
