@@ -36,10 +36,10 @@
     </p>
   <% end %>
 
-  <div class="<%= 'max-h-24' unless note_page %> overflow-hidden relative">
+  <div class="<%= 'h-full max-h-24' unless note_page %> overflow-hidden relative">
     <%= content_tag(:div, note.content, class: "text-light whitespace-break-spaces #{'line-clamp-4 select-none' unless note_page}") %>
     <% unless note_page %>
-      <div class="pointer-events-none absolute top-14 inset-x-0 h-10 bg-gradient-to-t from-white/90 group-hover:from-neutral-100/80 to-transparent transition-colors duration-150"></div>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white/90 group-hover:from-neutral-100/80 to-transparent transition-colors duration-150"></div>
     <% end %>
   </div>
 
