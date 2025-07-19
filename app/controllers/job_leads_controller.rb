@@ -40,8 +40,8 @@ class JobLeadsController < ApplicationController
     @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
     @job_leads = @job_leads.with_status(@selected_status_name) if @selected_status_name.present?
 
-    @selected_tags = @tags.select { it.name.in? @selected_tag_names }
-    @unselected_tags = @tags - @selected_tags
+    @selected_tags = @tags.where(name: @selected_tag_names)
+    @unselected_tags = @tags.where.not(name: @selected_tag_names)
 
     @all_status_names = JobLead::STATUSES
     @selected_status = @selected_status_name if @all_status_names.include?(@selected_status_name)
