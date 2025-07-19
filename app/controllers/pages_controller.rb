@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
   def home
-    @all_job_leads = Current.user.job_leads
-    @all_interviews = Current.user.interviews
-    @all_notes = Current.user.notes
+    @all_job_leads = Current.user.job_leads.includes(:notes, :tags)
+    @all_interviews = Current.user.interviews.includes(:job_lead)
+    @all_notes = Current.user.notes.includes(notable: :job_lead)
 
     this_week = Time.current.all_week
     last_week = Time.current.last_week.all_week
