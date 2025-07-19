@@ -5,7 +5,7 @@ class NotesController < ApplicationController
   def index
     @notes =
       Current.user.notes
-        .includes(:notable)
+        .includes(notable: :job_lead)
         .order(updated_at: :desc)
         .yield_self { |scope| params[:notable_type].present? ? scope.where(notable_type: params[:notable_type]) : scope }
         .where.not(
@@ -63,7 +63,7 @@ class NotesController < ApplicationController
   private
 
   def set_note
-    @note = Current.user.notes.find(params.expect(:id))
+    @note = Current.user.notes.includes(notable: :job_lead).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
     redirect_back fallback_location: root_path, alert: 'Note not found.', status: :not_found
   end
