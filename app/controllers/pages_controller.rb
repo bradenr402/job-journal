@@ -7,11 +7,11 @@ class PagesController < ApplicationController
     this_week = Time.current.all_week
     last_week = Time.current.last_week.all_week
 
-    @job_leads_this_week = @all_job_leads.where(created_at: this_week)
-    @job_leads_last_week = @all_job_leads.where(created_at: last_week)
+    @job_leads_this_week_count = @all_job_leads.where(created_at: this_week).count
+    @job_leads_last_week_count = @all_job_leads.where(created_at: last_week).count
 
-    @interviews_this_week = @all_interviews.where(scheduled_at: this_week)
-    @interviews_last_week = @all_interviews.where(scheduled_at: last_week)
+    @interviews_this_week_count = @all_interviews.where(scheduled_at: this_week).count
+    @interviews_last_week_count = @all_interviews.where(scheduled_at: last_week).count
 
     @stale_leads = @all_job_leads.lead.stale.order(updated_at: :asc)
     @interviews_upcoming = @all_interviews.upcoming.order(scheduled_at: :asc)
