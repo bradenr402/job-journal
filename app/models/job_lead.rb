@@ -162,10 +162,10 @@ class JobLead < ApplicationRecord
     when 'lead' then  created_at
     when 'applied' then  applied_at
     when 'interview'
-      upcoming_interview = interviews.where(scheduled_at: Time.current..).order(:scheduled_at).first
+      upcoming_interview = interviews.future.select(:scheduled_at).order(:scheduled_at).first
       return upcoming_interview.scheduled_at if upcoming_interview
 
-      last_past_interview = interviews.where(scheduled_at: ..Time.current).order(scheduled_at: :desc).first
+      last_past_interview = interviews.past.select(:scheduled_at).order(scheduled_at: :desc).first
       return last_past_interview.scheduled_at if last_past_interview
 
       nil

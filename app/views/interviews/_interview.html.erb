@@ -61,16 +61,16 @@
     <% end %>
   </div>
 
-  <% if interview.call_url.present? && interview_page %>
-    <div class="flex items-center gap-1 text-sm text-soft mb-4">
-      <%= link_to interview.call_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
-        <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
-        <span><%= interview.call_url %></span>
-      <% end %>
-    </div>
-  <% end %>
-
   <% if interview_page %>
+    <% if interview.call_url.present? %>
+      <div class="flex items-center gap-1 text-sm text-soft mb-4">
+        <%= link_to interview.call_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
+          <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
+          <span><%= interview.call_url %></span>
+        <% end %>
+      </div>
+    <% end %>
+
     <div class="mb-4">
       <dt class="text-muted text-sm flex items-center gap-1">Rating</dt>
       <dd class="text-xl text-normal font-bold flex items-center gap-x-1">
