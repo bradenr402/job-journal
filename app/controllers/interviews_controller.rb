@@ -3,13 +3,25 @@ class InterviewsController < ApplicationController
 
   # GET /interviews
   def index
+    scope = Current.user.interviews
+      .includes(:job_lead, :notes)
+      .select(
+        :id,
+        :created_at,
+        :updated_at,
+        :job_lead_id,
+        :interviewer,
+        :scheduled_at,
+        :location
+      )
+
     @interviews =
       if params[:scheduled] == 'upcoming'
-        Current.user.interviews.future.order(scheduled_at: :desc)
+        scope.future.order(scheduled_at: :desc)
       elsif params[:scheduled] == 'completed'
-        Current.user.interviews.past.order(scheduled_at: :desc)
+        scope.past.order(scheduled_at: :desc)
       else
-        Current.user.interviews.order(scheduled_at: :desc)
+        scope.order(scheduled_at: :desc)
       end
   end
 
@@ -59,7 +71,7 @@ class InterviewsController < ApplicationController
 
   private
   def set_interview
-    @interview = Interview.find(params.expect(:id))
+    @interview = Current.user.interviews.includes(:job_lead, :notes).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
     redirect_back fallback_location: root_path, alert: 'Interview not found.', status: :not_found
   end
