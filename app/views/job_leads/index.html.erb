@@ -29,7 +29,7 @@
     <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
   </div>
 
-  <%= render 'filters', job_lead: @job_lead %>
+  <%= render 'filters' %>
 
   <div id="job_leads" class="@container">
     <% if @job_leads.any? %>
