@@ -177,14 +177,14 @@
           <% if @top_sources.any? %>
             <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 && @top_sources.size != 4 %> gap-1.5">
               <% @top_sources.each_with_index do |(source, data), index| %>
-                <div class="flex flex-col gap-5 bg-neutral-100 p-3 rounded-md">
+                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
                   <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70">
+                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
                       #<%= index + 1 %>
                     </div>
                     <div class="flex flex-col">
-                      <p class="font-bold text-lg"><%= source %></p>
-                      <p class="text-xs text-muted leading-none">
+                      <p class="font-bold text-lg/snug"><%= source %></p>
+                      <p class="text-xs/snug text-muted leading-none">
                         <%= pluralize(data[:count], 'lead') %>
                       </p>
                     </div>

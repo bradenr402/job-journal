@@ -24,10 +24,10 @@
     <meta name="view-transition" content="same-origin" />
   </head>
 
-  <body class="bg-neutral-200/80 md:p-(--body-padding) selection:bg-primary-500/30">
+  <body class="bg-neutral-200/80 dark:bg-black text-normal md:p-(--body-padding) selection:bg-primary-500/30">
     <%= render 'components/nav' if authenticated? %>
 
-    <div class="bg-white md:rounded-2xl md:shadow-2xs px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
+    <div class="bg-white dark:bg-neutral-900/60 md:rounded-2xl md:not-dark:shadow-2xs dark:border dark:border-neutral-900 px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
       <%= render 'components/flash' %>
       <main class="container mx-auto pt-28 pb-16 min-h-[calc(100vh-var(--tab-bar-height))] md:min-h-[calc(100vh-var(--body-padding)*2)]">
         <%= yield %>

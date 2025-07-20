@@ -12,19 +12,19 @@
 
 @utility btn-primary {
   &:not(.btn-muted) {
-    @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+    @apply bg-primary-600 dark:bg-primary-700 text-white hover:bg-primary-700 dark:hover:bg-primary-600;
   }
 
   &.btn-muted {
-    @apply bg-primary-200/70 text-primary-600 hover:bg-primary-300/60 active:bg-primary-300;
+    @apply bg-primary-200/70 text-primary-600 hover:bg-primary-300/60 active:bg-primary-300 dark:bg-primary-900/70 dark:text-primary-500 dark:hover:bg-primary-800/60 dark:active:bg-primary-800;
   }
 }
 
 @utility btn-secondary {
-  @apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 active:bg-neutral-400;
+  @apply bg-neutral-200 dark:bg-neutral-800 text-normal hover:bg-neutral-300 dark:hover:bg-neutral-700 active:bg-neutral-400 dark:active:bg-neutral-600;
 
   &.btn-muted {
-    @apply bg-neutral-200/70 text-neutral-600 hover:bg-neutral-300/70 active:bg-neutral-300;
+    @apply bg-neutral-200/70 dark:bg-neutral-800/70 text-light hover:bg-neutral-300/70 dark:hover:bg-neutral-700/70 active:bg-neutral-300 dark:active:bg-neutral-700;
   }
 }
 
@@ -32,7 +32,7 @@
   @apply bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 active:bg-rose-800;
 
   &.btn-muted {
-    @apply bg-rose-200/70 text-rose-600 hover:bg-rose-300/60 focus:ring-rose-500 active:bg-rose-300;
+    @apply bg-rose-200/70 text-rose-600 hover:bg-rose-300/60 focus:ring-rose-500 active:bg-rose-300 dark:bg-rose-900/70 dark:text-rose-400 dark:hover:bg-rose-800/60 dark:active:bg-rose-800;
   }
 }
 

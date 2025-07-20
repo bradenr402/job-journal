@@ -1,23 +1,33 @@
 @utility heading {
-  @apply text-[clamp(1.5rem,2vw+1rem,1.875rem)] font-bold text-neutral-900 tracking-tight;
+  @apply text-[clamp(1.5rem,2vw+1rem,1.875rem)] font-bold text-neutral-900 dark:text-neutral-100 tracking-tight;
 }
 
 @utility subheading {
-  @apply text-[clamp(1.25rem,1.5vw+1rem,1.5rem)] font-bold text-neutral-900 tracking-tight;
+  @apply text-[clamp(1.25rem,1.5vw+1rem,1.5rem)] font-bold text-neutral-900 dark:text-neutral-100 tracking-tight;
 }
 
 @utility text-normal {
-  @apply text-neutral-800;
+  @apply text-neutral-800 dark:text-neutral-200;
 }
 
 @utility text-light {
-  @apply text-neutral-600;
+  @apply text-neutral-600 dark:text-neutral-400;
 }
 
 @utility text-soft {
   @apply text-neutral-500;
+
+  .card &,
+  .card-sm & {
+    @apply dark:text-neutral-400;
+  }
 }
 
 @utility text-muted {
-  @apply text-neutral-400;
+  @apply text-neutral-400 dark:text-neutral-600;
+
+  .card &,
+  .card-sm & {
+    @apply dark:text-neutral-500;
+  }
 }

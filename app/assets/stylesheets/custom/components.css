@@ -1,16 +1,16 @@
 @utility card {
-  @apply bg-white p-3.75 border border-neutral-300 rounded-2xl shadow-xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
+  @apply bg-white dark:bg-neutral-900 p-3.75 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
 
   &.card-hover {
-    @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
+    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
   }
 }
 
 @utility card-sm {
-  @apply bg-white p-2.5 border border-neutral-300 rounded-2xl shadow-2xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
+  @apply bg-white dark:bg-neutral-900 p-2.5 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-2xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
 
   &.card-hover {
-    @apply hover:bg-neutral-100/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
+    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
   }
 }
 
@@ -19,18 +19,18 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center gap-0.75 md:gap-2 pt-2.25 pb-1.75 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-light md:hover:bg-neutral-100 focus-visible:bg-neutral-100 hover:text-primary-600 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none  active:scale-97;
+  @apply flex max-md:flex-col items-center gap-0.75 md:gap-2 pt-2.25 pb-1.75 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-light md:hover:bg-neutral-100 md:hover:dark:bg-neutral-900 focus-visible:bg-neutral-100 hover:text-primary-600 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none  active:scale-97;
 
   &.nav-link-active {
-    @apply md:bg-neutral-100 text-primary-600;
+    @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600;
   }
 }
 
 @utility tag-chip {
-  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white border border-neutral-300 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-150 active:scale-94;
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white dark:bg-neutral-800/40 border border-neutral-300 dark:border-neutral-800 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-150 active:scale-94;
 
   > button {
-    @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 hover:bg-neutral-300/60 hover:text-light transition-all duration-150;
+    @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 dark:bg-neutral-800/60 hover:bg-neutral-300/60 dark:hover:bg-neutral-700/60 hover:text-light transition-all duration-150;
 
     > svg {
       @apply size-3;
@@ -39,14 +39,19 @@
 }
 
 @utility tag {
-  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-150;
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-neutral-500 dark:text-neutral-400 text-xs whitespace-nowrap cursor-default select-none transition-all duration-150;
 
   /* Default (neutral) tag style */
-  @apply bg-neutral-50 border-neutral-200;
+  @apply bg-neutral-50 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800;
+
+  .card &,
+  .card-sm & {
+    @apply text-soft dark:bg-neutral-800/40 dark:border-neutral-700/40;
+  }
 
   /* Filterable tags */
   &.tag-filter {
-    @apply cursor-pointer hover:border-primary-100 hover:bg-primary-50/80 hover:text-primary-500 active:scale-94;
+    @apply cursor-pointer hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500 active:scale-94;
   }
 
   /* Selected state for non-status tags */
@@ -58,10 +63,10 @@
       .tag-rejected,
       .tag-accepted
     ) {
-    @apply border-primary-200 bg-primary-100/80 text-primary-600;
+    @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-600;
 
     & > svg {
-      @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+      @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
     }
   }
 
@@ -69,7 +74,7 @@
   &.tag-lead {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-yellow-200/60 text-yellow-600 border-yellow-300/60;
+      @apply bg-yellow-200/60 text-yellow-600 border-yellow-300/60 dark:bg-yellow-950/60 dark:text-yellow-500 dark:border-yellow-800/60;
     }
 
     &.tag-selected.tag-filter {
@@ -77,13 +82,13 @@
     }
 
     &.tag-filter:not(.tag-selected) {
-      @apply hover:bg-yellow-100/80 hover:text-yellow-500 hover:border-yellow-200;
+      @apply hover:bg-yellow-100/80 hover:text-yellow-500 hover:border-yellow-200 dark:hover:bg-yellow-900/80 dark:hover:border-yellow-900;
     }
 
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -91,7 +96,7 @@
   &.tag-applied {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-blue-200/60 text-blue-600 border-blue-300/60;
+      @apply bg-blue-200/60 text-blue-600 border-blue-300/60 dark:bg-blue-950/60 dark:text-blue-500 dark:border-blue-800/60;
     }
 
     &.tag-selected.tag-filter {
@@ -99,13 +104,13 @@
     }
 
     &.tag-filter {
-      @apply hover:bg-blue-100/80 hover:text-blue-500 hover:border-blue-200;
+      @apply hover:bg-blue-100/80 hover:text-blue-500 hover:border-blue-200 dark:hover:bg-blue-900/80 dark:hover:border-blue-900;
     }
 
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -113,7 +118,7 @@
   &.tag-interview {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-purple-200/60 text-purple-600 border-purple-300/60;
+      @apply bg-purple-200/60 text-purple-600 border-purple-300/60 dark:bg-purple-950/60 dark:text-purple-500 dark:border-purple-800/60;
     }
 
     &.tag-selected.tag-filter {
@@ -121,13 +126,13 @@
     }
 
     &.tag-filter {
-      @apply hover:bg-purple-100/80 hover:text-purple-500 hover:border-purple-200;
+      @apply hover:bg-purple-100/80 hover:text-purple-500 hover:border-purple-200 dark:hover:bg-purple-900/80 dark:hover:border-purple-900;
     }
 
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -135,7 +140,7 @@
   &.tag-offer {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-green-200/60 text-green-600 border-green-300/60;
+      @apply bg-green-200/60 text-green-600 border-green-300/60 dark:bg-green-950/60 dark:text-green-500 dark:border-green-800/60;
     }
 
     &.tag-selected.tag-filter {
@@ -143,13 +148,13 @@
     }
 
     &.tag-filter {
-      @apply hover:bg-green-100/80 hover:text-green-500 hover:border-green-200;
+      @apply hover:bg-green-100/80 hover:text-green-500 hover:border-green-200 dark:hover:bg-green-900/80 dark:hover:border-green-900;
     }
 
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -157,7 +162,7 @@
   &.tag-rejected {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-rose-200/60 text-rose-600 border-rose-300/60;
+      @apply bg-rose-200/60 text-rose-600 border-rose-300/60 dark:bg-rose-950/60 dark:text-rose-500 dark:border-rose-800/60;
     }
 
     &.tag-selected.tag-filter {
@@ -165,13 +170,13 @@
     }
 
     &.tag-filter {
-      @apply hover:bg-rose-100/80 hover:text-rose-500 hover:border-rose-200;
+      @apply hover:bg-rose-100/80 hover:text-rose-500 hover:border-rose-200 dark:hover:bg-rose-900/80 dark:hover:border-rose-900;
     }
 
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -179,7 +184,7 @@
   &.tag-accepted {
     &.tag-selected,
     &:not(.tag-filter) {
-      @apply bg-emerald-200/60 text-emerald-600 border-emerald-300/60;
+      @apply bg-emerald-200/60 text-emerald-600 border-emerald-300/60 dark:bg-emerald-950/60 dark:text-emerald-500 dark:border-emerald-800/60;
     }
 
     &.tag-selected.tag-filter {
@@ -187,13 +192,13 @@
     }
 
     &.tag-filter {
-      @apply hover:bg-emerald-100/80 hover:text-emerald-500 hover:border-emerald-200;
+      @apply hover:bg-emerald-100/80 hover:text-emerald-500 hover:border-emerald-200 dark:hover:bg-emerald-900/80 dark:hover:border-emerald-900;
     }
 
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 in-[.tag-selected:hover]:text-rose-600;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -232,11 +237,20 @@ Option variants:
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 text-neutral-600 hover:bg-neutral-200 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 active:bg-neutral-300 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+
+  .card &,
+  .card-sm & {
+    @apply dark:bg-neutral-800 dark:hover:bg-neutral-700 text-normal dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-700 dark:active:bg-neutral-600;
+  }
 }
 
 @utility dropdown-menu {
-  @apply absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col gap-1 rounded-xl bg-white shadow-sm border border-neutral-200 z-50 transition-all duration-150;
+  @apply absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col gap-1 rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-150;
+
+  .card & {
+    @apply  dark:bg-neutral-800 dark:border-neutral-700;
+  }
 
   &.dropdown-hidden {
     @apply scale-90 opacity-0 pointer-events-none;
@@ -287,15 +301,15 @@ Option variants:
     @apply inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
-      @apply text-primary-600 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-300/60;
+      @apply text-primary-600 dark:text-primary-400 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-300/60 dark:hover:bg-primary-600/60 dark:active:bg-primary-600;
     }
 
     &.dropdown-option-secondary {
-      @apply text-neutral-600 hover:bg-neutral-200/70 focus:ring-neutral-500 active:bg-neutral-300/70;
+      @apply text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200/70 focus:ring-neutral-500 active:bg-neutral-300/70 dark:hover:bg-neutral-700/60 dark:active:bg-neutral-700;
     }
 
     &.dropdown-option-destructive {
-      @apply text-rose-600 hover:bg-rose-200/70 focus:ring-rose-500 active:bg-rose-300/60;
+      @apply text-rose-600 dark:text-rose-400 hover:bg-rose-200/70 focus:ring-rose-500 active:bg-rose-300/60 dark:hover:bg-rose-900/60 dark:active:bg-rose-600;
     }
 
     > svg {
@@ -304,6 +318,6 @@ Option variants:
   }
 
   .dropdown-divider {
-    @apply h-px w-[calc(100%)-0.25rem] mx-0.5 bg-neutral-200;
+    @apply h-px w-[calc(100%)-0.25rem] mx-0.5 bg-neutral-200 dark:bg-neutral-700;
   }
 }

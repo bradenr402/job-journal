@@ -1,21 +1,21 @@
 @utility form-input {
-  @apply appearance-none block shadow-sm rounded-[0.625rem] border border-neutral-300 focus:outline-hidden focus:ring-2 focus:ring-primary-600 px-3 py-2 w-full caret-primary-600 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal;
+  @apply appearance-none block shadow-sm rounded-[0.625rem] border border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-primary-600 px-3 py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
 }
 
 @utility form-input-transparent {
-  @apply appearance-none block focus:outline-hidden py-2 w-full caret-primary-600 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal
+  @apply appearance-none block focus:outline-hidden py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal
 }
 
 @utility form-label {
-  @apply text-neutral-600 block mb-1 text-sm font-medium select-none;
+  @apply text-light block mb-1 text-sm not-dark:font-medium select-none;
 }
 
 @utility form-select {
-  @apply block shadow-sm rounded-[0.625rem] border border-neutral-300 focus:outline-hidden focus:ring-2 focus:ring-primary-600 pl-3 pr-6 py-2 w-full caret-primary-600 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal;
+  @apply block shadow-sm rounded-[0.625rem] border border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-primary-600 pl-3 pr-6 py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
 }
 
 @utility form-textarea {
-  @apply appearance-none block shadow-sm rounded-[0.625rem] border border-neutral-300 focus:outline-hidden focus:ring-2 focus:ring-primary-600 p-4 w-full min-h-[120px] resize-y caret-primary-600 placeholder:text-neutral-400 placeholder:select-none placeholder:font-normal;
+  @apply appearance-none block shadow-sm rounded-[0.625rem] border border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-primary-600 p-4 w-full min-h-[120px] resize-y caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
 }
 
 .form-textarea-wrap {
@@ -27,7 +27,7 @@
   white-space: pre-wrap;
   visibility: hidden;
   /* Match textarea styling */
-  @apply rounded-[0.625rem] border border-neutral-300 p-4 min-h-[120px];
+  @apply rounded-[0.625rem] border border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 p-4 min-h-[120px];
   font: inherit;
   grid-area: 1 / 1 / 2 / 2;
   box-sizing: border-box;
@@ -53,10 +53,15 @@
     @apply inline-flex cursor-default items-center gap-1.25 rounded-lg border px-2 py-1 text-xs whitespace-nowrap text-soft transition-all duration-150 select-none;
 
     /* Default (neutral) tag style */
-    @apply cursor-pointer border-neutral-200 bg-neutral-50 hover:border-primary-100 hover:bg-primary-50/80 hover:text-primary-500;
+    @apply cursor-pointer border-neutral-200 bg-neutral-50 dark:bg-neutral-900/80 dark:border-neutral-800/80 hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500;
+
+    .card &,
+    .card-sm & {
+      @apply dark:bg-neutral-800/40 dark:border-neutral-700/40 hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500;
+    }
 
     /* Selected state for non-status tags */
-    @apply peer-checked:border-primary-200 peer-checked:bg-primary-100/80 peer-checked:text-primary-600 has-[svg]:peer-checked:pr-1.5 not-peer-checked:[&_svg]:hidden peer-checked:hover:[&_svg]:bg-rose-200/70 peer-checked:hover:[&_svg]:text-rose-600;
+    @apply peer-checked:border-primary-200 dark:peer-checked:border-primary-900 peer-checked:bg-primary-100/80 dark:peer-checked:bg-primary-950/80 peer-checked:text-primary-600 has-[svg]:peer-checked:pr-1.5 not-peer-checked:[&_svg]:hidden peer-checked:hover:[&_svg]:bg-rose-200/70 peer-checked:hover:[&_svg]:text-rose-600;
 
     & > svg {
       @apply size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150;

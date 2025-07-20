@@ -167,7 +167,7 @@
 
         <% status_history.each do |status_entry| %>
           <div class="flex items-center gap-1.5">
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0' %>
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0 text-light' %>
             <span class="tag tag-<%= status_entry[:status] %>">
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
             </span>

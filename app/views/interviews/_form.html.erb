@@ -16,11 +16,11 @@
     </div>
 
     <div class="flex items-center @2xl:col-span-2 my-4">
-      <hr class="grow border-t border-neutral-200">
+      <hr class="grow border-t border-neutral-200 dark:border-neutral-800">
       <span class="px-3 text-muted text-xs uppercase">
         optional
       </span>
-      <hr class="grow border-t border-neutral-200">
+      <hr class="grow border-t border-neutral-200 dark:border-neutral-800">
     </div>
 
     <div>
@@ -85,7 +85,7 @@
       </div>
     <% end %>
 
-    <div class="@2xl:col-span-2 sticky bottom-0 bg-white py-4 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200">
+    <div class="@2xl:col-span-2 sticky bottom-0 bg-white dark:bg-neutral-950 py-4 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200 dark:border-neutral-800">
       <%= form.submit interview.persisted? ? 'Save Changes' : 'Save Interview', class: 'btn btn-primary w-full sm:w-auto' %>
     </div>
   </div>

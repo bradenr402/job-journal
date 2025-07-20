@@ -1,5 +1,5 @@
 <nav class="fixed bottom-5 inset-x-5 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
-  <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 md:space-y-2 bg-white/60 md:bg-white rounded-[1.25rem] md:rounded-2xl md:shadow-2xs max-md:backdrop-blur-md border border-neutral-200 flex flex-col">
+  <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 md:space-y-2 bg-white/60 md:bg-white dark:bg-neutral-900/60 rounded-[1.25rem] md:rounded-2xl md:not-dark:shadow-2xs max-md:backdrop-blur-md border border-neutral-200 dark:border-neutral-800/60 md:dark:border-neutral-900 flex flex-col">
     <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600', tabindex: -1 do %>
       <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
       <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
@@ -13,7 +13,7 @@
       { key: :search, path: search_path, label: 'Search', icon: 'search' },
     ] %>
 
-    <div class="md:grow md:pt-2 md:border-t md:border-neutral-100">
+    <div class="md:grow md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80">
       <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-0.25">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
@@ -30,12 +30,12 @@
       <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary w-full' %>
     </div>
 
-    <div class="relative max-md:hidden md:pt-2 md:border-t md:border-neutral-100" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
-      <button class="w-full flex flex-col items-start px-3 py-2 rounded-lg text-sm hover:bg-neutral-100 focus-visible:bg-neutral-100 active:bg-neutral-200 transition-all duration-150 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+    <div class="relative max-md:hidden md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+      <button class="w-full flex flex-col items-start px-3 py-2 rounded-lg text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 focus-visible:bg-neutral-100 dark:focus-visible:bg-neutral-800 active:bg-neutral-200 active:bg-neutral-700 transition-all duration-150 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
         <span class="block text-xs text-soft">Logged in as</span>
         <span class="font-medium text-light"><%= Current.user.email_address %></span>
       </button>
-      <div class="dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
+      <div class="translate-y-1 dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
         <%= link_to nil, class: 'dropdown-option dropdown-option-secondary' do %>
           <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 shrink-0' %>
           <span>Profile</span>
