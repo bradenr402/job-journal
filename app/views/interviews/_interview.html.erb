@@ -7,7 +7,7 @@
       <div class="<%= interview_page ? 'subheading' : 'text-lg font-semibold' %>">
         <span>Interview with <%= interview.interviewer %></span>
         <% if interview.scheduled_at.past? %>
-          <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-offer">
+          <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-accepted">
             Completed
           </span>
         <% else %>

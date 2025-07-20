@@ -8,13 +8,13 @@
     <% end %>
 
     <%= link_to interviews_path(scheduled: params[:scheduled] == 'upcoming' ? nil : 'upcoming'), class: 'inline-block', style: "view-transition-name: upcoming-interviews" do %>
-      <span class="tag tag-filter <%= 'tag-selected' if params[:scheduled] == 'upcoming' %>">
+      <span class="tag tag-filter tag-interview <%= 'tag-selected' if params[:scheduled] == 'upcoming' %>">
         <span>Upcoming</span>
         <%= inline_svg_tag 'icons/x-mini.svg' if params[:scheduled] == 'upcoming' %>
       </span>
     <% end %>
     <%= link_to interviews_path(scheduled: params[:scheduled] == 'completed' ? nil : 'completed'), class: 'inline-block', style: "view-transition-name: completed-interviews" do %>
-      <span class="tag tag-filter <%= 'tag-selected' if params[:scheduled] == 'completed' %>">
+      <span class="tag tag-filter tag-accepted <%= 'tag-selected' if params[:scheduled] == 'completed' %>">
         <span>Completed</span>
         <%= inline_svg_tag 'icons/x-mini.svg' if params[:scheduled] == 'completed' %>
       </span>
