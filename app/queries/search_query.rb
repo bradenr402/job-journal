@@ -39,7 +39,7 @@ class SearchQuery
   end
 
   def terms
-    @terms ||= @query.scan(/"([^"]+)"|'([^']+)'|(\S+)/).map { |dq, sq, unq| (dq || sq || unq).downcase }
+    @terms ||= @query.scan(/"([^"]+)"|'([^']+)'|(\S+)/).map { it.compact.first.downcase }
   end
 
   def search_job_leads
