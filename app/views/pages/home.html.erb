@@ -150,9 +150,9 @@
           </div>
 
           <% if @top_tags.any? %>
-          <div class="flex flex-wrap items-center gap-1 mb-4">
+            <div class="flex flex-wrap items-center gap-1 mb-4">
               <% @top_tags.each do |tag| %>
-                <%= link_to tag, job_leads_path(tags: tag), class: 'tag tag-filter', style: "view-transition-name: tag-#{tag.parameterize}" %>
+                <%= link_to tag, job_leads_path(tags: tag), class: 'tag tag-filter', onclick: "this.style.viewTransitionName = 'tag-#{tag.parameterize}'" %>
               <% end %>
             </div>
 
