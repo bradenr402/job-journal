@@ -5,7 +5,7 @@
     </p>
     <div class="flex flex-wrap items-center gap-1">
       <% ['all', 'job_leads', 'interviews', 'notes'].each do |filter| %>
-        <div class="form-radio-tag">
+        <div class="form-radio-tag" style="view-transition-name: search-filter-<%= filter %>">
           <%= radio_button_tag :filter, filter, checked: (@selected_filter == filter), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
           <%= label_tag "filter_#{filter}", filter.titlecase %>
         </div>
@@ -31,7 +31,7 @@
     </div>
   <% elsif @selected_filter == 'interviews' %>
     <div>
-      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
+      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:interviews-filters-label]">
         Filter interviews by date:
       </p>
       <div class="flex flex-wrap items-center gap-1">
@@ -47,7 +47,7 @@
     </div>
   <% elsif @selected_filter == 'notes' %>
     <div>
-      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
+      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:notes-filters-label]">
         Show notes for:
       </p>
       <div class="flex flex-wrap items-center gap-1">

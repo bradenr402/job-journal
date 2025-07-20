@@ -3,7 +3,7 @@
 <%= turbo_frame_tag 'search-results' do %>
   <div class="@container <%= 'mt-6' if @selected_filter.present? && @selected_filter != 'all' %>">
     <% if @query.blank? %>
-      <div class="empty-state">
+      <div class="empty-state [view-transition-name:search-empty]">
         Start typing to find your job leads, interviews, or notes.
       </div>
     <% elsif any_results %>
@@ -48,8 +48,8 @@
         </div>
       <% end %>
     <% else %>
-      <div class="empty-state">
-        No results for &#8220;<%= @query %>&#8221;.
+      <div class="empty-state [view-transition-name:search-empty]">
+        No <%= @selected_filter.presence.humanize.downcase.singularize unless @selected_filter == 'all' %> results for &#8220;<%= @query %>&#8221;.
       </div>
     <% end %>
   </div>

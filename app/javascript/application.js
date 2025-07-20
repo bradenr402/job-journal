@@ -8,6 +8,18 @@ document.addEventListener('turbo:morph', () => {
   LocalTime.run();
 });
 
+// Enable View Transitions for Turbo Streams
+addEventListener('turbo:before-stream-render', (event) => {
+  console.log('Turbo before stream render', event);
+
+  if (document.startViewTransition) {
+    const originalRender = event.detail.render;
+    event.detail.render = (currentElement, newElement) => {
+      document.startViewTransition(() => originalRender(currentElement, newElement));
+    };
+  }
+});
+
 // Temporarily disables all transitions
 const disableTransitionsTemporarily = () => {
   const css = document.createElement('style');
