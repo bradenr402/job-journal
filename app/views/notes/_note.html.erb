@@ -17,8 +17,7 @@
 %>
 
 <% note_page = current_page?(note_path(note)) %>
-
-<div id="<%= dom_id note %>" class="relative <%= note_page ? 'card flex flex-col gap-2' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
+<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page ? 'card gap-2' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
   <% unless note_page %>
     <%= link_to note_path(note), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
@@ -36,10 +35,10 @@
     </p>
   <% end %>
 
-  <div class="<%= 'h-full max-h-24' unless note_page %> overflow-hidden relative">
+  <div class="<%= 'h-full grow max-h-24' unless note_page %> overflow-hidden relative">
     <%= content_tag(:div, note.content, class: "text-light whitespace-break-spaces #{'line-clamp-4 select-none' unless note_page}") %>
     <% unless note_page %>
-      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white/90 dark:from-neutral-900/90 group-hover:from-neutral-100/70 dark:group-hover:from-neutral-800/30 to-transparent transition-colors duration-150"></div>
+      <div class="pointer-events-none absolute inset-x-0 top-16 h-8 bg-gradient-to-t from-white dark:from-neutral-900 group-hover:from-transparent dark:group-hover:from-transparent to-transparent transition-colors duration-150"></div>
     <% end %>
   </div>
 
