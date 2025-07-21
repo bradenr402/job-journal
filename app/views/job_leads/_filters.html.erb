@@ -30,7 +30,7 @@
   </p>
   <div class="flex flex-wrap items-center gap-1">
     <% @all_status_names.each do |status| %>
-      <%= link_to job_leads_path(params.permit(:tags, :status).merge(status: status == @selected_status ? nil : status)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
+      <%= link_to job_leads_path(params.permit(:tags, :job_lead_type).merge(status: status == @selected_status ? nil : status)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
         <span class="tag tag-filter <%= 'tag-selected' if status == @selected_status %> tag-<%= status %>">
           <%= status.titlecase %>
           <%= inline_svg_tag 'icons/x-mini.svg' if status == @selected_status %>
@@ -47,7 +47,7 @@
   <div class="flex flex-wrap items-center gap-1">
     <% @selected_tags.each do |tag| %>
       <% remaining_tags = @selected_tag_names - [tag.name] %>
-      <%= link_to job_leads_path(params.permit(:tags, :status).merge(tags: remaining_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
+      <%= link_to job_leads_path(params.permit(:job_lead_type, :status).merge(tags: remaining_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
         <span class="tag tag-filter tag-selected">
           <%= tag.name %>
           <%= inline_svg_tag 'icons/x-mini.svg' %>
@@ -57,7 +57,7 @@
 
     <% @unselected_tags.each do |tag| %>
       <% new_tags = (@selected_tag_names + [tag.name]).uniq %>
-      <%= link_to job_leads_path(params.permit(:tags, :status).merge(tags: new_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
+      <%= link_to job_leads_path(params.permit(:job_lead_type, :status).merge(tags: new_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
         <span class="tag tag-filter"><%= tag.name %></span>
       <% end %>
     <% end %>
