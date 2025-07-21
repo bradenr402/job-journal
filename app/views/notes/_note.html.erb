@@ -1,22 +1,10 @@
 <%
-  display_title = current_page?(note_path(note)) || current_page?(notes_path) || current_page?(root_path) || current_page?(search_path)
+  note_page = current_page?(note_path(note))
+  display_title = note_page || current_page?(notes_path) || current_page?(root_path) || current_page?(search_path)
 
-  if display_title
-    if note.notable.is_a?(JobLead)
-      notable_title = "#{note.notable.title} @ #{note.notable.company}"
-      note_title = "#{notable_title}"
-    elsif note.notable.is_a?(Interview)
-      job_lead = note.notable.job_lead
-      notable_title = "#{job_lead.title} @ #{job_lead.company}"
-      note_title = "Interview - #{notable_title}"
-    else
-      notable_title = note.notable.model_name.human.titlecase
-      note_title = "#{notable_title}"
-    end
-  end
+  note_title = note.title if display_title
 %>
 
-<% note_page = current_page?(note_path(note)) %>
 <div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page ? 'card gap-2' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
   <% unless note_page %>
     <%= link_to note_path(note), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
