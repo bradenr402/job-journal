@@ -12,6 +12,11 @@
 
 @utility text-light {
   @apply text-neutral-600 dark:text-neutral-400;
+
+  .card &,
+  .card-sm & {
+    @apply dark:text-neutral-300;
+  }
 }
 
 @utility text-soft {
