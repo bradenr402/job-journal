@@ -56,6 +56,48 @@
     </div>
   </div>
 
+  <% if @follow_up_suggestions.any? %>
+    <div class="@container">
+      <div class="mb-4">
+        <h2 class="subheading">Follow Up Suggestions</h2>
+        <p class="text-sm text-muted mt-1">Active job leads you applied to or interviewed for that haven&#8217;t been updated in over 7 days.</p>
+      </div>
+
+      <div class="card">
+        <div class="grid grid-cols-1 @xl:grid-cols-2 gap-1.5">
+          <% @follow_up_suggestions.each do |suggestion| %>
+            <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-150 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98" style="view-transition-name: job_lead-<%= suggestion.id %>;">
+              <div class="flex items-center gap-2.5">
+                <div class="flex flex-col">
+                  <div class="text-lg font-semibold">
+                    <span><%= suggestion.title %></span>
+                    <span class="font-normal ml-0.5 tag tag-<%= suggestion.status %>">
+                      <%= suggestion.status.titlecase %>: <span class="text-xs opacity-65"><%= local_date_short suggestion.latest_status_at %></span>
+                    </span>
+                  </div>
+
+                  <div class="flex items-center gap-1 text-sm text-soft">
+                    <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
+                    <%= suggestion.company %>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-xs text-muted">
+                You haven&#8217;t updated this job lead in <span class="font-semibold"><%= time_ago_in_words suggestion.applied_at %></span>. Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
+              </p>
+
+              <%= link_to job_lead_path(suggestion), class: 'absolute inset-0 z-10' do %>
+                <span class="sr-only">View</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
   <% if @stale_leads.any? %>
     <div>
       <div class="mb-4">
@@ -184,7 +226,7 @@
                     </div>
                     <div class="flex flex-col">
                       <p class="font-bold text-lg/snug"><%= source %></p>
-                      <p class="text-xs/snug text-muted leading-none">
+                      <p class="text-xs/snug text-muted">
                         <%= pluralize(data[:count], 'lead') %>
                       </p>
                     </div>
@@ -198,7 +240,7 @@
                   %>
 
                   <% if items.any? %>
-                    <p class="leading-none text-sm text-soft">
+                    <p class="text-sm/none text-soft">
                       <%= safe_join(
                         items.map { |count, label| content_tag(:span, pluralize(count, label)) },
                         ', '

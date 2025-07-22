@@ -91,6 +91,15 @@ class JobLead < ApplicationRecord
     public_send(status.to_s)
   }
 
+  scope :with_any_status, ->(statuses) {
+    statuses = statuses.map(&:to_s)
+    invalid_statuses = statuses - STATUSES
+    raise ArgumentError, "Invalid status: #{invalid_statuses.join(', ')}" if invalid_statuses.any?
+
+    union_sql = statuses.map { public_send(it).select(:id).to_sql }.join(' UNION ')
+    where(id: from("(#{union_sql}) AS unioned").select(:id))
+  }
+
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
   scope :stale, -> { where(updated_at: ..7.days.ago) }
