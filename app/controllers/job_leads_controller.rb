@@ -8,8 +8,7 @@ class JobLeadsController < ApplicationController
 
     @selected_tag_names = params[:tags].to_s.split(',').map(&:strip).uniq
     @selected_status_name = params[:status].presence
-
-    @selected_job_lead_type = params[:job_lead_type].presence
+    @selected_job_lead_type = params[:job_lead_type].presence || 'active'
 
     scope = Current.user.job_leads
       .includes(:notes, :tags)

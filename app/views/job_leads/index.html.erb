@@ -1,7 +1,7 @@
 <%
   content_for :title,
     [
-      "#{params[:job_lead_type].presence&.titlecase} ",
+      "#{@selected_job_lead_type.presence&.titlecase} ",
       'Job Leads',
       (@selected_status.presence&.titlecase&.prepend(' - ')),
       (@selected_tag_names.any? ? " - #{@selected_tag_names.join(', ')}" : nil)
@@ -22,7 +22,7 @@
         Job Leads
       </h1>
       <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:job-lead-count]">
-        <%= pluralize(@job_leads.size, "#{params[:job_lead_type].presence || 'total'} job lead") %>
+        <%= pluralize(@job_leads.size, "#{@selected_job_lead_type == 'all' ? 'total' : @selected_job_lead_type} job lead") %>
       </span>
     </div>
 

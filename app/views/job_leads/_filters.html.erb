@@ -9,12 +9,8 @@
     Filter job leads by type:
   </p>
   <div class="flex flex-wrap items-center gap-1">
-    <%= link_to job_leads_path(params.permit(:tags, :status).merge(job_lead_type: nil)), class: 'inline-block', style: "view-transition-name: all-job-leads" do %>
-      <span class="tag tag-filter <%= 'tag-selected' unless params[:job_lead_type].present? %>">All</span>
-    <% end %>
-
     <% ['active', 'archived'].each do |job_lead_type| %>
-      <%= link_to job_leads_path(params.permit(:tags, :status).merge(job_lead_type: job_lead_type == @selected_job_lead_type ? nil : job_lead_type)), class: 'inline-block', style: "view-transition-name: #{job_lead_type}-job-leads" do %>
+      <%= link_to job_leads_path(params.permit(:tags, :status).merge(job_lead_type: job_lead_type == @selected_job_lead_type ? 'all' : job_lead_type)), class: 'inline-block', style: "view-transition-name: #{job_lead_type}-job-leads" do %>
         <span class="tag tag-filter <%= 'tag-selected' if job_lead_type == @selected_job_lead_type %>">
           <span><%= job_lead_type.titlecase %></span>
           <%= inline_svg_tag 'icons/x-mini.svg' if job_lead_type == @selected_job_lead_type && job_lead_type != 'all' %>
