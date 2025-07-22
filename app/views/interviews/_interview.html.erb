@@ -12,7 +12,7 @@
           </span>
         <% else %>
           <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-interview">
-            Scheduled
+            Scheduled: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span>
           </span>
         <% end %>
       </div>
