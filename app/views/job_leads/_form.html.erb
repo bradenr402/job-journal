@@ -37,11 +37,11 @@
         Salary
         <span class="font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
-      <%= form.text_field :salary, class: 'form-input', placeholder: '$100,000 - $120,000' %>
+      <%= form.text_field :salary, class: 'form-input', placeholder: '$100K-$120K, competitive, includes equity' %>
       <p class="text-xs text-muted mt-1">Salary range or estimate.</p>
     </div>
 
-    <% if job_lead.persisted? %>
+    <% if job_lead.offer_at? %>
       <div>
         <%= form.label :offer_amount, class: 'form-label' do %>
           Offer Amount
@@ -65,7 +65,8 @@
         Location
         <span class="font-normal text-muted text-xs ml-1">(optional)</span>
       <% end %>
-      <%= form.text_field :location, class: 'form-input', placeholder: 'Remote; New York, NY', list: 'recent-locations' %>
+      <%= form.text_field :location, class: 'form-input', placeholder: 'Remote, New York', list: 'recent-locations' %>
+      <p class="text-xs text-muted mt-1">Location for this job, if relevant.</p>
 
       <datalist id="recent-locations">
         <% @recent_locations.each do |location| %>
@@ -108,8 +109,7 @@
 
       <p class="text-xs text-muted mt-1">Add tags to this job lead to help filter and group your job leads.</p>
       <p class="text-xs text-muted mt-1">
-        Add tags by pressing <span class="pointer-coarse:hidden"><kbd>Tab</kbd>,</span> <kbd>Enter</kbd><span class="pointer-coarse:hidden">,</span> or <kbd>,</kbd>.
-        You can also select a tag from the list below.
+        Add tags by pressing <span class="pointer-coarse:hidden"><kbd>Tab</kbd>,</span> <kbd>Enter</kbd><span class="pointer-coarse:hidden">,</span> or <kbd>,</kbd>, or select a tag from the list below.
       </p>
 
       <% if @tags.present? %>
