@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       patch :advance_status
       patch :revert_status
       patch :reject
+      get :offer
+      patch :set_offer
     end
   end
 

@@ -1,5 +1,5 @@
 class JobLeadsController < ApplicationController
-  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :reject ]
+  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :offer, :set_offer, :reject ]
   before_action :cleanup_tags, only: [ :index, :new, :edit ]
 
   # GET /job_leads
@@ -148,6 +148,21 @@ class JobLeadsController < ApplicationController
     end
 
     redirect_to @job_lead, notice: "Status reverted to #{@job_lead.status.titlecase}."
+  end
+
+  def offer
+  end
+
+  def set_offer
+    offer_amount = params[:job_lead][:offer_amount].to_f
+
+    return redirect_back fallback_location: @job_lead, alert: 'Offer amount is required.' unless offer_amount.positive?
+
+    if @job_lead.update(offer_at: Time.current, offer_amount:)
+      redirect_to @job_lead, success: 'Offer amount set successfully.'
+    else
+      render :offer, status: :unprocessable_entity, error: 'Failed to set offer amount.'
+    end
   end
 
   private

@@ -30,7 +30,7 @@
       end
     )
     buttons << (
-      link_to edit_job_lead_path(job_lead, focus_offer: true), class: 'btn btn-sm btn-primary btn-muted' do
+      link_to offer_job_lead_path(job_lead), class: 'btn btn-sm btn-primary btn-muted' do
         concat content_tag(:span, 'Advance to Offer')
         concat inline_svg_tag('icons/arrow-right.svg', class: 'size-4 shrink-0')
       end
