@@ -41,7 +41,7 @@
       <p class="text-xs text-muted mt-1">Link to the video call or meeting.</p>
     </div>
 
-    <% if interview.persisted? %>
+    <% if interview.persisted? && interview.past? %>
       <div>
         <%= form.label :rating, class: 'form-label' do %>
           Rating

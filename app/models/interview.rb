@@ -29,6 +29,12 @@ class Interview < ApplicationRecord
   scope :past, -> { where(scheduled_at: ..Time.current) }
 
   # Instance Methods
+  def future? = scheduled_at.future?
+  alias scheduled? future?
+
+  def past? = scheduled_at.past?
+  alias completed? past?
+
   private
 
   def convert_zero_rating_to_nil
