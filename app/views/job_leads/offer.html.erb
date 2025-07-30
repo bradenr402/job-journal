@@ -18,7 +18,18 @@
     <div class="mb-5">
       <%= form.label :offer_amount, 'Offer Amount', class: 'form-label' %>
 
-      <%= form.number_field :offer_amount, class: 'form-input', step: '0.01', min: 0, placeholder: '105000' %>
+      <div class="form-number-frame" data-controller="number-field" data-number-field-step-value="100000">
+        <button type="button" class="form-number-decrement">
+          <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+        </button>
+
+        <%= form.number_field :offer_amount, class: 'form-number', step: '0.01', min: 0.01, placeholder: '105000', value: 0, data: { number_field_target: 'input' } %>
+
+        <button type="button" class="form-number-increment">
+          <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+        </button>
+      </div>
+
       <p class="text-xs text-muted mt-1">Set an offer amount to advance this job lead to Offer.</p>
     </div>
 
