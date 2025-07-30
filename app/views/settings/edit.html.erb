@@ -1,0 +1,234 @@
+<% content_for :title, 'Settings' %>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div>
+    <div class="mb-4">
+      <h2 class="heading">Settings</h2>
+      <p class="text-sm text-muted mt-1">Personalize how JobJournal works for you.</p>
+    </div>
+  </div>
+
+  <%= form_with url: settings_path, method: :patch, local: true, data: { controller: 'conditional-field' } do |form| %>
+    <div class="space-y-8 *:not-last:pb-8 divide-y divide-neutral-200 dark:divide-neutral-800">
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Goals</h2>
+          <p class="text-sm text-muted mt-1">Set your weekly application goals to stay on track.</p>
+        </div>
+
+        <div class="space-y-5">
+          <div>
+            <%= form.label :weekly_application_goal, 'Weekly Application Goal', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :weekly_application_goal, value: @settings[:weekly_application_goal], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">Set your target number of applications to submit each week.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Appearance Preferences</h2>
+          <p class="text-sm text-muted mt-1">Customize how JobJournal looks and feels.</p>
+        </div>
+
+        <div class="space-y-5">
+          <%= render 'settings/display_type_radio_group',
+              form: form,
+              field: :job_leads_display,
+              label: 'Job Leads Display',
+              settings_value: @settings[:job_leads_display],
+              help_text: 'Choose how job leads are displayed.' %>
+
+          <%= render 'settings/display_type_radio_group',
+              form: form,
+              field: :interviews_display,
+              label: 'Interviews Display',
+              settings_value: @settings[:interviews_display],
+              help_text: 'Choose how interviews are displayed.' %>
+
+          <%= render 'settings/display_type_radio_group',
+              form: form,
+              field: :notes_display,
+              label: 'Notes Display',
+              settings_value: @settings[:notes_display],
+              help_text: 'Choose how notes are displayed.' %>
+        </div>
+
+      </div>
+
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Follow-Up Suggestions</h2>
+          <p class="text-sm text-muted mt-1">Get timely suggestions to follow up on your applications and interviews.</p>
+        </div>
+        <div class="space-y-5">
+          <div>
+            <%= form.label :job_lead_stale_after_days, 'Days Until Lead Becomes Stale', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :job_lead_stale_after_days, value: @settings[:job_lead_stale_after_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">We&#8217;ll remind you to apply to your saved jobs if you haven&#8217;t applied after this many days.</p>
+          </div>
+
+          <div>
+            <%= form.label :application_follow_up_days, 'Days Until Application Follow-Up', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :application_follow_up_days, value: @settings[:application_follow_up_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">We&#8217;ll remind you to follow up on your applications after this many days.</p>
+          </div>
+
+          <div>
+            <%= form.label :interview_follow_up_days, 'Days Until Interview Follow-Up', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :interview_follow_up_days, value: @settings[:interview_follow_up_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">We&#8217;ll remind you to follow up on your interviews after this many days.</p>
+          </div>
+
+          <div>
+            <%= form.label :suggest_follow_up_days, 'Days to Suggest Follow-Up', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :suggest_follow_up_days, value: @settings[:suggest_follow_up_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">We&#8217;ll quit suggesting follow-ups after this many days.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Automatic Archiving</h2>
+          <p class="text-sm text-muted mt-1">Keep your job leads organized automatically.</p>
+        </div>
+        <div class="space-y-5">
+          <div class="space-y-1">
+            <div class="flex items-start gap-1.5 relative">
+              <%= form.check_box :auto_archive_rejected_leads_enabled, { checked: @settings[:auto_archive_rejected_leads_enabled], class: 'form-checkbox' }, 'true', 'false' %>
+              <%= inline_svg_tag 'icons/check.svg' %>
+              <%= form.label :auto_archive_rejected_leads_enabled, 'Auto-Archive Rejected Leads', class: 'form-label' %>
+            </div>
+            <p class="text-xs text-muted">Automatically archive leads marked as rejected.</p>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-start gap-1.5 relative">
+              <%= form.check_box :auto_archive_inactive_leads_enabled, { checked: @settings[:auto_archive_inactive_leads_enabled], class: 'form-checkbox', data: { action: 'conditional-field#toggleField', conditional_field_checkbox: 'auto-archive-inactive' } }, 'true', 'false' %>
+              <%= inline_svg_tag 'icons/check.svg' %>
+              <%= form.label :auto_archive_inactive_leads_enabled, 'Auto-Archive Inactive Leads', class: 'form-label' %>
+            </div>
+
+            <p class="text-xs text-muted">Automatically archive job leads inactive and stale job leads after your specified number of days below.</p>
+          </div>
+
+          <div data-conditional-field-input="auto-archive-inactive" class="<%= @settings[:auto_archive_inactive_leads_enabled] ? '' : 'hidden' %>">
+            <%= form.label :auto_archive_inactive_lead_days, 'Days of Inactivity Before Archiving', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :auto_archive_inactive_lead_days, value: @settings[:auto_archive_inactive_lead_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">Archive leads automatically if there is no activity for this many days.</p>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-start gap-1.5 relative">
+              <%= form.check_box :auto_archive_stale_leads_enabled, { checked: @settings[:auto_archive_stale_leads_enabled], class: 'form-checkbox', data: { action: 'conditional-field#toggleField', conditional_field_checkbox: 'auto-archive-stale' } }, 'true', 'false' %>
+              <%= inline_svg_tag 'icons/check.svg' %>
+              <%= form.label :auto_archive_stale_leads_enabled, 'Auto-Archive Stale Leads', class: 'form-label' %>
+            </div>
+
+            <p class="text-xs text-muted">Automatically archive job leads inactive and stale job leads after your specified number of days below.</p>
+          </div>
+
+          <div data-conditional-field-input="auto-archive-stale" class="<%= @settings[:auto_archive_stale_leads_enabled] ? '' : 'hidden' %>">
+            <%= form.label :auto_archive_after_stale_days, 'Days After Stale Before Archiving', class: 'form-label' %>
+            <div class="form-number-frame" data-controller="number-field">
+              <button type="button" class="form-number-decrement">
+                <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
+              </button>
+
+              <%= form.number_field :auto_archive_after_stale_days, value: @settings[:auto_archive_after_stale_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+
+              <button type="button" class="form-number-increment">
+                <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-1">Archive leads automatically this many days after they become stale.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky bottom-0 bg-white dark:bg-neutral-950 mt-5 py-4 max-md:-mx-4 max-md:px-4 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200 dark:border-neutral-800">
+      <%= form.submit 'Save Settings', class: 'btn btn-primary w-full sm:w-auto' %>
+    </div>
+  <% end %>
+
+  <div class="border-t border-neutral-200 dark:border-neutral-800 pt-8">
+    <div class="card">
+      <div class="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+        <h2 class="subheading">Danger Zone</h2>
+        <p class="text-sm text-muted mt-1">Reset all your settings or permanently delete your account.</p>
+      </div>
+      <div class="space-y-6">
+        <div>
+          <%= button_to 'Reset All Settings', reset_settings_path, method: :patch, data: { turbo_confirm: 'Are you sure you want to reset all your settings to their defaults?' }, class: 'btn btn-destructive btn-muted w-full sm:w-auto' %>
+          <p class="text-xs text-muted mt-1">This will reset all your JobJournal settings to their default values immediately.</p>
+        </div>
+        <div>
+          <%= button_to 'Delete Account', registrations_path, method: :delete, data: { turbo_confirm: 'Are you absolutely sure you want to delete your account? This action cannot be undone.' }, class: 'btn btn-destructive w-full sm:w-auto' %>
+          <p class="text-xs text-muted mt-1">This will permanently delete your JobJournal account and all associated data. This cannot be undone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

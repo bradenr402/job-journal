@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   resources :notes
   resources :interviews
   get 'search', to: 'search#index'
+  get 'settings', to: 'settings#edit'
+  patch 'settings', to: 'settings#update'
+  patch 'reset_settings', to: 'settings#reset'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

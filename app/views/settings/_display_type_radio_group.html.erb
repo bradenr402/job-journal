@@ -1,0 +1,15 @@
+<div>
+  <%= form.label field, label, class: 'form-label' %>
+  <div class="mt-2 flex gap-2">
+    <% [['Grid', 'grid'], ['List', 'list']].each do |(text, value)| %>
+      <label class="group relative cursor-pointer">
+        <%= form.radio_button field, value, checked: settings_value == value, class: 'sr-only peer' %>
+        <div class="flex items-center justify-center gap-1.5 pl-2 pr-2.5 py-1.5 rounded-lg text-sm text-light border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 peer-checked:border-primary-200 peer-checked:dark:border-primary-900 peer-checked:bg-primary-100/80 peer-checked:dark:bg-primary-950/80 peer-checked:text-primary-600 transition-all duration-150">
+          <%= inline_svg_tag "icons/#{value}.svg", class: 'size-4.5 shrink-0' %>
+          <span><%= text %></span>
+        </div>
+      </label>
+    <% end %>
+  </div>
+  <p class="text-muted text-xs mt-1"><%= help_text %></p>
+</div>

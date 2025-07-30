@@ -1,0 +1,54 @@
+<%# Usage: render 'shared/circular_progress', percent: percent %>
+
+<% clamped_percent = percent.clamp(0, 100) %>
+
+<% radius = 40 %>
+<% stroke = 7 %>
+<% normalized_radius = radius - stroke / 2.0 %>
+<% circumference = 2 * Math::PI * normalized_radius %>
+<% progress = (clamped_percent.to_f / 100.0) * circumference %>
+
+<%# Adjust for 270º arc (3/4 of a circle) %>
+<% arc_fraction = 270.0 / 360.0 %>
+<% arc_circumference = circumference * arc_fraction %>
+<% progress = (clamped_percent.to_f / 100.0) * arc_circumference %>
+
+<%# Replace the SVG with the adjusted arc %>
+<div class="relative flex flex-col items-center" style="margin-bottom: <%= -radius / 5 %>px;">
+  <svg
+    width="<%= radius * 2 %>"
+    height="<%= radius * 2 %>"
+    class="block text-primary-600 overflow-visible"
+    style="transform: rotate(135deg);" <!-- 270º arc, so 135º aligns the arc to start at 7:30 on a clock -->
+  >
+    <!-- Background arc (partial circle) -->
+    <circle
+      cx="<%= radius %>"
+      cy="<%= radius %>"
+      r="<%= normalized_radius %>"
+      fill="none"
+      stroke="#e5e7eb"
+      stroke-width="<%= stroke %>"
+      stroke-dasharray="<%= arc_circumference %>, <%= circumference %>"
+      stroke-dashoffset="0"
+      stroke-linecap="round"
+    />
+    <!-- Progress arc -->
+    <circle
+      cx="<%= radius %>"
+      cy="<%= radius %>"
+      r="<%= normalized_radius %>"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="<%= stroke %>"
+      stroke-linecap="round"
+      stroke-dasharray="<%= arc_circumference %>, <%= circumference %>"
+      stroke-dashoffset="<%= arc_circumference - progress %>"
+      style="transition: stroke-dashoffset 0.5s;"
+    />
+  </svg>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-3/5 flex flex-col items-center justify-center">
+    <span class="text-sm text-primary-600 font-semibold"><%= number_to_percentage percent, precision: 0 %></span>
+    <span class="text-2xs/none text-muted">of goal</span>
+  </div>
+</div>

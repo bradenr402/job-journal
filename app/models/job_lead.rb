@@ -102,7 +102,33 @@ class JobLead < ApplicationRecord
 
   scope :active, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
-  scope :stale, -> { where(updated_at: ..7.days.ago) }
+
+  scope :stale_for_user, ->(user) do
+    cutoff_date = user.get_setting(:job_lead_stale_after_days).days.ago
+
+    active
+      .lead
+      .where(created_at: ..cutoff_date)
+  end
+
+  scope :application_follow_up_for_user, ->(user) do
+    end_date = user.get_setting(:application_follow_up_days).days.ago
+    start_date = end_date - user.get_setting(:suggest_follow_up_days).days
+
+    active
+      .applied
+      .where(applied_at: start_date..end_date)
+  end
+
+  scope :interview_follow_up_for_user, ->(user) do
+    end_date = user.get_setting(:interview_follow_up_days).days.ago
+    start_date = end_date - user.get_setting(:suggest_follow_up_days).days
+
+    joins(:interviews)
+      .active
+      .interview
+      .where(interviews: { scheduled_at: start_date..end_date })
+  end
 
   scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name.downcase }) }
   scope :with_tags, ->(tag_names) {
@@ -166,18 +192,14 @@ class JobLead < ApplicationRecord
     nil
   end
 
+  def last_interview_at = interviews.past.order(scheduled_at: :desc).first&.scheduled_at
+  def next_interview_at = interviews.future.order(scheduled_at: :asc).first&.scheduled_at
+
   def latest_status_at
     case inferred_status
     when 'lead' then  created_at
     when 'applied' then  applied_at
-    when 'interview'
-      upcoming_interview = interviews.future.select(:scheduled_at).order(:scheduled_at).first
-      return upcoming_interview.scheduled_at if upcoming_interview
-
-      last_past_interview = interviews.past.select(:scheduled_at).order(scheduled_at: :desc).first
-      return last_past_interview.scheduled_at if last_past_interview
-
-      nil
+    when 'interview' then next_interview_at || last_interview_at
     when 'offer' then  offer_at
     when 'rejected' then  rejected_at
     when 'accepted' then  accepted_at
@@ -186,11 +208,17 @@ class JobLead < ApplicationRecord
     end
   end
 
+  def source_quality
+    self.class.status_quality(inferred_status)
+  end
+
   def active? = archived_at.nil?
   def archived? = archived_at.present?
 
   def archive! = update(archived_at: Time.current)
   def unarchive! = update(archived_at: nil)
+
+  def stale? = created_at.before?(user.get_setting(:job_lead_stale_after_days).days.ago)
 
   def tag_list = tags.pluck(:name).join(', ')
 
@@ -239,6 +267,19 @@ class JobLead < ApplicationRecord
     end
   end
 
+  # Class Methods
+  def self.cleanup_for_user(user)
+    stale_days = user.get_setting(:job_lead_stale_after_days)
+    archive_days = user.get_setting(:auto_archive_after_stale_days)
+
+    total_days = stale_days + archive_days
+    cutoff_date = total_days.days.ago
+
+    stale_for_user(user).where(created_at: ..cutoff_date).find_each do |lead|
+      lead.archive!
+    end
+  end
+
   private
 
   def update_status
@@ -246,7 +287,9 @@ class JobLead < ApplicationRecord
       self.offer!
     end
 
-    if rejected_at_changed? && rejected? && !archived?
+    auto_archive_rejected_leads_enabled = user.get_setting(:auto_archive_rejected_leads_enabled)
+
+    if auto_archive_rejected_leads_enabled && rejected_at_changed? && rejected? && !archived?
       self.archive!
     end
   end

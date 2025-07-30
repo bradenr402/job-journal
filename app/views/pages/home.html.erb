@@ -2,11 +2,11 @@
   <div>
     <div class="mb-4">
       <h2 class="heading">Welcome Back!</h2>
-      <p class="text-sm text-muted mt-1">Here&#8217;s what&#8217;s happening with your job search.</p>
+      <p class="text-sm text-muted mt-1 text-pretty">Here&#8217;s what&#8217;s happening with your job search.</p>
     </div>
 
     <div class="@container">
-      <div class="grid grid-cols-1 @xl:grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
         <div class="relative card card-hover">
           <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Job Leads</span>
@@ -18,6 +18,32 @@
           </div>
           <p class="font-extrabold text-4xl mb-1"><%= @job_leads_this_week_count %></p>
           <p class="text-xs text-muted"><%= number_with_sign(@job_leads_this_week_count - @job_leads_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+        </div>
+
+        <div class="relative card card-hover @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
+          <%= link_to job_leads_path(status: 'applied'), class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Applications</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Applications This Week</p>
+            <%= inline_svg_tag 'icons/application.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="font-extrabold text-4xl mb-1">
+                <%= @applications_this_week_count %>
+                <% if (goal = Current.user.get_setting(:weekly_application_goal)).present? %>
+                  <span class="text-sm font-normal text-muted">/ <%= goal %></span>
+                <% end %>
+              </p>
+              <p class="text-xs text-muted"><%= number_with_sign(@applications_this_week_count - @applications_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+            </div>
+            <% if goal.present? && goal.to_i.positive? %>
+              <% percent = ((@applications_this_week_count.to_f / goal.to_f) * 100).clamp(0, Float::INFINITY).round %>
+              <%= render 'shared/progress_dial', percent: percent %>
+            <% end %>
+          </div>
         </div>
 
         <div class="relative card card-hover">
@@ -39,11 +65,11 @@
   <div>
     <div class="mb-4">
       <h2 class="subheading">Upcoming Interviews</h2>
-      <p class="text-sm text-muted mt-1">Interviews scheduled for today and the next 7 days.</p>
+      <p class="text-sm text-muted mt-1 text-pretty">Interviews scheduled for today and the next 7 days.</p>
     </div>
     <div id="interviews" class="@container">
       <% if @interviews_upcoming.any? %>
-        <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@4xl:grid-cols-3' if @interviews_upcoming.size >= 3 && @interviews_upcoming.size != 4 %> gap-3">
+        <div class="<%= Current.user.get_setting(:interviews_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @interviews_upcoming.size >= 3 && @interviews_upcoming.size != 4}" %> gap-3">
           <% @interviews_upcoming.each do |interview| %>
             <%= render interview %>
           <% end %>
@@ -60,7 +86,20 @@
     <div class="@container">
       <div class="mb-4">
         <h2 class="subheading">Follow Up Suggestions</h2>
-        <p class="text-sm text-muted mt-1">Active job leads you applied to or interviewed for that haven&#8217;t been updated in over 7 days.</p>
+        <p class="text-sm text-muted mt-1 text-pretty">
+          <%
+            suggest_follow_up_days = Current.user.get_setting(:suggest_follow_up_days)
+
+            follow_up_days = {
+              application: Current.user.get_setting(:application_follow_up_days),
+              interview:   Current.user.get_setting(:interview_follow_up_days)
+            }
+
+            stop_follow_up = follow_up_days.transform_values { |days| days + suggest_follow_up_days }
+          %>
+          Active job leads not updated in <%= follow_up_days[:application] %>-<%= stop_follow_up[:application] %> days since applying or <%= follow_up_days[:interview] %>-<%= stop_follow_up[:interview] %> days since interviewing.
+
+        </p>
       </div>
 
       <div class="card">
@@ -84,7 +123,12 @@
               </div>
 
               <p class="text-xs text-muted">
-                You haven&#8217;t updated this job lead in <span class="font-semibold"><%= time_ago_in_words suggestion.applied_at %></span>. Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
+                <%
+                  action = suggestion.applied? ? 'applied to' : 'interviewed for'
+                  time   = suggestion.applied? ? suggestion.applied_at : suggestion.last_interview_at
+                %>
+                You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words(time) %> ago</span>.
+                Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
               </p>
 
               <%= link_to job_lead_path(suggestion), class: 'absolute inset-0 z-10' do %>
@@ -95,17 +139,16 @@
         </div>
       </div>
     </div>
-
   <% end %>
 
   <% if @stale_leads.any? %>
     <div>
       <div class="mb-4">
         <h2 class="subheading">Stale Job Leads</h2>
-        <p class="text-sm text-muted mt-1">Job leads from more than 7 days ago that you haven&#8217;t applied to yet.</p>
+        <p class="text-sm text-muted mt-1 text-pretty">Job leads from more than <%= pluralize(Current.user.get_setting(:job_lead_stale_after_days), 'day') %> ago that you haven&#8217;t applied to yet.</p>
       </div>
       <div id="job_leads" class="@container">
-        <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@4xl:grid-cols-3' if @stale_leads.size >= 3 && @stale_leads.size != 4 %> gap-3">
+        <div class="<%= Current.user.get_setting(:job_leads_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @stale_leads.size >= 3 && @stale_leads.size != 4}" %> gap-3">
           <% @stale_leads.each do |job_lead| %>
             <%= render job_lead %>
           <% end %>
@@ -117,11 +160,11 @@
   <div>
     <div class="mb-4">
       <h2 class="subheading">Recent Notes</h2>
-      <p class="text-sm text-muted mt-1">Your 10 most recent notes created or edited in the last 7 days.</p>
+      <p class="text-sm text-muted mt-1 text-pretty">Your 10 most recent notes created or edited in the last 7 days.</p>
     </div>
     <div id="notes" class="@container">
       <% if @recent_notes.any? %>
-        <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4 %> gap-3">
+        <div class="<%= Current.user.get_setting(:notes_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4}" %> gap-3">
           <% @recent_notes.each do |note| %>
             <%= render note %>
           <% end %>
@@ -137,13 +180,13 @@
   <div>
     <div class="mb-4">
       <h2 class="subheading">Stats</h2>
-      <p class="text-sm text-muted mt-1">A quick overview of all your job search activity to help you track progress and spot trends.</p>
+      <p class="text-sm text-muted mt-1 text-pretty">A quick overview of all your job search activity to help you track progress and spot trends.</p>
     </div>
 
-    <div class="@container">
-      <div class="grid grid-cols-1 @xl:grid-cols-2 @3xl:grid-cols-3 gap-3">
-        <div class="relative card card-hover @xl:col-span-2 @3xl:col-span-1">
-          <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
+    <div class="@container space-y-3">
+      <div class="grid grid-cols-1 @xl:grid-cols-2 gap-3">
+        <div class="relative card card-hover">
+          <%= link_to job_leads_path(job_lead_type: 'all'), class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Job Leads</span>
           <% end %>
 
@@ -153,6 +196,22 @@
           </div>
           <p class="font-extrabold text-4xl mb-1"><%= @all_job_leads.size %></p>
           <p class="text-xs text-muted"><%= @all_job_leads.active.size %> active, <%= @all_job_leads.archived.size %> archived</p>
+        </div>
+
+        <div class="relative card card-hover">
+          <%= link_to job_leads_path(status: 'applied'), class: 'absolute inset-0 z-10' do %>
+            <span class="sr-only">View All Applications</span>
+          <% end %>
+
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Total Applications</p>
+            <%= inline_svg_tag 'icons/application.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <% applied_leads = @all_job_leads.where.not(applied_at: nil) %>
+          <p class="font-extrabold text-4xl mb-1"><%= applied_leads.size %></p>
+          <p class="text-xs text-muted">
+            <%= applied_leads.interview.count %> advanced to interview
+          </p>
         </div>
 
         <div class="relative card card-hover">
@@ -181,82 +240,82 @@
           <p class="font-extrabold text-4xl mb-1"><%= @all_notes.size %></p>
           <p class="text-xs text-muted">Across all job leads &amp; interviews</p>
         </div>
+      </div>
 
-        <div class="card @xl:col-span-2 @3xl:col-span-3">
-          <div class="mb-5">
-            <div class="flex items-start justify-between">
-              <p class="font-semibold">Top Tags</p>
-              <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 shrink-0' %>
-            </div>
-            <p class="text-xs text-muted">Your most frequently used tags</p>
+      <div class="card">
+        <div class="mb-5">
+          <div class="flex items-start justify-between">
+            <p class="font-semibold">Top Tags</p>
+            <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 shrink-0' %>
           </div>
-
-          <% if @top_tags.any? %>
-            <div class="flex flex-wrap items-center gap-1 mb-4">
-              <% @top_tags.each do |tag| %>
-                <%= link_to tag, job_leads_path(tags: tag), class: 'tag tag-filter', onclick: "this.style.viewTransitionName = 'tag-#{tag.parameterize}'" %>
-              <% end %>
-            </div>
-
-            <p class="text-xs text-muted">
-              <span class="pointer-none:hidden pointer-coarse:hidden pointer-fine:inline">Click</span>
-              <span class="pointer-none:hidden pointer-coarse:inline pointer-fine:hidden">Tap</span>
-              <span class="pointer-none:inline pointer-coarse:hidden pointer-fine:hidden">Select</span>
-              a tag to see your job leads filtered by that tag.
-            </p>
-          <% end %>
+          <p class="text-xs text-muted">Your most frequently used tags</p>
         </div>
 
-        <div class="card @xl:col-span-2 @3xl:col-span-3">
-          <div class="mb-5">
-            <div class="flex items-start justify-between">
-              <p class="font-semibold">Top Sources</p>
-              <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 shrink-0' %>
-            </div>
-            <p class="text-xs text-muted">Where your best job leads are coming from</p>
-          </div>
-
-          <% if @top_sources.any? %>
-            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 && @top_sources.size != 4 %> gap-1.5">
-              <% @top_sources.each_with_index do |(source, data), index| %>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #<%= index + 1 %>
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug"><%= source %></p>
-                      <p class="text-xs/snug text-muted">
-                        <%= pluralize(data[:count], 'lead') %>
-                      </p>
-                    </div>
-                  </div>
-
-                  <%
-                    items = [
-                      [data[:interview_count], 'interview'],
-                      [data[:offer_count], 'offer']
-                    ].select { |count, _| count.positive? }
-                  %>
-
-                  <% if items.any? %>
-                    <p class="text-sm/none text-soft">
-                      <%= safe_join(
-                        items.map { |count, label| content_tag(:span, pluralize(count, label)) },
-                        ', '
-                      ) %>
-                    </p>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-            <% if @top_sources.size == 1 %>
-              <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
+        <% if @top_tags.any? %>
+          <div class="flex flex-wrap items-center gap-1 mb-4">
+            <% @top_tags.each do |tag| %>
+              <%= link_to tag, job_leads_path(tags: tag), class: 'tag tag-filter', onclick: "this.style.viewTransitionName = 'tag-#{tag.parameterize}'" %>
             <% end %>
-          <% else %>
-            <p class="text-sm text-muted">No sources recorded yet.</p>
-          <% end %>
+          </div>
+
+          <p class="text-xs text-muted">
+            <span class="pointer-none:hidden pointer-coarse:hidden pointer-fine:inline">Click</span>
+            <span class="pointer-none:hidden pointer-coarse:inline pointer-fine:hidden">Tap</span>
+            <span class="pointer-none:inline pointer-coarse:hidden pointer-fine:hidden">Select</span>
+            a tag to see your job leads filtered by that tag.
+          </p>
+        <% end %>
+      </div>
+
+      <div class="card">
+        <div class="mb-5">
+          <div class="flex items-start justify-between">
+            <p class="font-semibold">Top Sources</p>
+            <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 shrink-0' %>
+          </div>
+          <p class="text-xs text-muted">Where your best job leads are coming from</p>
         </div>
+
+        <% if @top_sources.any? %>
+          <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 && @top_sources.size != 4 %> gap-1.5">
+            <% @top_sources.each_with_index do |(source, data), index| %>
+              <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
+                <div class="flex items-center gap-2.5">
+                  <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+                    #<%= index + 1 %>
+                  </div>
+                  <div class="flex flex-col">
+                    <p class="font-bold text-lg/snug"><%= source %></p>
+                    <p class="text-xs/snug text-muted">
+                      <%= pluralize(data[:count], 'lead') %>
+                    </p>
+                  </div>
+                </div>
+
+                <%
+                  items = [
+                    [data[:interview_count], 'interview'],
+                    [data[:offer_count], 'offer']
+                  ].select { |count, _| count.positive? }
+                %>
+
+                <% if items.any? %>
+                  <p class="text-sm/none text-soft">
+                    <%= safe_join(
+                      items.map { |count, label| content_tag(:span, pluralize(count, label)) },
+                      ', '
+                    ) %>
+                  </p>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <% if @top_sources.size == 1 %>
+            <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
+          <% end %>
+        <% else %>
+          <p class="text-sm text-muted">No sources recorded yet.</p>
+        <% end %>
       </div>
     </div>
   </div>

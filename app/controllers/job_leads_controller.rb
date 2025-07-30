@@ -1,6 +1,7 @@
 class JobLeadsController < ApplicationController
   before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :offer, :set_offer, :reject ]
   before_action :cleanup_tags, only: [ :index, :new, :edit ]
+  before_action :cleanup_leads, only: [ :index, :show ]
 
   # GET /job_leads
   def index
@@ -178,6 +179,10 @@ class JobLeadsController < ApplicationController
 
   def cleanup_tags
     Tag.cleanup_unused_for_user(Current.user)
+  end
+
+  def cleanup_leads
+    JobLead.cleanup_for_user(Current.user)
   end
 
   def set_recents

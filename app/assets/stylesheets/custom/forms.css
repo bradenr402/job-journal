@@ -68,3 +68,40 @@
     }
   }
 }
+
+@utility form-checkbox {
+  @apply appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white mt-0.5 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-150;
+
+  & + svg {
+    @apply size-3.5 text-white absolute translate-y-[0.29rem] translate-x-0.5 pointer-events-none;
+  }
+
+  &:not(:checked) + svg {
+    @apply hidden;
+  }
+
+  & ~ .form-label {
+    @apply text-light block mb-0! text-sm not-dark:font-medium select-none;
+  }
+}
+
+@utility form-number-frame {
+  @apply relative w-full md:max-w-54 flex items-stretch shadow-sm rounded-[0.625rem] has-[.form-number:focus]:ring-2 has-[.form-number:focus]:ring-primary-600 select-none;
+}
+
+@utility form-number {
+  @apply appearance-none grow block text-center border-y border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 focus:outline-hidden px-3 py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+}
+
+@utility form-number-decrement {
+  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-l-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-150 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+}
+
+@utility form-number-increment {
+  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-r-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-150 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+}
