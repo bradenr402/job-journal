@@ -11,8 +11,6 @@ class Interview < ApplicationRecord
   # Validations
   validates :job_lead, presence: true
   validates :scheduled_at, presence: true
-  delegate :user, to: :job_lead
-
   validates :interviewer, length: { maximum: 255 }, allow_blank: true
   validates :location, length: { maximum: 255 }, allow_blank: true
   validates :call_url, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), allow_blank: true
@@ -21,6 +19,9 @@ class Interview < ApplicationRecord
 
   # Callbacks
   before_validation :convert_zero_rating_to_nil
+
+  # Delegations
+  delegate :user, to: :job_lead
 
   # Scopes
   scope :upcoming, -> { where(scheduled_at: Time.current.beginning_of_day..7.days.from_now) }
