@@ -57,9 +57,22 @@
             <p class="font-semibold">Interviews This Week</p>
             <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
           </div>
-          <div class="mt-auto">
-            <p class="font-extrabold text-4xl mb-1"><%= @interviews_this_week_count %></p>
-            <p class="text-xs text-muted"><%= number_with_sign(@interviews_this_week_count - @interviews_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+          <div class="mt-auto flex items-end justify-between">
+            <div>
+              <p class="font-extrabold text-4xl mb-1"><%= @interviews_this_week_count %></p>
+              <p class="text-xs text-muted"><%= number_with_sign(@interviews_this_week_count - @interviews_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+            </div>
+            <% average_rating = @interviews_this_week.average(:rating)&.round %>
+            <% unless average_rating.nil? %>
+              <div class="flex flex-col items-end">
+                <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
+                <div class="font-bold flex items-center gap-x-1">
+                  <% 1.upto(5) do |star| %>
+                    <%= inline_svg_tag 'icons/star.svg', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
@@ -267,10 +280,23 @@
             <p class="font-semibold">Total Interviews</p>
             <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
           </div>
-          <div class="mt-auto">
-            <p class="font-extrabold text-4xl mb-1"><%= @all_interviews.size %></p>
-            <% offers = @all_interviews.map(&:job_lead).uniq.count(&:offer_amount?) %>
-            <p class="text-xs text-muted"><%= pluralize(offers, 'offer') %> received</p>
+          <div class="mt-auto flex items-end justify-between">
+            <div>
+              <p class="font-extrabold text-4xl mb-1"><%= @all_interviews.size %></p>
+              <% offers = @all_interviews.map(&:job_lead).uniq.count(&:offer_amount?) %>
+              <p class="text-xs text-muted"><%= pluralize(offers, 'offer') %> received</p>
+            </div>
+            <% average_rating = @all_interviews.average(:rating)&.round %>
+            <% unless average_rating.nil? %>
+              <div class="flex flex-col items-end">
+                <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
+                <div class="font-bold flex items-center gap-x-1">
+                  <% 1.upto(5) do |star| %>
+                    <%= inline_svg_tag 'icons/star.svg', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
 

@@ -15,7 +15,8 @@ class PagesController < ApplicationController
     @applications_this_week_count = @all_job_leads.applied.where(applied_at: this_week).count
     @applications_last_week_count = @all_job_leads.applied.where(applied_at: last_week).count
 
-    @interviews_this_week_count = @all_interviews.where(scheduled_at: this_week).count
+    @interviews_this_week = @all_interviews.where(scheduled_at: this_week)
+    @interviews_this_week_count = @interviews_this_week.count
     @interviews_last_week_count = @all_interviews.where(scheduled_at: last_week).count
 
     applied_leads = @all_job_leads.application_follow_up_for_user(Current.user)
