@@ -23,6 +23,11 @@
             <span>Edit</span>
           <% end %>
 
+          <%= link_to history_job_lead_path(job_lead), class: 'dropdown-option dropdown-option-secondary' do %>
+            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 shrink-0' %>
+            <span>History</span>
+          <% end %>
+
           <% if job_lead.archived_at? %>
             <%= button_to unarchive_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-secondary' do %>
               <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-5 shrink-0' %>
@@ -155,7 +160,7 @@
           status_history = []
           status_history << { status: 'applied', timestamp: job_lead.applied_at }
           job_lead.interviews.order(:scheduled_at).each do |interview|
-            status_history << { status: 'interview', timestamp: interview.scheduled_at }
+            status_history << { status: 'interview', timestamp: interview.scheduled_at, interview: }
           end
           status_history << { status: 'offer', timestamp: job_lead.offer_at }
           status_history << { status: 'accepted', timestamp: job_lead.accepted_at }
@@ -168,8 +173,14 @@
         <% status_history.each do |status_entry| %>
           <div class="flex items-center gap-1.5">
             <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0 text-light' %>
-            <span class="tag tag-<%= status_entry[:status] %>">
+            <span class="tag tag-<%= status_entry[:status] %> <%= 'relative hover:opacity-75' if status_entry[:status] == 'interview' %>">
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
+
+              <% if status_entry[:status] == 'interview' && job_lead_page %>
+                <%= link_to interview_path(status_entry[:interview]), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
+                  <span class="sr-only">View Interview</span>
+                <% end %>
+              <% end %>
             </span>
           </div>
         <% end %>

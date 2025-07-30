@@ -17,6 +17,8 @@ Rails.application.routes.draw do
       patch :reject
       get :offer
       patch :set_offer
+      get :history
+      patch :update_history
     end
   end
 

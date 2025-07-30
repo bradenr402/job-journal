@@ -29,6 +29,8 @@ class JobLead < ApplicationRecord
   belongs_to :user
   has_many :notes, as: :notable, dependent: :destroy
   has_many :interviews, dependent: :destroy
+  accepts_nested_attributes_for :interviews
+
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 

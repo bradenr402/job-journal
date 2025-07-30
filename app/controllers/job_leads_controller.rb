@@ -1,5 +1,5 @@
 class JobLeadsController < ApplicationController
-  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :offer, :set_offer, :reject ]
+  before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :offer, :set_offer, :reject, :history, :update_history ]
   before_action :cleanup_tags, only: [ :index, :new, :edit ]
   before_action :cleanup_leads, only: [ :index, :show ]
 
@@ -165,6 +165,19 @@ class JobLeadsController < ApplicationController
     end
   end
 
+  def history
+    @interviews = @job_lead.interviews.order(:scheduled_at)
+  end
+
+  def update_history
+    if @job_lead.update(job_lead_history_params)
+      redirect_to @job_lead, success: 'History updated successfully.'
+    else
+      @interviews = @job_lead.interviews.order(:scheduled_at)
+      render :history, status: :unprocessable_entity, error: 'Failed to update history.'
+    end
+  end
+
   private
 
   def set_job_lead
@@ -175,6 +188,17 @@ class JobLeadsController < ApplicationController
 
   def job_lead_params
     params.expect(job_lead: [ :title, :company, :application_url, :source, :salary, :contact, :offer_amount, :location, :status, :tag_list ])
+  end
+
+  def job_lead_history_params
+    params.expect(job_lead: [
+      :created_at,
+      :applied_at,
+      :offer_at,
+      :accepted_at,
+      :rejected_at,
+      interviews_attributes: [ [ :id, :scheduled_at ] ]
+    ])
   end
 
   def cleanup_tags
