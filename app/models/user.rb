@@ -34,10 +34,12 @@ class User < ApplicationRecord
 
   # Normalizations
   normalizes :email_address, with: -> { it.strip.downcase }
+  normalizes :name, with: -> { it.strip }
 
   # Validations
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, presence: true
+  validates :password, presence: true, on: :create
+  validates :password, presence: true, on: :update, if: -> { password.present? || password_confirmation.present? }
 
   # Aliases
   alias_attribute :email, :email_address

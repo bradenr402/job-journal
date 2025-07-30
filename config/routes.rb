@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resource :registrations, only: [ :new, :create ]
   resources :passwords, only: [ :new, :create, :edit, :update ], param: :token
 
+  delete 'sessions/others', to: 'sessions#destroy_other_sessions', as: :destroy_other_sessions
+
   resources :job_leads do
     member do
       patch :archive
@@ -21,9 +23,14 @@ Rails.application.routes.draw do
   resources :notes
   resources :interviews
   get 'search', to: 'search#index'
+
   get 'settings', to: 'settings#edit'
   patch 'settings', to: 'settings#update'
   patch 'reset_settings', to: 'settings#reset'
+
+  get 'account', to: 'users#account'
+  get 'account/edit', to: 'users#edit', as: :edit_account
+  patch 'account/update', to: 'users#update'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

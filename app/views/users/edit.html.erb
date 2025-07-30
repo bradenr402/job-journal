@@ -1,0 +1,90 @@
+<% content_for :title, 'Edit Account' %>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to account_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back to Account</span>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <h2 class="heading">Edit Account</h2>
+    <p class="text-sm text-muted mt-1">Edit your account details.</p>
+  </div>
+
+  <%= form_with model: @user, url: account_update_path, method: :patch, local: true, data: { controller: 'conditional-field' } do |form| %>
+    <%= render 'components/errors', resource: @user %>
+
+    <div class="space-y-8 *:not-last:pb-8 divide-y divide-neutral-200 dark:divide-neutral-800">
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Profile</h2>
+          <p class="text-sm text-muted mt-1">Change your name or email address.</p>
+        </div>
+
+        <div class="space-y-5">
+          <div>
+            <%= form.label :name, class: 'form-label' %>
+            <%= form.text_field :name, placeholder: 'Enter your name', class: 'form-input' %>
+          </div>
+
+          <div>
+            <%= form.label :email_address, 'Email Address', class: 'form-label' %>
+            <%= form.email_field :email_address, autocomplete: 'email', placeholder: 'Enter your email address', class: 'form-input' %>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Password</h2>
+          <p class="text-sm text-muted mt-1">Change your password.</p>
+        </div>
+        <div class="space-y-5">
+          <div>
+            <%= form.label :password, 'New Password', class: 'form-label' %>
+            <%= form.password_field :password, autocomplete: 'new-password', placeholder: 'Enter your new password', maxlength: 72, class: 'form-input' %>
+          </div>
+
+          <div>
+            <%= form.label :password_confirmation, 'Confirm New Password', class: 'form-label' %>
+            <%= form.password_field :password_confirmation, autocomplete: 'new-password', placeholder: 'Repeat your new password', maxlength: 72, class: 'form-input' %>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-4">
+          <h2 class="subheading">Confirm</h2>
+          <p class="text-sm text-muted mt-1">You must enter your current password to confirm changes.</p>
+        </div>
+        <div class="space-y-5">
+          <div>
+            <%= form.label :current_password, 'Current Password', class: 'form-label' %>
+            <%= form.password_field :current_password, required: true, autocomplete: 'current-password', placeholder: 'Enter your current password', maxlength: 72, class: 'form-input' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky bottom-0 bg-white dark:bg-neutral-950 mt-5 py-4 max-md:-mx-4 max-md:px-4 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200 dark:border-neutral-800">
+      <%= form.submit 'Update Account', class: 'btn btn-primary w-full sm:w-auto' %>
+    </div>
+  <% end %>
+
+  <div class="border-t border-neutral-200 dark:border-neutral-800 pt-8">
+    <div class="card">
+      <div class="mb-4 pb-4 border-b border-neutral-200 dark:border-neutral-800">
+        <h2 class="subheading">Danger Zone</h2>
+        <p class="text-sm text-muted mt-1">Permanently delete your account.</p>
+      </div>
+      <div class="space-y-6">
+        <div>
+          <%= button_to 'Delete Account', registrations_path, method: :delete, data: { turbo_confirm: 'Are you absolutely sure you want to delete your account? This action cannot be undone.' }, class: 'btn btn-destructive w-full sm:w-auto' %>
+          <p class="text-xs text-muted mt-1">This will permanently delete your JobJournal account and all associated data. This cannot be undone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

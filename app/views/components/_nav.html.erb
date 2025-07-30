@@ -32,13 +32,13 @@
 
     <div class="relative max-md:hidden md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
       <button class="w-full flex flex-col items-start px-3 py-2 rounded-lg text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 focus-visible:bg-neutral-100 dark:focus-visible:bg-neutral-800 active:bg-neutral-200 dark:active:bg-neutral-800 transition-all duration-150 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-98" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
-        <span class="block text-xs text-soft">Logged in as</span>
-        <span class="font-medium text-light"><%= Current.user.email_address %></span>
+        <span class="block text-xs text-muted"><%= Current.user.name.presence || 'Logged in as' %></span>
+        <span class="font-semibold text-light"><%= Current.user.email_address %></span>
       </button>
       <div class="translate-y-1 dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
-        <%= link_to nil, class: 'dropdown-option dropdown-option-secondary' do %>
+        <%= link_to account_path, class: 'dropdown-option dropdown-option-secondary' do %>
           <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 shrink-0' %>
-          <span>Profile</span>
+          <span>Account</span>
         <% end %>
         <%= link_to settings_path, class: 'dropdown-option dropdown-option-secondary' do %>
           <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 shrink-0' %>

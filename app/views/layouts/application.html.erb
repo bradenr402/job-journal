@@ -42,9 +42,9 @@
         </button>
 
         <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden" data-dropdown-target="menu">
-          <%= link_to '#', class: 'dropdown-option dropdown-option-secondary' do %>
+          <%= link_to account_path, class: 'dropdown-option dropdown-option-secondary' do %>
             <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 shrink-0' %>
-            <span>Profile</span>
+            <span>Account</span>
           <% end %>
           <%= link_to settings_path, class: 'dropdown-option dropdown-option-secondary' do %>
             <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 shrink-0' %>

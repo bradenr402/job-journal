@@ -1,7 +1,9 @@
 <div class="sm:w-7/8 w-full mx-auto space-y-20">
   <div>
     <div class="mb-4">
-      <h2 class="heading">Welcome Back!</h2>
+      <% welcome_message = Current.user.name? ? "Welcome Back, #{Current.user.name}!" : 'Welcome Back!' %>
+      <h2 class="heading"><%= welcome_message %></h2>
+
       <p class="text-sm text-muted mt-1 text-pretty">Here&#8217;s what&#8217;s happening with your job search. Check in regularly to stay on top of your progress.</p>
     </div>
 
