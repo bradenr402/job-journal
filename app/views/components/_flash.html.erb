@@ -1,15 +1,15 @@
 <% if success %>
-  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-primary-100 dark:bg-primary-950/70 text-primary-600 dark:text-primary-500 text-center text-pretty" id="success"><%== success %></p>
+  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-primary-100 dark:bg-primary-950/70 text-primary-600 dark:text-primary-500 text-center text-pretty [view-transition-name:flash-success]" id="success"><%== success %></p>
 <% end %>
 
 <% if error %>
-  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-rose-100 dark:bg-rose-950/70 text-rose-600 dark:text-rose-500 text-center text-pretty" id="error"><%== error %></p>
+  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-rose-100 dark:bg-rose-950/70 text-rose-600 dark:text-rose-500 text-center text-pretty [view-transition-name:flash-error]" id="error"><%== error %></p>
 <% end %>
 
 <% if notice %>
-  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-500 text-center text-pretty" id="notice"><%== notice %></p>
+  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-500 text-center text-pretty [view-transition-name:flash-notice]" id="notice"><%== notice %></p>
 <% end %>
 
 <% if alert %>
-  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-yellow-100 dark:bg-yellow-950/70 text-yellow-600 dark:text-yellow-500 text-center text-pretty" id="alert"><%== alert %></p>
+  <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-yellow-100 dark:bg-yellow-950/70 text-yellow-600 dark:text-yellow-500 text-center text-pretty [view-transition-name:flash-alert]" id="alert"><%== alert %></p>
 <% end %>
