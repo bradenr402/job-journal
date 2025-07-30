@@ -1,11 +1,16 @@
 <% content_for :title, 'Settings' %>
 
 <div class="sm:w-7/8 w-full mx-auto">
-  <div>
-    <div class="mb-4">
-      <h2 class="heading">Settings</h2>
-      <p class="text-sm text-muted mt-1">Personalize how JobJournal works for you.</p>
-    </div>
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to root_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back Home</span>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <h2 class="heading">Settings</h2>
+    <p class="text-sm text-muted mt-1">Personalize how JobJournal works for you.</p>
   </div>
 
   <%= form_with url: settings_path, method: :patch, local: true, data: { controller: 'conditional-field' } do |form| %>
@@ -63,7 +68,6 @@
               settings_value: @settings[:notes_display],
               help_text: 'Choose how notes are displayed.' %>
         </div>
-
       </div>
 
       <div>
