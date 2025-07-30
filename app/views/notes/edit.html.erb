@@ -1,19 +1,4 @@
-<%
-  if @note.notable.is_a?(JobLead)
-    notable_title = "#{@note.notable.title} @ #{@note.notable.company}"
-    page_title = "New Note for #{notable_title}"
-    back_text = notable_title
-  elsif @note.notable.is_a?(Interview)
-    job_lead = @note.notable.job_lead
-    notable_title = "#{job_lead.title} @ #{job_lead.company}"
-    page_title = "New Note for Interview - #{notable_title}"
-    back_text = "Interview - #{notable_title}"
-  else
-    notable_title = @note.notable.model_name.human.titlecase
-    page_title = "New Note for #{notable_title}"
-    back_text = notable_title
-  end
-%>
+<% page_title = "Editing Note for #{@note.title}" %>
 
 <% content_for :title, page_title %>
 
