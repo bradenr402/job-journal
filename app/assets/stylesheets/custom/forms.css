@@ -3,7 +3,7 @@
 }
 
 @utility form-input-transparent {
-  @apply appearance-none block focus:outline-hidden py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal
+  @apply appearance-none block focus:outline-hidden py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
 }
 
 @utility form-label {
