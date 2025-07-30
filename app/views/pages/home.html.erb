@@ -62,25 +62,62 @@
     </div>
   </div>
 
-  <div>
-    <div class="mb-4">
-      <h2 class="subheading">Upcoming Interviews</h2>
-      <p class="text-sm text-muted mt-1 text-pretty">Interviews scheduled for today and the next 7 days.</p>
-    </div>
-    <div id="interviews" class="@container">
-      <% if @interviews_upcoming.any? %>
-        <div class="<%= Current.user.get_setting(:interviews_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @interviews_upcoming.size >= 3 && @interviews_upcoming.size != 4}" %> gap-3">
-          <% @interviews_upcoming.each do |interview| %>
+  <% if @upcoming_interviews.any? %>
+    <div>
+      <div class="mb-4">
+        <h2 class="subheading">Upcoming Interviews</h2>
+        <p class="text-sm text-muted mt-1 text-pretty">Interviews scheduled for today and the next 7 days.</p>
+      </div>
+      <div id="upcoming_interviews" class="@container">
+        <div class="<%= Current.user.get_setting(:interviews_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @upcoming_interviews.size >= 3 && @upcoming_interviews.size != 4}" %> gap-3">
+          <% @upcoming_interviews.each do |interview| %>
             <%= render interview %>
           <% end %>
         </div>
-      <% else %>
-        <div class="empty-state">
-          No upcoming interviews.
-        </div>
-      <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
+
+  <% if @recent_interviews.any? %>
+    <div>
+      <div class="mb-4">
+        <h2 class="subheading">Reflection Suggestions</h2>
+        <p class="text-sm text-muted mt-1 text-pretty">Interviews from the past 3 days that you haven&#8217;t rated or reflected on yet. Take a moment to add your thoughts.</p>
+      </div>
+      <div class="card">
+        <div class="grid grid-cols-1 @xl:grid-cols-2 gap-1.5">
+          <% @recent_interviews.each do |interview| %>
+            <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-150 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98" style="view-transition-name: job_lead-<%= interview.id %>;">
+              <div class="flex items-center gap-2.5">
+                <div class="flex flex-col">
+                  <div class="text-lg font-semibold">
+                    <span><%= interview.interviewer %></span>
+                    <span class="font-normal ml-0.5 tag tag-accepted">
+                      Completed: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span>
+                    </span>
+                  </div>
+
+                  <div class="flex items-center gap-1 text-sm text-soft">
+                    <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
+                    <%= interview.job_lead.company %>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-xs text-muted">
+                You completed this interview <span class="font-semibold text-soft"><%= time_ago_in_words interview.scheduled_at %> ago</span>.
+                Rate your experience and jot down any reflection notes while it&#8217;s still fresh.
+              </p>
+
+              <%= link_to interview_path(interview), class: 'absolute inset-0 z-10' do %>
+                <span class="sr-only">View</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <% if @follow_up_suggestions.any? %>
     <div class="@container">

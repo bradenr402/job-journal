@@ -24,8 +24,20 @@ class PagesController < ApplicationController
     @follow_up_suggestions = (applied_leads + interviewed_leads).sort_by(&:latest_status_at).reverse
 
     @stale_leads = @all_job_leads.stale_for_user(Current.user).order(updated_at: :asc)
-    @interviews_upcoming = @all_interviews.upcoming.order(scheduled_at: :asc)
+    @upcoming_interviews = @all_interviews.upcoming.order(scheduled_at: :asc)
     @recent_notes = @all_notes.recent.order(updated_at: :desc).limit(10)
+
+    recent_interviews = @all_interviews.recent.left_outer_joins(:notes)
+
+    interviews_no_rating = recent_interviews.where(rating: nil)
+    interviews_no_notes = recent_interviews.where(notes: { id: nil })
+    interviews_notes_outdated = recent_interviews.where('notes.updated_at < interviews.scheduled_at')
+
+    @recent_interviews = interviews_no_rating
+      .or(interviews_no_notes)
+      .or(interviews_notes_outdated)
+      .distinct
+      .order(scheduled_at: :desc)
 
     @top_sources = @all_job_leads.top_sources_by_quality
     @top_tags = Current.user.tags.top_by_usage.limit(20).pluck(:name)
