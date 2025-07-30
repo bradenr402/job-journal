@@ -71,7 +71,7 @@
     <% end %>
   </div>
 
-  <% if job_lead_page %>
+  <% if job_lead_page && (job_lead.offer_amount? || job_lead.salary? || job_lead.contact? || job_lead.location? || job_lead.source?) %>
     <div class="flex flex-wrap items-start gap-x-14 gap-y-4 mb-4 py-4 border-y border-neutral-200 dark:border-neutral-800">
       <% if job_lead.offer_amount? || job_lead.salary? %>
         <div class="flex flex-wrap items-start gap-x-14 gap-y-4">
@@ -98,7 +98,7 @@
       <% end %>
 
       <div class="flex flex-wrap items-start gap-x-14 gap-y-4">
-        <% if job_lead.contact.present? %>
+        <% if job_lead.contact? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
               <%= inline_svg_tag 'icons/contact.svg', class: 'size-3.75 shrink-0' %>
@@ -108,7 +108,7 @@
           </div>
         <% end %>
 
-        <% if job_lead.location.present? %>
+        <% if job_lead.location? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
               <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
@@ -118,7 +118,7 @@
           </div>
         <% end %>
 
-        <% if job_lead.source.present? %>
+        <% if job_lead.source? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
               <%= inline_svg_tag 'icons/globe.svg', class: 'size-3.75 shrink-0' %>
