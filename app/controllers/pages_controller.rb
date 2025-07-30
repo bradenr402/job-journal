@@ -25,7 +25,7 @@ class PagesController < ApplicationController
 
     @stale_leads = @all_job_leads.stale_for_user(Current.user).order(updated_at: :asc)
     @upcoming_interviews = @all_interviews.upcoming.order(scheduled_at: :asc)
-    @recent_notes = @all_notes.recent.order(updated_at: :desc).limit(10)
+    @recent_notes = @all_notes.recent.order(updated_at: :desc).limit(15)
 
     recent_interviews = @all_interviews.recent.left_outer_joins(:notes)
 

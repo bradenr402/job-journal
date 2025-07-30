@@ -194,25 +194,21 @@
     </div>
   <% end %>
 
-  <div>
-    <div class="mb-4">
-      <h2 class="subheading">Recent Notes</h2>
-      <p class="text-sm text-muted mt-1 text-pretty">Your 10 most recent notes created or edited in the last 7 days.</p>
-    </div>
-    <div id="notes" class="@container">
-      <% if @recent_notes.any? %>
+  <% if @recent_notes.any? %>
+    <div>
+      <div class="mb-4">
+        <h2 class="subheading">Recent Notes</h2>
+        <p class="text-sm text-muted mt-1 text-pretty">Up to 15 recent notes that you created or updated in the last 7 days.</p>
+      </div>
+      <div id="notes" class="@container">
         <div class="<%= Current.user.get_setting(:notes_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4}" %> gap-3">
           <% @recent_notes.each do |note| %>
             <%= render note %>
           <% end %>
         </div>
-      <% else %>
-        <div class="empty-state">
-          No recent notes.
-        </div>
-      <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div>
     <div class="mb-4">
