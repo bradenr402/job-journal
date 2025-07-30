@@ -222,7 +222,7 @@
 
     <div class="@container space-y-3">
       <div class="grid grid-cols-1 @xl:grid-cols-2 gap-3">
-        <div class="relative card card-hover">
+        <div class="relative card card-hover flex flex-col">
           <%= link_to job_leads_path(job_lead_type: 'all'), class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Job Leads</span>
           <% end %>
@@ -231,14 +231,16 @@
             <p class="font-semibold">Total Job Leads</p>
             <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="font-extrabold text-4xl mb-1"><%= @all_job_leads.size %></p>
-          <p class="text-xs text-muted">
-            <% job_leads_count_by_type = @all_job_leads.map(&:type).tally.sort_by { |key, _value| key }.to_h %>
-            <%= job_leads_count_by_type.map { |type, count| "#{count} #{type}" }.join(', ') %>
-          </p>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= @all_job_leads.size %></p>
+            <p class="text-xs text-muted">
+              <% job_leads_count_by_type = @all_job_leads.map(&:type).tally.sort_by { |key, _value| key }.to_h %>
+              <%= job_leads_count_by_type.map { |type, count| "#{count} #{type}" }.join(', ') %>
+            </p>
+          </div>
         </div>
 
-        <div class="relative card card-hover">
+        <div class="relative card card-hover flex flex-col">
           <%= link_to job_leads_path(status: 'applied'), class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Applications</span>
           <% end %>
@@ -248,13 +250,15 @@
             <%= inline_svg_tag 'icons/application.svg', class: 'size-5 shrink-0' %>
           </div>
           <% applied_leads = @all_job_leads.where.not(applied_at: nil) %>
-          <p class="font-extrabold text-4xl mb-1"><%= applied_leads.size %></p>
-          <p class="text-xs text-muted">
-            <%= applied_leads.interview.count %> advanced to interview
-          </p>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= applied_leads.size %></p>
+            <p class="text-xs text-muted">
+              <%= applied_leads.interview.count %> advanced to interview
+            </p>
+          </div>
         </div>
 
-        <div class="relative card card-hover">
+        <div class="relative card card-hover flex flex-col">
           <%= link_to interviews_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Interviews</span>
           <% end %>
@@ -263,12 +267,14 @@
             <p class="font-semibold">Total Interviews</p>
             <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="font-extrabold text-4xl mb-1"><%= @all_interviews.size %></p>
-          <% offers = @all_interviews.map(&:job_lead).uniq.count(&:offer_amount?) %>
-          <p class="text-xs text-muted"><%= pluralize(offers, 'offer') %> received</p>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= @all_interviews.size %></p>
+            <% offers = @all_interviews.map(&:job_lead).uniq.count(&:offer_amount?) %>
+            <p class="text-xs text-muted"><%= pluralize(offers, 'offer') %> received</p>
+          </div>
         </div>
 
-        <div class="relative card card-hover">
+        <div class="relative card card-hover flex flex-col">
           <%= link_to notes_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Notes</span>
           <% end %>
@@ -277,11 +283,13 @@
             <p class="font-semibold">Total Notes</p>
             <%= inline_svg_tag 'icons/note.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="font-extrabold text-4xl mb-1"><%= @all_notes.size %></p>
-          <p class="text-xs text-muted">
-            <% notes_count_by_type = @all_notes.map(&:notable_type).tally.sort_by { |_key, value| -value }.to_h %>
-            <%= notes_count_by_type.map { |type, count| "#{count} on #{type.underscore.humanize.downcase.pluralize}" }.join(', ') %>
-          </p>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= @all_notes.size %></p>
+            <p class="text-xs text-muted">
+              <% notes_count_by_type = @all_notes.map(&:notable_type).tally.sort_by { |_key, value| -value }.to_h %>
+              <%= notes_count_by_type.map { |type, count| "#{count} on #{type.underscore.humanize.downcase.pluralize}" }.join(', ') %>
+            </p>
+          </div>
         </div>
       </div>
 
