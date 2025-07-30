@@ -7,7 +7,7 @@
 
     <div class="@container">
       <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
-        <div class="relative card card-hover">
+        <div class="relative card card-hover flex flex-col">
           <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Job Leads</span>
           <% end %>
@@ -16,11 +16,13 @@
             <p class="font-semibold">Job Leads This Week</p>
             <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="font-extrabold text-4xl mb-1"><%= @job_leads_this_week_count %></p>
-          <p class="text-xs text-muted"><%= number_with_sign(@job_leads_this_week_count - @job_leads_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= @job_leads_this_week_count %></p>
+            <p class="text-xs text-muted"><%= number_with_sign(@job_leads_this_week_count - @job_leads_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+          </div>
         </div>
 
-        <div class="relative card card-hover @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
+        <div class="relative card card-hover flex flex-col @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
           <%= link_to job_leads_path(status: 'applied'), class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Applications</span>
           <% end %>
@@ -29,7 +31,7 @@
             <p class="font-semibold">Applications This Week</p>
             <%= inline_svg_tag 'icons/application.svg', class: 'size-5 shrink-0' %>
           </div>
-          <div class="flex items-end justify-between">
+          <div class="mt-auto flex items-end justify-between">
             <div>
               <p class="font-extrabold text-4xl mb-1">
                 <%= @applications_this_week_count %>
@@ -46,7 +48,7 @@
           </div>
         </div>
 
-        <div class="relative card card-hover">
+        <div class="relative card card-hover flex flex-col">
           <%= link_to interviews_path, class: 'absolute inset-0 z-10' do %>
             <span class="sr-only">View All Interviews</span>
           <% end %>
@@ -55,8 +57,10 @@
             <p class="font-semibold">Interviews This Week</p>
             <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="font-extrabold text-4xl mb-1"><%= @interviews_this_week_count %></p>
-          <p class="text-xs text-muted"><%= number_with_sign(@interviews_this_week_count - @interviews_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= @interviews_this_week_count %></p>
+            <p class="text-xs text-muted"><%= number_with_sign(@interviews_this_week_count - @interviews_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
+          </div>
         </div>
       </div>
     </div>
