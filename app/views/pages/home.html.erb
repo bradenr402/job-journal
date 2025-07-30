@@ -201,7 +201,7 @@
     <div>
       <div class="mb-4">
         <h2 class="subheading">Stale Job Leads</h2>
-        <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over <%= pluralize(Current.user.get_setting(:job_lead_stale_after_days), 'day') %> ago that you haven&#8217;t applied to yet.</p>
+        <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over <%= pluralize(Current.user.get_setting(:job_lead_stale_after_days), 'day') %> ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
       </div>
       <div id="job_leads" class="@container">
         <div class="<%= Current.user.get_setting(:job_leads_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @stale_leads.size >= 3 && @stale_leads.size != 4}" %> gap-3">
