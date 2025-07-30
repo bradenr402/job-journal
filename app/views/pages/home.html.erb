@@ -2,7 +2,7 @@
   <div>
     <div class="mb-4">
       <h2 class="heading">Welcome Back!</h2>
-      <p class="text-sm text-muted mt-1 text-pretty">Here&#8217;s what&#8217;s happening with your job search.</p>
+      <p class="text-sm text-muted mt-1 text-pretty">Here&#8217;s what&#8217;s happening with your job search. Check in regularly to stay on top of your progress.</p>
     </div>
 
     <div class="@container">
@@ -164,7 +164,7 @@
                   action = suggestion.applied? ? 'applied to' : 'interviewed for'
                   time   = suggestion.applied? ? suggestion.applied_at : suggestion.last_interview_at
                 %>
-                You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words(time) %> ago</span>.
+                You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words time %> ago</span>.
                 Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
               </p>
 
@@ -182,7 +182,7 @@
     <div>
       <div class="mb-4">
         <h2 class="subheading">Stale Job Leads</h2>
-        <p class="text-sm text-muted mt-1 text-pretty">Job leads from more than <%= pluralize(Current.user.get_setting(:job_lead_stale_after_days), 'day') %> ago that you haven&#8217;t applied to yet.</p>
+        <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over <%= pluralize(Current.user.get_setting(:job_lead_stale_after_days), 'day') %> ago that you haven&#8217;t applied to yet.</p>
       </div>
       <div id="job_leads" class="@container">
         <div class="<%= Current.user.get_setting(:job_leads_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @stale_leads.size >= 3 && @stale_leads.size != 4}" %> gap-3">
@@ -228,7 +228,10 @@
             <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
           </div>
           <p class="font-extrabold text-4xl mb-1"><%= @all_job_leads.size %></p>
-          <p class="text-xs text-muted"><%= @all_job_leads.active.size %> active, <%= @all_job_leads.archived.size %> archived</p>
+          <p class="text-xs text-muted">
+            <% job_leads_count_by_type = @all_job_leads.map(&:type).tally.sort_by { |key, _value| key }.to_h %>
+            <%= job_leads_count_by_type.map { |type, count| "#{count} #{type}" }.join(', ') %>
+          </p>
         </div>
 
         <div class="relative card card-hover">
@@ -271,7 +274,10 @@
             <%= inline_svg_tag 'icons/note.svg', class: 'size-5 shrink-0' %>
           </div>
           <p class="font-extrabold text-4xl mb-1"><%= @all_notes.size %></p>
-          <p class="text-xs text-muted">Across all job leads &amp; interviews</p>
+          <p class="text-xs text-muted">
+            <% notes_count_by_type = @all_notes.map(&:notable_type).tally.sort_by { |_key, value| -value }.to_h %>
+            <%= notes_count_by_type.map { |type, count| "#{count} on #{type.underscore.humanize.downcase.pluralize}" }.join(', ') %>
+          </p>
         </div>
       </div>
 
@@ -281,7 +287,7 @@
             <p class="font-semibold">Top Tags</p>
             <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="text-xs text-muted">Your most frequently used tags</p>
+          <p class="text-xs text-muted">Your most frequently used tags.</p>
         </div>
 
         <% if @top_tags.any? %>
@@ -306,7 +312,7 @@
             <p class="font-semibold">Top Sources</p>
             <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 shrink-0' %>
           </div>
-          <p class="text-xs text-muted">Where your best job leads are coming from</p>
+          <p class="text-xs text-muted">See where your best job leads are coming from.</p>
         </div>
 
         <% if @top_sources.any? %>

@@ -212,6 +212,8 @@ class JobLead < ApplicationRecord
     self.class.status_quality(inferred_status)
   end
 
+  def type = archived? ? 'archived' : 'active'
+
   def active? = archived_at.nil?
   def archived? = archived_at.present?
 
