@@ -26,7 +26,11 @@
       </span>
     </div>
 
-    <%= link_to 'New Job Lead', new_job_lead_path, class: 'btn btn-primary' %>
+
+    <%= link_to new_job_lead_path, class: 'btn btn-primary' do %>
+      <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
+      <span>New Job Lead</span>
+    <% end %>
   </div>
 
   <%= render 'filters' %>
