@@ -212,6 +212,7 @@ class JobLeadsController < ApplicationController
   def set_recents
     scope = Current.user.job_leads.where(created_at: 30.days.ago..)
 
+    @recent_titles = scope.distinct.pluck(:title).sort
     @recent_companies = scope.distinct.pluck(:company).sort
     @recent_locations = scope.where.not(location: [ nil, '' ]).distinct.pluck(:location).sort
     @recent_sources = scope.where.not(source: [ nil, '' ]).distinct.pluck(:source).sort

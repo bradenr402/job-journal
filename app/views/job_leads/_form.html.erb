@@ -4,7 +4,13 @@
   <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-5">
     <div>
       <%= form.label :title, 'Job Title', class: 'form-label' %>
-      <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'Software Engineer' %>
+      <%= form.text_field :title, class: 'form-input', autofocus: true, placeholder: 'Software Engineer', list: 'recent-titles' %>
+
+      <datalist id="recent-titles">
+        <% @recent_titles.each do |title| %>
+          <option value="<%= title %>">
+        <% end %>
+      </datalist>
     </div>
 
     <div>
