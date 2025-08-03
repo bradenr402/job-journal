@@ -11,7 +11,7 @@
       <% end %>
     </div>
     <% if job_lead_page %>
-      <div class="ml-auto relative" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+      <div class="ml-auto relative max-h-max" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
         <button class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
           <span class="sr-only">Actions for this job lead</span>
           <%= inline_svg_tag 'icons/more-horizontal.svg', class: 'size-5.5' %>
