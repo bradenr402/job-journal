@@ -19,7 +19,7 @@
     <div class="flex items-center justify-between mb-4">
       <h2 class="subheading">Interviews</h2>
       <% if @job_lead.interview? %>
-        <%= link_to new_interview_path(job_lead_id: @job_lead.id), class: 'btn btn-primary gap-2' do %>
+        <%= link_to new_interview_path(job_lead_id: @job_lead.id), class: 'btn btn-sm btn-primary' do %>
           <%= inline_svg_tag 'icons/interview.svg', class: 'size-4 shrink-0' %>
           <span>New Interview</span>
         <% end %>

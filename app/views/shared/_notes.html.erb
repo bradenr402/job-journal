@@ -1,7 +1,7 @@
 <div class="mt-12 @container">
   <div class="flex items-center justify-between mb-4">
     <h2 class="subheading">Notes</h2>
-    <%= link_to new_note_path(notable_type: notable.model_name, notable_id: notable.id), class: 'btn btn-primary gap-2' do %>
+    <%= link_to new_note_path(notable_type: notable.model_name, notable_id: notable.id), class: 'btn btn-sm btn-primary' do %>
       <%= inline_svg_tag 'icons/note.svg', class: 'size-4 shrink-0' %>
       <span>New Note</span>
     <% end %>
