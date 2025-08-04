@@ -16,7 +16,7 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap justify-between items-end gap-2 mb-4">
+  <div class="flex flex-wrap justify-between items-start gap-2 mb-4">
     <div>
       <h1 class="heading">
         Job Leads
@@ -27,7 +27,7 @@
     </div>
 
 
-    <%= link_to new_job_lead_path, class: 'btn btn-primary' do %>
+    <%= link_to new_job_lead_path, class: 'btn btn-primary mt-1' do %>
       <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
       <span>New Job Lead</span>
     <% end %>
