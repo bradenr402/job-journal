@@ -183,7 +183,7 @@ class JobLeadsController < ApplicationController
   def set_job_lead
     @job_lead = Current.user.job_leads.includes(:notes, :tags, interviews: :notes).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
-    redirect_back fallback_location: root_path, alert: 'Job lead not found.', status: :not_found
+    raise # Let config.exceptions_app handle the error
   end
 
   def job_lead_params

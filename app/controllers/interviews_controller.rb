@@ -73,7 +73,7 @@ class InterviewsController < ApplicationController
   def set_interview
     @interview = Current.user.interviews.includes(:job_lead, :notes).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
-    redirect_back fallback_location: root_path, alert: 'Interview not found.', status: :not_found
+    raise # Let config.exceptions_app handle the error
   end
 
   def interview_params

@@ -65,7 +65,7 @@ class NotesController < ApplicationController
   def set_note
     @note = Current.user.notes.includes(notable: :job_lead).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
-    redirect_back fallback_location: root_path, alert: 'Note not found.', status: :not_found
+    raise # Let config.exceptions_app handle the error
   end
 
   def note_params

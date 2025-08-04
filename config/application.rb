@@ -28,5 +28,8 @@ module JobJournal
 
     # Set default week start to Sunday for all date calculations
     config.beginning_of_week = :sunday
+
+    # Route exceptions through ErrorsController for custom error pages
+    config.exceptions_app = ->(env) { ErrorsController.action(:show).call(env) }
   end
 end

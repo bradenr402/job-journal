@@ -1,0 +1,20 @@
+<section class="grid h-screen items-center">
+  <div class="text-center space-y-12">
+    <div class="relative leading-none">
+      <h1 class="font-black text-[clamp(9rem,14vw,12rem)]/none text-neutral-400/25 dark:text-neutral-600/35"><%= code %></h1>
+      <p class="absolute top-[53%] left-1/2 -translate-1/2 whitespace-nowrap font-bold tracking-tight text-[clamp(1.65rem,2.5vw,2rem)] text-rose-500"><%= error_message %></p>
+    </div>
+
+    <div class="space-y-9 text-pretty text-left max-w-md mx-auto">
+      <div class="space-y-3">
+        <p class="text-lg font-medium"><%= error_description %></p>
+        <p class="text-soft"><%= help_text %></p>
+      </div>
+
+      <%= link_to root_path, data: { turbo: false }, class: 'btn btn-secondary' do %>
+        <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-5 shrink-0' %>
+        <span>Back Home</span>
+      <% end %>
+    </div>
+  </div>
+</section>
