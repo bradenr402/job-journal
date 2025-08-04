@@ -37,10 +37,10 @@
 }
 
 @utility btn-transparent {
-  @apply bg-transparent text-primary-600 hover:bg-primary-100 active:bg-primary-200;
+  @apply bg-transparent text-primary-600 hover:bg-primary-300/60 active:bg-primary-300 dark:text-primary-500 dark:hover:bg-primary-800/60 dark:active:bg-primary-800;
 
   &.btn-muted {
-    @apply bg-transparent text-soft hover:bg-neutral-200/50 active:bg-neutral-300;
+    @apply bg-transparent text-light hover:text-normal hover:bg-neutral-300/70 dark:hover:bg-neutral-700/70 active:bg-neutral-300 dark:active:bg-neutral-700;
   }
 }
 
