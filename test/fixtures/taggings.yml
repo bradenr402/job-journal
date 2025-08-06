@@ -1,9 +1,25 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one_remote:           { job_lead: one, tag: remote }
+one_rails:            { job_lead: one, tag: rails }
+one_junior:           { job_lead: one, tag: junior }
+one_full_stack:       { job_lead: one, tag: full_stack }
+one_dream_job:        { job_lead: one, tag: dream_job }
+one_small_team:       { job_lead: one, tag: small_team }
+one_small_company:    { job_lead: one, tag: small_company }
+one_good_values:      { job_lead: one, tag: good_values }
+one_good_benefits:    { job_lead: one, tag: good_benefits }
+one_async:            { job_lead: one, tag: async }
+one_paid_parental:    { job_lead: one, tag: paid_parental_leave }
+one_parental:         { job_lead: one, tag: parental_leave }
+one_high_salary:      { job_lead: one, tag: high_salary }
+one_401k:             { job_lead: one, tag: '401k' }
+one_clean_code:       { job_lead: one, tag: clean_code }
 
-one:
-  job_lead: one
-  tag: one
-
-two:
-  job_lead: two
-  tag: two
+two_email_apply:      { job_lead: two, tag: email_apply }
+two_full_stack:       { job_lead: two, tag: full_stack }
+two_good_values:      { job_lead: two, tag: good_values }
+two_junior:           { job_lead: two, tag: junior }
+two_profit_share:     { job_lead: two, tag: profit_share }
+two_rails:            { job_lead: two, tag: rails }
+two_remote:           { job_lead: two, tag: remote }
+two_small_company:    { job_lead: two, tag: small_company }
+two_small_team:       { job_lead: two, tag: small_team }

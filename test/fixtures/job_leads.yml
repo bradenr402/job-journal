@@ -2,26 +2,24 @@
 
 one:
   user: one
-  company: MyString
-  title: MyString
-  application_url: MyString
-  source: MyString
-  salary: MyString
-  contact: MyString
-  offer_amount: 9.99
-  location: MyString
-  status: 1
-  archived_at: 2025-06-24 22:58:23
+  title: Junior Programmer
+  company: 37signals
+  application_url: https://37signals.com/jobs
+  salary: $145,849.00
+  contact: Bethany Wiedmeier
+  location: Remote
+  source: X
+  archived_at: 2025-07-15 13:32:12.165608000 -0400
+  applied_at: 2025-04-17 07:16:00.000000000 -0400
+  rejected_at: 2025-06-04 11:09:00.000000000 -0400
 
 two:
   user: two
-  company: MyString
-  title: MyString
-  application_url: MyString
-  source: MyString
-  salary: MyString
-  contact: MyString
-  offer_amount: 9.99
+  title: Junior Fullstack Engineer
+  company: SerpApi
+  application_url: https://serpapi.com/careers/junior-fullstack-engin
+  source: Company Site
+  salary: $80K - $100K (+ profit share)
+  contact: paige@serpapi.com
   location: MyString
-  status: 1
-  archived_at: 2025-06-24 22:58:23
+  applied_at: 2025-07-19 12:12:00.000000000 -0400

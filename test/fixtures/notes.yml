@@ -3,11 +3,11 @@
 one:
   user: one
   notable: one
-  notable_type: Notable
-  content: MyText
+  notable_type: JobLead
+  content: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet at hic deserunt quo? Consectetur libero voluptates tempore, quos voluptatibus suscipit facilis obcaecati iusto unde aliquam. Earum ullam cumque cupiditate dolorem.
 
 two:
   user: two
   notable: two
-  notable_type: Notable
-  content: MyText
+  notable_type: Interview
+  content: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo corporis voluptatum dolor praesentium consequuntur vero eveniet architecto laboriosam officiis reiciendis exercitationem perferendis consequatur possimus amet fugiat qui, aut alias velit.

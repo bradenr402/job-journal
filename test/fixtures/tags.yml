@@ -1,9 +1,67 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
+remote:
   user: one
-  name: MyString
+  name: remote
 
-two:
-  user: two
-  name: MyString
+rails:
+  user: one
+  name: rails
+
+junior:
+  user: one
+  name: junior
+
+full_stack:
+  user: one
+  name: full-stack
+
+dream_job:
+  user: one
+  name: dream job
+
+small_team:
+  user: one
+  name: small team
+
+small_company:
+  user: one
+  name: small company
+
+good_values:
+  user: one
+  name: good values
+
+good_benefits:
+  user: one
+  name: good benefits
+
+async:
+  user: one
+  name: async
+
+paid_parental_leave:
+  user: one
+  name: paid parental leave
+
+parental_leave:
+  user: one
+  name: parental leave
+
+email_apply:
+  user: one
+  name: email apply
+
+high_salary:
+  user: one
+  name: high salary
+
+'401k':
+  user: one
+  name: 401k
+
+profit_share:
+  user: one
+  name: profit share
+
+clean_code:
+  user: one
+  name: clean code
