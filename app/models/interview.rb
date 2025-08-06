@@ -11,7 +11,7 @@ class Interview < ApplicationRecord
   # Validations
   validates :job_lead, presence: true
   validates :scheduled_at, presence: true
-  validates :interviewer, length: { maximum: 255 }, allow_blank: true
+  validates :interviewer, length: { maximum: 255 }, presence: true
   validates :location, length: { maximum: 255 }, allow_blank: true
   validates :call_url, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), allow_blank: true
 
