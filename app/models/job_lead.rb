@@ -4,15 +4,15 @@ class JobLead < ApplicationRecord
   # Array of status types for filtering
   STATUSES = %w[lead applied interview offer rejected accepted].freeze
 
-  # STATUS_QUALITY maps each job lead status to a numeric weight representing its value
-  # when comparing the effectiveness of job lead sources.
+  # Status quality weights for ranking job lead sources based on their effectiveness.
   #
-  # - :lead      (5):   A saved opportunity, but no action taken yet. Low value, as many leads never progress.
-  # - :applied   (20):  Indicates user effort, but most applications do not result in interviews.
-  # - :interview (50):  A significant milestone; the source produced a real opportunity.
-  # - :offer     (90):  The source led to a job offer, which is a strong indicator of quality.
-  # - :accepted  (100): The ultimate goal; the source resulted in a successful hire.
-  # - :rejected  (0):   No longer an active or valuable lead for comparison purposes.
+  # Weights reflect the value of each status in the job application process:
+  # - lead:      5   (saved opportunity, low value as many do not progress)
+  # - applied:   20  (user effort applied, but most do not lead to interviews)
+  # - interview: 50  (significant milestone, indicates a real opportunity)
+  # - offer:     90  (strong indicator of source quality)
+  # - accepted:  100 (ultimate goal, successful hire)
+  # - rejected:  0   (no longer active or valuable)
   STATUS_QUALITY = {
     lead:      5,
     applied:   20,
@@ -231,43 +231,49 @@ class JobLead < ApplicationRecord
   end
 
   # Class Methods
+
+  # Returns the numeric quality for a given status symbol or string.
   def self.status_quality(status)
     STATUS_QUALITY[status.to_sym]
   end
 
+  # Returns a hash of the top sources by quality.
   def self.top_sources_by_quality(limit = 4)
     leads = where.not(source: [ nil, '' ])
 
-    ranked = leads.group_by { it.source.downcase }.map do |_, group|
-      most_common_casing = group.group_by(&:source).max_by { |_, leads| leads.size }.first
-      count = group.size
+    grouped = leads.group_by { it.source.downcase }
 
-      highest_quality = group.map { |lead| status_quality(lead.status) }.max
+    ranked = grouped.map do |_, group|
+      most_common_casing = group.group_by(&:source).max_by { |_, leads| leads.size }.first
+
+      count = group.size
+      qualities = group.map { |lead| status_quality(lead.status) }
+      highest_quality = qualities.max
 
       latest_created_at = group.max_by(&:created_at)&.created_at
 
       interview_count = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:interview] }
       offer_count     = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:offer] }
 
-      [
-        most_common_casing,
-        count,
-        highest_quality,
-        latest_created_at,
-        interview_count,
-        offer_count
-      ]
+      {
+        source: most_common_casing,
+        count: count,
+        highest_quality: highest_quality,
+        latest_created_at: latest_created_at,
+        interview_count: interview_count,
+        offer_count: offer_count
+      }
     end
 
-    filtered = ranked.reject { |_, _, _, _, interview_count, offer_count| interview_count.zero? && offer_count.zero? }
+    filtered = ranked.select { it[:interview_count].positive? || it[:offer_count].positive? }
 
-    sorted = filtered.sort_by do |_, count, highest_quality, latest_created_at, _, _|
-      [ -highest_quality, -count, -latest_created_at.to_i ]
+    sorted = filtered.sort_by do |h|
+      [ -h[:highest_quality], -h[:count], -(h[:latest_created_at]&.to_i || 0) ]
     end
 
     # Return a hash: { 'Source Name' => { count:, interview_count:, offer_count: }, ... }
-    sorted.first(limit).to_h do |source, count, _, _, interview_count, offer_count|
-      [ source, { count:, interview_count:, offer_count: } ]
+    sorted.first(limit).to_h do |h|
+      [ h[:source], { count: h[:count], interview_count: h[:interview_count], offer_count: h[:offer_count] } ]
     end
   end
 
