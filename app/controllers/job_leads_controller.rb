@@ -151,14 +151,57 @@ class JobLeadsController < ApplicationController
   end
 
   def offer
+    message =
+      case @job_lead.status
+      when 'lead'
+        'Cannot advance to Offer before applying.'
+      when 'applied'
+        'Cannot advance to Offer before interviewing.'
+      when 'offer'
+        'Job lead is already in Offer stage.'
+      when 'rejected'
+        'Cannot advance rejected lead to Offer.'
+      when 'accepted'
+        'Job lead is already in Accepted stage.'
+      else
+        nil
+      end
+
+    if message
+      redirect_to @job_lead, alert: message
+    elsif @job_lead.interview?
+      flash.clear
+      render :offer
+    else
+      redirect_to @job_lead, error: 'Sorry, something went wrong.'
+    end
   end
 
   def set_offer
+    message =
+      case @job_lead.status
+      when 'lead'
+        'Cannot advance to Offer before applying.'
+      when 'applied'
+        'Cannot advance to Offer before interviewing.'
+      when 'offer'
+        'Job lead is already in Offer stage.'
+      when 'rejected'
+        'Cannot advance rejected lead to Offer.'
+      when 'accepted'
+        'Job lead is already in Accepted stage.'
+      else
+        nil
+      end
+
+    return redirect_to @job_lead, alert: message if message
+
     offer_amount = params[:job_lead][:offer_amount].to_f
 
     return redirect_back fallback_location: @job_lead, alert: 'Offer amount is required.' unless offer_amount.positive?
 
     if @job_lead.update(offer_at: Time.current, offer_amount:)
+      flash.clear
       redirect_to @job_lead, success: 'Offer amount set successfully.'
     else
       render :offer, status: :unprocessable_entity, error: 'Failed to set offer amount.'
