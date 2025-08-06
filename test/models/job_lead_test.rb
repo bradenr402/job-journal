@@ -61,8 +61,46 @@ class JobLeadTest < ActiveSupport::TestCase
     assert @lead.errors[:accepted_at].any? { |msg| msg.include? 'must be less than or equal to' }
   end
 
-  test 'should infer status correctly' do
-    assert_equal 'rejected', @lead.status
+  test 'time travel sanity check' do
+    now = Time.current.to_i
+
+    travel 1.week
+    assert_in_delta now, 1.week.ago.to_i, 1
+  end
+
+  test 'should infer status correctly and return previous status' do
+    user = users(:one)
+
+    lead = user.job_leads.create(title: 'Example', company: 'Example co.', application_url: 'https://example.com/careers')
+    assert_equal 'lead', lead.status
+    assert_nil lead.previous_status
+
+    lead.applied!
+    assert_equal 'applied', lead.status
+    assert_equal 'lead', lead.previous_status
+
+    # travel 3 days so that `interview.scheduled_at` is in the future
+    travel 3.day
+
+    lead.interviews.create!(interviewer: 'John Doe', scheduled_at: Time.current)
+    assert_equal 'interview', lead.status
+    assert_equal 'applied', lead.previous_status
+
+    # travel 1 week so that `offer_at` is after the interview
+    travel 1.week
+
+    lead.update(offer_amount: 100_000, offer_at: Time.current)
+    assert_equal 'offer', lead.status
+    assert_equal 'interview', lead.previous_status
+
+    lead.accepted!
+    assert_equal 'accepted', lead.status
+    assert_equal 'offer', lead.previous_status
+
+    lead.update!(accepted_at: nil)
+    lead.rejected!
+    assert_equal 'rejected', lead.status
+    assert_equal 'offer', lead.previous_status
   end
 
   test 'should enforce single terminal status' do
