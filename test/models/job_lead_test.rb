@@ -105,6 +105,7 @@ class JobLeadTest < ActiveSupport::TestCase
 
   test 'should enforce single terminal status' do
     @lead.accepted_at = Time.current
+    @lead.rejected_at = Time.current
     assert_not @lead.valid?
     assert_includes @lead.errors[:base], 'cannot be both rejected and accepted'
   end
