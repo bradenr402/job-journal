@@ -124,4 +124,55 @@ class JobLeadTest < ActiveSupport::TestCase
     end
     assert_equal %w[fake here right tags], @lead.tags.pluck(:name).sort
   end
+
+  test 'top_sources_by_quality returns expected structure and sorts correctly' do
+    user = users(:one)
+    JobLead.destroy_all
+
+    # Create leads with varying statuses and sources
+    user.job_leads.create!(
+      title: 'Lead 1', company: 'Co', application_url: 'https://example.com/1', source: 'LinkedIn',
+      applied_at: Time.current
+    )
+
+    user.job_leads.create!(
+      title: 'Lead 2', company: 'Co', application_url: 'https://example.com/2', source: 'LinkedIn',
+      applied_at: Time.current, offer_amount: 100_000, offer_at: Time.current
+    )
+
+    user.job_leads.create!(
+      title: 'Lead 3', company: 'Co', application_url: 'https://example.com/3', source: 'Indeed',
+      applied_at: Time.current
+    )
+
+    lead_with_interview = user.job_leads.create!(
+      title: 'Lead 4', company: 'Co', application_url: 'https://example.com/4', source: 'Indeed',
+      applied_at: Time.current
+    )
+    lead_with_interview.interviews.create!(interviewer: 'John Doe', scheduled_at: 1.day.from_now)
+
+    user.job_leads.create!(
+      title: 'Lead 5', company: 'Co', application_url: 'https://example.com/5', source: 'Indeed',
+      applied_at: Time.current, rejected_at: Time.current
+    )
+
+    user.job_leads.create!(
+      title: 'Lead 6', company: 'Co', application_url: 'https://example.com/6', source: 'Glassdoor',
+      applied_at: Time.current
+    )
+
+    top_sources = user.job_leads.top_sources_by_quality
+
+    assert_equal %w[LinkedIn Indeed], top_sources.keys
+
+    assert_equal 2, top_sources['LinkedIn'][:count]
+    assert_equal 1, top_sources['LinkedIn'][:offer_count]
+    assert_equal 0, top_sources['LinkedIn'][:interview_count]
+
+    assert_equal 3, top_sources['Indeed'][:count]
+    assert_equal 0, top_sources['Indeed'][:offer_count]
+    assert_equal 1, top_sources['Indeed'][:interview_count]
+
+    assert_nil top_sources['Glassdoor']
+  end
 end
