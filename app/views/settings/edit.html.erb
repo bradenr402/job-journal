@@ -29,7 +29,7 @@
                 <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
               </button>
 
-              <%= form.number_field :weekly_application_goal, value: @settings[:weekly_application_goal], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+              <%= form.number_field :weekly_application_goal, value: @settings[:weekly_application_goal], min: 0, class: 'form-number', data: { number_field_target: 'input' } %>
 
               <button type="button" class="form-number-increment">
                 <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
