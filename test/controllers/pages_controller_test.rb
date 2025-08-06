@@ -1,8 +1,13 @@
-require "test_helper"
+require 'test_helper'
 
 class PagesControllerTest < ActionDispatch::IntegrationTest
-  test "should get home" do
-    get pages_home_url
+  setup do
+    @user = users(:one)
+    sign_in_as @user
+  end
+
+  test 'should get root' do
+    get root_url
     assert_response :success
   end
 end
