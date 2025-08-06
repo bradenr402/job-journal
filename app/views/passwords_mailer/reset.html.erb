@@ -1,4 +1,12 @@
-<p>
-  You can reset your password within the next 15 minutes on
-  <%= link_to 'this password reset page', edit_password_url(@user.password_reset_token) %>.
-</p>
+<div class="email-wrapper">
+  <h1 class="email-heading">Reset your JobJournal password</h1>
+  <p class="email-text">
+    You can reset your password using the secure link below. This link is valid for the next 15 minutes.
+  </p>
+  <a href="<%= edit_password_url(@user.password_reset_token) %>" class="email-button">
+    Reset Password
+  </a>
+  <p class="email-footer">
+    If you didn’t request this, you can ignore this email. Your password won’t change until you access the link above and set a new one.
+  </p>
+</div>
