@@ -1,0 +1,153 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "12b6d6b90bca97abd2f11c885d980ea4ab0559549b20f6621f7820cdda794ee3",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/notes/show.html.erb",
+      "line": 36,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Current.user.notes.includes(:notable => :job_lead).find(params.expect(:id)), { :locals => ({ :current => Current.user.notes.includes(:notable => :job_lead).find(params.expect(:id)) }) })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "NotesController",
+          "method": "show",
+          "line": 28,
+          "file": "app/controllers/notes_controller.rb",
+          "rendered": {
+            "name": "notes/show",
+            "file": "app/views/notes/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "notes/show"
+      },
+      "user_input": "params.expect(:id)",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "5d46a4a5257f30e87b8c3cf6ac284bd160f4c358cfc6d4605019da2d30f6a0cf",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/controllers/errors_controller.rb",
+      "line": 14,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => view_for_code(((params[:status_code].to_i or (status_code_from_exception(request.env[\"action_dispatch.exception\"]) or ActionDispatch::ExceptionWrapper.new(request.env, request.env[\"action_dispatch.exception\"]).status_code)) rescue 500)), {})",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ErrorsController",
+        "method": "show"
+      },
+      "user_input": "params[:status_code]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "71a8d3cb3404a1a8725d810132a3b703ce17790cb43ea114ae654c9b20b91026",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/job_lead.rb",
+      "line": 104,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "from(\"(#{statuses.map(&:to_s).map do\n public_send(it).select(:id).to_sql\n end.join(\" UNION \")}) AS unioned\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "JobLead",
+        "method": "with_any_status"
+      },
+      "user_input": "statuses.map(&:to_s).map do\n public_send(it).select(:id).to_sql\n end.join(\" UNION \")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "7d68b4ba67fa678317dda1cf57bf0834ae45551989716f4a9bf661d763085522",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/interviews/show.html.erb",
+      "line": 11,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Current.user.interviews.includes(:job_lead, :notes).find(params.expect(:id)), { :locals => ({ :current => Current.user.interviews.includes(:job_lead, :notes).find(params.expect(:id)) }) })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "InterviewsController",
+          "method": "show",
+          "line": 32,
+          "file": "app/controllers/interviews_controller.rb",
+          "rendered": {
+            "name": "interviews/show",
+            "file": "app/views/interviews/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "interviews/show"
+      },
+      "user_input": "params.expect(:id)",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "fc03312e887e4deca1e4ca6905ddba6c50b422603fbbf0e2df0c23d67f18c019",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/job_leads/show.html.erb",
+      "line": 11,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Current.user.job_leads.includes(:notes, :tags, :interviews => :notes).find(params.expect(:id)), { :locals => ({ :current => Current.user.job_leads.includes(:notes, :tags, :interviews => :notes).find(params.expect(:id)) }) })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "JobLeadsController",
+          "method": "show",
+          "line": 54,
+          "file": "app/controllers/job_leads_controller.rb",
+          "rendered": {
+            "name": "job_leads/show",
+            "file": "app/views/job_leads/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "job_leads/show"
+      },
+      "user_input": "params.expect(:id)",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.1.0"
+}
