@@ -63,14 +63,16 @@
               <div>
                 <p class="font-extrabold text-4xl mb-1">
                   <%= @applications_this_week_count %>
-                  <% if (goal = Current.user.get_setting(:weekly_application_goal)).present? %>
+                  <% goal = Current.user.get_setting(:weekly_application_goal) %>
+                  <% display_goal = goal.present? && goal.to_i.positive? %>
+                  <% if display_goal %>
                     <span class="text-sm font-normal text-muted">/ <%= goal %></span>
                   <% end %>
                 </p>
                 <p class="text-xs text-muted"><%= number_with_sign(@applications_this_week_count - @applications_last_week_count, precision: 0, zero_sign: '+') %> from last week</p>
               </div>
-              <% if goal.present? && goal.to_i.positive? %>
-                <% percent = ((@applications_this_week_count.to_f / goal.to_f) * 100).clamp(0, Float::INFINITY).round %>
+              <% if display_goal %>
+                <% percent = Current.user.weekly_application_goal_progress %>
                 <%= render 'shared/progress_dial', percent: percent %>
               <% end %>
             </div>

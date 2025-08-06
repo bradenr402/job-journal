@@ -60,4 +60,13 @@ class User < ApplicationRecord
     self.settings = {}
     save(validate: false)
   end
+
+  def weekly_application_goal_progress
+    this_week = Time.current.all_week
+    count = job_leads.where(applied_at: this_week).count.to_f
+    goal = get_setting(:weekly_application_goal).to_f
+    return 0 unless goal.positive?
+
+    ((count / goal) * 100).clamp(0, Float::INFINITY).round
+  end
 end

@@ -31,4 +31,33 @@ class UserTest < ActiveSupport::TestCase
     @user.save!
     assert_equal mixed_case_email.strip.downcase, @user.reload.email_address
   end
+
+  test 'weekly_application_goal_progress should return correct percentage' do
+    @user.set_setting(:weekly_application_goal, 5)
+
+    # Clear any existing job leads
+    @user.job_leads.destroy_all
+
+    3.times do |i|
+      @user.job_leads.create!(title: 'Example', company: 'Example Co.', application_url: "https://example.com/jobs/#{i}", applied_at: Time.current)
+    end
+
+    @user.job_leads.create!(title: 'Example', company: 'Example Co.', application_url: 'https://example.com/jobs', applied_at: 1.week.ago)
+
+    assert_equal 60, @user.weekly_application_goal_progress
+  end
+
+  test 'weekly_application_goal_progress should clamp to 0 if no leads' do
+    @user.set_setting(:weekly_application_goal, 5)
+    @user.job_leads.destroy_all
+
+    assert_equal 0, @user.weekly_application_goal_progress
+  end
+
+  test 'weekly_application_goal_progress should handle goal of zero gracefully' do
+    @user.set_setting(:weekly_application_goal, 0)
+    @user.job_leads.create!(title: 'Example', company: 'Example Co.', application_url: 'https://example.com/jobs', applied_at: Time.current)
+
+    assert_equal 0, @user.weekly_application_goal_progress
+  end
 end
