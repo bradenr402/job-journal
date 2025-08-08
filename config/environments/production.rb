@@ -97,5 +97,5 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # Suppress the default warning about using SQLite in production.
-  config.active_record.sqlite3_production_warning = false
+  # config.active_record.sqlite3_production_warning = false
 end
