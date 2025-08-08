@@ -218,7 +218,7 @@ This project is licensed under the [MIT License](LICENSE). Feel free to use, mod
 ## Support & Contact
 
 Have questions, feedback, or need help?  
-Open an issue on GitHub or contact [me@bradenroth.com](mailto:me@bradenroth.com).
+Open an issue on GitHub, or contact me at [jobjournalapp@gmail.com](mailto:jobjournalapp@gmail.com).
 
 ---
 
