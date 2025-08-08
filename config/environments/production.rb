@@ -70,8 +70,7 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
   # TODO: update host with JobJournal URL
-  config.action_mailer.default_url_options = { host: 'example.com' }
-  # config.action_mailer.default_url_options = { host: 'www.jobjournal.app', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: 'job-journal.fly.dev' }
   config.action_mailer.default_options = {
     from: 'JobJournal <jobjournalapp@gmail.com>',
     reply_to: 'jobjournalapp@gmail.com'
