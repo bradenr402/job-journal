@@ -26,16 +26,16 @@ test:
 production:
   primary:
     <<: *default
-    database: storage/production.sqlite3
+    database: <%= ENV.fetch("DATABASE_PATH") { "/mnt/sqlite/production.sqlite3" } %>
   cache:
     <<: *default
-    database: storage/production_cache.sqlite3
+    database: <%= ENV.fetch("CACHE_DATABASE_PATH") { "/mnt/sqlite/production_cache.sqlite3" } %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: storage/production_queue.sqlite3
+    database: <%= ENV.fetch("QUEUE_DATABASE_PATH") { "/mnt/sqlite/production_queue.sqlite3" } %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    database: storage/production_cable.sqlite3
+    database: <%= ENV.fetch("CABLE_DATABASE_PATH") { "/mnt/sqlite/production_cable.sqlite3" } %>
     migrations_paths: db/cable_migrate
