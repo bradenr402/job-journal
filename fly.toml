@@ -19,6 +19,13 @@ primary_region = 'mia'
 
 [[vm]]
   size = 'shared-cpu-1x'
+  memory = "256mb"
+
+[experimental]
+  auto_stop_machines = true
+  auto_start_machines = true
+  auto_stop_delay = "5m"
+  min_machines_running = 0
 
 [[mounts]]
   source      = "sqlite"
