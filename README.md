@@ -56,7 +56,10 @@ Unlike recruiter tools or job boards, JobJournal isn’t built for companies&mda
   - [Tailwind CSS](https://tailwindcss.com)
   - [Turbo](https://turbo.hotwired.dev/)
   - [Stimulus](https://stimulus.hotwired.dev/)
-- **Deployment:** _Coming soon. Check back later to try JobJournal for yourself!_
+- **Deployment:**
+  - **URL**: [job-journal.fly.dev](https://job-journal.fly.dev)
+  - **Hosting Provider**: [Fly.io](https://fly.io)
+  - **Status**: Available
 
 ---
 
