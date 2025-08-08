@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for job-journal on 2025-08-08T13:44:14-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'job-journal'
+primary_region = 'mia'
+
+[build]
+  dockerfile = './Dockerfile'
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
