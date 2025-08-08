@@ -64,6 +64,10 @@ RUN groupadd --system --gid 1000 rails && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
+# Persist SQLite DB and configure database path
+VOLUME /mnt/sqlite
+ENV DATABASE_URL="sqlite3:///mnt/sqlite/production.sqlite3"
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
