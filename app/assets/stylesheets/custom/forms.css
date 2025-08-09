@@ -70,10 +70,10 @@
 }
 
 @utility form-checkbox {
-  @apply appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white mt-0.5 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-150;
+  @apply appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white dark:bg-neutral-800 mt-0.25 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-150;
 
   & + svg {
-    @apply size-3.5 text-white absolute translate-y-[0.29rem] translate-x-0.5 pointer-events-none;
+    @apply size-3.5 text-white absolute translate-y-[0.22rem] translate-x-0.5 pointer-events-none;
   }
 
   &:not(:checked) + svg {
