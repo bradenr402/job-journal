@@ -164,7 +164,7 @@
               <%= form.label :auto_archive_inactive_leads_enabled, 'Auto-Archive Inactive Leads', class: 'form-label' %>
             </div>
 
-            <p class="text-xs text-muted">Automatically archive job leads inactive and stale job leads after your specified number of days below.</p>
+            <p class="text-xs text-muted">Automatically archive inactive job leads that you haven&#8217;t updated for your specified number of days below.</p>
           </div>
 
           <div data-conditional-field-input="auto-archive-inactive" class="<%= @settings[:auto_archive_inactive_leads_enabled] ? '' : 'hidden' %>">
@@ -180,7 +180,7 @@
                 <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
               </button>
             </div>
-            <p class="text-xs text-muted mt-1">Archive leads automatically if there is no activity for this many days.</p>
+            <p class="text-xs text-muted mt-1">Days since you last updated the job lead.</p>
           </div>
 
           <div class="space-y-1">
@@ -190,7 +190,7 @@
               <%= form.label :auto_archive_stale_leads_enabled, 'Auto-Archive Stale Leads', class: 'form-label' %>
             </div>
 
-            <p class="text-xs text-muted">Automatically archive job leads inactive and stale job leads after your specified number of days below.</p>
+            <p class="text-xs text-muted">Automatically archive stale job leads that you haven&#8217;t applied to after your specified number of days below.</p>
           </div>
 
           <div data-conditional-field-input="auto-archive-stale" class="<%= @settings[:auto_archive_stale_leads_enabled] ? '' : 'hidden' %>">
@@ -206,7 +206,7 @@
                 <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
               </button>
             </div>
-            <p class="text-xs text-muted mt-1">Archive leads automatically this many days after they become stale.</p>
+            <p class="text-xs text-muted mt-1">Days since you saved the job lead.</p>
           </div>
         </div>
       </div>
