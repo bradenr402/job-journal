@@ -1,0 +1,30 @@
+name: Fly Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: production # prevents race conditions on back-to-back pushes
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Caches bundler gems across runs for faster builds
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 3.4.3
+
+      # Install flyctl
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      # Deploy to Fly (build happens on a remote builder; no Docker daemon needed)
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only --build-arg RAILS_ENV=production
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
