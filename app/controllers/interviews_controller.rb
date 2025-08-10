@@ -1,5 +1,5 @@
 class InterviewsController < ApplicationController
-  before_action :set_interview, only: %i[ show edit update destroy ]
+  before_action :set_interview, only: %i[ show edit update destroy add_to_calendar ]
 
   # GET /interviews
   def index
@@ -67,6 +67,27 @@ class InterviewsController < ApplicationController
     else
       redirect_to @interview, error: 'Failed to destroy the interview.', status: :unprocessable_entity
     end
+  end
+
+  # GET /interviews/:id/add_to_calendar
+  def add_to_calendar
+    calendar = Icalendar::Calendar.new
+    event = Icalendar::Event.new
+    event.dtstart = @interview.scheduled_at
+    event.dtend = @interview.scheduled_at.advance(hours: 1)
+    event.summary = @interview.title
+    event.description = @interview.notes.map(&:content).join("\n") if @interview.notes.exists?
+    event.location = @interview.location.presence
+    event.url = @interview.call_url.presence
+    event.uid = "interview-#{@interview.id}@#{request.host}"
+
+    calendar.add_event(event)
+    calendar.publish
+
+    send_data calendar.to_ical,
+              filename: "#{@interview.title.parameterize}-#{@interview.scheduled_at.to_date}.ics",
+              type: 'text/calendar',
+              disposition: 'inline'
   end
 
   private

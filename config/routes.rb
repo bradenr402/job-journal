@@ -23,7 +23,13 @@ Rails.application.routes.draw do
   end
 
   resources :notes
-  resources :interviews
+
+  resources :interviews do
+    member do
+      get :add_to_calendar
+    end
+  end
+
   get 'search', to: 'search#index'
 
   get 'settings', to: 'settings#edit'

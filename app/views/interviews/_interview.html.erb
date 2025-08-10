@@ -33,6 +33,11 @@
             <span>Edit</span>
           <% end %>
 
+          <%= link_to add_to_calendar_interview_path(interview), class: 'dropdown-option dropdown-option-secondary' do %>
+            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 shrink-0' %>
+            <span>Add to Calendar</span>
+          <% end %>
+
           <div class="dropdown-divider"></div>
 
           <%= button_to interview, method: :delete, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to delete this interview?' } do %>

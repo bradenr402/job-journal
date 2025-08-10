@@ -49,4 +49,17 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to job_lead_url(job_lead)
   end
+
+  test 'should get add_to_calendar' do
+    get add_to_calendar_interview_url(@interview)
+
+    assert_response :success
+    assert_equal 'text/calendar', @response.media_type
+    assert_match(/BEGIN:VCALENDAR/, @response.body)
+    assert_match(/SUMMARY:#{Regexp.escape(@interview.title)}/, @response.body)
+
+    disposition = @response.headers['Content-Disposition']
+    assert_includes disposition, 'inline'
+    assert_includes disposition, "filename=\"#{@interview.title.parameterize}-#{@interview.scheduled_at.to_date}.ics\""
+  end
 end
