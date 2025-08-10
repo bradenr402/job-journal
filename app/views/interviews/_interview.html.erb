@@ -2,7 +2,7 @@
 <% job_lead = interview.job_lead %>
 
 <div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless interview_page %>" style="view-transition-name: interview-<%= interview.id %>;">
-  <div class="flex flex-wrap items-start gap-x-4 gap-y-2 w-full mb-2">
+  <div class="flex items-start gap-x-4 gap-y-2 w-full mb-2">
     <div class="mb-2">
       <div class="<%= interview_page ? 'subheading' : 'text-lg font-semibold' %>">
         <span>Interview with <%= interview.interviewer %></span>
