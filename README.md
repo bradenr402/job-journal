@@ -136,6 +136,7 @@ bin/rails test
   - Call URL
 - Rate how you felt about the interview
 - Add unlimited notes for prep, debrief, or feedback
+- Add interviews to your calendar in a single click
 
 ### Smart Search & Filters
 
