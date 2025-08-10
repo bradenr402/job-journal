@@ -36,6 +36,8 @@ class Interview < ApplicationRecord
   def past? = scheduled_at.past?
   alias completed? past?
 
+  def title = "Interview with #{interviewer} - #{job_lead.title} @ #{job_lead.company}"
+
   private
 
   def convert_zero_rating_to_nil

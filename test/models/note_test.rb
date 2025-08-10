@@ -25,6 +25,6 @@ class NoteTest < ActiveSupport::TestCase
     interview = interview_note.notable
     job_lead = interview.job_lead
 
-    assert_equal interview_note.title, "Interview - #{job_lead.title} @ #{job_lead.company}"
+    assert_equal interview_note.title, "Interview with #{interview.interviewer} - #{job_lead.title} @ #{job_lead.company}"
   end
 end

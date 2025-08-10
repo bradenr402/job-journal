@@ -18,10 +18,11 @@ class Note < ApplicationRecord
   def title
     case notable
     when JobLead
-      "#{notable.title} @ #{notable.company}"
+      job_lead = notable
+      "#{job_lead.title} @ #{job_lead.company}"
     when Interview
-      job_lead = notable.job_lead
-      "Interview - #{job_lead.title} @ #{job_lead.company}"
+      interview = notable
+      interview.title
     else
       notable.model_name.human.titlecase
     end
