@@ -2,18 +2,23 @@ class User < ApplicationRecord
   # Constants
   DEFAULT_SETTINGS = {
     weekly_application_goal: 10,
+
     job_leads_display: 'grid',
     interviews_display: 'grid',
     notes_display: 'grid',
+
     auto_archive_rejected_leads_enabled: true,
+
     auto_archive_inactive_leads_enabled: true,
     auto_archive_inactive_lead_days: 28,
+
     auto_archive_stale_leads_enabled: true,
     job_lead_stale_after_days: 7,
+    auto_archive_stale_lead_days: 21,
+
     application_follow_up_days: 7,
     interview_follow_up_days: 2,
-    suggest_follow_up_days: 3,
-    auto_archive_after_stale_days: 21
+    suggest_follow_up_days: 3
   }.with_indifferent_access.freeze
 
   # Authentication

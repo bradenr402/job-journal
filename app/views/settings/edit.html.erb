@@ -194,13 +194,13 @@
           </div>
 
           <div data-conditional-field-input="auto-archive-stale" class="<%= @settings[:auto_archive_stale_leads_enabled] ? '' : 'hidden' %>">
-            <%= form.label :auto_archive_after_stale_days, 'Days After Stale Before Archiving', class: 'form-label' %>
+            <%= form.label :auto_archive_stale_lead_days, 'Days After Stale Before Archiving', class: 'form-label' %>
             <div class="form-number-frame" data-controller="number-field">
               <button type="button" class="form-number-decrement">
                 <%= inline_svg_tag 'icons/minus.svg', class: 'size-4 shrink-0' %>
               </button>
 
-              <%= form.number_field :auto_archive_after_stale_days, value: @settings[:auto_archive_after_stale_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
+              <%= form.number_field :auto_archive_stale_lead_days, value: @settings[:auto_archive_stale_lead_days], min: 1, class: 'form-number', data: { number_field_target: 'input' } %>
 
               <button type="button" class="form-number-increment">
                 <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
