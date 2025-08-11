@@ -182,7 +182,6 @@
               stop_follow_up = follow_up_days.transform_values { |days| days + suggest_follow_up_days }
             %>
             Active job leads not updated in <%= follow_up_days[:application] %>-<%= stop_follow_up[:application] %> days since applying or <%= follow_up_days[:interview] %>-<%= stop_follow_up[:interview] %> days since interviewing.
-
           </p>
         </div>
 
