@@ -36,7 +36,7 @@ class NotesController < ApplicationController
     @note = Current.user.notes.build(note_params)
 
     if @note.save
-      redirect_to @note.notable, success: 'Note was successfully created.'
+      redirect_to @note, success: 'Note was successfully created.'
     else
       render :new, status: :unprocessable_entity, error: 'Failed to create the note.'
     end
@@ -56,7 +56,7 @@ class NotesController < ApplicationController
     if @note.destroy
       redirect_to @note.notable, success: 'Note was successfully destroyed.', status: :see_other
     else
-      redirect_to @note, error: 'Failed to destroy the note.', status: :unprocessable_entity
+      redirect_to @note, error: 'Failed to delete the note.', status: :unprocessable_entity
     end
   end
 

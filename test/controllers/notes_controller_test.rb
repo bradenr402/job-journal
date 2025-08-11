@@ -31,7 +31,7 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
       post notes_url, params: { note: { content: 'This is a test.', notable_id: @note.notable_id, notable_type: @note.notable_type } }
     end
 
-    assert_redirected_to notable_url(Note.last.notable)
+    assert_redirected_to note_url(Note.last)
   end
 
   test 'should show note' do
