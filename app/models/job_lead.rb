@@ -279,18 +279,38 @@ class JobLead < ApplicationRecord
 
   # Class Methods
   def self.cleanup_for_user(user)
-    stale_days = user.get_setting(:job_lead_stale_after_days)
-    archive_days = user.get_setting(:auto_archive_after_stale_days)
+    if user.get_setting(:auto_archive_stale_leads_enabled)
+      stale_days = user.get_setting(:job_lead_stale_after_days)
+      archive_days = user.get_setting(:auto_archive_stale_lead_days)
 
-    total_days = stale_days + archive_days
-    cutoff_date = total_days.days.ago
+      total_days = stale_days + archive_days
+      cutoff_date = total_days.days.ago
 
+      cleanup_stale(user, cutoff_date)
+    end
+
+    if user.get_setting(:auto_archive_inactive_leads_enabled)
+      archive_days = user.get_setting(:auto_archive_inactive_lead_days)
+
+      cutoff_date = archive_days.days.ago
+
+      cleanup_inactive(user, cutoff_date)
+    end
+  end
+
+  private
+
+  def self.cleanup_stale(user, cutoff_date)
     stale_for_user(user).where(created_at: ..cutoff_date).find_each do |lead|
       lead.archive!
     end
   end
 
-  private
+  def self.cleanup_inactive(user, cutoff_date)
+    user.job_leads.where(updated_at: ..cutoff_date).find_each do |lead|
+      lead.archive!
+    end
+  end
 
   def update_status
     if offer_amount_changed? && offer_amount.present? && !offer_at.present?
