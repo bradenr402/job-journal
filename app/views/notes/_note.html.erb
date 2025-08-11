@@ -24,7 +24,10 @@
   <% end %>
 
   <div class="<%= 'h-full grow max-h-24' unless note_page %> overflow-hidden relative">
-    <%= content_tag(:div, note.content, class: "text-light whitespace-break-spaces #{'line-clamp-4 select-none' unless note_page}") %>
+    <% note_content = note_page ? markdown_to_html(note.content) : note.content %>
+    <% note_classes = note_page ? 'prose' : 'whitespace-break-spaces text-light line-clamp-4 select-none' %>
+
+    <%= content_tag(:div, note_content, class: note_classes) %>
     <% unless note_page %>
       <div class="pointer-events-none absolute inset-x-0 top-16 h-8 bg-gradient-to-t from-white dark:from-neutral-900 group-hover:from-transparent to-transparent transition-colors duration-150"></div>
     <% end %>

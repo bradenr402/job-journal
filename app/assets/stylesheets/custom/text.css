@@ -36,3 +36,108 @@
     @apply dark:text-neutral-500;
   }
 }
+
+@utility prose {
+  /* Headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-balance font-bold leading-tight mt-4 mb-1 first:mt-0 text-normal;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  h5 {
+    @apply text-base;
+  }
+  h6 {
+    @apply text-sm text-light;
+  }
+
+  /* Typography */
+  p {
+    @apply text-pretty my-3 text-neutral-800 dark:text-neutral-200;
+  }
+
+  a {
+    @apply btn-link-primary;
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    @apply marker:text-neutral-700 dark:marker:text-neutral-300 my-3 ml-6;
+  }
+  ul ul,
+  ol ol,
+  ul ol,
+  ol ul {
+    margin-top: 0;
+    margin-bottom: 0%;
+  }
+  ul {
+    list-style: disc;
+  }
+  ol {
+    list-style: decimal;
+  }
+  li {
+    margin: 0.25rem 0;
+    @apply text-neutral-800 dark:text-neutral-200;
+  }
+
+  br {
+    @apply block my-2;
+  }
+
+  strong {
+    @apply font-semibold text-neutral-900 dark:text-neutral-100;
+  }
+
+  em {
+    @apply italic text-neutral-800 dark:text-neutral-200;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    @apply px-3 ml-2.5 my-4 italic bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 rounded-lg flex items-center relative;
+  }
+  blockquote::before {
+    content: '';
+    @apply absolute top-1/2 -left-2.5 h-[calc(100%-0.75rem)] w-[3px] rounded-full bg-neutral-200 dark:bg-neutral-700;
+    transform: translateY(-50%);
+  }
+
+  /* Code blocks */
+  pre,
+  code {
+    @apply font-mono text-[0.95rem];
+  }
+  pre {
+    @apply bg-neutral-100 dark:bg-neutral-800 p-4 overflow-x-auto rounded-lg my-3 text-neutral-800 dark:text-neutral-200;
+  }
+  code {
+    @apply bg-neutral-100 dark:bg-neutral-800 px-1.5 py-1 rounded-md text-neutral-800 dark:text-neutral-200;
+  }
+  pre > code {
+    @apply p-0 rounded-none;
+  }
+
+  /* Horizontal rules */
+  hr {
+    @apply block w-full my-6 h-0.5 border-none bg-neutral-200 dark:bg-neutral-800;
+  }
+}

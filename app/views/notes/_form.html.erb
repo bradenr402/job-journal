@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="pt-4 border-t border-neutral-200 dark:border-neutral-800">
+    <div class="sticky bottom-0 bg-white dark:bg-neutral-950 py-4 -mx-(--main-padding) px-(--main-padding) md:-mx-1 md:px-1 max-md:pb-[calc(var(--tab-bar-height)*1.6)] border-t border-neutral-200 dark:border-neutral-800">
       <%= form.submit note.persisted? ? 'Save Changes' : 'Save Note', class: 'btn btn-primary w-full sm:w-auto' %>
     </div>
   </div>

@@ -2,7 +2,6 @@
 @import '../stylesheets/custom/custom.css';
 
 @import 'tailwindcss';
-@plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/aspect-ratio';
 @source '../../javascript/controllers/';
 
