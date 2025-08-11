@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   resource :session, only: [ :new, :create, :destroy ]
-  resource :registrations, only: [ :new, :create ]
+  resource :registrations, only: [ :new, :create, :destroy ]
   resources :passwords, only: [ :new, :create, :edit, :update ], param: :token
 
   delete 'sessions/others', to: 'sessions#destroy_other_sessions', as: :destroy_other_sessions

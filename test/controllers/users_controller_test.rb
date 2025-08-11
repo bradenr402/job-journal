@@ -21,4 +21,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     patch account_update_url(@user), params: { user: { email_address: 'two@example.com', current_password: 'password' } }
     assert :unprocessable_entity
   end
+
+  test 'should delete account' do
+    id = @user.id
+
+    delete registrations_url
+
+    assert_nil User.find_by(id:)
+  end
 end

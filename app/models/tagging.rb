@@ -15,7 +15,7 @@ class Tagging < ApplicationRecord
   private
 
   def destroy_orphaned_tag
-    tag.reload
-    tag.destroy if tag.taggings.count.zero?
+    tag&.reload
+    tag&.destroy if tag&.taggings&.count&.zero?
   end
 end
