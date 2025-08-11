@@ -5,7 +5,7 @@
   note_title = note.title if display_title
 %>
 
-<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page ? 'card gap-2' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
+<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page ? 'card' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
   <% unless note_page %>
     <%= link_to note, data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
