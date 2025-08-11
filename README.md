@@ -173,7 +173,7 @@ Your job search data should be _yours alone_. That’s why JobJournal is **priva
 
 ### _Coming Soon:_
 
-- **Support for Markdown in Notes**
+- **Keyboard shortcuts for Markdown formatting in Notes**
 - **Emails/Notifications**
   - Weekly activity summaries
   - Interview reminders
