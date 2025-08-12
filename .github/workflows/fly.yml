@@ -12,7 +12,7 @@ jobs:
     concurrency: production # prevents race conditions on back-to-back pushes
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Caches bundler gems across runs for faster builds
       - uses: ruby/setup-ruby@v1
