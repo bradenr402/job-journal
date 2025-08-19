@@ -64,7 +64,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/job_lead.rb",
-      "line": 104,
+      "line": 102,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "from(\"(#{statuses.map(&:to_s).map do\n public_send(it).select(:id).to_sql\n end.join(\" UNION \")}) AS unioned\")",
       "render_path": null,
@@ -115,6 +115,29 @@
       "note": ""
     },
     {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "d2b25375899d8586c11625b30ecb13e0035a160dce7f456b5f1b9617b30e2bd2",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/job_lead.rb",
+      "line": 179,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Arel.sql(\"CASE\\n  WHEN job_leads.applied_at IS NULL AND job_leads.offer_at IS NULL AND job_leads.rejected_at IS NULL\\n       AND job_leads.accepted_at IS NULL AND NOT EXISTS (SELECT 1 FROM interviews WHERE interviews.job_lead_id = job_leads.id)\\n    THEN job_leads.created_at\\n  WHEN job_leads.applied_at IS NOT NULL AND job_leads.offer_at IS NULL AND job_leads.rejected_at IS NULL\\n       AND job_leads.accepted_at IS NULL AND NOT EXISTS (SELECT 1 FROM interviews WHERE interviews.job_lead_id = job_leads.id)\\n    THEN job_leads.applied_at\\n  WHEN EXISTS (SELECT 1 FROM interviews WHERE interviews.job_lead_id = job_leads.id)\\n    THEN COALESCE(\\n      (SELECT MIN(scheduled_at) FROM interviews WHERE interviews.job_lead_id = job_leads.id AND scheduled_at > CURRENT_TIMESTAMP),\\n      (SELECT MAX(scheduled_at) FROM interviews WHERE interviews.job_lead_id = job_leads.id AND scheduled_at <= CURRENT_TIMESTAMP)\\n    )\\n  WHEN job_leads.offer_at IS NOT NULL AND job_leads.rejected_at IS NULL AND job_leads.accepted_at IS NULL\\n    THEN job_leads.offer_at\\n  WHEN job_leads.rejected_at IS NOT NULL\\n    THEN job_leads.rejected_at\\n  WHEN job_leads.accepted_at IS NOT NULL\\n    THEN job_leads.accepted_at\\nEND  #{direction.to_s.upcase}\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "JobLead",
+        "method": null
+      },
+      "user_input": "direction.to_s.upcase",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
       "fingerprint": "fc03312e887e4deca1e4ca6905ddba6c50b422603fbbf0e2df0c23d67f18c019",
@@ -129,7 +152,7 @@
           "type": "controller",
           "class": "JobLeadsController",
           "method": "show",
-          "line": 54,
+          "line": 52,
           "file": "app/controllers/job_leads_controller.rb",
           "rendered": {
             "name": "job_leads/show",
