@@ -154,6 +154,34 @@ class JobLead < ApplicationRecord
       .distinct
   }
 
+  scope :order_by_latest_status, ->(direction = :asc) {
+    order(
+      Arel.sql(
+        <<~SQL.squish
+          CASE
+            WHEN job_leads.applied_at IS NULL AND job_leads.offer_at IS NULL AND job_leads.rejected_at IS NULL
+                 AND job_leads.accepted_at IS NULL AND NOT EXISTS (SELECT 1 FROM interviews WHERE interviews.job_lead_id = job_leads.id)
+              THEN job_leads.created_at
+            WHEN job_leads.applied_at IS NOT NULL AND job_leads.offer_at IS NULL AND job_leads.rejected_at IS NULL
+                 AND job_leads.accepted_at IS NULL AND NOT EXISTS (SELECT 1 FROM interviews WHERE interviews.job_lead_id = job_leads.id)
+              THEN job_leads.applied_at
+            WHEN EXISTS (SELECT 1 FROM interviews WHERE interviews.job_lead_id = job_leads.id)
+              THEN COALESCE(
+                (SELECT MIN(scheduled_at) FROM interviews WHERE interviews.job_lead_id = job_leads.id AND scheduled_at > CURRENT_TIMESTAMP),
+                (SELECT MAX(scheduled_at) FROM interviews WHERE interviews.job_lead_id = job_leads.id AND scheduled_at <= CURRENT_TIMESTAMP)
+              )
+            WHEN job_leads.offer_at IS NOT NULL AND job_leads.rejected_at IS NULL AND job_leads.accepted_at IS NULL
+              THEN job_leads.offer_at
+            WHEN job_leads.rejected_at IS NOT NULL
+              THEN job_leads.rejected_at
+            WHEN job_leads.accepted_at IS NOT NULL
+              THEN job_leads.accepted_at
+          END #{' ' }#{direction.to_s.upcase}
+        SQL
+      )
+    )
+  }
+
   # Instance Methods
   def inferred_status
     return 'accepted' if accepted_at?

@@ -26,15 +26,13 @@ class JobLeadsController < ApplicationController
         :company,
         :application_url
       )
+      .order_by_latest_status(:desc)
 
     @job_leads =
       case @selected_job_lead_type
-      when 'active'
-        scope.active.order(updated_at: :desc)
-      when 'archived'
-        scope.archived.order(archived_at: :desc)
-      else
-        scope.order(updated_at: :desc)
+      when 'active' then scope.active
+      when 'archived' then scope.archived
+      else scope
       end
 
     @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
