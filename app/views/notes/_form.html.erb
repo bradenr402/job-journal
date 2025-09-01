@@ -15,7 +15,7 @@
     <div style="view-transition-name: note-<%= note.id %>;">
       <%= form.label :content, 'Note', class: 'sr-only' %>
       <div class="form-textarea-wrap" data-replicated-value="<%= form.object.content.to_s %>">
-        <%= form.text_area :content, class: 'form-textarea', rows: 6, placeholder: placeholder[note.notable_type], oninput: 'this.parentNode.dataset.replicatedValue = this.value' %>
+        <%= form.text_area :content, autofocus: true, class: 'form-textarea', rows: 6, placeholder: placeholder[note.notable_type], oninput: 'this.parentNode.dataset.replicatedValue = this.value' %>
       </div>
       <p class="text-xs text-muted mt-1">Markdown is supported for formatting your note.</p>
     </div>
