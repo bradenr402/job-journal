@@ -113,7 +113,7 @@
 
   /* Blockquotes */
   blockquote {
-    @apply px-3 ml-2.5 my-4 italic bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 rounded-lg flex items-center relative;
+    @apply px-3 py-px ml-2.5 my-4 italic bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 rounded-lg relative;
 
     p {
       @apply w-full;
