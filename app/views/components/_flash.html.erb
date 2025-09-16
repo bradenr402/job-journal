@@ -13,3 +13,21 @@
 <% if alert %>
   <p class="-mx-(--main-padding) w-[100vw] md:w-full md:rounded-t-xl py-3 px-6 bg-yellow-100 dark:bg-yellow-950/70 text-yellow-600 dark:text-yellow-500 text-center text-pretty [view-transition-name:flash-alert]" id="alert"><%== alert %></p>
 <% end %>
+
+<% if success || error || notice || alert %>
+  <script>
+    setTimeout(() => {
+      const flashes = [
+        { id: 'success', timeout: 6000 },
+        { id: 'notice', timeout: 6000 },
+        { id: 'error', timeout: 10000 },
+        { id: 'alert', timeout: 10000 }
+      ]
+
+      flashes.forEach(flash => {
+        const el = document.getElementById(flash.id)
+        if (el) setTimeout(() => el.remove(), flash.timeout)
+      })
+    }, 0)
+  </script>
+<% end %>
