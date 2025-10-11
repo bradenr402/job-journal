@@ -281,7 +281,7 @@ class JobLead < ApplicationRecord
       latest_created_at = group.max_by(&:created_at)&.created_at
 
       interview_count = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:interview] }
-      offer_count     = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:offer] }
+      offer_count     = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:offer] || STATUS_QUALITY[:accepted] }
 
       {
         source: most_common_casing,
