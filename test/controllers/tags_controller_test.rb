@@ -32,8 +32,10 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy tag' do
-    tag_to_delete = tags(:clean_code)
+    tag_to_delete = tags(:async)
     tag_id = tag_to_delete.id
+
+    assert Tag.exists?(tag_id), 'Tag should exist before deletion'
 
     assert_difference('Tag.count', -1) do
       delete tag_url(tag_to_delete)

@@ -18,7 +18,7 @@
       <% @tags.each do |tag| %>
         <div class="flex items-center justify-between gap-4 py-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="tag shrink-0"><%= tag.name %></div>
+            <%= link_to tag.name, job_leads_path(tags: tag.name), class: 'tag tag-filter shrink-0', onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" %>
             <p class="text-sm text-muted truncate">
               <%= pluralize(tag.taggings_count, 'job lead') %>
             </p>
@@ -28,7 +28,7 @@
               <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
               <span>Edit</span>
             <% end %>
-            <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive' do %>
+            <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive btn-muted' do %>
               <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
               <span>Delete</span>
             <% end %>
