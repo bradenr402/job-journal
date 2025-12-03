@@ -38,10 +38,12 @@
         </div>
       </div>
 
-      <%= link_to search_path, class: 'absolute top-3 right-3 md:hidden' do %>
-        <span class="sr-only">Search</span>
-        <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
-      <% end %>
+      <div class="absolute top-3 right-3 md:hidden">
+        <%= link_to search_path, class: "inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96 #{ 'text-primary-600' if current_page?(search_path)}" do %>
+          <span class="sr-only">Search</span>
+          <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+        <% end %>
+      </div>
     <% end %>
   </body>
 </html>
