@@ -31,7 +31,7 @@ class TagsController < ApplicationController
   private
 
   def set_tag
-    @tag = Current.user.tags.find(params[:id])
+    @tag = Current.user.tags.find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
     raise # Let config.exceptions_app handle the error
   end
