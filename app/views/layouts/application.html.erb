@@ -37,6 +37,11 @@
           <% end %>
         </div>
       </div>
+
+      <%= link_to search_path, class: 'absolute top-3 right-3 md:hidden' do %>
+        <span class="sr-only">Search</span>
+        <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+      <% end %>
     <% end %>
   </body>
 </html>

@@ -167,7 +167,7 @@
           status_history << { status: 'rejected', timestamp: job_lead.rejected_at }
 
           status_history.compact!
-          status_history.select! { _1[:timestamp].present? }
+          status_history.select! { it[:timestamp].present? }
         %>
 
         <% status_history.each do |status_entry| %>

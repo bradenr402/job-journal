@@ -14,21 +14,21 @@
   </div>
 
   <% if @tags.any? %>
-    <div class="space-y-3">
+    <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
       <% @tags.each do |tag| %>
-        <div class="card flex items-center justify-between gap-4">
+        <div class="flex items-center justify-between gap-4 py-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="tag flex-shrink-0"><%= tag.name %></div>
+            <div class="tag shrink-0"><%= tag.name %></div>
             <p class="text-sm text-muted truncate">
               <%= pluralize(tag.taggings_count, 'job lead') %>
             </p>
           </div>
-          <div class="flex items-center gap-2 flex-shrink-0">
+          <div class="flex items-center gap-2 shrink-0">
             <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary' do %>
               <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
               <span>Edit</span>
             <% end %>
-            <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete this tag? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive' do %>
+            <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive' do %>
               <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
               <span>Delete</span>
             <% end %>
@@ -45,10 +45,6 @@
 
         <h2 class="subheading">No Tags Yet</h2>
         <p class="max-w-md text-pretty leading-normal">Create tags by adding them to your job leads.</p>
-        <%= link_to new_job_lead_path, class: 'btn btn-sm btn-primary' do %>
-          <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
-          <span>New Job Lead</span>
-        <% end %>
       </div>
     </div>
   <% end %>

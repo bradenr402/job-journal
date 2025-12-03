@@ -10,15 +10,16 @@
       { key: :job_leads, path: job_leads_path, label: 'Job Leads', icon: 'briefcase' },
       { key: :interviews, path: interviews_path, label: 'Interviews', icon: 'interview' },
       { key: :notes, path: notes_path, label: 'Notes', icon: 'note' },
-      { key: :search, path: search_path, label: 'Search', icon: 'search' },
+      { key: :tags, path: tags_path, label: 'Tags', icon: 'tag' },
+      { key: :search, path: search_path, label: 'Search', icon: 'search', desktop_only: true },
     ] %>
 
     <div class="md:grow md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80">
-      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-0.25">
+      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-px">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
 
-          <%= link_to link[:path], class: "nav-link #{'nav-link-active' if active}" do %>
+          <%= link_to link[:path], class: "nav-link #{'nav-link-active' if active} #{'max-md:hidden' if link[:desktop_only]}" do %>
             <%= inline_svg_tag "icons/#{active ? "#{link[:icon]}-filled" : link[:icon]}.svg", class: 'size-5 sm:size-4 shrink-0' %>
             <span><%= link[:label] %></span>
           <% end %>
@@ -46,10 +47,6 @@
         <%= link_to settings_path, class: 'dropdown-option dropdown-option-secondary' do %>
           <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 shrink-0' %>
           <span>Settings</span>
-        <% end %>
-        <%= link_to tags_path, class: 'dropdown-option dropdown-option-secondary' do %>
-          <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 shrink-0' %>
-          <span>Tags</span>
         <% end %>
 
         <div class="dropdown-divider"></div>

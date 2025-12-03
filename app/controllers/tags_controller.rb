@@ -2,10 +2,11 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [ :edit, :update, :destroy ]
 
   def index
-    @tags = Current.user.tags.left_outer_joins(:taggings)
-      .group('tags.id')
+    @tags = Current.user.tags
+      .joins(:taggings)
+      .group(:id)
       .select('tags.*, COUNT(taggings.id) as taggings_count')
-      .order('taggings_count DESC, tags.name ASC')
+      .order('taggings_count DESC', :name)
   end
 
   def edit
@@ -13,15 +14,18 @@ class TagsController < ApplicationController
 
   def update
     if @tag.update(tag_params)
-      redirect_to tags_path, notice: 'Tag was successfully updated.'
+      redirect_to tags_path, success: 'Tag was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @tag.destroy
-    redirect_to tags_path, notice: 'Tag was successfully deleted.'
+    if @tag.destroy
+      redirect_to tags_path, success: 'Tag was successfully deleted.'
+    else
+      redirect_to tags_path, error: 'Failed to delete tag.'
+    end
   end
 
   private
