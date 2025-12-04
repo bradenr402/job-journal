@@ -19,15 +19,14 @@
         <div class="flex items-center justify-between gap-4 py-3">
           <div class="flex items-center gap-3 min-w-0">
             <%= link_to tag.name, job_leads_path(tags: tag.name), class: 'tag tag-filter shrink-0', onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" %>
-            <p class="text-xs text-muted truncate">
-              <%= pluralize(tag.taggings_count, 'job lead') %>
-            </p>
+            <p class="text-xs text-muted truncate"><%= pluralize(tag.taggings_count, 'job lead') %></p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary' do %>
               <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
               <span>Edit</span>
             <% end %>
+
             <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive btn-muted' do %>
               <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
               <span>Delete</span>
