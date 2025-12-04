@@ -1,0 +1,50 @@
+<% content_for :title, 'Tags' %>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to root_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back Home</span>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <h2 class="heading">Manage Tags</h2>
+    <p class="text-sm text-muted mt-1">Edit or delete your tags. Deleting a tag removes it from all job leads.</p>
+  </div>
+
+  <% if @tags.any? %>
+    <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
+      <% @tags.each do |tag| %>
+        <div class="flex items-center justify-between gap-4 py-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <%= link_to tag.name, job_leads_path(tags: tag.name), class: 'tag tag-filter shrink-0', onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" %>
+            <p class="text-xs text-muted truncate"><%= pluralize(tag.taggings_count, 'job lead') %></p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary' do %>
+              <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
+              <span>Edit</span>
+            <% end %>
+
+            <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive btn-muted' do %>
+              <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
+              <span>Delete</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="@container">
+      <div class="empty-state my-24">
+        <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
+          <%= inline_svg_tag 'icons/tag.svg', class: 'size-16 text-muted dark:text-soft' %>
+        </div>
+
+        <h2 class="subheading">No Tags Yet</h2>
+        <p class="max-w-md text-pretty leading-normal">Create tags by adding them to your job leads.</p>
+      </div>
+    </div>
+  <% end %>
+</div>

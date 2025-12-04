@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :tags, only: [ :index, :edit, :update, :destroy ]
+
   get 'search', to: 'search#index'
 
   get 'settings', to: 'settings#edit'
