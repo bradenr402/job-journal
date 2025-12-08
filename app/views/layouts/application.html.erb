@@ -8,9 +8,7 @@
     <%= render 'components/nav' if authenticated? %>
 
     <div class="bg-white dark:bg-neutral-900/60 md:rounded-2xl md:not-dark:shadow-2xs dark:border dark:border-neutral-900 px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">
-      <div id="flash">
-        <%= render 'components/flash' %>
-      </div>
+      <%= render 'components/flash' %>
       <main class="container mx-auto pt-28 pb-16 min-h-[calc(100vh-var(--tab-bar-height))] md:min-h-[calc(100vh-var(--body-padding)*2)]">
         <%= yield %>
       </main>
