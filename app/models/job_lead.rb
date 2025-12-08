@@ -197,7 +197,7 @@ class JobLead < ApplicationRecord
     define_method("#{status}?") { inferred_status == status }
   end
 
-  STATUSES.reject { it.in? %w[ lead interview ] }.each do |status|
+  STATUSES.reject { _1.in? %w[ lead interview ] }.each do |status|
     define_method("#{status}!") do
       update!("#{status}_at": Time.current)
     end
@@ -255,7 +255,7 @@ class JobLead < ApplicationRecord
   def tag_list = tags.pluck(:name).join(', ')
 
   def tag_list=(names)
-    @pending_tag_names = names.to_s.split(',').map { it.strip.downcase }.reject(&:blank?).uniq
+    @pending_tag_names = names.to_s.split(',').map { _1.strip.downcase }.reject(&:blank?).uniq
   end
 
   # Class Methods
@@ -269,7 +269,7 @@ class JobLead < ApplicationRecord
   def self.top_sources_by_quality(limit = 4)
     leads = where.not(source: [ nil, '' ])
 
-    grouped = leads.group_by { it.source.downcase }
+    grouped = leads.group_by { _1.source.downcase }
 
     ranked = grouped.map do |_, group|
       most_common_casing = group.group_by(&:source).max_by { |_, leads| leads.size }.first
@@ -293,7 +293,7 @@ class JobLead < ApplicationRecord
       }
     end
 
-    filtered = ranked.select { it[:interview_count].positive? || it[:offer_count].positive? }
+    filtered = ranked.select { _1[:interview_count].positive? || _1[:offer_count].positive? }
 
     sorted = filtered.sort_by do |h|
       [ -h[:highest_quality], -h[:count], -(h[:latest_created_at]&.to_i || 0) ]

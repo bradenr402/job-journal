@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include PasskeysRails::Authenticatable
+
   # Constants
   DEFAULT_SETTINGS = {
     weekly_application_goal: 10,
@@ -38,8 +40,8 @@ class User < ApplicationRecord
   has_many :tags, dependent: :destroy
 
   # Normalizations
-  normalizes :email_address, with: -> { it.strip.downcase }
-  normalizes :name, with: -> { it.strip }
+  normalizes :email_address, with: -> { _1.strip.downcase }
+  normalizes :name, with: -> { _1.strip }
 
   # Validations
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }

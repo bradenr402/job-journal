@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_231710) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_053247) do
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer", null: false
@@ -62,6 +62,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_231710) do
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
+  create_table "passkeys_rails_agents", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "authenticatable_type"
+    t.integer "authenticatable_id"
+    t.string "webauthn_identifier"
+    t.datetime "registered_at"
+    t.datetime "last_authenticated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authenticatable_type", "authenticatable_id"], name: "index_passkeys_rails_agents_on_authenticatable", unique: true
+    t.index ["username"], name: "index_passkeys_rails_agents_on_username", unique: true
+  end
+
+  create_table "passkeys_rails_passkeys", force: :cascade do |t|
+    t.string "identifier"
+    t.string "public_key"
+    t.integer "sign_count"
+    t.integer "agent_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agent_id"], name: "index_passkeys_rails_passkeys_on_agent_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -102,6 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_231710) do
   add_foreign_key "interviews", "job_leads"
   add_foreign_key "job_leads", "users"
   add_foreign_key "notes", "users"
+  add_foreign_key "passkeys_rails_passkeys", "passkeys_rails_agents", column: "agent_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "job_leads"
   add_foreign_key "taggings", "tags"
