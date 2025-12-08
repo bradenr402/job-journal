@@ -117,13 +117,32 @@ class PasskeysController < ApplicationController
 
   # Generate challenge for authentication
   def challenge_authenticate
+    # Get all passkey identifiers, decode them to binary for WebAuthn
+    allowed_credentials = User.joins(:passkeys)
+                              .pluck(:"passkeys.identifier")
+                              .map { |id| Base64.urlsafe_decode64(id) }
+
     options = WebAuthn::Credential.options_for_get(
-      allow: User.joins(:passkeys).pluck(:"passkeys.identifier").map { |id| Base64.urlsafe_decode64(id) }
+      allow: allowed_credentials
     )
 
+    # Store the challenge in session for verification
     session[:webauthn_authentication_challenge] = options.challenge
 
-    render json: options
+    # Convert options to JSON-safe format
+    render json: {
+      challenge: Base64.urlsafe_encode64(options.challenge, padding: false),
+      timeout: options.timeout,
+      rpId: options.rp_id,
+      allowCredentials: options.allow_credentials.map do |cred|
+        {
+          type: cred[:type],
+          id: Base64.urlsafe_encode64(cred[:id], padding: false),
+          transports: cred[:transports]
+        }
+      end,
+      userVerification: options.user_verification
+    }
   end
 
   # Verify passkey and sign in

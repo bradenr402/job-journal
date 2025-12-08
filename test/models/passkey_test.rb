@@ -81,6 +81,9 @@ class PasskeyTest < ActiveSupport::TestCase
   end
 
   test "should order by recent scope" do
+    # Clear existing passkeys for clean test
+    @user.passkeys.destroy_all
+    
     old_passkey = Passkey.create!(
       user: @user,
       public_key: "old_key",
