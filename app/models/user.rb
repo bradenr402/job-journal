@@ -32,6 +32,7 @@ class User < ApplicationRecord
 
   # Associations
   has_many :sessions, dependent: :destroy
+  has_many :passkeys, dependent: :destroy
   has_many :job_leads, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :interviews, through: :job_leads

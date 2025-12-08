@@ -1,0 +1,10 @@
+<% if passkeys.any? %>
+  <ul id="passkeys_list" class="flex flex-col gap-2">
+    <%= render partial: "passkeys/item", collection: passkeys, as: :passkey %>
+  </ul>
+<% else %>
+  <div id="passkeys_list" class="card-sm text-center text-muted">
+    <p>You haven't registered any passkeys yet.</p>
+    <p class="text-sm mt-1">Create your first passkey above to enable secure, passwordless sign-in.</p>
+  </div>
+<% end %>

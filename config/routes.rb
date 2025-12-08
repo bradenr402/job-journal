@@ -44,6 +44,15 @@ Rails.application.routes.draw do
 
   get 'security', to: 'pages#security'
 
+  # Passkey routes
+  resources :passkeys, only: [:new, :create, :destroy] do
+    collection do
+      post :challenge_create
+      post :challenge_authenticate
+      post :authenticate
+    end
+  end
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check

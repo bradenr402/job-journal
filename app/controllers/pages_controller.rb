@@ -8,6 +8,7 @@ class PagesController < ApplicationController
 
   def security
     @sessions = Current.user.sessions.order(updated_at: :desc)
+    @passkeys = Current.user.passkeys.recent
   end
 
   private
