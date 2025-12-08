@@ -1,0 +1,44 @@
+<% content_for :title, 'Create Passkey' %>
+
+<div class="max-w-lg mx-auto sm:w-7/8 w-full">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to security_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back to Security</span>
+    <% end %>
+  </div>
+
+  <div class="card">
+    <div class="text-center mb-6">
+      <div class="mx-auto size-16 mb-4 rounded-full bg-primary-100 dark:bg-primary-950/70 flex items-center justify-center">
+        <%= inline_svg_tag 'icons/fingerprint.svg', class: 'size-8 text-primary-600 dark:text-primary-500' %>
+      </div>
+      <h1 class="subheading">Create a New Passkey</h1>
+      <p class="text-soft mt-2">
+        Set up passwordless authentication using your device's biometrics or security key.
+      </p>
+    </div>
+
+    <div class="card mt-4 flex items-start gap-3">
+      <%= inline_svg_tag 'icons/info.svg', class: 'size-5 shrink-0 text-soft' %>
+      <div class="text-xs text-soft space-y-2">
+        <p><strong>What is a passkey?</strong></p>
+        <p>A passkey is a secure, passwordless sign-in method that uses your device's biometrics (like Touch ID or Face ID) or a security key.</p>
+        <p><strong>Requirements:</strong></p>
+        <ul class="list-disc list-inside space-y-1 ml-2">
+          <li>Modern browser (Chrome 109+, Safari 16+, Firefox 122+)</li>
+          <li>Device with Touch ID, Face ID, Windows Hello, or a security key</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-6 text-center">
+      <p class="text-sm text-muted mb-4">
+        Passkey functionality is being integrated. Please use password authentication for now.
+      </p>
+      <%= link_to security_path, class: 'btn btn-secondary' do %>
+        <span>Return to Security</span>
+      <% end %>
+    </div>
+  </div>
+</div>

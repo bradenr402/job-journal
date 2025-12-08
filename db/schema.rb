@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_08_041843) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_053247) do
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer", null: false
@@ -62,19 +62,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_041843) do
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
-  create_table "passkeys", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "identifier", null: false
-    t.text "public_key", null: false
-    t.integer "sign_count", default: 0, null: false
-    t.string "name", null: false
-    t.datetime "last_used_at"
-    t.json "transports"
+  create_table "passkeys_rails_agents", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "authenticatable_type"
+    t.integer "authenticatable_id"
+    t.string "webauthn_identifier"
+    t.datetime "registered_at"
+    t.datetime "last_authenticated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["identifier"], name: "index_passkeys_on_identifier", unique: true
-    t.index ["user_id", "name"], name: "index_passkeys_on_user_id_and_name"
-    t.index ["user_id"], name: "index_passkeys_on_user_id"
+    t.index ["authenticatable_type", "authenticatable_id"], name: "index_passkeys_rails_agents_on_authenticatable", unique: true
+    t.index ["username"], name: "index_passkeys_rails_agents_on_username", unique: true
+  end
+
+  create_table "passkeys_rails_passkeys", force: :cascade do |t|
+    t.string "identifier"
+    t.string "public_key"
+    t.integer "sign_count"
+    t.integer "agent_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agent_id"], name: "index_passkeys_rails_passkeys_on_agent_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -117,7 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_041843) do
   add_foreign_key "interviews", "job_leads"
   add_foreign_key "job_leads", "users"
   add_foreign_key "notes", "users"
-  add_foreign_key "passkeys", "users"
+  add_foreign_key "passkeys_rails_passkeys", "passkeys_rails_agents", column: "agent_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "job_leads"
   add_foreign_key "taggings", "tags"

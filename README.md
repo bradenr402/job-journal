@@ -114,15 +114,21 @@ JobJournal supports WebAuthn passkeys for secure, passwordless authentication.
 - Safari 16+
 - Firefox 122+
 
-**Environment Variables:**
+**Configuration:**
 
-For production deployment, set the following environment variable:
+For production deployment, configure the WebAuthn origin in Rails credentials:
 
 ```bash
-WEBAUTHN_ORIGIN=https://your-domain.com
+rails credentials:edit
 ```
 
-For local development, the default is `http://localhost:3000`.
+Add:
+```yaml
+webauthn:
+  origin: https://your-production-domain.com
+```
+
+For local development, it defaults to `http://localhost:3000` (no configuration needed).
 
 **Usage:**
 
@@ -193,8 +199,8 @@ Your job search data should be _yours alone_. That’s why JobJournal is **priva
 
 - All your data is scoped to your user account.
 - No third-party sharing, no analytics, no tracking, and no recruiter dashboards&mdash;your data stays private.
-- Secure authentication via email & password or **passkeys** (WebAuthn).
-- Passkey support for passwordless sign-in using biometrics (Touch ID, Face ID, Windows Hello) or security keys.
+- Secure authentication via email & password or **passkeys**.
+- Passkey support for passwordless sign-in using device biometrics or security keys.
 - Delete your account and all associated data at any time at the press of a button.
 
 ---

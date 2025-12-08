@@ -149,6 +149,7 @@ GEM
     inline_svg (1.10.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
+    interactor (3.1.2)
     io-console (0.8.0)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -227,6 +228,12 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
+    passkeys-rails (0.3.3)
+      cbor (~> 0.5.9.8)
+      interactor (~> 3.1.2)
+      jwt (~> 2.9.1)
+      rails (>= 7.2)
+      webauthn (~> 3.1.0)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -445,6 +452,7 @@ DEPENDENCIES
   kamal
   letter_opener
   local_time
+  passkeys-rails
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
@@ -460,7 +468,6 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
-  webauthn
 
 BUNDLED WITH
    2.7.2

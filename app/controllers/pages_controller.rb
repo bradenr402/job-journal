@@ -8,7 +8,8 @@ class PagesController < ApplicationController
 
   def security
     @sessions = Current.user.sessions.order(updated_at: :desc)
-    @passkeys = Current.user.passkeys.recent
+    @agent = PasskeysRails::Agent.find_by(authenticatable: Current.user)
+    @passkeys = @agent&.passkeys || []
   end
 
   private
