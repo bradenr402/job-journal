@@ -19,16 +19,22 @@
       </p>
     </div>
 
-    <div class="card mt-4 flex items-start gap-3">
+    <div class="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex items-start gap-3">
       <%= inline_svg_tag 'icons/info.svg', class: 'size-5 shrink-0 text-soft' %>
-      <div class="text-xs text-soft space-y-2">
-        <p><strong>What is a passkey?</strong></p>
-        <p>A passkey is a secure, passwordless sign-in method that uses your device's biometrics (like Touch ID or Face ID) or a security key.</p>
-        <p><strong>Requirements:</strong></p>
-        <ul class="list-disc list-inside space-y-1 ml-2">
-          <li>Modern browser (Chrome 109+, Safari 16+, Firefox 122+)</li>
-          <li>Device with Touch ID, Face ID, Windows Hello, or a security key</li>
-        </ul>
+
+      <div class="text-sm text-soft space-y-6">
+        <div class="space-y-2">
+          <p class="font-semibold">What is a passkey?</p>
+          <p>A passkey is a secure, passwordless sign-in method that uses your device's biometrics (like Touch ID or Face ID) or a security key.</p>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-semibold">Requirements:</p>
+          <ul class="list-disc list-inside space-y-1 ml-2">
+            <li>Modern browser (Chrome 109+, Safari 16+, Firefox 122+)</li>
+            <li>Device with Touch ID, Face ID, Windows Hello, or a security key</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -36,9 +42,6 @@
       <p class="text-sm text-muted mb-4">
         Passkey functionality is being integrated. Please use password authentication for now.
       </p>
-      <%= link_to security_path, class: 'btn btn-secondary' do %>
-        <span>Return to Security</span>
-      <% end %>
     </div>
   </div>
 </div>

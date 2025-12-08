@@ -17,21 +17,23 @@
 
   <!-- Passkeys Section -->
   <div class="mb-10 pb-10 border-b border-neutral-200 dark:border-neutral-800">
-    <div class="mb-4 flex flex-wrap items-end justify-between gap-2">
+    <div class="mb-4">
       <div>
         <h2 class="subheading">Passkeys</h2>
         <p class="text-sm text-muted mt-1">
           Passkeys provide secure, passwordless authentication using biometrics or device PIN.
         </p>
-        <div class="card mt-2 flex items-start gap-2 md:gap-3">
+        <div class="card my-2 flex items-start gap-2 md:gap-3">
           <%= inline_svg_tag 'icons/info.svg', class: 'size-4 shrink-0 text-soft' %>
           <p class="text-soft text-xs text-pretty">Supported on modern browsers and devices with Touch ID, Face ID, Windows Hello, or security keys.</p>
         </div>
       </div>
-      
-      <%= link_to new_passkey_path, class: 'btn btn-primary gap-1.5' do %>
-        <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
-        <span>New Passkey</span>
+
+      <% if @passkeys.present? %>
+        <%= link_to new_passkey_path, class: 'btn btn-primary gap-1.5' do %>
+          <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+          <span>New Passkey</span>
+        <% end %>
       <% end %>
     </div>
 
@@ -67,16 +69,20 @@
           <% end %>
         </ul>
       <% else %>
-        <div class="card text-center">
-          <div class="mx-auto size-16 mb-4 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-            <%= inline_svg_tag 'icons/fingerprint.svg', class: 'size-8 text-muted' %>
+        <div class="@container">
+          <div class="empty-state my-12">
+            <div class="rounded-full p-4 bg-neutral-100 dark:bg-neutral-800">
+              <%= inline_svg_tag 'icons/fingerprint.svg', class: 'size-8 text-muted dark:text-soft' %>
+            </div>
+
+            <h2 class="subheading">No Passkeys</h2>
+            <p class="max-w-md text-pretty leading-normal">You haven't registered any passkeys yet. Create your first passkey to enable secure, passwordless sign-in.</p>
+
+            <%= link_to new_passkey_path, class: 'btn btn-primary gap-1.5 inline-flex' do %>
+              <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+              <span>New Passkey</span>
+            <% end %>
           </div>
-          <h3 class="subheading">No Passkeys</h3>
-          <p class="text-soft mt-1 mb-4">You haven't registered any passkeys yet. Create your first passkey to enable secure, passwordless sign-in.</p>
-          <%= link_to new_passkey_path, class: 'btn btn-primary gap-1.5 inline-flex' do %>
-            <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
-            <span>New Passkey</span>
-          <% end %>
         </div>
       <% end %>
     </div>
