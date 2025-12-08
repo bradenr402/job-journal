@@ -48,7 +48,8 @@ Rails.application.routes.draw do
   
   # Passkey management routes
   get 'passkeys/new', to: 'passkeys#new', as: :new_passkey
-  post 'passkeys/register', to: 'passkeys#register', as: :register_passkey
+  post 'passkeys/challenge', to: 'passkeys#challenge'
+  post 'passkeys/register', to: 'passkeys#register'
   delete 'passkeys/:id', to: 'passkeys#destroy', as: :passkey
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

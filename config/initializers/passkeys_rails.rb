@@ -34,7 +34,7 @@ PasskeysRails.config do |c|
   # model, but it is a common use case, so setting the
   # default_class simplifies the use of the API in that case.
   #
-  # c.default_class = "User"
+  c.default_class = "User"
 
   # By providing a class_whitelist, the API will require that
   # any supplied class is in the whitelist.  If it is not, the
