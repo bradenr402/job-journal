@@ -5,37 +5,6 @@
       Sign in to continue your job search.
     </p>
 
-    <!-- Passkey Sign In -->
-    <div 
-      data-controller="passkey-authentication"
-      data-passkey-authentication-challenge-url-value="<%= challenge_authenticate_passkeys_path %>"
-      data-passkey-authentication-authenticate-url-value="<%= authenticate_passkeys_path %>"
-      class="my-5"
-    >
-      <button 
-        type="button"
-        data-action="click->passkey-authentication#authenticate"
-        data-passkey-authentication-target="button"
-        class="w-full btn btn-primary gap-2"
-      >
-        <%= inline_svg_tag 'icons/key.svg', class: 'size-5 shrink-0' %>
-        <span>Sign in with Passkey</span>
-      </button>
-      <div 
-        data-passkey-authentication-target="error"
-        class="hidden text-sm text-red-600 dark:text-red-400 mt-2 p-3 bg-red-50 dark:bg-red-900/20 rounded"
-      ></div>
-    </div>
-
-    <div class="relative my-5">
-      <div class="absolute inset-0 flex items-center">
-        <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
-      </div>
-      <div class="relative flex justify-center text-sm">
-        <span class="px-2 bg-white dark:bg-neutral-900 text-muted">Or sign in with password</span>
-      </div>
-    </div>
-
     <%= form_with url: session_url, model: false, method: :post, class: 'contents' do |form| %>
       <div class="my-5">
         <%= form.label :email_address, 'Email Address', class: 'form-label' %>
@@ -51,6 +20,37 @@
         <%= form.submit 'Sign In', class: 'grow btn btn-primary' %>
       </div>
     <% end %>
+
+    <div class="relative my-5">
+      <div class="absolute inset-0 flex items-center">
+        <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
+      </div>
+      <div class="relative flex justify-center text-sm">
+        <span class="px-2 bg-white dark:bg-neutral-900 text-muted">Or sign in with passkey</span>
+      </div>
+    </div>
+
+    <!-- Passkey Sign In -->
+    <div 
+      data-controller="passkey-authentication"
+      data-passkey-authentication-challenge-url-value="<%= challenge_authenticate_passkeys_path %>"
+      data-passkey-authentication-authenticate-url-value="<%= authenticate_passkeys_path %>"
+      class="my-5"
+    >
+      <button 
+        type="button"
+        data-action="click->passkey-authentication#authenticate"
+        data-passkey-authentication-target="button"
+        class="w-full btn btn-secondary gap-2"
+      >
+        <%= inline_svg_tag 'icons/fingerprint.svg', class: 'size-5 shrink-0' %>
+        <span>Sign in with Passkey</span>
+      </button>
+      <div 
+        data-passkey-authentication-target="error"
+        class="hidden text-sm text-red-600 dark:text-red-400 mt-2 p-3 bg-red-50 dark:bg-red-900/20 rounded"
+      ></div>
+    </div>
 
     <div class="flex flex-col items-center gap-2 mt-4">
       <%= link_to 'Forgot password?', new_password_path, class: 'btn-link' %>
