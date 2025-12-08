@@ -39,8 +39,16 @@ export default class extends Controller {
       })
 
       if (!challengeResponse.ok) {
-        const errorData = await challengeResponse.json()
-        throw new Error(errorData.error || 'Failed to get challenge from server')
+        let errorMessage = 'Failed to get challenge from server'
+        try {
+          const errorData = await challengeResponse.json()
+          errorMessage = errorData.error || errorData.message || errorMessage
+        } catch (e) {
+          // Response wasn't JSON, use default message
+          const text = await challengeResponse.text()
+          console.error('Server response:', text)
+        }
+        throw new Error(errorMessage)
       }
 
       const challengeData = await challengeResponse.json()
@@ -73,8 +81,16 @@ export default class extends Controller {
       })
 
       if (!registerResponse.ok) {
-        const errorData = await registerResponse.json()
-        throw new Error(errorData.error || 'Failed to register passkey')
+        let errorMessage = 'Failed to register passkey'
+        try {
+          const errorData = await registerResponse.json()
+          errorMessage = errorData.error || errorData.message || errorMessage
+        } catch (e) {
+          // Response wasn't JSON, use default message
+          const text = await registerResponse.text()
+          console.error('Server response:', text)
+        }
+        throw new Error(errorMessage)
       }
 
       this.showSuccess("Passkey registered successfully! Redirecting...")
@@ -87,13 +103,19 @@ export default class extends Controller {
     } catch (error) {
       console.error('Passkey registration error:', error)
       
+      let errorMessage = 'Failed to register passkey. Please try again.'
+      
       if (error.name === 'NotAllowedError') {
-        this.showError('Passkey registration was cancelled.')
+        errorMessage = 'Passkey registration was cancelled.'
       } else if (error.name === 'InvalidStateError') {
-        this.showError('This passkey is already registered.')
-      } else {
-        this.showError(error.message || 'Failed to register passkey. Please try again.')
+        errorMessage = 'This passkey is already registered.'
+      } else if (error.message) {
+        errorMessage = error.message
+      } else if (typeof error === 'string') {
+        errorMessage = error
       }
+      
+      this.showError(errorMessage)
     }
   }
 
@@ -173,7 +195,10 @@ export default class extends Controller {
   }
 
   get currentUserEmail() {
-    // This should be set by the view
-    return this.element.dataset.userEmail || 'user@example.com'
+    const email = this.element.dataset.userEmail
+    if (!email) {
+      throw new Error('User email not found. Cannot register passkey.')
+    }
+    return email
   }
 }
