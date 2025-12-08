@@ -21,7 +21,28 @@
       </div>
     <% end %>
 
+    <div class="relative my-5">
+      <div class="absolute inset-0 flex items-center">
+        <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
+      </div>
+      <div class="relative flex justify-center text-sm">
+        <span class="px-2 bg-white dark:bg-neutral-900 text-muted">Or sign in with passkey</span>
+      </div>
+    </div>
 
+    <!-- Passkey Sign In -->
+    <div class="my-5">
+      <button 
+        type="button"
+        class="w-full btn btn-secondary gap-2"
+        disabled
+        title="Passkey authentication coming soon"
+      >
+        <%= inline_svg_tag 'icons/fingerprint.svg', class: 'size-5 shrink-0' %>
+        <span>Sign in with Passkey</span>
+      </button>
+      <p class="text-xs text-muted text-center mt-2">Passkey authentication coming soon</p>
+    </div>
 
     <div class="flex flex-col items-center gap-2 mt-4">
       <%= link_to 'Forgot password?', new_password_path, class: 'btn-link' %>

@@ -38,10 +38,21 @@
       </div>
     </div>
 
-    <div class="mt-6 text-center">
-      <p class="text-sm text-muted mb-4">
-        Passkey functionality is being integrated. Please use password authentication for now.
-      </p>
+    <div 
+      class="mt-6"
+      data-controller="passkey"
+      data-user-email="<%= Current.user.email_address %>"
+    >
+      <button
+        type="button"
+        data-action="click->passkey#register"
+        class="w-full btn btn-primary gap-2"
+      >
+        <%= inline_svg_tag 'icons/fingerprint.svg', class: 'size-5 shrink-0' %>
+        <span>Create Passkey</span>
+      </button>
+      
+      <div data-passkey-target="status" class="mt-4"></div>
     </div>
   </div>
 </div>

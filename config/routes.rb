@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  mount PasskeysRails::Engine => "/passkeys"
+  mount PasskeysRails::Engine => '/passkeys'
+
   # Defines the root path route ("/")
   root 'pages#home'
 

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   include PasskeysRails::Authenticatable
-  
+
   # Constants
   DEFAULT_SETTINGS = {
     weekly_application_goal: 10,
