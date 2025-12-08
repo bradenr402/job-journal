@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   def account
     @user = Current.user
-    @sessions = @user.sessions.order(updated_at: :desc)
   end
 
   def edit

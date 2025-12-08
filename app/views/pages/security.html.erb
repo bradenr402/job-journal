@@ -1,0 +1,71 @@
+<% content_for :title, 'Your Account' %>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to root_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
+      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <span>Back Home</span>
+    <% end %>
+  </div>
+
+  <div class="mb-10 pb-10 border-b border-neutral-200 dark:border-neutral-800 flex flex-wrap items-end justify-between gap-2">
+    <div>
+      <h1 class="heading">Security</h1>
+      <p class="text-sm text-muted mt-1">Manage your active sessions and secure your account.</p>
+    </div>
+  </div>
+
+
+  <div class="mb-4 flex flex-wrap items-end justify-between gap-2">
+    <div>
+      <h1 class="subheading">Active Sessions</h1>
+      <span class="text-sm text-muted mt-1">
+        <%= pluralize(@sessions.size, 'active session') %>
+      </span>
+    </div>
+
+    <%= button_to destroy_other_sessions_path,
+        method: :delete,
+        data: { turbo_confirm: 'Are you sure you want to terminate all other sessions? This will log you out of all your devices except this one.' },
+        class: 'btn btn-destructive' do %>
+      <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+      <span>Log Out All</span>
+    <% end %>
+  </div>
+
+  <div class="@container">
+    <ul class="flex flex-col gap-2">
+      <% @sessions.each do |session| %>
+        <li class="card-sm flex justify-between" style='view-transition-name: session-<%= session.id %>'>
+          <div>
+            <div>
+              <span class="font-semibold">
+                <%
+                  detector = DeviceDetector.new(session.user_agent)
+                  browser = detector.name
+                  os = detector.os_name
+                  device = detector.device_type
+                %>
+                <%= "#{browser} on #{os}" %> <span class="text-sm text-muted font-normal">(<%= device %>)</span>
+              </span>
+              <%= tag.span('Current Session', class: 'ml-0.5 tag tag-accepted') if session == Current.session %>
+            </div>
+            <div class="mt-2">
+              <p class="text-xs text-muted">IP Address: <span class="font-semibold text-soft"><%= session.ip_address %></span></p>
+              <p class="text-xs text-muted">Logged in: <span class="font-semibold text-soft"><%= session.created_at.now? ? 'now' : local_time(session.created_at) %></span></p>
+              <p class="text-xs text-muted">Last active: <span class="font-semibold text-soft"><%= session.updated_at.now? ? 'now' : "#{time_ago_in_words session.updated_at} ago" %></span> (<%= local_time session.updated_at %>)</p>
+            </div>
+          </div>
+
+          <%= button_to session_path(session: session),
+              method: :delete,
+              data: { turbo_confirm: "Are you sure you want to terminate #{session == Current.session ? 'your current' : 'this'} session?" },
+              class: 'btn btn-sm btn-destructive btn-muted whitespace-nowrap' do %>
+              <%= inline_svg_tag 'icons/logout.svg', class: 'size-4 shrink-0' %>
+              <span>Log Out</span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

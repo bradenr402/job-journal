@@ -6,6 +6,10 @@ class PagesController < ApplicationController
     stats.each_pair { |key, value| instance_variable_set("@#{key}", value) }
   end
 
+  def security
+    @sessions = Current.user.sessions.order(updated_at: :desc)
+  end
+
   private
 
   def cleanup_leads

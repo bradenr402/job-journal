@@ -22,15 +22,21 @@
         </button>
 
         <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden" data-dropdown-target="menu">
-          <%= link_to account_path, class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag 'icons/profile.svg', class: 'size-5 shrink-0' %>
-            <span>Account</span>
-          <% end %>
-          <%= link_to settings_path, class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag 'icons/settings.svg', class: 'size-5 shrink-0' %>
-            <span>Settings</span>
-          <% end %>
+          <% dropdown_links = [
+            { key: :account, path: account_path, label: 'Account', icon: 'profile' },
+            { key: :settings, path: settings_path, label: 'Settings', icon: 'settings' },
+            { key: :security, path: security_path, label: 'Security', icon: 'security' },
+          ] %>
+
+          <% dropdown_links.each do |link| %>
+            <%= link_to link[:path], class: 'dropdown-option dropdown-option-secondary' do %>
+              <%= inline_svg_tag "icons/#{link[:icon]}.svg", class: 'size-5 shrink-0' %>
+              <span><%= link[:label] %></span>
+            <% end %>
+          <% end  %>
+
           <div class="dropdown-divider"></div>
+
           <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
             <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
             <span>Sign Out</span>
