@@ -13,13 +13,14 @@
   end
   
   timeout = ['error', 'alert'].include?(type.to_s) ? 10000 : 6000
+  flash_id = "flash-#{SecureRandom.uuid}"
 %>
 
-<p class="<%= css_class %>" id="flash-<%= SecureRandom.uuid %>"><%== message %></p>
+<p class="<%= css_class %>" id="<%= flash_id %>"><%== message %></p>
 
 <script>
   setTimeout(() => {
-    const el = document.getElementById('flash-<%= SecureRandom.uuid %>')
+    const el = document.getElementById('<%= flash_id %>')
     if (el) el.remove()
   }, <%= timeout %>)
 </script>

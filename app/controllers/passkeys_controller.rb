@@ -8,6 +8,9 @@ class PasskeysController < ApplicationController
 
   # Generate challenge for creating a new passkey
   def challenge_create
+    # Get existing passkey identifiers to exclude during registration
+    excluded_credentials = Current.user.passkeys.pluck(:identifier)
+    
     # Store options in session for verification later
     options = WebAuthn::Credential.options_for_create(
       user: {
@@ -15,7 +18,7 @@ class PasskeysController < ApplicationController
         name: Current.user.email_address,
         display_name: Current.user.name || Current.user.email_address
       },
-      exclude: Current.user.passkeys.pluck(:identifier),
+      exclude: excluded_credentials,
       authenticator_selection: {
         user_verification: "preferred",
         resident_key: "preferred"
@@ -117,10 +120,10 @@ class PasskeysController < ApplicationController
 
   # Generate challenge for authentication
   def challenge_authenticate
-    # Get all passkey identifiers, decode them to binary for WebAuthn
-    allowed_credentials = User.joins(:passkeys)
-                              .pluck(:"passkeys.identifier")
-                              .map { |id| Base64.urlsafe_decode64(id) }
+    # Get current user's passkey identifiers, decode them to binary for WebAuthn
+    allowed_credentials = Current.user.passkeys
+                                      .pluck(:identifier)
+                                      .map { |id| Base64.urlsafe_decode64(id) }
 
     options = WebAuthn::Credential.options_for_get(
       allow: allowed_credentials

@@ -105,6 +105,35 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 bin/rails test
 ```
 
+### Passkey Configuration
+
+JobJournal supports WebAuthn passkeys for secure, passwordless authentication.
+
+**Browser Support:**
+- Chrome/Edge 109+
+- Safari 16+
+- Firefox 122+
+
+**Environment Variables:**
+
+For production deployment, set the following environment variable:
+
+```bash
+WEBAUTHN_ORIGIN=https://your-domain.com
+```
+
+For local development, the default is `http://localhost:3000`.
+
+**Usage:**
+
+1. Sign in to your account with your password
+2. Go to **Security** page
+3. Click **Create Passkey** and follow your browser's prompts
+4. Use biometrics (Touch ID, Face ID, Windows Hello) or a security key
+5. Next time, sign in with your passkey instead of a password
+
+**Note:** Passkeys are device-specific. Register a passkey on each device you use.
+
 ---
 
 ## Core Features
@@ -164,7 +193,8 @@ Your job search data should be _yours alone_. That’s why JobJournal is **priva
 
 - All your data is scoped to your user account.
 - No third-party sharing, no analytics, no tracking, and no recruiter dashboards&mdash;your data stays private.
-- Secure authentication via email & password.
+- Secure authentication via email & password or **passkeys** (WebAuthn).
+- Passkey support for passwordless sign-in using biometrics (Touch ID, Face ID, Windows Hello) or security keys.
 - Delete your account and all associated data at any time at the press of a button.
 
 ---
