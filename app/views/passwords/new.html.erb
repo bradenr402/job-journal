@@ -1,4 +1,11 @@
 <div class="max-w-lg mx-auto sm:w-7/8 w-full">
+  <div class="flex justify-center mb-8">
+    <%= link_to root_path, class: 'flex items-center gap-1.5 text-primary-600 transition-opacity duration-150 hover:opacity-80' do %>
+      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-7 shrink-0' %>
+      <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
+    <% end %>
+  </div>
+
   <div class="card">
     <h1 class="font-bold text-2xl">Forgot Your Password?</h1>
     <p class="text-soft">
