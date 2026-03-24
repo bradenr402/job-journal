@@ -50,13 +50,8 @@
 <%# ─── HERO SCREENSHOT ─── %>
 <section class="px-6 pb-24 md:pb-32">
   <div class="max-w-5xl mx-auto">
-    <div class="rounded-2xl bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-950/40 dark:via-neutral-900 dark:to-neutral-800/60 border border-primary-200/40 dark:border-primary-800/30 shadow-xl dark:shadow-none aspect-[16/9] flex items-center justify-center overflow-hidden">
-      <div class="text-center px-8">
-        <div class="rounded-full p-5 bg-primary-100/80 dark:bg-primary-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-10 text-primary-500' %>
-        </div>
-        <p class="text-primary-600/50 dark:text-primary-400/40 text-sm font-medium">App screenshot</p>
-      </div>
+    <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-xl dark:shadow-none overflow-hidden">
+      <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'w-full h-auto', loading: 'eager' %>
     </div>
   </div>
 </section>
@@ -107,16 +102,11 @@
   </div>
 </section>
 
-<%# ─── SCREENSHOT: DASHBOARD ─── %>
+<%# ─── SCREENSHOT: JOB LEADS ─── %>
 <section class="px-6 pb-24 md:pb-32">
   <div class="max-w-5xl mx-auto">
-    <div class="rounded-2xl bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/60 dark:to-neutral-800/40 border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none aspect-[16/9] flex items-center justify-center overflow-hidden">
-      <div class="text-center px-8">
-        <div class="rounded-full p-5 bg-neutral-200/60 dark:bg-neutral-800/60 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/home.svg', class: 'size-10 text-neutral-400 dark:text-neutral-600' %>
-        </div>
-        <p class="text-neutral-400 dark:text-neutral-600 text-sm font-medium">Dashboard screenshot</p>
-      </div>
+    <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none overflow-hidden">
+      <%= image_tag 'job_leads.webp', alt: 'JobJournal job leads page showing a grid of tracked opportunities with tags and statuses', class: 'w-full h-auto', loading: 'lazy' %>
     </div>
   </div>
 </section>
