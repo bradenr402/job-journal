@@ -1,5 +1,11 @@
 class PagesController < ApplicationController
+  allow_unauthenticated_access only: :landing
+  layout 'landing', only: :landing
+
   before_action :cleanup_leads, only: :home
+
+  def landing
+  end
 
   def home
     stats = DashboardStats.new(Current.user).stats

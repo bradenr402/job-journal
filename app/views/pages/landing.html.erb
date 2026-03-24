@@ -1,0 +1,262 @@
+<% content_for(:title) { 'Your Personal Job Search HQ' } %>
+
+<%# ─── NAV ─── %>
+<nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-neutral-800/40">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <%= link_to root_path, class: 'flex items-center gap-1.5 text-primary-600' do %>
+      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
+      <span class="text-xl font-extrabold tracking-tight">JobJournal</span>
+    <% end %>
+
+    <div class="flex items-center gap-3">
+      <% if authenticated? %>
+        <%= link_to dashboard_path, class: 'btn btn-primary' do %>
+          <span>Home</span>
+          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-4 shrink-0' %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Sign In', new_session_path, class: 'btn btn-transparent' %>
+        <%= link_to 'Sign Up Free', new_registrations_path, class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</nav>
+
+<%# ─── HERO ─── %>
+<section class="pt-36 md:pt-44 pb-20 md:pb-28 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <h1 class="text-[clamp(2.75rem,6vw,5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
+      Your personal job<br class="hidden sm:block"> search HQ.
+    </h1>
+
+    <p class="mt-6 text-[clamp(1.05rem,1.5vw,1.25rem)] text-light max-w-2xl mx-auto text-pretty leading-relaxed">
+      Stop babysitting spreadsheets. Track every lead, application, and interview in one privacy-first workspace&mdash;built for how you actually search for jobs.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <% if authenticated? %>
+        <%= link_to dashboard_path, class: 'btn btn-primary px-8 py-3 text-base' do %>
+          <span>Go to Dashboard</span>
+          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Sign Up Free', new_registrations_path, class: 'btn btn-primary px-8 py-3 text-base' %>
+        <%= link_to 'Sign In', new_session_path, class: 'btn btn-secondary btn-muted px-8 py-3 text-base' %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ─── HERO SCREENSHOT ─── %>
+<section class="px-6 pb-24 md:pb-32">
+  <div class="max-w-5xl mx-auto">
+    <div class="rounded-2xl bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-950/40 dark:via-neutral-900 dark:to-neutral-800/60 border border-primary-200/40 dark:border-primary-800/30 shadow-xl dark:shadow-none aspect-[16/9] flex items-center justify-center overflow-hidden">
+      <div class="text-center px-8">
+        <div class="rounded-full p-5 bg-primary-100/80 dark:bg-primary-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-10 text-primary-500' %>
+        </div>
+        <p class="text-primary-600/50 dark:text-primary-400/40 text-sm font-medium">App screenshot</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ─── THE PROBLEM ─── %>
+<section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+      Spreadsheets weren&rsquo;t built&nbsp;for&nbsp;this.
+    </h2>
+
+    <div class="mt-8 space-y-5 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+      <p>
+        Every career blog tells you to open a spreadsheet. Log your leads, color-code your columns, maintain three tabs by hand. It works great&mdash;until it doesn&rsquo;t.
+      </p>
+
+      <p>
+        Spreadsheets never remind you to follow&nbsp;up. They can&rsquo;t show you which sources are actually working. They scatter your notes across rows and cells that are one accidental drag away from disaster. And when your search scales past a dozen applications, they become harder to navigate, easier to break, and less useful exactly when you need them most.
+      </p>
+
+      <p class="text-neutral-900 dark:text-neutral-100 font-semibold text-[clamp(1.05rem,1.3vw,1.2rem)]">
+        It&rsquo;s time for something purpose-built.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# ─── THE SOLUTION ─── %>
+<section class="py-20 md:py-28 px-6">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
+      JobJournal flips that&nbsp;script.
+    </h2>
+
+    <div class="mt-8 space-y-5 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+      <p>
+        Instead of forcing you to babysit cells, every opportunity becomes a <strong class="text-normal font-semibold">living record</strong>. Timeline-aware suggestions appear on your dashboard. Notes attach to the stage where they belong. Insights reveal what&rsquo;s working. And smart search finds anything instantly&mdash;from yesterday or six months ago.
+      </p>
+
+      <p>
+        Set a weekly application goal and watch your momentum build. Tag leads your way. Track interviews from scheduling to debrief. JobJournal scales from a single dream role to a hundred concurrent applications&mdash;without breaking your flow or compromising your privacy.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# ─── SCREENSHOT: DASHBOARD ─── %>
+<section class="px-6 pb-24 md:pb-32">
+  <div class="max-w-5xl mx-auto">
+    <div class="rounded-2xl bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/60 dark:to-neutral-800/40 border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none aspect-[16/9] flex items-center justify-center overflow-hidden">
+      <div class="text-center px-8">
+        <div class="rounded-full p-5 bg-neutral-200/60 dark:bg-neutral-800/60 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/home.svg', class: 'size-10 text-neutral-400 dark:text-neutral-600' %>
+        </div>
+        <p class="text-neutral-400 dark:text-neutral-600 text-sm font-medium">Dashboard screenshot</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ─── FEATURES ─── %>
+<section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <div class="max-w-6xl mx-auto">
+    <div class="max-w-3xl">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        Everything you need.<br>Nothing you don&rsquo;t.
+      </h2>
+
+      <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed max-w-2xl text-pretty">
+        No bloated dashboards, no recruiter tools, no corporate upsells. Just the features that actually help you land a job.
+      </p>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <%# Feature 1: Job Lead Management %>
+      <div class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 not-dark:shadow-xs">
+        <div class="rounded-xl p-2.5 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 text-primary-600 dark:text-primary-500' %>
+        </div>
+        <h3 class="text-lg font-bold text-normal">Track Every Lead</h3>
+        <p class="mt-2 text-sm text-light leading-relaxed">
+          Company, title, source, salary, location&mdash;with automatic timeline tracking through every status from lead to accepted.
+        </p>
+      </div>
+
+      <%# Feature 2: Alerts & Reminders %>
+      <div class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 not-dark:shadow-xs">
+        <div class="rounded-xl p-2.5 bg-blue-100/70 dark:bg-blue-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-blue-600 dark:text-blue-500' %>
+        </div>
+        <h3 class="text-lg font-bold text-normal">Never Miss a Follow-Up</h3>
+        <p class="mt-2 text-sm text-light leading-relaxed">
+          Smart suggestions remind you to follow up after applications and interviews, highlight stale leads, and surface upcoming interviews at a glance.
+        </p>
+      </div>
+
+      <%# Feature 3: Interview Tracking %>
+      <div class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 not-dark:shadow-xs">
+        <div class="rounded-xl p-2.5 bg-purple-100/70 dark:bg-purple-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 text-purple-600 dark:text-purple-500' %>
+        </div>
+        <h3 class="text-lg font-bold text-normal">Own Your Interview Story</h3>
+        <p class="mt-2 text-sm text-light leading-relaxed">
+          Log interviewer details, schedule, and call links. Rate how it went. Add notes for prep and debrief. Add to your calendar in one click.
+        </p>
+      </div>
+
+      <%# Feature 4: Search & Filters %>
+      <div class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 not-dark:shadow-xs">
+        <div class="rounded-xl p-2.5 bg-amber-100/70 dark:bg-amber-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-amber-600 dark:text-amber-500' %>
+        </div>
+        <h3 class="text-lg font-bold text-normal">Find Anything Instantly</h3>
+        <p class="mt-2 text-sm text-light leading-relaxed">
+          Universal search across leads, interviews, and notes. Filter by tags, status, date&mdash;whatever you need, whenever you need it.
+        </p>
+      </div>
+
+      <%# Feature 5: Insights %>
+      <div class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 not-dark:shadow-xs">
+        <div class="rounded-xl p-2.5 bg-rose-100/70 dark:bg-rose-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/star.svg', class: 'size-5 text-rose-600 dark:text-rose-500' %>
+        </div>
+        <h3 class="text-lg font-bold text-normal">See What&rsquo;s Working</h3>
+        <p class="mt-2 text-sm text-light leading-relaxed">
+          Track applications per week against your goal. Analyze which sources convert best. See how far each source gets you in the hiring process.
+        </p>
+      </div>
+
+      <%# Feature 6: Tags & Notes %>
+      <div class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 not-dark:shadow-xs">
+        <div class="rounded-xl p-2.5 bg-teal-100/70 dark:bg-teal-900/40 inline-flex mb-4">
+          <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 text-teal-600 dark:text-teal-500' %>
+        </div>
+        <h3 class="text-lg font-bold text-normal">Organize Your Way</h3>
+        <p class="mt-2 text-sm text-light leading-relaxed">
+          Create custom tags like &ldquo;remote,&rdquo; &ldquo;dream job,&rdquo; or &ldquo;priority.&rdquo; Add rich notes with Markdown. Keep everything in context.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ─── PRIVACY ─── %>
+<section class="py-20 md:py-28 px-6">
+  <div class="max-w-3xl mx-auto text-center">
+    <div class="rounded-full p-4 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-6">
+      <%= inline_svg_tag 'icons/security.svg', class: 'size-8 text-primary-600 dark:text-primary-500' %>
+    </div>
+
+    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+      Built for you.<br>Not for recruiters.
+    </h2>
+
+    <div class="mt-6 space-y-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed max-w-2xl mx-auto">
+      <p>
+        Your job search data is <strong class="text-normal font-semibold">yours alone</strong>. No third-party sharing, no analytics, no tracking, and no recruiter dashboards.
+      </p>
+
+      <p>
+        Everything is scoped to your account. Delete it all anytime&mdash;at the press of a button.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%# ─── FINAL CTA ─── %>
+<section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+      Ready to take control of<br class="hidden sm:block"> your job search?
+    </h2>
+
+    <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+      Free to use. No credit card required.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <% if authenticated? %>
+        <%= link_to dashboard_path, class: 'btn btn-primary px-8 py-3 text-base' do %>
+          <span>Go to Dashboard</span>
+          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Sign Up Free', new_registrations_path, class: 'btn btn-primary px-10 py-3.5 text-base' %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ─── FOOTER ─── %>
+<footer class="py-10 px-6 border-t border-neutral-200/60 dark:border-neutral-800/40">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-1.5 text-primary-600">
+      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-5 shrink-0' %>
+      <span class="text-base font-extrabold tracking-tight">JobJournal</span>
+    </div>
+
+    <p class="text-sm text-muted">
+      Created with ❤️ by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-light hover:text-primary-600 transition-colors duration-150' %>
+    </p>
+  </div>
+</footer>

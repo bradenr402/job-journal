@@ -3,7 +3,7 @@ class PasswordsController < ApplicationController
   before_action :set_user_by_token, only: %i[ edit update ]
 
   before_action only: %i[new create] do
-    redirect_to root_path, notice: 'You are already signed in.' if authenticated?
+    redirect_to dashboard_path, notice: 'You are already signed in.' if authenticated?
   end
 
   def new

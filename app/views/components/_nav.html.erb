@@ -1,12 +1,12 @@
 <nav class="fixed bottom-4 inset-x-4 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
   <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 md:space-y-2 bg-white/60 md:bg-white dark:bg-neutral-900/60 rounded-[1.25rem] md:rounded-2xl md:not-dark:shadow-2xs max-md:backdrop-blur-md border border-neutral-200 dark:border-neutral-800/60 md:dark:border-neutral-900 flex flex-col">
-    <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600', tabindex: -1 do %>
+    <%= link_to dashboard_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600', tabindex: -1 do %>
       <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
       <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
     <% end %>
 
     <% nav_links = [
-      { key: :root, path: root_path, label: 'Home', icon: 'home' },
+      { key: :dashboard, path: dashboard_path, label: 'Home', icon: 'home' },
       { key: :job_leads, path: job_leads_path, label: 'Job Leads', icon: 'briefcase' },
       { key: :interviews, path: interviews_path, label: 'Interviews', icon: 'interview' },
       { key: :notes, path: notes_path, label: 'Notes', icon: 'note' },
