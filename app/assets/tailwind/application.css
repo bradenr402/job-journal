@@ -44,3 +44,19 @@
 ::view-transition-new(*) {
   height: 100%;
 }
+
+:root {
+  color-scheme: light dark;
+
+  ::selection {
+    background: light-dark(
+      oklch(from var(--color-primary-500) l c h / 5%),
+      oklch(from var(--color-primary-500) l c h / 15%)
+    );
+    color: light-dark(var(--color-primary-500), var(--color-primary-400));
+    text-decoration: dotted underline
+      light-dark(var(--color-primary-500), var(--color-primary-400));
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+}
