@@ -36,7 +36,7 @@
   }
 
   kbd {
-    @apply [font-size:0.95em] mr-[0.05rem] font-mono text-soft bg-neutral-200 dark:bg-neutral-800 rounded-sm px-[0.3rem] py-[0.2rem] shadow-2xs;
+    @apply text-[0.95em] mr-[0.05rem] font-mono text-soft bg-neutral-200 dark:bg-neutral-800 rounded-sm px-[0.3rem] py-[0.2rem] shadow-2xs;
   }
 }
 
