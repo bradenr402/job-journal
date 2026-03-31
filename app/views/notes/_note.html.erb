@@ -1,6 +1,6 @@
 <%
   note_page = current_page?(note_path(note))
-  display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path)
+  display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path) || local_assigns[:demo]
 
   note_title = note.title if display_title
 %>
