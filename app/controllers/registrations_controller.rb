@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  layout "auth", only: %i[ new create ]
+
   allow_unauthenticated_access only: [ :new, :create ]
   before_action :resume_session, only: [ :new, :create ]
 
