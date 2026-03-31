@@ -171,7 +171,7 @@
 
             <div class="flex items-end flex-wrap gap-x-6 gap-y-2 mb-4">
               <div class="flex items-center gap-1 text-sm text-light">
-                <%= inline_svg_tag 'icons/company.svg', class: 'size-4 shrink-0 text-muted' %>
+                <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
                 <%= lead[:company] %>
               </div>
             </div>
@@ -185,10 +185,12 @@
             <% end %>
 
             <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
-              <span class="inline-flex items-center gap-1">
-                <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-                <%= lead[:notes_count] %> notes
-              </span>
+              <% if lead[:notes_count] > 0 %>
+                <span class="inline-flex items-center gap-1">
+                  <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+                  <%= lead[:notes_count] %> <%= lead[:notes_count] == 1 ? 'note' : 'notes' %>
+                </span>
+              <% end %>
               <span class="inline-flex items-center gap-1">
                 <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
                 Updated: <%= lead[:updated] %>
@@ -216,20 +218,22 @@
 
             <div class="flex items-center gap-x-6 gap-y-2 mb-4">
               <div class="flex items-center gap-1 text-sm text-soft">
-                <%= inline_svg_tag 'icons/calendar.svg', class: 'size-4 shrink-0 text-muted' %>
+                <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.75 shrink-0' %>
                 <%= interview[:date] %>
               </div>
               <div class="flex items-center gap-1 text-sm text-soft">
-                <%= inline_svg_tag 'icons/location.svg', class: 'size-4 shrink-0 text-muted' %>
+                <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
                 <%= interview[:location] %>
               </div>
             </div>
 
             <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
-              <span class="inline-flex items-center gap-1">
-                <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-                <%= interview[:notes_count] %> notes
-              </span>
+              <% if interview[:notes_count] > 0 %>
+                <span class="inline-flex items-center gap-1">
+                  <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+                  <%= interview[:notes_count] %> <%= interview[:notes_count] == 1 ? 'note' : 'notes' %>
+                </span>
+              <% end %>
               <span class="inline-flex items-center gap-1">
                 <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
                 Updated: <%= interview[:updated] %>
@@ -273,7 +277,7 @@
         <% @demo_notes.each do |note| %>
           <div class="relative flex flex-col group card-sm">
             <p class="text-xs font-semibold mb-2 inline-flex items-start gap-1">
-              <%= inline_svg_tag "icons/#{note[:icon]}.svg", class: 'size-3.5 shrink-0 mt-0.5 text-muted' %>
+              <%= inline_svg_tag "icons/#{note[:icon]}.svg", class: 'size-3 shrink-0 mt-0.5' %>
               <%= note[:title] %>
             </p>
             <div class="h-full grow max-h-24 overflow-hidden relative">
