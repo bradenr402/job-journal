@@ -121,6 +121,38 @@ class PagesController < ApplicationController
       { label: 'Applications This Week', icon: 'application', count: 7, change: '+3 from last week' },
       { label: 'Interviews This Week', icon: 'interview', count: 3, change: '+1 from last week' }
     ]
+
+    # ── Follow-up suggestions (rendered inline) ────────────────
+    @demo_suggestions = [
+      { title: 'Staff Frontend Developer', company: 'Notion', status: 'applied', status_at: 8.days.ago, action: 'applied to', time_ago: '8 days' },
+      { title: 'Senior Software Engineer', company: 'Stripe', status: 'interview', status_at: 5.days.ago, action: 'interviewed for' }
+    ]
+
+    @demo_stale_leads = [
+      demo_lead(
+        id: 1005, user: demo_user,
+        title: 'Engineering Manager', company: 'Shopify',
+        application_url: 'https://shopify.com/careers/8910',
+        created_at: 19.days.ago + 4.hours + 1.minute, updated_at: 19.days.ago + 4.hours + 1.minute,
+        status: 'lead', status_at: 19.days.ago + 4.hours + 1.minute
+      ),
+      demo_lead(
+        id: 1006, user: demo_user,
+        title: 'Senior Security Engineer', company: 'OpenAI',
+        application_url: 'https://openai.com/careers/1112',
+        created_at: 27.days.ago + 3.hours - 12.minutes, updated_at: 27.days.ago + 3.hours - 12.minutes,
+        status: 'lead', status_at: 27.days.ago + 3.hours - 12.minutes
+      )
+    ]
+
+    # ── Insights data (rendered inline) ────────────────────────
+    @demo_sources = {
+      'LinkedIn' => { count: 8, interview_count: 3, offer_count: 1 },
+      'Referral' => { count: 4, interview_count: 2, offer_count: 1 },
+      'Company Website' => { count: 5, interview_count: 1, offer_count: 0 }
+    }
+
+    @demo_top_tags = %w[remote hybrid referral dream\ job series-b priority]
   end
 
   # Builds a JobLead with preloaded associations and an overridden status

@@ -22,317 +22,471 @@
   </div>
 </nav>
 
-<%# ─── HERO ─── %>
-<section class="pt-36 md:pt-44 pb-20 md:pb-28 px-6">
-  <div class="max-w-4xl mx-auto text-center">
-    <h1 class="text-[clamp(2.75rem,6vw,5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
-      Your personal job<br class="hidden sm:block"> search HQ.
-    </h1>
+<main>
+  <%# ─── HERO ─── %>
+  <section class="pt-36 md:pt-44 pb-20 md:pb-28 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-[clamp(2.75rem,6vw,5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
+        Your personal job<br class="hidden sm:block"> search HQ.
+      </h1>
 
-    <p class="mt-6 text-[clamp(1.05rem,1.5vw,1.25rem)] text-light max-w-2xl mx-auto text-pretty leading-relaxed">
-      Track every lead, application, and interview in one place. No more messy spreadsheets.
-    </p>
+      <p class="mt-6 text-lg text-light max-w-2xl mx-auto text-pretty leading-relaxed">
+      Track every lead, application, and interview in one place. No messy&nbsp;spreadsheets.&nbsp;No tracking.
+      </p>
 
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-      <% if authenticated? %>
-        <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-primary px-8 py-3 text-base' do %>
-          <span>Go to Dashboard</span>
-          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <% if authenticated? %>
+          <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-primary px-8 py-3 text-base' do %>
+            <span>Go to Dashboard</span>
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+          <% end %>
+        <% else %>
+          <%= link_to new_registrations_path, class: 'btn btn-primary px-8 py-3 text-base' do %>
+            <span>Get Started Free</span>
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+          <% end %>
+          <%= link_to 'See How It Works', '#how-it-works', class: 'btn btn-transparent px-6 py-3 text-base' %>
         <% end %>
-      <% else %>
-        <%= link_to new_registrations_path, class: 'btn btn-primary px-8 py-3 text-base' do %>
-          <span>Get Started Free</span>
-          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
-        <% end %>
-        <%= link_to 'See How It Works', '#how-it-works', class: 'btn btn-transparent px-6 py-3 text-base' %>
-      <% end %>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<%# ─── HERO SCREENSHOT ─── %>
-<section class="px-6 pb-24 md:pb-32">
-  <div class="max-w-5xl mx-auto">
-    <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-xl dark:shadow-none overflow-hidden">
-      <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'w-full h-auto', loading: 'eager' %>
+  <%# ─── HERO SCREENSHOT ─── %>
+  <section class="px-6 pb-24 md:pb-32">
+    <div class="max-w-5xl mx-auto">
+      <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-xl dark:shadow-none overflow-hidden">
+        <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'w-full h-auto', loading: 'eager' %>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<%# ─── DEMO: DASHBOARD STATS ─── %>
-<section id="how-it-works" class="pb-24 md:pb-32 px-6 scroll-mt-20">
-  <div class="max-w-5xl mx-auto">
-    <p class="text-center text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Your dashboard at a glance</p>
-    <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
-      See where you stand&mdash;instantly.
-    </h2>
+  <%# ─── DEMO: DASHBOARD STATS ─── %>
+  <section id="how-it-works" class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-center text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Your dashboard at a glance</p>
+      <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
+        See where you stand&mdash;instantly.
+      </h2>
 
-    <div class="pointer-events-none select-none" aria-hidden="true">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <% @demo_stats.each do |stat| %>
-          <div class="card flex flex-col">
-            <div class="flex items-start justify-between mb-5">
-              <p class="font-semibold"><%= stat[:label] %></p>
-              <%= inline_svg_tag "icons/#{stat[:icon]}.svg", class: 'size-5 shrink-0' %>
+      <div class="pointer-events-none select-none" aria-hidden="true">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <% @demo_stats.each do |stat| %>
+            <div class="card flex flex-col">
+              <div class="flex items-start justify-between mb-5">
+                <p class="font-semibold"><%= stat[:label] %></p>
+                <%= inline_svg_tag "icons/#{stat[:icon]}.svg", class: 'size-5 shrink-0' %>
+              </div>
+              <div class="mt-auto">
+                <p class="font-extrabold text-4xl mb-1"><%= stat[:count] %></p>
+                <p class="text-xs text-muted"><%= stat[:change] %></p>
+              </div>
             </div>
-            <div class="mt-auto">
-              <p class="font-extrabold text-4xl mb-1"><%= stat[:count] %></p>
-              <p class="text-xs text-muted"><%= stat[:change] %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── THE PROBLEM ─── %>
+  <section class="py-20 md:py-28 px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        Spreadsheets weren&rsquo;t built&nbsp;for&nbsp;this.
+      </h2>
+
+      <div class="mt-8 space-y-5 text-light leading-relaxed">
+        <p>
+        Everyone says to track your job search in a spreadsheet. It works&mdash;until it doesn&rsquo;t.
+        </p>
+
+        <ul class="space-y-3 list-none">
+          <li class="flex gap-3 items-center">
+            <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+            <span>Spreadsheets don&rsquo;t remind you to follow up, flag stale leads, or tell you which sources are working.</span>
+          </li>
+          <li class="flex gap-3 items-center">
+            <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+            <span>Notes, meeting links, and interview prep end up scattered across apps.</span>
+          </li>
+          <li class="flex gap-3 items-center">
+            <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+            <span>The more applications you add, the harder they are to maintain&mdash;and the less useful they become.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── THE SOLUTION ─── %>
+  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
+        JobJournal flips that&nbsp;script.
+      </h2>
+
+      <div class="mt-8 space-y-5 text-light leading-relaxed">
+        <p>
+        Every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale-lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search with tags and filters finds anything instantly.
+        </p>
+
+        <p class="text-neutral-900 dark:text-neutral-100 font-semibold">
+        Focus on workflows, not rows. JobJournal scales from one dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── SCREENSHOT: JOB LEADS ─── %>
+  <section class="hidden px-6 pb-24 md:pb-32">
+    <div class="max-w-5xl mx-auto">
+      <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none overflow-hidden">
+        <%= image_tag 'job_leads.webp', alt: 'JobJournal job leads page showing a grid of tracked opportunities with tags and statuses', class: 'w-full h-auto', loading: 'lazy' %>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── DEMO: JOB LEADS & INTERVIEWS ─── %>
+  <section class="py-20 md:py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Track every opportunity</p>
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
+        From first lead to final&nbsp;offer.
+      </h2>
+      <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
+      Status. Tags. Notes. A complete timeline. One opportunity, one place, nothing lost. Interviews and notes stay anchored to where they belong&mdash;not buried in separate tabs.
+      </p>
+
+      <div class="pointer-events-none select-none" aria-hidden="true">
+        <%# ── Job Lead Cards ── %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          <% @demo_leads.each do |lead| %>
+            <%= render lead %>
+          <% end %>
+        </div>
+
+        <%# ── Interview Cards ── %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <% @demo_interviews.each do |interview| %>
+            <%= render interview %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── WHY JOBJOURNAL ─── %>
+  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        Built for you. Not for&nbsp;companies.
+      </h2>
+
+      <div class="mt-6 space-y-4 text-light leading-relaxed max-w-2xl mx-auto">
+        <p>
+        Recruiter tools serve companies. Job boards serve advertisers. JobJournal is built <strong class="text-normal font-semibold">for you</strong>&mdash;you own your data, your narrative, and your next move.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── DEMO: NOTES ─── %>
+  <section class="py-20 md:py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Keep everything in context</p>
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
+        Notes that stay where they&nbsp;belong.
+      </h2>
+      <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
+      Attach notes directly to job leads and interviews. Prep for calls, debrief after meetings, and track offer details, without ever losing context.
+      </p>
+
+      <div class="pointer-events-none select-none" aria-hidden="true">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <% @demo_notes.each do |note| %>
+            <%= render note, demo: true %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── FEATURE SHOWCASE: ALERTS & REMINDERS ─── %>
+  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div>
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            Nothing falls through the cracks.
+          </h2>
+          <p class="mt-4 text-light leading-relaxed">
+          Upcoming interviews surface automatically. Stale leads you forgot to apply to get flagged. After every application and interview, you get a nudge to follow up.
+          </p>
+        </div>
+
+        <div class="pointer-events-none select-none space-y-8" aria-hidden="true">
+          <%# Follow-up suggestions %>
+          <div class="@container">
+            <div class="mb-4">
+              <h2 class="subheading">Follow Up Suggestions</h2>
+              <p class="text-sm text-muted mt-1 text-pretty">
+              <%
+                  suggest_demo_days = 3
+
+              demo_days = {
+                application: 7,
+                interview:   2,
+              }
+
+              stop_follow_up = demo_days.transform_values { |days| days + suggest_demo_days }
+            %>
+          Active job leads not updated in <%= demo_days[:application] %>-<%= stop_follow_up[:application] %> days since applying or <%= demo_days[:interview] %>-<%= stop_follow_up[:interview] %> days since interviewing.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="grid grid-cols-1 @xl:grid-cols-2 gap-1.5">
+                <% @demo_suggestions.each do |suggestion| %>
+                  <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-150 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98">
+                    <div class="flex items-center gap-2.5">
+                      <div class="flex flex-col">
+                        <div class="text-lg font-semibold">
+                          <span><%= suggestion[:title] %></span>
+                          <span class="font-normal ml-0.5 tag tag-<%= suggestion[:status] %>">
+                            <%= suggestion[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short suggestion[:status_at] %></span>
+                          </span>
+                        </div>
+
+                        <div class="flex items-center gap-1 text-sm text-soft">
+                          <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
+                          <%= suggestion[:company] %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p class="text-xs text-muted">
+                    <%
+                        action = suggestion[:status] == 'applied' ? 'applied to' : 'interviewed for'
+                    time   = suggestion[:status_at]
+                  %>
+                You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words time %> ago</span>.
+                Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
+                    </p>
+                  </div>
+                <% end %>
+              </div>
             </div>
           </div>
-        <% end %>
+
+          <%# Stale lead %>
+          <div>
+            <div class="mb-4">
+              <h2 class="subheading">Stale Job Leads</h2>
+              <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over 7 days ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
+            </div>
+            <div id="job_leads" class="@container">
+              <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@4xl:grid-cols-3' if @demo_stale_leads.size >= 3 && @demo_stale_leads.size != 4 %> gap-3">
+                <% @demo_stale_leads.each do |job_lead| %>
+                  <%= render 'job_leads/job_lead', job_lead: job_lead %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<%# ─── THE PROBLEM ─── %>
-<section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-      Spreadsheets weren&rsquo;t built&nbsp;for&nbsp;this.
-    </h2>
+  <%# ─── FEATURE SHOWCASE: INSIGHTS ─── %>
+  <section class="py-20 md:py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div>
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            See what&#8217;s actually working.
+          </h2>
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+          Track leads, applications, and interviews week over week. Set a weekly application goal and watch your progress. See which sources produce interviews and offers&mdash;and which are wasting your time.
+          </p>
+        </div>
 
-    <div class="mt-8 space-y-5 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
-      <p>
-        Everyone says to track your job search in a spreadsheet. It works&mdash;until it doesn&rsquo;t.
-      </p>
+        <div class="pointer-events-none select-none @container space-y-3" aria-hidden="true">
+          <%# Top Sources %>
+          <div class="card">
+            <div class="mb-5">
+              <div class="flex items-start justify-between">
+                <p class="font-semibold">Top Sources</p>
+                <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 shrink-0' %>
+              </div>
+              <p class="text-xs text-muted">See where your best job leads are coming from.</p>
+            </div>
 
-      <ul class="space-y-3 list-none">
-        <li class="flex gap-3 items-center">
-          <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-          <span>Spreadsheets don&rsquo;t remind you to follow up, flag stale leads, or tell you which sources are working.</span>
-        </li>
-        <li class="flex gap-3 items-center">
-          <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-          <span>Notes, meeting links, and interview prep end up scattered across apps.</span>
-        </li>
-        <li class="flex gap-3 items-center">
-          <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-          <span>The more applications you add, the harder they are to maintain&mdash;and the less useful they become.</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
+            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @demo_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @demo_sources.size >= 3 && @demo_sources.size != 4 %> gap-1.5">
+              <% @demo_sources.each_with_index do |(source, data), index| %>
+                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
+                  <div class="flex items-center gap-2.5">
+                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+                      #<%= index + 1 %>
+                  </div>
+                  <div class="flex flex-col">
+                    <p class="font-bold text-lg/snug"><%= source %></p>
+                    <p class="text-xs/snug text-muted">
+                    <%= pluralize(data[:count], 'lead') %>
+                    </p>
+                  </div>
+                  </div>
 
-<%# ─── THE SOLUTION ─── %>
-<section class="py-20 md:py-28 px-6">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
-      JobJournal flips that&nbsp;script.
-    </h2>
+                  <%
+                      items = [
+                        [data[:interview_count], 'interview'],
+                        [data[:offer_count], 'offer']
+                      ].select { |count, _| count.positive? }
+                    %>
 
-    <div class="mt-8 space-y-5 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
-      <p>
-        Every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale-lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search with tags and filters finds anything instantly.
-      </p>
+                  <% if items.any? %>
+                    <p class="text-sm/none text-soft">
+                    <%= safe_join(
+                      items.map { |count, label| content_tag(:span, pluralize(count, label)) },
+                      ', '
+                    ) %>
+                  </p>
+                <% end %>
+                </div>
+              <% end %>
+            </div>
+            <% if @demo_sources.size == 1 %>
+              <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
+            <% end %>
+          </div>
 
-      <p class="text-neutral-900 dark:text-neutral-100 font-semibold text-[clamp(1.05rem,1.3vw,1.2rem)]">
-        Focus on workflows, not rows. JobJournal scales from one dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
-      </p>
-    </div>
-  </div>
-</section>
+          <%# Top Tags %>
 
-<%# ─── SCREENSHOT: JOB LEADS ─── %>
-<section class="px-6 pb-24 md:pb-32">
-  <div class="max-w-5xl mx-auto">
-    <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none overflow-hidden">
-      <%= image_tag 'job_leads.webp', alt: 'JobJournal job leads page showing a grid of tracked opportunities with tags and statuses', class: 'w-full h-auto', loading: 'lazy' %>
-    </div>
-  </div>
-</section>
+          <div class="card">
+            <div class="mb-5">
+              <div class="flex items-start justify-between">
+                <p class="font-semibold">Top Tags</p>
+                <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 shrink-0' %>
+              </div>
+              <p class="text-xs text-muted">Up to 20 of your most frequently used tags across your job leads.</p>
+            </div>
 
-<%# ─── DEMO: JOB LEADS & INTERVIEWS ─── %>
-<section class="py-20 md:py-28 px-6">
-  <div class="max-w-6xl mx-auto">
-    <p class="text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Track every opportunity</p>
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
-      From first lead to final&nbsp;offer.
-    </h2>
-    <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
-      Status. Tags. Notes. A complete timeline. One opportunity, one place, nothing lost. Interviews and notes stay anchored to where they belong&mdash;not buried in separate tabs.
-    </p>
+            <div class="flex flex-wrap items-center gap-1 mb-4">
+              <% @demo_top_tags.each do |tag| %>
+                <span class="tag tag-filter"><%= tag %></span>
+              <% end %>
+            </div>
 
-    <div class="pointer-events-none select-none" aria-hidden="true">
-      <%# ── Job Lead Cards ── %>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-        <% @demo_leads.each do |lead| %>
-          <%= render lead %>
-        <% end %>
-      </div>
-
-      <%# ── Interview Cards ── %>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <% @demo_interviews.each do |interview| %>
-          <%= render interview %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</section>
-
-<%# ─── WHY JOBJOURNAL ─── %>
-<section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
-  <div class="max-w-3xl mx-auto text-center">
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-      Built for you. Not for&nbsp;companies.
-    </h2>
-
-    <div class="mt-6 space-y-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed max-w-2xl mx-auto">
-      <p>
-        Recruiter tools serve companies. Job boards serve advertisers. JobJournal is built <strong class="text-normal font-semibold">for you</strong>&mdash;you own your data, your narrative, and your next move.
-      </p>
-    </div>
-  </div>
-</section>
-
-<%# ─── DEMO: NOTES ─── %>
-<section class="py-20 md:py-28 px-6">
-  <div class="max-w-6xl mx-auto">
-    <p class="text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Keep everything in context</p>
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
-      Notes that stay where they&nbsp;belong.
-    </h2>
-    <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
-      Attach notes directly to job leads and interviews. Prep for calls, debrief after meetings, and track offer details, without ever losing context.
-    </p>
-
-    <div class="pointer-events-none select-none" aria-hidden="true">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <% @demo_notes.each do |note| %>
-          <%= render note, demo: true %>
-        <% end %>
+            <p class="text-xs text-muted">
+            Filter by tags to find your job leads fast.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<%# ─── FEATURES ─── %>
-<section class="py-20 md:py-28 px-6">
-  <div class="max-w-6xl mx-auto">
-    <div class="max-w-3xl">
+  <%# ─── MORE FEATURES ─── %>
+  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+    <div class="max-w-6xl mx-auto">
+      <div class="max-w-3xl mb-14">
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          And everything else you&rsquo;d&nbsp;expect.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <%# Dashboard Overview %>
+        <div class="card">
+          <div class="rounded-xl p-2.5 bg-sky-100/70 dark:bg-sky-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/home.svg', class: 'size-5 text-sky-600 dark:text-sky-500' %>
+          </div>
+          <h3 class="text-lg font-bold text-normal">Dashboard Overview</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed">
+          Your entire job search in one view. Weekly stats, progress toward your application goal, smart suggestions, upcoming interviews, and recent notes&mdash;all in one place.
+          </p>
+        </div>
+
+        <%# Job Lead Management %>
+        <div class="card">
+          <div class="rounded-xl p-2.5 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 text-primary-600 dark:text-primary-500' %>
+          </div>
+          <h3 class="text-lg font-bold text-normal">Job Lead Management</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed">
+          Capture company, title, salary, source, and location. Status timeline updates automatically from lead to accepted. Tag and annotate every opportunity.
+          </p>
+        </div>
+
+        <%# Interview Tracking %>
+        <div class="card">
+          <div class="rounded-xl p-2.5 bg-purple-100/70 dark:bg-purple-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 text-purple-600 dark:text-purple-500' %>
+          </div>
+          <h3 class="text-lg font-bold text-normal">Interview Tracking</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed">
+          Log interviewer, date, location, and call link. Add to your calendar in one click. Rate how it went and capture prep notes, debriefs, and feedback.
+          </p>
+        </div>
+
+        <%# Search & Filters %>
+        <div class="card">
+          <div class="rounded-xl p-2.5 bg-orange-100/70 dark:bg-orange-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-orange-600 dark:text-orange-500' %>
+          </div>
+          <h3 class="text-lg font-bold text-normal">Smart Search &amp; Filters</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed">
+          Find anything instantly&mdash;leads, interviews, notes. Narrow results by tag, status, date, or active vs. archived.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── PRIVACY ─── %>
+  <section class="py-20 md:py-28 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="rounded-full p-4 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-6">
+        <%= inline_svg_tag 'icons/security.svg', class: 'size-8 text-primary-600 dark:text-primary-500' %>
+      </div>
+
       <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-        Core Features
+        Private &amp; Secure
       </h2>
-    </div>
 
-    <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <%# Feature 1: Job Lead Management %>
-      <div class="card">
-        <div class="rounded-xl p-2.5 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 text-primary-600 dark:text-primary-500' %>
-        </div>
-        <h3 class="text-lg font-bold text-normal">Job Lead Management</h3>
-        <p class="mt-2 text-sm text-light leading-relaxed">
-          Capture key details like company, job title, salary, source, and location, while JobJournal keeps track of the timeline, from lead to accepted. Tag opportunities to filter them later and add unlimited notes as you go.
-        </p>
-      </div>
-
-      <%# Feature 2: Alerts & Reminders %>
-      <div class="card">
-        <div class="rounded-xl p-2.5 bg-blue-100/70 dark:bg-blue-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/clock.svg', class: 'size-5 text-blue-600 dark:text-blue-500' %>
-        </div>
-        <h3 class="text-lg font-bold text-normal">Alerts &amp; Reminders</h3>
-        <p class="mt-2 text-sm text-light leading-relaxed">
-          Upcoming interviews surface automatically. Stale leads you forgot to apply to get flagged. After every application and interview, you'll get a nudge to follow up&mdash;so nothing slips through the cracks.
-        </p>
-      </div>
-
-      <%# Feature 3: Interview Tracking %>
-      <div class="card">
-        <div class="rounded-xl p-2.5 bg-purple-100/70 dark:bg-purple-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 text-purple-600 dark:text-purple-500' %>
-        </div>
-        <h3 class="text-lg font-bold text-normal">Interview Tracking</h3>
-        <p class="mt-2 text-sm text-light leading-relaxed">
-          Log the interviewer's name, date and time, location and call link. Add it to your calendar with the press of a button. Afterward, rate how you felt about the interview, and add unlimited notes for prep, debrief, or feedback.
-        </p>
-      </div>
-
-      <%# Feature 4: Search & Filters %>
-      <div class="card">
-        <div class="rounded-xl p-2.5 bg-amber-100/70 dark:bg-amber-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-amber-600 dark:text-amber-500' %>
-        </div>
-        <h3 class="text-lg font-bold text-normal">Smart Search &amp; Filters</h3>
-        <p class="mt-2 text-sm text-light leading-relaxed">
-          Find anything instantly&mdash;leads, interviews, notes. Narrow results by tag, status, date, or whether a lead is active or archived. Spend more time making progress, not managing clutter.
-        </p>
-      </div>
-
-      <%# Feature 5: Insights %>
-      <div class="card">
-        <div class="rounded-xl p-2.5 bg-rose-100/70 dark:bg-rose-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/star.svg', class: 'size-5 text-rose-600 dark:text-rose-500' %>
-        </div>
-        <h3 class="text-lg font-bold text-normal">Insights</h3>
-        <p class="mt-2 text-sm text-light leading-relaxed">
-          See how many leads, applications, and interviews you're hitting each week. Set a weekly goal and track it. Spot which job sources actually convert&mdash;and which ones waste your time.
-        </p>
-      </div>
-
-      <%# Feature 6: Dashboard Overview %>
-      <div class="card">
-        <div class="rounded-xl p-2.5 bg-teal-100/70 dark:bg-teal-900/40 inline-flex mb-4">
-          <%= inline_svg_tag 'icons/home.svg', class: 'size-5 text-teal-600 dark:text-teal-500' %>
-        </div>
-        <h3 class="text-lg font-bold text-normal">Dashboard Overview</h3>
-        <p class="mt-2 text-sm text-light leading-relaxed">
-          Your entire job search in one view. Weekly stats, progress toward your application goal, smart suggestions, upcoming interviews, and recent notes&mdash;all in one place so you can pick up exactly where you left off.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<%# ─── PRIVACY ─── %>
-<section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
-  <div class="max-w-3xl mx-auto text-center">
-    <div class="rounded-full p-4 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-6">
-      <%= inline_svg_tag 'icons/security.svg', class: 'size-8 text-primary-600 dark:text-primary-500' %>
-    </div>
-
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-      Private &amp; Secure
-    </h2>
-
-    <div class="mt-6 space-y-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed max-w-2xl mx-auto">
-      <p>
+      <div class="mt-6 space-y-4 text-light leading-relaxed max-w-2xl mx-auto">
+        <p>
         Your job search data is <em>yours alone</em>. JobJournal is <strong class="text-normal font-semibold">privacy-first</strong> by design&mdash;no third-party sharing, no tracking, no recruiter analytics. Everything is scoped to your account, and you can delete it all at any time.
-      </p>
+        </p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<%# ─── FINAL CTA ─── %>
-<section class="py-20 md:py-28 px-6">
-  <div class="max-w-3xl mx-auto text-center">
-    <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-      Ready to ditch the&nbsp;spreadsheet?
-    </h2>
+  <%# ─── FINAL CTA ─── %>
+  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        Ready to ditch the&nbsp;spreadsheet?
+      </h2>
 
-    <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+      <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
       Stay organized, stay motivated, and stay private with JobJournal.
-    </p>
+      </p>
 
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-      <% if authenticated? %>
-        <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-primary px-8 py-3 text-base' do %>
-          <span>Go to Dashboard</span>
-          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <% if authenticated? %>
+          <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-primary px-8 py-3 text-base' do %>
+            <span>Go to Dashboard</span>
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+          <% end %>
+        <% else %>
+          <%= link_to new_registrations_path, class: 'btn btn-primary px-10 py-3.5 text-base' do %>
+            <span>Start Tracking Your Search</span>
+            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
+          <% end %>
         <% end %>
-      <% else %>
-        <%= link_to new_registrations_path, class: 'btn btn-primary px-10 py-3.5 text-base' do %>
-          <span>Start Tracking Your Search</span>
-          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
-        <% end %>
-      <% end %>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
 <%# ─── FOOTER ─── %>
 <footer class="py-10 px-6 border-t border-neutral-200/60 dark:border-neutral-800/40">
