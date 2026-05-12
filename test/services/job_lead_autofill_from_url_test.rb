@@ -38,10 +38,10 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
 
   # --- Successful parse path ------------------------------------------------
   test "call returns parsed fields for a LinkedIn page" do
-    expected = JSON.parse(file_fixture("junior_developer_collabera.json").read, symbolize_names: true)
+    expected = JSON.parse(file_fixture("linkedin/junior_developer_collabera.json").read, symbolize_names: true)
 
     with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
-      with_http_response(file_fixture("junior_developer_collabera.html").read) do
+      with_http_response(file_fixture("linkedin/junior_developer_collabera.html").read) do
         result = JobLeadAutofillFromUrl.call("https://www.linkedin.com/jobs/view/4404473006")
 
         assert_predicate result, :success?

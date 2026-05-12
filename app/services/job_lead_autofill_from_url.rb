@@ -110,7 +110,7 @@ class JobLeadAutofillFromUrl
 
   def parser_for(uri)
     case uri.host.downcase
-    when "linkedin.com", "www.linkedin.com" then LinkedInJobParser
+    when "linkedin.com", "www.linkedin.com" then Parsers::LinkedInParser
     end
   end
 
