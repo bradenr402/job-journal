@@ -19,6 +19,12 @@
   --color-primary-900: var(--color-emerald-900);
   --color-primary-950: var(--color-emerald-950);
 
+  --color-neutral-925: color-mix(
+    in oklch,
+    var(--color-neutral-950) 60%,
+    var(--color-neutral-900)
+  );
+
   /* Sans font stack */
   --font-sans: 'Aspekta', ui-sans-serif, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Noto Color Emoji';
