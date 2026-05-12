@@ -9,6 +9,8 @@ class JobLeadAutofillFromUrl
   ALLOWED_HOSTS = %w[
     linkedin.com
     www.linkedin.com
+    indeed.com
+    www.indeed.com
   ].freeze
 
   REQUEST_TIMEOUT = 8 # seconds, applied to both open and read
@@ -111,6 +113,7 @@ class JobLeadAutofillFromUrl
   def parser_for(uri)
     case uri.host.downcase
     when "linkedin.com", "www.linkedin.com" then Parsers::LinkedInParser
+    when "indeed.com", "www.indeed.com" then Parsers::IndeedParser
     end
   end
 

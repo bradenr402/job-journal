@@ -2,6 +2,13 @@ require "net/http"
 require "active_support/number_helper"
 
 namespace :fixtures do
+  PARSER_SUBDIRS = {
+    "linkedin.com"     => "linkedin",
+    "www.linkedin.com" => "linkedin",
+    "indeed.com"       => "indeed",
+    "www.indeed.com"   => "indeed"
+  }.freeze
+
   desc "Download a job page and create matching .html / .json fixtures (args: NAME, URL; FORCE=1 to overwrite)"
   task :job, [ :name, :url ] => :environment do |_, args|
     name  = args[:name].presence || ENV["NAME"].presence
@@ -17,7 +24,14 @@ namespace :fixtures do
       exit 1
     end
 
-    fixtures_dir = Rails.root.join("test/fixtures/files")
+    subdir = parser_subdir_for(url)
+    unless subdir
+      print_error "No parser configured for that host."
+      print_hint "Supported hosts: #{PARSER_SUBDIRS.keys.join(', ')}"
+      exit 1
+    end
+
+    fixtures_dir = Rails.root.join("test/fixtures/files", subdir)
     html_path    = fixtures_dir.join("#{name}.html")
     json_path    = fixtures_dir.join("#{name}.json")
 
@@ -84,6 +98,13 @@ namespace :fixtures do
 
   def human_size(bytes)
     ActiveSupport::NumberHelper.number_to_human_size(bytes)
+  end
+
+  def parser_subdir_for(url)
+    uri = URI.parse(url.to_s)
+    PARSER_SUBDIRS[uri.host&.downcase]
+  rescue URI::InvalidURIError
+    nil
   end
 
   # ---------------------------------------------------------------------------
