@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   delete 'sessions/others', to: 'sessions#destroy_other_sessions', as: :destroy_other_sessions
 
   resources :job_leads do
+    collection do
+      post :autofill
+    end
+
     member do
       patch :archive
       patch :unarchive

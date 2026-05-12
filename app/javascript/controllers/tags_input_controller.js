@@ -103,6 +103,29 @@ export default class extends Controller {
     }
   }
 
+  addTags(values) {
+    const incoming = (Array.isArray(values) ? values : [values])
+      .map((v) => String(v).trim().toLowerCase())
+      .filter((v) => v.length > 0);
+
+    let added = 0;
+    incoming.forEach((value) => {
+      if (!this.tags.includes(value)) {
+        this.tags.push(value);
+        added += 1;
+      }
+    });
+
+    if (added > 0) this.renderTags();
+    return added;
+  }
+
+  clearTags() {
+    if (this.tags.length === 0) return;
+    this.tags = [];
+    this.renderTags();
+  }
+
   focusTextBox() {
     this.inputTarget.focus();
   }

@@ -65,6 +65,19 @@ class JobLeadsController < ApplicationController
     @tags = Current.user.tags.order(:name)
   end
 
+  # POST /job_leads/autofill
+  def autofill
+    result = JobLeadAutofillFromUrl.call params[:url]
+
+    if result.success?
+      fields = result.fields.with_defaults(application_url: params[:url])
+      render json: { fields: }
+    else
+      error = result.error
+      render json: { error: }, status: :unprocessable_entity
+    end
+  end
+
   # POST /job_leads
   def create
     @job_lead = Current.user.job_leads.build(job_lead_params)
