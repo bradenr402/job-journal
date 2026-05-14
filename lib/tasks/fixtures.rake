@@ -31,9 +31,10 @@ namespace :fixtures do
       exit 1
     end
 
+    slug         = "#{Date.current.iso8601}-#{name.tr('_', '-')}"
     fixtures_dir = Rails.root.join("test/fixtures/files", subdir)
-    html_path    = fixtures_dir.join("#{name}.html")
-    json_path    = fixtures_dir.join("#{name}.json")
+    html_path    = fixtures_dir.join("#{slug}.html")
+    json_path    = fixtures_dir.join("#{slug}.json")
 
     unless force
       [ html_path, json_path ].each do |path|
