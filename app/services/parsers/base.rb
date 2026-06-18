@@ -63,9 +63,19 @@ module Parsers
     }.freeze
 
     SALARY_PATTERN = /
-      (?:compensation|salary|pay|rate)\s*[:\-]?\s*
-      (?<amount>\$[\d,]+(?:\.\d+)?(?:\s*[-–to]+\s*\$?[\d,]+(?:\.\d+)?)?)
-      (?<unit>\s*(?:per\s+(?:hour|hr|year|yr|month|mo|week|wk|annum)|\/\s*(?:hour|hr|year|yr|month|mo|week|wk)|annually|hourly|monthly|weekly))?
+      (?:
+       (?:compensation|salary|pay|rate)\s*[:\-]?\s*
+      )?
+      (?<amount>
+       \$\s*[\d]{1,3}(?:,\d{3})*(?:\.\d{2})?
+         (?:\s*(?:to|-|–)\s*\$?\s*[\d]{1,3}(?:,\d{3})*(?:\.\d{2})?)?
+      )
+    (?<unit>
+     \s*(?:per\s+(?:hour|hr|year|yr|month|mo|week|wk|annum)
+         |\/\s*(?:hour|hr|year|yr|month|mo|week|wk)
+         |annually|hourly|monthly|weekly
+        )?
+    )?
     /ix
 
     NORMALIZERS = [
