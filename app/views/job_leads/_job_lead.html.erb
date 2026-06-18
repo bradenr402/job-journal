@@ -151,8 +151,16 @@
         <dt>History</dt>
       </div>
 
-      <div class="flex flex-wrap items-center gap-1.5 mt-auto">
-        <span class="tag tag-lead">
+      <div
+        class="
+          mt-auto flex items-center gap-1.5 overflow-x-auto
+          [--scrollbar-offset:calc(var(--spacing)*2.5)] pb-(--scrollbar-offset)
+          -mb-(--scrollbar-offset) [--fade:1.5rem] [--left:0rem] [--right:var(--fade)]
+          mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
+          animate-[timeline-fade_linear_both] [animation-timeline:scroll(self_inline)]
+        "
+      >
+        <span class="tag tag-lead shrink-0">
           Lead: <span class="text-xs opacity-65"><%= local_date_short job_lead.created_at %></span>
         </span>
 
@@ -171,11 +179,10 @@
         %>
 
         <% status_history.each do |status_entry| %>
-          <div class="flex items-center gap-1.5">
+          <div class="flex shrink-0 items-center gap-1.5">
             <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0 text-light' %>
             <span class="tag tag-<%= status_entry[:status] %> <%= 'relative hover:opacity-75' if status_entry[:status] == 'interview' %>">
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
-
               <% if status_entry[:status] == 'interview' && job_lead_page %>
                 <%= link_to interview_path(status_entry[:interview]), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
                   <span class="sr-only">View Interview</span>

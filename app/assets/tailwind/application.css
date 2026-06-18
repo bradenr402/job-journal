@@ -30,6 +30,23 @@
     'Noto Color Emoji';
 
   --text-2xs: 0.675rem;
+
+  @keyframes timeline-fade {
+    0% {
+      --left: 0rem;
+      --right: var(--fade);
+    }
+
+    1%, 99% {
+      --left: var(--fade);
+      --right: var(--fade);
+    }
+
+    100% {
+      --left: var(--fade);
+      --right: 0rem;
+    }
+  }
 }
 
 @view-transition {
