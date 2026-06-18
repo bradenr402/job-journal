@@ -38,10 +38,10 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
 
   # --- Successful parse path ------------------------------------------------
   test "call returns parsed fields for a LinkedIn page" do
-    expected = JSON.parse(file_fixture("linkedin/junior_developer_collabera.json").read, symbolize_names: true)
+    expected = JSON.parse(file_fixture("linkedin/2026-05-08-junior-developer-collabera.json").read, symbolize_names: true)
 
     with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
-      with_http_response(file_fixture("linkedin/junior_developer_collabera.html").read) do
+      with_http_response(file_fixture("linkedin/2026-05-08-junior-developer-collabera.html").read) do
         result = JobLeadAutofillFromUrl.call("https://www.linkedin.com/jobs/view/4404473006")
 
         assert_predicate result, :success?
@@ -55,6 +55,18 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
         end
       end
     end
+  end
+
+  test "call fetches LinkedIn collection URLs through their canonical jobs view URL" do
+    requested_paths = []
+
+    with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
+      with_http_response(file_fixture("linkedin/2026-05-08-junior-developer-collabera.html").read, requested_paths:) do
+        JobLeadAutofillFromUrl.call("https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4401981876")
+      end
+    end
+
+    assert_equal [ "/jobs/view/4401981876" ], requested_paths
   end
 
   test "call returns failure for unsupported hosts without making a network request" do
@@ -78,14 +90,17 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     Resolv.stub(:getaddresses, ->(host) { map[host] || [] }) { yield }
   end
 
-  def with_http_response(body)
+  def with_http_response(body, requested_paths: nil)
     response = Net::HTTPSuccess.new("1.1", "200", "OK")
     response.instance_variable_set(:@read, true)
     response.body = body
 
     fake_start = lambda do |*_args, **_kwargs, &block|
       http = Object.new
-      http.define_singleton_method(:request) { |_req| response }
+      http.define_singleton_method(:request) do |req|
+        requested_paths << req.path if requested_paths
+        response
+      end
       block ? block.call(http) : http
     end
 

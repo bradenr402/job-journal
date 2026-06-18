@@ -6,6 +6,20 @@ module Parsers
       www.linkedin.com
     ].freeze
 
+    def self.canonical_url(uri)
+      return uri unless uri.host.to_s.downcase.in?(ALLOWED_HOSTS)
+      return uri unless uri.path.start_with?("/jobs/collections/")
+
+      job_id = CGI.parse(uri.query.to_s)["currentJobId"]&.first
+      return uri unless job_id&.match?(/\A\d+\z/)
+
+      uri.dup.tap do |canonical_uri|
+        canonical_uri.path = "/jobs/view/#{job_id}"
+        canonical_uri.query = nil
+        canonical_uri.fragment = nil
+      end
+    end
+
     private
 
     def title

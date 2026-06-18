@@ -28,6 +28,7 @@ class JobLeadAutofillFromUrl
   def call
     uri = parse_uri @url
     return failure "Please provide a valid http(s) URL." unless uri
+    uri = canonical_uri uri
     return failure "That host is not supported yet. Try a LinkedIn job URL." unless allowed_host? uri
     return failure "Refusing to fetch from a private network." unless public_host? uri
 
@@ -46,6 +47,7 @@ class JobLeadAutofillFromUrl
 
   def safe?
     uri = parse_uri url
+    uri = canonical_uri uri if uri
     uri && allowed_host?(uri) && public_host?(uri)
   end
 
@@ -61,6 +63,13 @@ class JobLeadAutofillFromUrl
 
   def allowed_host?(uri)
     ALLOWED_HOSTS.include? uri.host.to_s.downcase
+  end
+
+  def canonical_uri(uri)
+    parser = parser_for uri
+    return uri unless parser.respond_to? :canonical_url
+
+    parser.canonical_url uri
   end
 
   def public_host?(uri)
@@ -100,6 +109,7 @@ class JobLeadAutofillFromUrl
 
     next_uri = URI.parse location
     next_uri = uri + next_uri unless next_uri.absolute?
+    next_uri = canonical_uri next_uri
     return unless allowed_host?(next_uri) && public_host?(next_uri)
 
     fetch_html next_uri, redirects_left: redirects_left - 1

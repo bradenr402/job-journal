@@ -36,6 +36,13 @@ class LinkedInParserTest < ActiveSupport::TestCase
     assert_equal "LinkedIn", fields[:source]
   end
 
+  test "canonicalizes LinkedIn collection URLs with currentJobId to jobs view URLs" do
+    uri = URI.parse("https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4401981876")
+
+    assert_respond_to Parsers::LinkedInParser, :canonical_url
+    assert_equal "https://www.linkedin.com/jobs/view/4401981876", Parsers::LinkedInParser.canonical_url(uri).to_s
+  end
+
   test "backfills salary from the description when no salary element is present" do
     html = <<~HTML
       <html><body>
