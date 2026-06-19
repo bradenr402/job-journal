@@ -15,9 +15,9 @@
   </div>
 </nav>
 
-<main>
+<main class="*:even:bg-neutral-50 dark:*:even:bg-neutral-900/40">
   <%# ─── HERO ─── %>
-  <section class="pt-36 md:pt-44 pb-20 md:pb-28 px-6">
+  <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6">
     <div class="max-w-6xl mx-auto text-center">
       <h1 class="text-[clamp(3rem,8vw,6rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
         Your Job Search. <br> Your Terms.
@@ -35,11 +35,9 @@
         <% end %>
       </div>
     </div>
-  </section>
 
-  <%# ─── HERO SCREENSHOT ─── %>
-  <section class="px-6 pb-24 md:pb-32">
-    <div class="max-w-6xl mx-auto">
+    <%# ── Hero screenshot ── %>
+    <div class="max-w-6xl mx-auto mt-20 md:mt-28">
       <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-xl dark:shadow-none overflow-hidden">
         <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'w-full h-auto', loading: 'eager' %>
       </div>
@@ -47,7 +45,7 @@
   </section>
 
   <%# ─── DEMO: DASHBOARD STATS ─── %>
-  <section id="how-it-works" class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <section class="py-20 md:py-28 px-6">
     <div class="max-w-5xl mx-auto">
       <p class="text-center text-sm font-semibold tracking-wide uppercase text-primary-600 mb-3">Your dashboard at a glance</p>
       <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
@@ -110,60 +108,52 @@
     </div>
   </section>
 
-  <%# ─── THE PROBLEM ─── %>
+  <%# ─── PROBLEM & SOLUTION ─── %>
   <section class="py-20 md:py-28 px-6">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-        Spreadsheets weren’t built&nbsp;for&nbsp;this.
-      </h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-0">
+      <%# ── Problem ── %>
+      <div class="w-full max-w-3xl mx-auto lg:max-w-none lg:mx-0 lg:pr-10 xl:pr-14">
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          Spreadsheets weren’t built&nbsp;for&nbsp;this.
+        </h2>
 
-      <div class="mt-8 space-y-5 text-light leading-relaxed">
-        <p>
-          When you’re juggling multiple applications, deadlines, and interviews, everyone seems to preach the same gospel: “just open Excel or Google Sheets and log every lead.” It works&mdash;until it doesn’t.
-        </p>
+        <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
+          <p>
+            When you’re juggling multiple applications, deadlines, and interviews, everyone seems to preach the same gospel: “just open Excel or Google Sheets and log every lead.” It works&mdash;until it doesn’t.
+          </p>
 
-        <ul class="space-y-3 list-none">
-          <li class="flex gap-3 items-center">
-            <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-            <span>Spreadsheets don’t remind you to follow up, flag stale leads, or tell you which sources are working.</span>
-          </li>
-          <li class="flex gap-3 items-center">
-            <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-            <span>Notes, meeting links, and interview prep end up scattered across apps.</span>
-          </li>
-          <li class="flex gap-3 items-center">
-            <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-            <span>The more applications you add, the harder they are to maintain&mdash;and the less useful they become.</span>
-          </li>
-        </ul>
+          <ul class="space-y-3 list-none">
+            <li class="flex gap-3 items-center">
+              <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+              <span>Spreadsheets don’t remind you to follow up, flag stale leads, or tell you which sources are working.</span>
+            </li>
+            <li class="flex gap-3 items-center">
+              <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+              <span>Notes, meeting links, and interview prep end up scattered across apps.</span>
+            </li>
+            <li class="flex gap-3 items-center">
+              <span class="size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+              <span>The more applications you add, the harder they are to maintain&mdash;and the less useful they become.</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <%# ─── THE SOLUTION ─── %>
-  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
-        JobJournal flips that&nbsp;script.
-      </h2>
+      <%# ── Solution ── %>
+      <div class="w-full max-w-3xl mx-auto lg:max-w-none lg:mx-0 lg:pl-10 xl:pl-14 lg:border-l border-neutral-200 dark:border-neutral-800">
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
+          JobJournal flips that&nbsp;script.
+        </h2>
 
-      <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
-        <p>
-          Instead of babysitting cells, every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale-lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search with tags and filters finds anything instantly.
-        </p>
+        <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
+          <p>
+            Instead of babysitting cells, every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale-lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search with tags and filters finds anything instantly.
+          </p>
 
-        <p>
-          <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on workflows, not rows.</span> JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <%# ─── SCREENSHOT: JOB LEADS ─── %>
-  <section class="hidden px-6 pb-24 md:pb-32">
-    <div class="max-w-5xl mx-auto">
-      <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none overflow-hidden">
-        <%= image_tag 'job_leads.webp', alt: 'JobJournal job leads page showing a grid of tracked opportunities with tags and statuses', class: 'w-full h-auto', loading: 'lazy' %>
+          <p>
+            <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on workflows, not rows.</span> JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -193,12 +183,19 @@
             <%= render interview %>
           <% end %>
         </div>
+
+        <%# ── Static job leads screenshot (hidden; alternative to demo cards above) ── %>
+        <div class="hidden mt-12">
+          <div class="max-w-5xl mx-auto rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-lg dark:shadow-none overflow-hidden">
+            <%= image_tag 'job_leads.webp', alt: 'JobJournal job leads page showing a grid of tracked opportunities with tags and statuses', class: 'w-full h-auto', loading: 'lazy' %>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <%# ─── WHY JOBJOURNAL ─── %>
-  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <section class="py-20 md:py-28 px-6">
     <div class="max-w-3xl mx-auto text-center">
       <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
         Built for you. Not for&nbsp;companies.
@@ -232,7 +229,7 @@
   </section>
 
   <%# ─── FEATURE SHOWCASE: ALERTS & REMINDERS ─── %>
-  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <section class="py-20 md:py-28 px-6">
     <div class="max-w-6xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <div class="lg:sticky lg:top-24">
@@ -406,7 +403,7 @@
   </section>
 
   <%# ─── MORE FEATURES ─── %>
-  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <section class="py-20 md:py-28 px-6">
     <div class="max-w-6xl mx-auto">
       <div class="max-w-3xl mb-14">
         <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
@@ -503,7 +500,7 @@
   </section>
 
   <%# ─── FINAL CTA ─── %>
-  <section class="py-20 md:py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
+  <section class="py-20 md:py-28 px-6">
     <div class="max-w-3xl mx-auto text-center">
       <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
         Ready to ditch the&nbsp;spreadsheet?
