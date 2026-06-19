@@ -266,7 +266,7 @@
 
               stop_follow_up = demo_days.transform_values { |days| days + suggest_demo_days }
             %>
-          Active job leads not updated in <%= demo_days[:application] %>-<%= stop_follow_up[:application] %> days since applying or <%= demo_days[:interview] %>-<%= stop_follow_up[:interview] %> days since interviewing.
+          Active job leads not updated in <%= demo_days[:application] %>&ndash;<%= stop_follow_up[:application] %> days since applying or <%= demo_days[:interview] %>&ndash;<%= stop_follow_up[:interview] %> days since interviewing.
               </p>
             </div>
 
