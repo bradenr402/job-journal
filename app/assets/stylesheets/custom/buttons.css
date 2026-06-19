@@ -2,7 +2,11 @@
   @apply inline-flex gap-2 cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 
   &.btn-sm {
-    @apply gap-1.5 px-3 py-1.5 text-xs;
+    @apply gap-1.5 px-3 py-1.5 text-xs rounded-md;
+  }
+
+  &.btn-lg {
+    @apply gap-2.5 px-5 py-3 text-base rounded-[calc((var(--radius-lg)+var(--radius-xl))/2)];
   }
 
   > svg {
