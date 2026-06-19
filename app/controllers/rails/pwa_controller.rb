@@ -7,7 +7,7 @@ class Rails::PwaController < ApplicationController
 
   def service_worker
     respond_to do |format|
-      format.js { render 'pwa/service_worker', content_type: 'application/javascript' }
+      format.js { render 'pwa/service-worker', content_type: 'application/javascript' }
     end
   end
 end
