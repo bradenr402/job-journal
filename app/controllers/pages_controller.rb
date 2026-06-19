@@ -117,11 +117,9 @@ class PagesController < ApplicationController
     ]
 
     # ── Stats (rendered inline, no partial) ────────────────────
-    @demo_stats = [
-      { label: 'Job Leads This Week', icon: 'briefcase', count: 12, change: '+4 from last week' },
-      { label: 'Applications This Week', icon: 'application', count: 7, change: '+3 from last week' },
-      { label: 'Interviews This Week', icon: 'interview', count: 3, change: '+1 from last week' }
-    ]
+    @demo_job_lead_stats = { count: 12, change: '+4 from last week' }
+    @demo_application_stats = { count: 7, change: '+3 from last week', goal: 10 }
+    @demo_interview_stats = { count: 3, change: '+1 from last week', average_rating: 4.0 }
 
     # ── Follow-up suggestions (rendered inline) ────────────────
     @demo_suggestions = [
