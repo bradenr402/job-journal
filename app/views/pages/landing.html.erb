@@ -110,9 +110,9 @@
 
   <%# ─── PROBLEM & SOLUTION ─── %>
   <section class="py-20 md:py-28 px-6">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-0">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 max-lg:gap-y-12">
       <%# ── Problem ── %>
-      <div class="w-full max-w-3xl mx-auto lg:max-w-none lg:mx-0 lg:pr-10 xl:pr-14">
+      <div class="w-full max-lg:max-w-3xl max-lg:mx-auto lg:pr-10 xl:pr-14">
         <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
           Spreadsheets weren’t built&nbsp;for&nbsp;this.
         </h2>
@@ -140,7 +140,7 @@
       </div>
 
       <%# ── Solution ── %>
-      <div class="w-full max-w-3xl mx-auto lg:max-w-none lg:mx-0 lg:pl-10 xl:pl-14 lg:border-l border-neutral-200 dark:border-neutral-800">
+      <div class="w-full max-lg:max-w-3xl max-lg:mx-auto lg:pl-10 xl:pl-14 lg:border-l border-neutral-200 dark:border-neutral-800">
         <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
           JobJournal flips that&nbsp;script.
         </h2>
@@ -522,7 +522,7 @@
 
 <%# ─── FOOTER ─── %>
 <footer class="py-10 px-6 border-t border-neutral-200/60 dark:border-neutral-800/40">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+  <div class="max-w-6xl mx-auto flex max-sm:flex-col items-center justify-between gap-4">
     <div class="flex items-center gap-1.5 text-primary-600">
       <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-5 shrink-0' %>
       <span class="text-base font-extrabold tracking-tight">JobJournal</span>
