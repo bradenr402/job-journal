@@ -34,18 +34,10 @@
       Track every lead, application, and interview in one place. No messy&nbsp;spreadsheets.&nbsp;No tracking.
       </p>
 
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <% if authenticated? %>
-          <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-primary px-8 py-3 text-base' do %>
-            <span>Go to Dashboard</span>
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
-          <% end %>
-        <% else %>
-          <%= link_to new_registrations_path, class: 'btn btn-primary px-8 py-3 text-base' do %>
-            <span>Get Started Free</span>
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
-          <% end %>
-          <%= link_to 'See How It Works', '#how-it-works', class: 'btn btn-transparent px-6 py-3 text-base' %>
+      <div class="mt-10 flex items-center justify-center">
+        <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
+          <span>Get Started Free</span>
+          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
         <% end %>
       </div>
     </div>
@@ -468,16 +460,9 @@
       </p>
 
       <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <% if authenticated? %>
-          <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-primary px-8 py-3 text-base' do %>
-            <span>Go to Dashboard</span>
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
-          <% end %>
-        <% else %>
-          <%= link_to new_registrations_path, class: 'btn btn-primary px-10 py-3.5 text-base' do %>
-            <span>Start Tracking Your Search</span>
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
-          <% end %>
+        <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
+          <span>Start Tracking Your Search</span>
+          <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-5 shrink-0' %>
         <% end %>
       </div>
     </div>
