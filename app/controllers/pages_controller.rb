@@ -6,6 +6,7 @@ class PagesController < ApplicationController
 
   def landing
     build_demo_data
+    @demo = true
   end
 
   def home

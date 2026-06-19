@@ -68,21 +68,19 @@
         See where you stand&mdash;instantly.
       </h2>
 
-      <div class="pointer-events-none select-none" aria-hidden="true">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <% @demo_stats.each do |stat| %>
-            <div class="card flex flex-col">
-              <div class="flex items-start justify-between mb-5">
-                <p class="font-semibold"><%= stat[:label] %></p>
-                <%= inline_svg_tag "icons/#{stat[:icon]}.svg", class: 'size-5 shrink-0' %>
-              </div>
-              <div class="mt-auto">
-                <p class="font-extrabold text-4xl mb-1"><%= stat[:count] %></p>
-                <p class="text-xs text-muted"><%= stat[:change] %></p>
-              </div>
+      <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <% @demo_stats.each do |stat| %>
+          <div class="card flex flex-col">
+            <div class="flex items-start justify-between mb-5">
+              <p class="font-semibold"><%= stat[:label] %></p>
+              <%= inline_svg_tag "icons/#{stat[:icon]}.svg", class: 'size-5 shrink-0' %>
             </div>
-          <% end %>
-        </div>
+            <div class="mt-auto">
+              <p class="font-extrabold text-4xl mb-1"><%= stat[:count] %></p>
+              <p class="text-xs text-muted"><%= stat[:change] %></p>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>
@@ -156,7 +154,7 @@
       Status. Tags. Notes. A complete timeline. One opportunity, one place, nothing lost. Interviews and notes stay anchored to where they belong&mdash;not buried in separate tabs.
       </p>
 
-      <div class="pointer-events-none select-none" aria-hidden="true">
+      <div aria-hidden="true">
         <%# ── Job Lead Cards ── %>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
           <% @demo_leads.each do |lead| %>
@@ -200,12 +198,10 @@
       Attach notes directly to job leads and interviews. Prep for calls, debrief after meetings, and track offer details, without ever losing context.
       </p>
 
-      <div class="pointer-events-none select-none" aria-hidden="true">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <% @demo_notes.each do |note| %>
-            <%= render note, demo: true %>
-          <% end %>
-        </div>
+      <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <% @demo_notes.each do |note| %>
+          <%= render note %>
+        <% end %>
       </div>
     </div>
   </section>
@@ -223,7 +219,7 @@
           </p>
         </div>
 
-        <div class="pointer-events-none select-none space-y-8" aria-hidden="true">
+        <div class="space-y-8" aria-hidden="true">
           <%# Follow-up suggestions %>
           <div class="@container">
             <div class="mb-4">
@@ -246,7 +242,7 @@
             <div class="card">
               <div class="grid grid-cols-1 @xl:grid-cols-2 gap-1.5">
                 <% @demo_suggestions.each do |suggestion| %>
-                  <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-150 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98">
+                  <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
                     <div class="flex items-center gap-2.5">
                       <div class="flex flex-col">
                         <div class="text-lg font-semibold">
@@ -309,7 +305,7 @@
           </p>
         </div>
 
-        <div class="pointer-events-none select-none @container space-y-3" aria-hidden="true">
+        <div class="@container space-y-3" aria-hidden="true">
           <%# Top Sources %>
           <div class="card">
             <div class="mb-5">
@@ -371,7 +367,7 @@
 
             <div class="flex flex-wrap items-center gap-1 mb-4">
               <% @demo_top_tags.each do |tag| %>
-                <span class="tag tag-filter"><%= tag %></span>
+                <span class="tag tag-filter demo"><%= tag %></span>
               <% end %>
             </div>
 

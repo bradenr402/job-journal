@@ -50,7 +50,7 @@
   }
 
   /* Filterable tags */
-  &.tag-filter {
+  &.tag-filter:not(.demo) {
     @apply cursor-pointer hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500 active:scale-94;
   }
 
@@ -81,7 +81,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter:not(.tag-selected) {
+    &.tag-filter:not(.tag-selected, .demo) {
       @apply hover:bg-yellow-100/80 hover:text-yellow-500 hover:border-yellow-200 dark:hover:bg-yellow-900/80 dark:hover:border-yellow-900;
     }
 
@@ -103,7 +103,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-blue-100/80 hover:text-blue-500 hover:border-blue-200 dark:hover:bg-blue-900/80 dark:hover:border-blue-900;
     }
 
@@ -125,7 +125,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-purple-100/80 hover:text-purple-500 hover:border-purple-200 dark:hover:bg-purple-900/80 dark:hover:border-purple-900;
     }
 
@@ -147,7 +147,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-green-100/80 hover:text-green-500 hover:border-green-200 dark:hover:bg-green-900/80 dark:hover:border-green-900;
     }
 
@@ -169,7 +169,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-rose-100/80 hover:text-rose-500 hover:border-rose-200 dark:hover:bg-rose-900/80 dark:hover:border-rose-900;
     }
 
@@ -191,7 +191,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-emerald-100/80 hover:text-emerald-500 hover:border-emerald-200 dark:hover:bg-emerald-900/80 dark:hover:border-emerald-900;
     }
 

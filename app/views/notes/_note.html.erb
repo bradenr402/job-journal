@@ -1,12 +1,12 @@
 <%
   note_page = current_page?(note_path(note))
-  display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path) || local_assigns[:demo]
+  display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path) || @demo
 
   note_title = note.title if display_title
 %>
 
-<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page ? 'card' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
-  <% unless note_page %>
+<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page || @demo ? 'card' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
+  <% unless note_page || @demo %>
     <%= link_to note, data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
     <% end %>
@@ -29,7 +29,7 @@
 
     <%= content_tag(:div, note_content, class: note_classes) %>
     <% unless note_page %>
-      <div class="pointer-events-none absolute inset-x-0 top-16 h-8 bg-gradient-to-t from-white dark:from-neutral-900 group-hover:from-transparent to-transparent transition-colors duration-150"></div>
+      <div class="pointer-events-none absolute inset-x-0 top-16 h-8 bg-linear-to-t from-white dark:from-neutral-900 group-hover:from-transparent to-transparent transition-colors duration-150"></div>
     <% end %>
   </div>
 
