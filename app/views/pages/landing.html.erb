@@ -17,10 +17,11 @@
 
 <main class="*:even:bg-neutral-50 dark:*:even:bg-neutral-900/40">
   <%# ─── HERO ─── %>
-  <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6">
-    <div class="max-w-6xl mx-auto text-center">
+  <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6 *:max-w-6xl *:mx-auto">
+    <div class="text-center">
       <h1 class="text-[clamp(3rem,8vw,6rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
-        Your Job Search. <br> Your Terms.
+        Your Job Search.<br>
+        Your Terms.
       </h1>
 
       <p class="mt-5 text-[clamp(1rem,1.65vw,1.25rem)] text-light max-w-2xl mx-auto text-balance leading-relaxed">
@@ -37,7 +38,7 @@
     </div>
 
     <%# ── Hero screenshot ── %>
-    <div class="max-w-6xl mx-auto mt-20 md:mt-28">
+    <div class="mt-20 md:mt-28">
       <div class="rounded-2xl border border-neutral-200/60 dark:border-neutral-800/30 shadow-xl dark:shadow-none overflow-hidden">
         <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'w-full h-auto', loading: 'eager' %>
       </div>
@@ -157,7 +158,8 @@
           </p>
 
           <p>
-            <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on workflows, not rows.</span> JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
+            <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on workflows, not rows.</span>
+            JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
           </p>
         </div>
       </div>
@@ -172,7 +174,7 @@
         From first lead to final&nbsp;offer.
       </h2>
       <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
-      Status. Tags. Notes. A complete timeline. One opportunity, one place, nothing lost. Interviews and notes stay anchored to where they belong, not buried in separate tabs.
+        Status. Tags. Notes. A complete timeline. One opportunity, one place, nothing lost. Interviews and notes stay anchored to where they belong, not buried in separate tabs.
       </p>
 
       <div aria-hidden="true">
@@ -209,7 +211,8 @@
 
       <div class="mt-6 space-y-4 text-light leading-relaxed max-w-2xl mx-auto">
         <p>
-        Recruiter tools serve companies. Job boards serve advertisers. JobJournal is built <strong class="text-normal font-semibold whitespace-nowrap">for you</strong>:&nbsp;you&nbsp;stay in control of your journey, your story, and your data.
+          Recruiter tools serve companies. Job boards serve advertisers.
+          JobJournal is built <strong class="text-normal font-semibold whitespace-nowrap">for you</strong>:&nbsp;you&nbsp;stay in control of your journey, your story, and your data.
         </p>
       </div>
     </div>
@@ -223,7 +226,7 @@
         Notes that stay where they&nbsp;belong.
       </h2>
       <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
-      Attach notes directly to job leads and interviews. Prep for calls, debrief after meetings, and track offer details, without ever losing context.
+        Attach notes directly to job leads and interviews. Prep for calls, debrief after meetings, and track offer details, without ever losing context.
       </p>
 
       <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -253,17 +256,12 @@
             <div class="mb-4">
               <h2 class="subheading">Follow Up Suggestions</h2>
               <p class="text-sm text-muted mt-1 text-pretty">
-              <%
+                <%
                   suggest_demo_days = 3
-
-              demo_days = {
-                application: 7,
-                interview:   2,
-              }
-
-              stop_follow_up = demo_days.transform_values { |days| days + suggest_demo_days }
-            %>
-          Active job leads not updated in <%= demo_days[:application] %>&ndash;<%= stop_follow_up[:application] %> days since applying or <%= demo_days[:interview] %>&ndash;<%= stop_follow_up[:interview] %> days since interviewing.
+                  demo_days = { application: 7, interview: 2 }
+                  stop_follow_up = demo_days.transform_values { |days| days + suggest_demo_days }
+                %>
+                Active job leads not updated in <%= demo_days[:application] %>&ndash;<%= stop_follow_up[:application] %> days since applying or <%= demo_days[:interview] %>&ndash;<%= stop_follow_up[:interview] %> days since interviewing.
               </p>
             </div>
 
@@ -288,12 +286,12 @@
                     </div>
 
                     <p class="text-xs text-muted">
-                    <%
+                      <%
                         action = suggestion[:status] == 'applied' ? 'applied to' : 'interviewed for'
-                    time   = suggestion[:status_at]
-                  %>
-                You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words time %> ago</span>.
-                Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
+                        time   = suggestion[:status_at]
+                      %>
+                      You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words time %> ago</span>.
+                      Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
                     </p>
                   </div>
                 <% end %>
@@ -345,45 +343,37 @@
             </div>
 
             <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @demo_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @demo_sources.size >= 3 && @demo_sources.size != 4 %> gap-1.5">
-              <% @demo_sources.each_with_index do |(source, data), index| %>
+              <% @demo_sources.each.with_index(1) do |(source, data), index| %>
                 <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
                   <div class="flex items-center gap-2.5">
                     <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #<%= index + 1 %>
-                  </div>
-                  <div class="flex flex-col">
-                    <p class="font-bold text-lg/snug"><%= source %></p>
-                    <p class="text-xs/snug text-muted">
-                    <%= pluralize(data[:count], 'lead') %>
-                    </p>
-                  </div>
+                      #<%= index %>
+                    </div>
+                    <div class="flex flex-col">
+                      <p class="font-bold text-lg/snug"><%= source %></p>
+                      <p class="text-xs/snug text-muted"><%= pluralize data[:count], 'lead' %></p>
+                    </div>
                   </div>
 
                   <%
-                      items = [
-                        [data[:interview_count], 'interview'],
-                        [data[:offer_count], 'offer']
-                      ].select { |count, _| count.positive? }
-                    %>
+                    items = [
+                      [data[:interview_count], 'interview'],
+                      [data[:offer_count], 'offer']
+                    ].select { |count, _| count.positive? }
+                  %>
 
-                  <% if items.any? %>
-                    <p class="text-sm/none text-soft">
+                  <p class="text-sm/none text-soft">
                     <%= safe_join(
                       items.map { |count, label| content_tag(:span, pluralize(count, label)) },
                       ', '
                     ) %>
                   </p>
-                <% end %>
                 </div>
               <% end %>
             </div>
-            <% if @demo_sources.size == 1 %>
-              <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
-            <% end %>
           </div>
 
           <%# Top Tags %>
-
           <div class="card">
             <div class="mb-5">
               <div class="flex items-start justify-between">
@@ -400,7 +390,7 @@
             </div>
 
             <p class="text-xs text-muted">
-            Filter by tags to find your job leads fast.
+              Filter by tags to find your job leads fast.
             </p>
           </div>
         </div>
