@@ -410,30 +410,30 @@
     <div class="max-w-6xl mx-auto">
       <div class="max-w-3xl mb-14">
         <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-          And everything else you’d&nbsp;expect.
+          Along with everything else you’d expect&mdash;and&nbsp;more.
         </h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <%# Dashboard Overview %>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <%# Job Lead Management %>
         <div class="card">
           <div class="rounded-md p-2.5 bg-sky-100/70 dark:bg-sky-900/40 inline-flex mb-4">
-            <%= inline_svg_tag 'icons/home.svg', class: 'size-5 text-sky-600 dark:text-sky-500' %>
+            <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 text-sky-600 dark:text-sky-500' %>
           </div>
-          <h3 class="text-lg font-bold text-normal">Dashboard Overview</h3>
-          <p class="mt-2 text-sm text-light leading-relaxed">
-            Your entire job search in one view. Weekly stats, progress toward your application goal, smart suggestions, upcoming interviews, and recent notes.
+          <h3 class="text-lg font-bold text-normal">Job Lead Management</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
+            Capture important details like company, title, salary, contact, and location. Track each opportunity through a simple progression from lead to accepted. Tag and annotate with unlimited notes.
           </p>
         </div>
 
-        <%# Job Lead Management %>
+        <%# Insights That Guide You %>
         <div class="card">
-          <div class="rounded-md p-2.5 bg-primary-100/70 dark:bg-primary-900/40 inline-flex mb-4">
-            <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 text-primary-600 dark:text-primary-500' %>
+          <div class="rounded-md p-2.5 bg-emerald-100/70 dark:bg-emerald-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 text-emerald-600 dark:text-emerald-500' %>
           </div>
-          <h3 class="text-lg font-bold text-normal">Job Lead Management</h3>
-          <p class="mt-2 text-sm text-light leading-relaxed">
-            Capture important details like company, title, salary, contact, and location. Track each opportunity through a simple progression from lead to accepted. Tag and annotate with unlimited notes.
+          <h3 class="text-lg font-bold text-normal">Insights That Guide You</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
+            Track leads, applications, and interviews week over week, set an application goal, and see which sources actually convert to interviews and offers.
           </p>
         </div>
 
@@ -443,19 +443,43 @@
             <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 text-purple-600 dark:text-purple-500' %>
           </div>
           <h3 class="text-lg font-bold text-normal">Interview Tracking</h3>
-          <p class="mt-2 text-sm text-light leading-relaxed">
+          <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
             Log interviewer, date, location, and call link. Add to your calendar in one click. Rate how it went and capture prep notes, debriefs, and feedback.
+          </p>
+        </div>
+
+        <%# Dashboard Overview %>
+        <div class="card">
+          <div class="rounded-md p-2.5 bg-indigo-100/70 dark:bg-indigo-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/home.svg', class: 'size-5 text-indigo-600 dark:text-indigo-500' %>
+          </div>
+          <h3 class="text-lg font-bold text-normal">Dashboard Overview</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
+            Your entire job search in one view. Weekly stats, progress toward your application goal, smart suggestions, upcoming interviews, and recent notes.
           </p>
         </div>
 
         <%# Search & Filters %>
         <div class="card">
-          <div class="rounded-md p-2.5 bg-orange-100/70 dark:bg-orange-900/40 inline-flex mb-4">
-            <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-orange-600 dark:text-orange-500' %>
+          <div class="rounded-md p-2.5 bg-amber-100/70 dark:bg-amber-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/search.svg', class: 'size-5 text-amber-600 dark:text-amber-500' %>
           </div>
           <h3 class="text-lg font-bold text-normal">Smart Search &amp; Filters</h3>
-          <p class="mt-2 text-sm text-light leading-relaxed">
+          <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
             Find anything instantly&mdash;leads, interviews, notes. Narrow results by tag, status, date, or active vs. archived.
+          </p>
+        </div>
+
+        <%# Autofill from URL %>
+        <div class="card">
+          <div class="rounded-md p-2.5 bg-cyan-100/70 dark:bg-cyan-900/40 inline-flex mb-4">
+            <%= inline_svg_tag 'icons/link.svg', class: 'size-5 text-cyan-600 dark:text-cyan-500' %>
+          </div>
+          <h3 class="text-lg font-bold text-normal">Autofill from URL</h3>
+          <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
+            Enter a URL for a job posting and JobJournal autofills the company, title, location, and more&mdash;no manual input required.
+            <br>
+            Works with <strong class="text-normal font-semibold">LinkedIn</strong> and <strong class="text-normal font-semibold">Indeed</strong>, with more sources on the way.
           </p>
         </div>
       </div>
