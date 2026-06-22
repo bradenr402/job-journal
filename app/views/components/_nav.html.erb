@@ -1,7 +1,7 @@
 <nav class="fixed bottom-4 inset-x-4 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
   <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 md:space-y-2 bg-white/60 md:bg-white dark:bg-neutral-900/60 rounded-[1.25rem] md:rounded-2xl md:not-dark:shadow-2xs max-md:backdrop-blur-md border border-neutral-200 dark:border-neutral-800/60 md:dark:border-neutral-900 flex flex-col">
     <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600', tabindex: -1 do %>
-      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
+      <%= icon 'note-filled', class: 'size-6 shrink-0' %>
       <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
     <% end %>
 
@@ -18,9 +18,10 @@
       <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-px">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
+          <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
 
           <%= link_to link[:path], class: "nav-link #{'nav-link-active' if active} #{'max-md:hidden' if link[:desktop_only]}" do %>
-            <%= inline_svg_tag "icons/#{active ? "#{link[:icon]}-filled" : link[:icon]}.svg", class: 'size-5 sm:size-4 shrink-0' %>
+            <%= icon icon_name, class: 'size-5 sm:size-4 shrink-0' %>
             <span><%= link[:label] %></span>
           <% end %>
         <% end %>
@@ -29,7 +30,7 @@
 
     <div class="max-md:hidden">
       <%= link_to new_job_lead_path, class: 'btn btn-primary w-full' do %>
-        <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
+        <%= icon 'plus', class: 'size-5 shrink-0' %>
         <span>New Job Lead</span>
       <% end %>
     </div>
@@ -48,7 +49,7 @@
 
         <% dropdown_links.each do |link| %>
           <%= link_to link[:path], class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag "icons/#{link[:icon]}.svg", class: 'size-5 shrink-0' %>
+            <%= icon link[:icon], class: 'size-5 shrink-0' %>
             <span><%= link[:label] %></span>
           <% end %>
         <% end  %>
@@ -56,7 +57,7 @@
         <div class="dropdown-divider"></div>
 
         <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
-          <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+          <%= icon 'logout', class: 'size-5 shrink-0' %>
           <span>Sign Out</span>
         <% end %>
       </div>

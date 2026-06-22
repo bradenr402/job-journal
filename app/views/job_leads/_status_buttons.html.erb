@@ -6,59 +6,59 @@
     buttons << (
       button_to advance_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-primary btn-muted' do
         concat content_tag(:span, 'Advance to Applied')
-        concat inline_svg_tag('icons/arrow-right.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-right', class: 'size-4 shrink-0')
       end
     )
   when 'applied'
     buttons << (
       button_to revert_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' do
-        concat inline_svg_tag('icons/arrow-left.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-left', class: 'size-4 shrink-0')
         concat content_tag(:span, 'Revert to Lead')
       end
     )
     buttons << (
       link_to new_interview_path(job_lead_id: job_lead.id), class: 'btn btn-sm btn-primary btn-muted' do
         concat content_tag(:span, 'Advance to Interview')
-        concat inline_svg_tag('icons/arrow-right.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-right', class: 'size-4 shrink-0')
       end
     )
   when 'interview'
     buttons << (
       button_to revert_status_job_lead_path(job_lead), method: :patch, data: { turbo_confirm: 'Are you sure you want to revert the status to Applied? This will delete all interviews for this job lead.' }, class: 'btn btn-sm btn-destructive btn-muted' do
-        concat inline_svg_tag('icons/arrow-left.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-left', class: 'size-4 shrink-0')
         concat content_tag(:span, 'Revert to Applied')
       end
     )
     buttons << (
       link_to offer_job_lead_path(job_lead), class: 'btn btn-sm btn-primary btn-muted' do
         concat content_tag(:span, 'Advance to Offer')
-        concat inline_svg_tag('icons/arrow-right.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-right', class: 'size-4 shrink-0')
       end
     )
   when 'offer'
     buttons << (
       button_to revert_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' do
-        concat inline_svg_tag('icons/arrow-left.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-left', class: 'size-4 shrink-0')
         concat content_tag(:span, 'Revert to Interview')
       end
     )
     buttons << (
       button_to advance_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-primary btn-muted' do
         concat content_tag(:span, 'Advance to Accepted')
-        concat inline_svg_tag('icons/arrow-right.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-right', class: 'size-4 shrink-0')
       end
     )
   when 'accepted'
     buttons << (
       button_to revert_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' do
-        concat inline_svg_tag('icons/arrow-left.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-left', class: 'size-4 shrink-0')
         concat content_tag(:span, 'Revert to Offer')
       end
     )
     when 'rejected'
     buttons << (
       button_to revert_status_job_lead_path(job_lead), method: :patch, class: 'btn btn-sm btn-destructive btn-muted' do
-        concat inline_svg_tag('icons/arrow-left.svg', class: 'size-4 shrink-0')
+        concat icon('arrow-left', class: 'size-4 shrink-0')
         concat content_tag(:span, "Revert to #{job_lead.previous_status.titlecase}")
       end
     )

@@ -15,9 +15,9 @@
   <% if display_title %>
     <p class="text-xs font-semibold mb-2 inline-flex items-start gap-1">
       <% if note.notable.is_a?(Interview) %>
-        <%= inline_svg_tag 'icons/interview-filled.svg', class: 'size-3 shrink-0 mt-0.5' %>
+        <%= icon 'interview-filled', class: 'size-3 shrink-0 mt-0.5' %>
       <% elsif note.notable.is_a?(JobLead) %>
-        <%= inline_svg_tag 'icons/briefcase-filled.svg', class: 'size-3 shrink-0 mt-0.5' %>
+        <%= icon 'briefcase-filled', class: 'size-3 shrink-0 mt-0.5' %>
       <% end %>
       <%= note_title %>
     </p>
@@ -35,7 +35,7 @@
 
   <% if note_page %>
     <div class="text-xs text-muted text-right flex items-center justify-end gap-1">
-      <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+      <%= icon 'note', class: 'size-3.5 shrink-0' %>
       <%== note.edited? ? "Updated: #{local_time note.updated_at}" : "Created: #{local_time note.created_at}" %>
     </div>
   <% end %>

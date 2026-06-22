@@ -10,13 +10,13 @@
     <%= link_to notes_path(notable_type: params[:notable_type] == 'JobLead' ? nil : 'JobLead'), class: 'inline-block', style: "view-transition-name: job-lead-notes" do %>
       <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'JobLead' %>">
         <span>Job Leads</span>
-        <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'JobLead' %>
+        <%= icon 'x-mini' if params[:notable_type] == 'JobLead' %>
       </span>
     <% end %>
     <%= link_to notes_path(notable_type: params[:notable_type] == 'Interview' ? nil : 'Interview'), class: 'inline-block', style: "view-transition-name: interview-notes" do %>
       <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'Interview' %>">
         <span>Interviews</span>
-        <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'Interview' %>
+        <%= icon 'x-mini' if params[:notable_type] == 'Interview' %>
       </span>
     <% end %>
   </div>

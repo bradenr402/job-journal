@@ -13,7 +13,7 @@
       <%= link_to job_leads_path(params.permit(:tags, :status).merge(job_lead_type: job_lead_type == @selected_job_lead_type ? 'all' : job_lead_type)), class: 'inline-block', style: "view-transition-name: #{job_lead_type}-job-leads" do %>
         <span class="tag tag-filter <%= 'tag-selected' if job_lead_type == @selected_job_lead_type %>">
           <span><%= job_lead_type.titlecase %></span>
-          <%= inline_svg_tag 'icons/x-mini.svg' if job_lead_type == @selected_job_lead_type && job_lead_type != 'all' %>
+          <%= icon 'x-mini' if job_lead_type == @selected_job_lead_type && job_lead_type != 'all' %>
         </span>
       <% end %>
     <% end %>
@@ -29,7 +29,7 @@
       <%= link_to job_leads_path(params.permit(:tags, :job_lead_type).merge(status: status == @selected_status ? nil : status)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
         <span class="tag tag-filter <%= 'tag-selected' if status == @selected_status %> tag-<%= status %>">
           <%= status.titlecase %>
-          <%= inline_svg_tag 'icons/x-mini.svg' if status == @selected_status %>
+          <%= icon 'x-mini' if status == @selected_status %>
         </span>
       <% end %>
     <% end %>
@@ -46,7 +46,7 @@
       <%= link_to job_leads_path(params.permit(:job_lead_type, :status).merge(tags: remaining_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
         <span class="tag tag-filter tag-selected">
           <%= tag.name %>
-          <%= inline_svg_tag 'icons/x-mini.svg' %>
+          <%= icon 'x-mini' %>
         </span>
       <% end %>
     <% end %>

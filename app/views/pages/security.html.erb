@@ -3,7 +3,7 @@
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
       <span>Back Home</span>
     <% end %>
   </div>
@@ -28,7 +28,7 @@
         method: :delete,
         data: { turbo_confirm: 'Are you sure you want to terminate all other sessions? This will log you out of all your devices except this one.' },
         class: 'btn btn-destructive' do %>
-      <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+      <%= icon 'logout', class: 'size-5 shrink-0' %>
       <span>Log Out All</span>
     <% end %>
   </div>
@@ -61,7 +61,7 @@
               method: :delete,
               data: { turbo_confirm: "Are you sure you want to terminate #{session == Current.session ? 'your current' : 'this'} session?" },
               class: 'btn btn-sm btn-destructive btn-muted whitespace-nowrap' do %>
-              <%= inline_svg_tag 'icons/logout.svg', class: 'size-4 shrink-0' %>
+              <%= icon 'logout', class: 'size-4 shrink-0' %>
               <span>Log Out</span>
           <% end %>
         </li>

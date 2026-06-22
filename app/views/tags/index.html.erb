@@ -3,7 +3,7 @@
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
       <span>Back Home</span>
     <% end %>
   </div>
@@ -23,12 +23,12 @@
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary' do %>
-              <%= inline_svg_tag 'icons/edit.svg', class: 'size-4 shrink-0' %>
+              <%= icon 'edit', class: 'size-4 shrink-0' %>
               <span>Edit</span>
             <% end %>
 
             <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive btn-muted' do %>
-              <%= inline_svg_tag 'icons/trash.svg', class: 'size-4 shrink-0' %>
+              <%= icon 'trash', class: 'size-4 shrink-0' %>
               <span>Delete</span>
             <% end %>
           </div>
@@ -39,7 +39,7 @@
     <div class="@container">
       <div class="empty-state my-24">
         <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-          <%= inline_svg_tag 'icons/tag.svg', class: 'size-16 text-muted dark:text-soft' %>
+          <%= icon 'tag', class: 'size-16 text-muted dark:text-soft' %>
         </div>
 
         <h2 class="subheading">No Tags Yet</h2>

@@ -11,13 +11,13 @@
       <div class="@container">
         <div class="empty-state my-24">
           <div class=" rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-            <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-16 text-muted dark:text-soft' %>
+            <%= icon 'briefcase', class: 'size-16 text-muted dark:text-soft' %>
           </div>
 
           <h2 class="subheading">No Job Leads Yet</h2>
           <p class="max-w-md text-pretty leading-normal">Start tracking your job search by adding your first lead.</p>
           <%= link_to new_job_lead_path, class: 'btn btn-sm btn-primary' do %>
-            <%= inline_svg_tag 'icons/plus.svg', class: 'size-4 shrink-0' %>
+            <%= icon 'plus', class: 'size-4 shrink-0' %>
             <span>New Job Lead</span>
           <% end %>
         </div>
@@ -42,7 +42,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Job Leads This Week</p>
-              <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'briefcase', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto">
               <p class="font-extrabold text-4xl mb-1"><%= @job_leads_this_week_count %></p>
@@ -57,7 +57,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Applications This Week</p>
-              <%= inline_svg_tag 'icons/application.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'application', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto flex items-end justify-between">
               <div>
@@ -85,7 +85,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Interviews This Week</p>
-              <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'interview', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto flex items-end justify-between">
               <div>
@@ -98,7 +98,7 @@
                   <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
                   <div class="font-bold flex items-center gap-x-1">
                     <% 1.upto(5) do |star| %>
-                      <%= inline_svg_tag 'icons/star.svg', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                      <%= icon 'star', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
                     <% end %>
                   </div>
                 </div>
@@ -145,7 +145,7 @@
                     </div>
 
                     <div class="flex items-center gap-1 text-sm text-soft">
-                      <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
+                      <%= icon 'company', class: 'size-3.75 shrink-0' %>
                       <%= interview.job_lead.company %>
                     </div>
                   </div>
@@ -199,7 +199,7 @@
                     </div>
 
                     <div class="flex items-center gap-1 text-sm text-soft">
-                      <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
+                      <%= icon 'company', class: 'size-3.75 shrink-0' %>
                       <%= suggestion.company %>
                     </div>
                   </div>
@@ -271,7 +271,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Job Leads</p>
-              <%= inline_svg_tag 'icons/briefcase.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'briefcase', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto">
               <p class="font-extrabold text-4xl mb-1"><%= @all_job_leads.size %></p>
@@ -289,7 +289,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Applications</p>
-              <%= inline_svg_tag 'icons/application.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'application', class: 'size-5 shrink-0' %>
             </div>
             <% applied_leads = @all_job_leads.where.not(applied_at: nil) %>
             <div class="mt-auto">
@@ -307,7 +307,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Interviews</p>
-              <%= inline_svg_tag 'icons/interview.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'interview', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto flex items-end justify-between">
               <div>
@@ -321,7 +321,7 @@
                   <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
                   <div class="font-bold flex items-center gap-x-1">
                     <% 1.upto(5) do |star| %>
-                      <%= inline_svg_tag 'icons/star.svg', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                      <%= icon 'star', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
                     <% end %>
                   </div>
                 </div>
@@ -336,7 +336,7 @@
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Notes</p>
-              <%= inline_svg_tag 'icons/note.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'note', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto">
               <p class="font-extrabold text-4xl mb-1"><%= @all_notes.size %></p>
@@ -352,7 +352,7 @@
           <div class="mb-5">
             <div class="flex items-start justify-between">
               <p class="font-semibold">Top Tags</p>
-              <%= inline_svg_tag 'icons/tag.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'tag', class: 'size-5 shrink-0' %>
             </div>
             <p class="text-xs text-muted">Up to 20 of your most frequently used tags across your job leads.</p>
           </div>
@@ -379,7 +379,7 @@
           <div class="mb-5">
             <div class="flex items-start justify-between">
               <p class="font-semibold">Top Sources</p>
-              <%= inline_svg_tag 'icons/globe.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'globe', class: 'size-5 shrink-0' %>
             </div>
             <p class="text-xs text-muted">See where your best job leads are coming from.</p>
           </div>
