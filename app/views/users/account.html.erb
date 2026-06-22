@@ -46,7 +46,7 @@
 
       <% stats.each do |stat| %>
         <div class="flex items-center gap-1 text-sm text-light">
-          <%= icon stat[:icon], class: 'size-3.75 shrink-0 text-normal *:stroke-[1.75]' %>
+          <%= icon stat[:icon], class: 'size-3.75 shrink-0 text-normal' %>
           <span class="font-semibold"><%= stat[:value] %></span>
           <span class="text-soft"><%= stat[:label] %></span>
         </div>
