@@ -500,15 +500,64 @@
 </main>
 
 <%# ─── FOOTER ─── %>
-<footer class="py-10 px-6 border-t border-neutral-200/60 dark:border-neutral-800/40">
-  <div class="max-w-6xl mx-auto flex max-sm:flex-col items-center justify-between gap-4">
-    <div class="flex items-center gap-1.5 text-primary-600">
-      <%= icon 'note-filled', class: 'size-5 shrink-0' %>
-      <span class="text-base font-extrabold tracking-tight">JobJournal</span>
+<footer
+  class="
+    group/footer max-w-6xl md:mx-auto my-4 max-md:mx-4
+    rounded-4xl bg-neutral-50 dark:bg-neutral-900/40 dark:ring-1 dark:ring-neutral-800/60 text-neutral-700 dark:text-neutral-300
+    [--footer-padding:calc(var(--spacing)*8)] md:[--footer-padding:calc(var(--spacing)*12)] p-(--footer-padding)
+    [--footer-gap:calc(var(--spacing)*8)] md:[--footer-gap:calc(var(--spacing)*16)]
+  "
+>
+  <%# ── Top grid ── %>
+  <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-(--footer-gap)">
+    <%# Brand %>
+    <div class="space-y-4">
+      <div class="flex items-center gap-1.5 text-primary-500">
+        <%= icon 'note-filled', class: 'size-7 shrink-0' %>
+        <span class="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-white">JobJournal</span>
+      </div>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-xs text-pretty">
+        A privacy-first job search tracker. Organize every lead, application, and interview in one place.
+      </p>
     </div>
 
-    <p class="text-sm text-muted">
-      Created with ❤️ by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-light hover:text-primary-600 transition-colors duration-150' %>
+    <%# Resources %>
+    <div class="space-y-2 md:text-right">
+      <p class="text-xs uppercase font-semibold text-neutral-600 dark:text-neutral-500">Resources</p>
+      <ul>
+        <li>
+          <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-150' do %>
+            <%= icon 'github', class: 'size-4 shrink-0' %>
+            <span>GitHub</span>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+
+    <%# Contact %>
+    <div class="space-y-2 md:text-right">
+      <p class="text-xs uppercase font-semibold text-neutral-600 dark:text-neutral-500">Contact</p>
+      <ul>
+        <li>
+          <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400 transition-colors duration-150' do %>
+            <%= icon 'mail', class: 'size-4 shrink-0' %>
+            <span>jobjournalapp@gmail.com</span>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <%# ── Bottom row ── %>
+  <div class="mt-[calc(var(--footer-padding)*2)] pt-(--footer-padding) border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap gap-2 items-center justify-between text-xs text-neutral-600 dark:text-neutral-500">
+    <p>&copy; <%= Date.current.year %> JobJournal. All Rights Reserved.</p>
+    <p>
+      Created with
+      <span class="relative inline-flex [--heart-size:calc(var(--spacing)*3.75)] size-(--heart-size) align-middle mx-0.5">
+        <%= icon 'heart', class: 'absolute inline size-full group-hover/footer:animate-ping text-rose-400 opacity-75' %>
+        <%= icon 'heart', class: 'relative inline size-(--heart-size) text-rose-500' %>
+      </span>
+      by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-neutral-700 hover:text-primary-600 dark:text-neutral-300 dark:hover:text-primary-400 transition-colors duration-150' %>
     </p>
   </div>
 </footer>
