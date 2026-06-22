@@ -46,7 +46,7 @@ class PagesController < ApplicationController
       applied_at: 8.days.ago + 15.hours + 30.minutes,
       created_at: 12.days.ago + 10.hours + 51.minutes, updated_at: 4.days.ago + 8.hours + 3.minutes,
       status: 'applied', status_at: 8.days.ago + 15.hours + 30.minutes,
-      tags: [ 'hybrid', 'series-b' ], notes_count: 2
+      tags: [ 'hybrid', 'referral' ], notes_count: 2
     )
 
     vercel_lead = demo_lead(
@@ -84,7 +84,7 @@ class PagesController < ApplicationController
       id: 2002, job_lead: notion_lead,
       interviewer: 'James Park',
       scheduled_at: 12.days.ago + 10.hours,
-      location: 'On-site · SF Office',
+      location: 'On-site at SF Office',
       rating: 4,
       created_at: 14.days.ago + 11.hours + 15.minutes, updated_at: 11.days.ago + 22.hours + 37.minutes,
       notes_count: 4
