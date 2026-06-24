@@ -305,7 +305,7 @@
                   <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
                     <div class="flex items-center gap-2.5">
                       <div class="flex flex-col">
-                        <div class="text-lg font-semibold">
+                        <div class="text-lg font-semibold leading-snug mb-1">
                           <span><%= suggestion[:title] %></span>
                           <span class="font-normal ml-0.5 tag tag-<%= suggestion[:status] %>">
                             <%= suggestion[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short suggestion[:status_at] %></span>
@@ -491,7 +491,6 @@
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
         <% features.each do |feature| %>
           <div class="card">
-
             <div class="flex items-start justify-between mb-4">
               <h3 class="font-semibold text-normal"><%= feature[:title] %></h3>
               <div class="rounded-md p-1.5 -m-0.75 <%= feature[:icon_bg] %> inline-flex">

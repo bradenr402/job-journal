@@ -137,7 +137,7 @@
               <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-150 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98" style="view-transition-name: job_lead-<%= interview.id %>;">
                 <div class="flex items-center gap-2.5">
                   <div class="flex flex-col">
-                    <div class="text-lg font-semibold">
+                    <div class="text-lg font-semibold leading-snug mb-1">
                       <span><%= interview.interviewer %></span>
                       <span class="font-normal ml-0.5 tag tag-accepted">
                         Completed: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span>
@@ -191,7 +191,7 @@
               <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-150 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98" style="view-transition-name: job_lead-<%= suggestion.id %>;">
                 <div class="flex items-center gap-2.5">
                   <div class="flex flex-col">
-                    <div class="text-lg font-semibold">
+                    <div class="text-lg font-semibold leading-snug mb-1">
                       <span><%= suggestion.title %></span>
                       <span class="font-normal ml-0.5 tag tag-<%= suggestion.status %>">
                         <%= suggestion.status.titlecase %>: <span class="text-xs opacity-65"><%= local_date_short suggestion.latest_status_at %></span>
