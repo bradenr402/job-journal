@@ -15,14 +15,16 @@
     ] %>
 
     <div class="md:grow md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80">
-      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-px">
+      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
           <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
 
-          <%= link_to link[:path], class: "nav-link #{'nav-link-active' if active} #{'max-md:hidden' if link[:desktop_only]}" do %>
-            <%= icon icon_name, class: 'size-5 sm:size-4 shrink-0' %>
-            <span><%= link[:label] %></span>
+          <%= link_to link[:path], class: "md:py-px #{'max-md:hidden' if link[:desktop_only]}" do %>
+            <span class="nav-link <%= 'nav-link-active' if active %>">
+              <%= icon icon_name, class: 'size-5 sm:size-4 shrink-0' %>
+              <span><%= link[:label] %></span>
+            </span>
           <% end %>
         <% end %>
       </ul>
