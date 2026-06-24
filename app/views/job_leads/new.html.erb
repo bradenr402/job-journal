@@ -16,8 +16,9 @@
     data-url-autofill-url-value="<%= autofill_job_leads_path %>"
     data-url-autofill-submit-text-value="Autofill from URL"
     data-url-autofill-working-text-value="Working…"
-    data-url-autofill-error-class="text-red-600 dark:text-red-400"
-    data-url-autofill-info-class="text-muted"
+    data-url-autofill-error-class="text-rose-600 dark:text-rose-400 bg-rose-200/40 dark:bg-rose-900/30"
+    data-url-autofill-success-class="text-primary-600 dark:text-primary-400 bg-primary-200/40 dark:bg-primary-600/20"
+    data-url-autofill-info-class="text-blue-600 dark:text-blue-400 bg-blue-200/50 dark:bg-blue-600/20"
     data-url-autofill-tags-input-outlet="[data-controller='tags-input']"
     >
     <div class="mb-4">
@@ -45,14 +46,13 @@
       <%= link_to 'Open an issue', 'https://github.com/bradenr402/job-journal/issues/new', target: '_blank', rel: 'noopener', class: 'btn-link-primary text-xs' %> or email <%= mail_to 'jobjournalapp@gmail.com', class: 'btn-link-primary text-xs' %>.
     </p>
 
-    <p
-      class="hidden text-xs mt-2"
+    <span
+      class="hidden text-xs mt-2 py-0.5 px-1.5 rounded-sm"
       role="status"
       aria-live="polite"
       data-url-autofill-target="status"
-    >
-      <span data-url-autofill-target="message"></span>
-    </p>
+      data-url-autofill-target="message"
+    ></span>
   </div>
 
   <div class="flex items-center @2xl:col-span-2 my-4">

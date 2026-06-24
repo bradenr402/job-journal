@@ -29,7 +29,7 @@ class JobLeadAutofillFromUrl
     uri = parse_uri @url
     return failure "Please provide a valid http(s) URL." unless uri
     uri = canonical_uri uri
-    return failure "That host is not supported yet. Try a LinkedIn job URL." unless allowed_host? uri
+    return failure "That host is not supported yet. Try a LinkedIn or Indeed job URL." unless allowed_host? uri
     return failure "Refusing to fetch from a private network." unless public_host? uri
 
     html = fetch_html uri

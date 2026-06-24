@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 // Connects to data-controller="url-autofill"
 export default class extends Controller {
   static targets = ["url", "submit", "status", "message"];
-  static classes = ["error", "info"];
+  static classes = ["error", "success", "info"];
   static outlets = ["tags-input"];
   static values = {
     url: String,
@@ -48,7 +48,7 @@ export default class extends Controller {
         filled > 0
           ? `Filled ${filled} ${filled === 1 ? "field" : "fields"} from the page.`
           : "No matching fields found.",
-        filled > 0 ? "info" : "error",
+        filled > 0 ? "success" : "error",
       );
     } catch (error) {
       console.error(error);
@@ -112,12 +112,19 @@ export default class extends Controller {
     if (!this.hasStatusTarget) return;
 
     const isError = kind === "error";
+    const isSuccess = kind === "success";
+    const isInfo = kind === "info";
+
     this.statusTarget.classList.remove("hidden");
+
     this.errorClasses.forEach((c) =>
       this.statusTarget.classList.toggle(c, isError),
     );
+    this.successClasses.forEach((c) =>
+      this.statusTarget.classList.toggle(c, isSuccess),
+    );
     this.infoClasses.forEach((c) =>
-      this.statusTarget.classList.toggle(c, !isError),
+      this.statusTarget.classList.toggle(c, isInfo),
     );
 
     if (this.hasMessageTarget) {
