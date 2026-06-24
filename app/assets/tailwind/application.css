@@ -24,6 +24,8 @@
     'Noto Color Emoji';
 
   --text-2xs: 0.675rem;
+
+  --container-8xl: calc(var(--spacing) * 88 * 4); /* 88rem */
 }
 
 @view-transition {

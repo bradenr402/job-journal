@@ -2,7 +2,7 @@
 
 <%# ─── NAV ─── %>
 <nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-neutral-800/40">
-  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+  <div class="max-w-8xl mx-auto px-6 h-16 flex items-center justify-between">
     <%= link_to root_path, class: 'flex items-center gap-1.5' do %>
       <%= icon 'note-filled', class: 'size-6 shrink-0 text-primary-600' %>
       <span class="text-xl font-extrabold tracking-tight text-normal">JobJournal</span>
@@ -17,9 +17,9 @@
 
 <main class="*:even:bg-neutral-50 dark:*:even:bg-neutral-900/40">
   <%# ─── HERO ─── %>
-  <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6 *:max-w-6xl *:mx-auto">
+  <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6 *:max-w-8xl *:mx-auto">
     <div class="text-center">
-      <h1 class="text-[clamp(3rem,8vw,6rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
+      <h1 class="text-[clamp(2.6rem,8vw,6rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
         Your Job Search.<br>
         Your Terms.
       </h1>
@@ -39,21 +39,90 @@
     </div>
 
     <%# ── Hero screenshot ── %>
-    <div class="mt-20 md:mt-28 rounded-[0.95rem] border border-neutral-200/60 dark:border-neutral-800/30 shadow-xl dark:shadow-none overflow-hidden">
+    <div class="mt-20 md:mt-28 rounded-[clamp(0.25rem,1vw,1.25rem)] border border-neutral-200/60 dark:border-neutral-800/30 not-dark:shadow-xl overflow-hidden">
       <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'dark:hidden w-full h-auto', loading: 'eager' %>
-      <%= image_tag 'dashboard-dark.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'not-dark:hidden w-full h-auto', loading: 'eager' %>
+      <%= image_tag 'dashboard-dark.webp', alt: '', aria: { hidden: true }, class: 'not-dark:hidden w-full h-auto', loading: 'eager' %>
+    </div>
+  </section>
+
+  <%# ─── PROBLEM & SOLUTION ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div
+      class="
+        max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2
+        max-lg:divide-y lg:divide-x divide-neutral-200 dark:divide-neutral-800
+        *:w-full *:max-lg:max-w-3xl *:max-lg:mx-auto
+        *:first:lg:pr-12 *:first:max-lg:pb-14
+        *:last:lg:pl-12 *:last:max-lg:pt-12
+      "
+    >
+      <%# ── Problem ── %>
+      <div>
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          Spreadsheets weren’t built&nbsp;for&nbsp;this.
+        </h2>
+
+        <div class="mt-8 space-y-5 text-light text-pretty">
+          <p class="leading-relaxed">
+            When you’re juggling multiple applications, deadlines, and interviews, everyone seems to preach the same gospel: “just open Excel or Google Sheets and log every lead.” It works&mdash;until it doesn’t.
+          </p>
+
+          <ul class="space-y-2 list-none">
+            <% [
+              "Spreadsheets don’t remind you to follow up, flag stale leads, or tell you which sources are working.",
+              "Notes, meeting links, and interview prep end up scattered across apps.",
+              "The more applications you add, the harder they are to maintain&mdash;and the less useful they become."
+            ].each do |text| %>
+              <li class="flex gap-3 items-start">
+                <span class="mt-2.5 size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+                <span><%= text.html_safe %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <%# ── Solution ── %>
+      <div>
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
+          JobJournal flips that&nbsp;script.
+        </h2>
+
+        <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
+          <p>
+            Instead of babysitting cells, every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale job lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search finds anything instantly.
+          </p>
+
+          <p>
+            <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on your workflow, not managing rows.</span>
+            JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
   <%# ─── DEMO: DASHBOARD STATS ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-5xl mx-auto">
-      <p class="text-center text-sm font-semibold uppercase text-primary-600 mb-3">Your dashboard at a glance</p>
-      <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
+    <div class="max-w-8xl mx-auto">
+      <p class="text-center text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Your dashboard at a glance</p>
+      <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
         See where you stand&mdash;instantly.
       </h2>
 
-      <div class="@container">
+      <%# ── Hero screenshot ── %>
+      <div class="card p-1 -m-1 rounded-3xl max-md:hidden not-dark:shadow-xl overflow-hidden relative">
+        <span class="select-none font-semibold uppercase tracking-[-0.015em] text-light mt-2 mb-3 absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 px-4 py-2 rounded-[0.625rem] shadow-lg">Dashboard demo</span>
+
+        <div class="relative">
+          <iframe src="<%= asset_path "JobJournal-demo.html" %>" id="JobJournal-demo" class="w-full aspect-3/2 rounded-[clamp(0.25rem,1vw,1.25rem)] border border-neutral-300/60 dark:border-neutral-700/30 overflow-hidden"></iframe>
+
+          <%# inset shadow to simulate depth of iframe %>
+          <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_8px_rgba(0,0,0,0.2)] rounded-[1.25rem]"></div>
+        </div>
+      </div>
+
+      <div class="md:hidden @container max-w-5xl mx-auto mt-20">
         <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
           <div class="relative card flex flex-col">
             <div class="flex items-start justify-between mb-5">
@@ -106,71 +175,15 @@
             </div>
           </div>
         </div>
-    </div>
-  </section>
-
-  <%# ─── PROBLEM & SOLUTION ─── %>
-  <section class="py-28 md:py-36 px-6">
-    <div
-      class="
-        max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2
-        max-lg:divide-y lg:divide-x divide-neutral-200 dark:divide-neutral-800
-        *:w-full *:max-lg:max-w-3xl *:max-lg:mx-auto
-        *:first:lg:pr-12 *:first:max-lg:pb-14
-        *:last:lg:pl-12 *:last:max-lg:pt-12
-      "
-    >
-      <%# ── Problem ── %>
-      <div>
-        <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-          Spreadsheets weren’t built&nbsp;for&nbsp;this.
-        </h2>
-
-        <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
-          <p>
-            When you’re juggling multiple applications, deadlines, and interviews, everyone seems to preach the same gospel: “just open Excel or Google Sheets and log every lead.” It works&mdash;until it doesn’t.
-          </p>
-
-          <ul class="space-y-2 list-none">
-            <% [
-              "Spreadsheets don’t remind you to follow up, flag stale leads, or tell you which sources are working.",
-              "Notes, meeting links, and interview prep end up scattered across apps.",
-              "The more applications you add, the harder they are to maintain&mdash;and the less useful they become."
-            ].each do |text| %>
-              <li class="flex gap-3 items-start">
-                <span class="mt-2.5 size-1.5 rounded-full bg-primary-600 shrink-0"></span>
-                <span><%= text.html_safe %></span>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-
-      <%# ── Solution ── %>
-      <div>
-        <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
-          JobJournal flips that&nbsp;script.
-        </h2>
-
-        <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
-          <p>
-            Instead of babysitting cells, every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale-lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search with tags and filters finds anything instantly.
-          </p>
-
-          <p>
-            <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on workflows, not rows.</span>
-            JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
-          </p>
-        </div>
       </div>
     </div>
   </section>
 
   <%# ─── DEMO: JOB LEADS & INTERVIEWS ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
-      <p class="text-sm font-semibold uppercase text-primary-600 mb-3">Track every opportunity</p>
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
+    <div class="max-w-8xl mx-auto">
+      <p class="text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Track every opportunity</p>
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
         From first lead to final&nbsp;offer.
       </h2>
       <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
@@ -179,7 +192,7 @@
 
       <div aria-hidden="true">
         <%# ── Job Lead Cards ── %>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-12">
           <% @demo_leads.each do |lead| %>
             <%= render lead %>
           <% end %>
@@ -197,32 +210,60 @@
 
   <%# ─── WHY JOBJOURNAL ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-        Built for you. Not for&nbsp;companies.
-      </h2>
+    <% conditional_break = '<br class="max-lg:hidden"/>' %>
+    <% @features = [
+      {
+        title: "Built for you.#{conditional_break} Not for companies.".html_safe,
+        body: 'Recruiter tools serve companies. Job boards serve advertisers. JobJournal serves <strong class="text-normal font-semibold">you</strong>&mdash;keeping you in control of your job search and your data.'.html_safe,
+      },
+      {
+        title: "100% Free.#{conditional_break} Forever.",
+        body: 'JobJournal is <strong class="text-normal font-semibold">free forever</strong>&mdash;because a tool for your job search shouldn’t profit from your job search. No trials, no paywalls, no “upgrade to unlock”, no subscriptions, and no hidden fees.'.html_safe,
+      },
+      {
+        title: 'Your Data is Truly Yours.'.html_safe,
+        body: 'JobJournal is <strong class="text-normal font-semibold">privacy-first</strong> by design&mdash;no third-party sharing, no data selling, no recruiter analytics. Your data stays scoped to your account, and you can delete it all at any time.'.html_safe,
+      }
+    ] %>
 
-      <div class="mt-6 space-y-4 text-light leading-relaxed max-w-2xl mx-auto">
-        <p>
-          Recruiter tools serve companies. Job boards serve advertisers.
-          JobJournal serves&nbsp;<strong class="text-normal font-semibold whitespace-nowrap">you</strong>&NoBreak;&mdash;&NoBreak;keeping&nbsp;you in control of your search, your story, and your data.
-        </p>
-      </div>
+    <div
+      class="
+        max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3
+        gap-12 lg:gap-y-20 max-lg:divide-y
+        lg:*:first:pr-12 max-lg:*:first:pb-12
+        lg:*:first:border-r *:first:border-neutral-200 dark:*:first:border-neutral-800
+        2xl:*:nth-2:pr-12 max-lg:*:nth-2:pb-12
+        2xl:*:nth-2:border-r *:nth-2:border-neutral-200 dark:*:nth-2:border-neutral-800
+      "
+    >
+      <% @features.each.with_index(1) do |feature, index| %>
+        <div class="<%= 'lg:max-2xl:col-span-2 lg:max-2xl:mx-auto lg:max-2xl:max-w-3xl' if index == 3 %>">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight leading-tight text-balance">
+            <%= raw feature[:title] %>
+          </h2>
+
+          <p class="mt-6 text-light leading-relaxed text-pretty max-w-[75ch]">
+            <%= raw feature[:body] %>
+          </p>
+        </div>
+      <% end %>
     </div>
   </section>
 
   <%# ─── DEMO: NOTES ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
-      <p class="text-sm font-semibold uppercase text-primary-600 mb-3">Keep everything in context</p>
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
-        Notes that stay where they&nbsp;belong.
-      </h2>
-      <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
-        Attach notes directly to job leads and interviews. Prep for calls, debrief after meetings, and track offer details, without ever losing context.
-      </p>
+    <div class="max-w-8xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div class="lg:sticky lg:top-24">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            Everything exactly where it should be.
+          </h2>
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
+            Attach notes directly to job leads and interviews. Prep for interviews, jot down reflection notes, and track offer details without ever losing context.
+          </p>
+        </div>
 
-      <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <% @demo_notes.each do |note| %>
           <%= render note %>
         <% end %>
@@ -232,13 +273,13 @@
 
   <%# ─── FEATURE SHOWCASE: ALERTS & REMINDERS ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-8xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <div class="lg:sticky lg:top-24">
-          <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
             Nothing falls through the cracks.
           </h2>
-          <p class="mt-4 text-light leading-relaxed text-pretty">
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
             Upcoming interviews surface automatically. Stale leads you forgot to apply to are flagged for you. After every application and interview, a nudge to follow up appears.
           </p>
         </div>
@@ -313,10 +354,10 @@
 
   <%# ─── FEATURE SHOWCASE: INSIGHTS ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-8xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <div class="lg:sticky lg:top-24">
-          <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
             See what&#8217;s actually working.
           </h2>
           <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
@@ -393,9 +434,9 @@
 
   <%# ─── MORE FEATURES ─── %>
   <section class="py-28 md:py-36 px-6">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-8xl mx-auto">
       <div class="max-w-3xl mb-14">
-        <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
           Along with everything else you’d expect&mdash;and&nbsp;more.
         </h2>
       </div>
@@ -450,10 +491,14 @@
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
         <% features.each do |feature| %>
           <div class="card">
-            <div class="rounded-md p-2.5 <%= feature[:icon_bg] %> inline-flex mb-4">
-              <%= icon feature[:icon], class: "size-5 #{feature[:icon_color]}" %>
+
+            <div class="flex items-start justify-between mb-4">
+              <h3 class="font-semibold text-normal"><%= feature[:title] %></h3>
+              <div class="rounded-md p-1.5 -m-0.75 <%= feature[:icon_bg] %> inline-flex">
+                <%= icon feature[:icon], class: "size-4.5 #{feature[:icon_color]}" %>
+              </div>
             </div>
-            <h3 class="text-lg font-bold text-normal"><%= feature[:title] %></h3>
+
             <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
               <%= feature[:description].html_safe %>
             </p>
@@ -463,26 +508,10 @@
     </div>
   </section>
 
-  <%# ─── PRIVACY ─── %>
-  <section class="py-28 md:py-36 px-6">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
-        <%= icon 'security', class: 'inline -translate-y-1 size-[1.3cap] align-middle' %>
-        Private &amp; Secure
-      </h2>
-
-      <div class="mt-6 space-y-4 text-light leading-relaxed max-w-2xl mx-auto">
-        <p>
-        Your job search data is <strong class="text-normal font-semibold">yours alone</strong>. JobJournal is <strong class="text-normal font-semibold">privacy-first</strong> by design&mdash;no third-party sharing, no tracking, no recruiter analytics. Everything is scoped to your account, and you can delete it all at any time.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <%# ─── FINAL CTA ─── %>
   <section class="py-28 md:py-36 px-6">
     <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
         Ready to ditch the&nbsp;spreadsheet?
       </h2>
 
