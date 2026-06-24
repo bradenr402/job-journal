@@ -9,8 +9,20 @@
     @apply gap-2.5 px-5 py-3 text-base rounded-[calc((var(--radius-lg)+var(--radius-xl))/2)];
   }
 
-  > svg {
+  &:not(.btn-circle) > svg {
     @apply first:-ml-0.75 last:-mr-0.75;
+  }
+
+  &.btn-circle {
+    @apply p-2.5 rounded-full;
+
+    &.btn-sm {
+      @apply p-2 rounded-full;
+    }
+
+    &.btn-lg {
+      @apply p-3 rounded-full;
+    }
   }
 }
 

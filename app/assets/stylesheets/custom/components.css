@@ -19,10 +19,10 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center gap-0.75 md:gap-2 pt-2.25 pb-1.75 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-light focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97;
+  @apply flex max-md:flex-col items-center max-md:gap-0.5 md:gap-2 max-md:pt-2.75 max-md:pb-2.75 md:px-3 md:py-2 md:rounded-lg max-md:font-medium text-2xs md:text-sm whitespace-nowrap text-light focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97;
 
   &.nav-link-active {
-    @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600;
+    @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600 font-semibold;
   }
 
   a:hover & {
