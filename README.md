@@ -19,6 +19,7 @@ A privacy-first job search tracker. Organize every lead, application, and interv
   - [Interview Tracking](#interview-tracking)
   - [Smart Search & Filters](#smart-search--filters)
   - [Insights](#insights)
+  - [Autofill from URL](#autofill-from-url)
 - [Privacy & Security](#privacy--security)
 - [Roadmap](#roadmap)
   - [Coming Soon](#coming-soon)
