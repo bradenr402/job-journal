@@ -12,6 +12,12 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     assert_not JobLeadAutofillFromUrl.safe_url?("file:///etc/passwd")
   end
 
+  test "safe_url? rejects http URLs" do
+    with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
+      assert_not JobLeadAutofillFromUrl.safe_url?("http://www.linkedin.com/jobs/view/123/")
+    end
+  end
+
   test "safe_url? rejects malformed URLs" do
     assert_not JobLeadAutofillFromUrl.safe_url?("not a url")
     assert_not JobLeadAutofillFromUrl.safe_url?("")
@@ -78,6 +84,28 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     end
   end
 
+  test "call refuses responses with oversized content length before parsing" do
+    html = file_fixture("linkedin/2026-05-08-junior-developer-collabera.html").read
+
+    with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
+      with_http_response(html, headers: { "content-length" => (JobLeadAutofillFromUrl::MAX_BODY_BYTES + 1).to_s }) do
+        result = JobLeadAutofillFromUrl.call("https://www.linkedin.com/jobs/view/4404473006")
+
+        assert_not result.success?
+      end
+    end
+  end
+
+  test "call refuses redirects to http URLs" do
+    with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
+      with_http_redirect("http://www.linkedin.com/jobs/view/4404473006") do
+        result = JobLeadAutofillFromUrl.call("https://www.linkedin.com/jobs/view/123")
+
+        assert_not result.success?
+      end
+    end
+  end
+
   test "Net::HTTP and Resolv are loaded so the service works at runtime" do
     assert defined?(Net::HTTP), "Net::HTTP must be required"
     assert defined?(Resolv), "Resolv must be required for the SSRF guard to work"
@@ -90,15 +118,32 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     Resolv.stub(:getaddresses, ->(host) { map[host] || [] }) { yield }
   end
 
-  def with_http_response(body, requested_paths: nil)
+  def with_http_response(body, requested_paths: nil, headers: {})
     response = Net::HTTPSuccess.new("1.1", "200", "OK")
     response.instance_variable_set(:@read, true)
+    headers.each { |key, value| response[key] = value }
     response.body = body
+    response.define_singleton_method(:read_body) do |&block|
+      block&.call(body)
+      body
+    end
 
+    with_http_object(response, requested_paths:) { yield }
+  end
+
+  def with_http_redirect(location, requested_paths: nil)
+    response = Net::HTTPFound.new("1.1", "302", "Found")
+    response["location"] = location
+
+    with_http_object(response, requested_paths:) { yield }
+  end
+
+  def with_http_object(response, requested_paths: nil)
     fake_start = lambda do |*_args, **_kwargs, &block|
       http = Object.new
-      http.define_singleton_method(:request) do |req|
+      http.define_singleton_method(:request) do |req, &response_block|
         requested_paths << req.path if requested_paths
+        response_block&.call(response)
         response
       end
       block ? block.call(http) : http

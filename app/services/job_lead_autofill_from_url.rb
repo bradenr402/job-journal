@@ -18,6 +18,7 @@ class JobLeadAutofillFromUrl
   MAX_REDIRECTS   = 3
   MAX_BODY_BYTES  = 2_000_000
   USER_AGENT      = "JobJournalBot/1.0 (+https://job-journal.fly.dev)"
+  BodyTooLarge    = Class.new(StandardError)
 
   def self.call(url) = new(url).call
   def self.safe_url?(url) = new(url).send(:safe?)
@@ -40,6 +41,8 @@ class JobLeadAutofillFromUrl
     return failure "Could not fetch that page. Double-check the URL and try again." unless html
 
     success parse(uri, html)
+  rescue BodyTooLarge
+    failure "That page is too large to autofill."
   rescue Timeout::Error
     failure "Could not fetch that page. Double-check the URL and try again."
   rescue StandardError => e
@@ -60,6 +63,7 @@ class JobLeadAutofillFromUrl
   def parse_uri(raw)
     uri = URI.parse raw.to_s.strip
     return unless uri.is_a?(URI::HTTP)
+    return unless uri.scheme == "https"
     return if uri.host.blank?
 
     uri
@@ -91,23 +95,40 @@ class JobLeadAutofillFromUrl
   end
 
   def fetch_html(uri, redirects_left: MAX_REDIRECTS)
-    response = Net::HTTP.start(
+    html = nil
+
+    Net::HTTP.start(
       uri.host,
       uri.port,
-      use_ssl: uri.scheme == "https",
+      use_ssl: true,
       open_timeout: REQUEST_TIMEOUT,
       read_timeout: REQUEST_TIMEOUT
     ) do |http|
       request = Net::HTTP::Get.new(uri.request_uri, "User-Agent" => USER_AGENT, "Accept" => "text/html")
-      http.request request
+      http.request request do |response|
+        html =
+          case response
+          when Net::HTTPSuccess
+            read_limited_body response
+          when Net::HTTPRedirection
+            follow_redirect uri, response["location"], redirects_left
+          end
+      end
     end
 
-    case response
-    when Net::HTTPSuccess
-      response.body.to_s.byteslice(0, MAX_BODY_BYTES)
-    when Net::HTTPRedirection
-      follow_redirect uri, response["location"], redirects_left
+    html
+  end
+
+  def read_limited_body(response)
+    content_length = response["content-length"].to_i if response["content-length"].present?
+    raise BodyTooLarge if content_length && content_length > MAX_BODY_BYTES
+
+    body = +""
+    response.read_body do |chunk|
+      body << chunk
+      raise BodyTooLarge if body.bytesize > MAX_BODY_BYTES
     end
+    body
   end
 
   def follow_redirect(uri, location, redirects_left)
@@ -116,6 +137,7 @@ class JobLeadAutofillFromUrl
     next_uri = URI.parse location
     next_uri = uri + next_uri unless next_uri.absolute?
     next_uri = canonical_uri next_uri
+    return unless next_uri.scheme == "https"
     return unless allowed_host?(next_uri) && public_host?(next_uri)
 
     fetch_html next_uri, redirects_left: redirects_left - 1
