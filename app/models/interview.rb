@@ -36,7 +36,13 @@ class Interview < ApplicationRecord
   def past? = scheduled_at.past?
   alias completed? past?
 
-  def title = "Interview with #{interviewer} - #{job_lead.title} @ #{job_lead.company}"
+  def title
+    if persisted?
+      "Interview with #{interviewer} - #{job_lead.title} @ #{job_lead.company}"
+    else
+      "Interview - #{job_lead.title} @ #{job_lead.company}"
+    end
+  end
 
   private
 
