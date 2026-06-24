@@ -19,7 +19,7 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center max-md:gap-0.5 md:gap-2 max-md:pt-2.75 max-md:pb-2.75 md:px-3 md:py-2 md:rounded-lg max-md:font-medium text-2xs md:text-sm whitespace-nowrap text-light focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97;
+  @apply flex max-md:flex-col items-center max-md:gap-0.5 md:gap-2 max-md:pt-2.75 max-md:pb-2.75 md:px-3 md:py-2 md:rounded-lg max-md:font-medium text-2xs md:text-sm whitespace-nowrap text-light focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none;
 
   &.nav-link-active {
     @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600 font-semibold;
@@ -27,6 +27,14 @@
 
   a:hover & {
     @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600;
+  }
+
+  a:has(&) {
+    @apply transition-all duration-150;
+  }
+
+  a:active:has(&) {
+    @apply scale-97;
   }
 }
 
