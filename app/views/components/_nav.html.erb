@@ -20,7 +20,7 @@
           <% active = current_page?(link[:path]) %>
           <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
 
-          <%= link_to link[:path], class: "md:py-px #{'max-md:hidden' if link[:desktop_only]}" do %>
+          <%= link_to link[:path], class: "md:py-px #{'max-md:hidden' if link[:desktop_only]}", style: "view-transition-name: #{link[:label].parameterize}" do %>
             <span class="nav-link <%= 'nav-link-active' if active %>">
               <%= icon icon_name, class: 'size-5.75 md:size-4 shrink-0' %>
               <span><%= link[:label] %></span>
