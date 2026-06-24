@@ -2,6 +2,7 @@ class JobLeadsController < ApplicationController
   before_action :set_job_lead, only: [ :show, :edit, :update, :destroy, :archive, :unarchive, :advance_status, :revert_status, :offer, :set_offer, :reject, :history, :update_history ]
   before_action :cleanup_tags, only: [ :index, :new, :edit ]
   before_action :cleanup_leads, only: [ :index, :show ]
+  rate_limit to: 5, within: 1.minute, only: :autofill, by: -> { Current.user.id }, with: -> { render json: { error: "Too many autofill requests. Try again in a minute." }, status: :too_many_requests }
 
   # GET /job_leads
   def index
