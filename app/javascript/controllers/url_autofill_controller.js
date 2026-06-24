@@ -32,6 +32,12 @@ export default class extends Controller {
         body: JSON.stringify({ url }),
       });
 
+      const contentType = response.headers.get("Content-Type") || "";
+      if (response.redirected || !contentType.includes("application/json")) {
+        this._showStatus("Your session expired. Sign in again, then retry.", "error");
+        return;
+      }
+
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
