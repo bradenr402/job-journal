@@ -198,12 +198,12 @@
     <% if job_lead.archived_at.present? %>
       <span class="inline-flex items-center gap-1">
         <%= icon 'archive', class: 'size-3.5 shrink-0' %>
-        Archived: <%= local_time job_lead.archived_at %>
+        Archived: <%= local_time_short job_lead.archived_at %>
       </span>
     <% else %>
       <span class="inline-flex items-center gap-1">
         <%= icon 'clock', class: 'size-3.5 shrink-0' %>
-        Updated: <%= local_time job_lead.updated_at %>
+        Updated: <%= local_time_short job_lead.updated_at %>
       </span>
     <% end %>
   </div>

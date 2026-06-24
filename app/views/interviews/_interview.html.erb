@@ -56,7 +56,7 @@
   <div class="flex items-center gap-x-6 gap-y-2 mb-4">
     <div class="flex items-center gap-1 text-sm text-soft">
       <%= icon 'calendar', class: 'size-3.75 shrink-0' %>
-      <%= interview.scheduled_at ? local_time(interview.scheduled_at) : "Not scheduled" %>
+      <%= interview.scheduled_at ? local_time_short(interview.scheduled_at) : "Not scheduled" %>
     </div>
     <% if interview.location.present? %>
       <div class="flex items-center gap-1 text-sm text-soft">
@@ -99,7 +99,7 @@
     <% end %>
     <span class="inline-flex items-center gap-1">
       <%= icon 'clock', class: 'size-3.5 shrink-0' %>
-      Updated: <%= local_time interview.updated_at %>
+      Updated: <%= local_time_short interview.updated_at %>
     </span>
   </div>
 </div>
