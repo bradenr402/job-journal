@@ -14,13 +14,13 @@ class UsersController < ApplicationController
 
     if @user.authenticate(current_password)
       if @user.update(user_params)
-        redirect_to edit_account_path, success: 'Account updated successfully.'
+        redirect_to edit_account_path, success: "Account updated successfully."
       else
-        render :edit, status: :unprocessable_entity, error: @user.errors.full_messages.join(', ')
+        render :edit, status: :unprocessable_entity, error: @user.errors.full_messages.join(", ")
       end
     else
-      @user.errors.add(:current_password, 'is incorrect')
-      render :edit, status: :unprocessable_entity, error: 'Current password is incorrect.'
+      @user.errors.add(:current_password, "is incorrect")
+      render :edit, status: :unprocessable_entity, error: "Current password is incorrect."
     end
   end
 

@@ -7,11 +7,11 @@ if Rails.env.development? && defined?(Bullet)
   # Bullet.add_footer = true
 
   Bullet.counter_cache_enable = false
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'JobLead', association: :interviews
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'JobLead', association: :notes
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'JobLead', association: :tags
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'JobLead', association: :taggings
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'Interview', association: :job_lead
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'Interview', association: :notes
-  Bullet.add_safelist type: :unused_eager_loading, class_name: 'Note', association: :notable
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "JobLead", association: :interviews
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "JobLead", association: :notes
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "JobLead", association: :tags
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "JobLead", association: :taggings
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "Interview", association: :job_lead
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "Interview", association: :notes
+  Bullet.add_safelist type: :unused_eager_loading, class_name: "Note", association: :notable
 end

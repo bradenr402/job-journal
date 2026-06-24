@@ -1,21 +1,21 @@
-require 'test_helper'
+require "test_helper"
 
 class NoteTest < ActiveSupport::TestCase
   def setup
     @note = notes(:one)
   end
 
-  test 'should be valid with valid attributes' do
+  test "should be valid with valid attributes" do
     assert @note.valid?
   end
 
-  test 'should require content' do
-    @note.content = ''
+  test "should require content" do
+    @note.content = ""
     assert_not @note.valid?
     assert_includes @note.errors[:content], "can't be blank"
   end
 
-  test 'title should return correct note title' do
+  test "title should return correct note title" do
     job_lead_note = notes(:one)
     job_lead = job_lead_note.notable
 

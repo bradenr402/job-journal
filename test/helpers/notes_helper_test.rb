@@ -1,20 +1,20 @@
-require 'test_helper'
+require "test_helper"
 
 class NotesHelperTest < ActionView::TestCase
-  test 'markdown_to_html returns empty string for blank content' do
-    assert_equal '', markdown_to_html(nil)
-    assert_equal '', markdown_to_html('')
-    assert_equal '', markdown_to_html(' ')
+  test "markdown_to_html returns empty string for blank content" do
+    assert_equal "", markdown_to_html(nil)
+    assert_equal "", markdown_to_html("")
+    assert_equal "", markdown_to_html(" ")
   end
 
-  test 'markdown_to_html converts links to anchor tags' do
-    markdown = '[link](https://example.com)'
+  test "markdown_to_html converts links to anchor tags" do
+    markdown = "[link](https://example.com)"
     expected_html = '<p><a href="https://example.com">link</a></p>'
     output = markdown_to_html(markdown)
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html converts headings to h* tags with anchors' do
+  test "markdown_to_html converts headings to h* tags with anchors" do
     markdown = <<~MD
       # Heading 1
       ## Heading 2
@@ -37,7 +37,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles code blocks properly' do
+  test "markdown_to_html handles code blocks properly" do
     markdown = <<~MD
       ```ruby
       puts "Hello, world!"
@@ -52,7 +52,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles inline code properly' do
+  test "markdown_to_html handles inline code properly" do
     markdown = <<~MD
       `console.log('Hello, world!')`
     MD
@@ -65,7 +65,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles ordered lists properly' do
+  test "markdown_to_html handles ordered lists properly" do
     markdown = <<~MD
       1. First
       2. Second
@@ -84,7 +84,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles unordered lists properly' do
+  test "markdown_to_html handles unordered lists properly" do
     markdown = <<~MD
       - First
       - Second
@@ -103,7 +103,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles nested lists properly' do
+  test "markdown_to_html handles nested lists properly" do
     markdown = <<~MD
     1. First item
        1. Nested ordered item
@@ -148,7 +148,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles blockquotes correctly' do
+  test "markdown_to_html handles blockquotes correctly" do
     markdown = <<~MD
       > This is a blockquote
     MD
@@ -163,7 +163,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles horizontal rules correctly' do
+  test "markdown_to_html handles horizontal rules correctly" do
     markdown = <<~MD
       ---
     MD
@@ -176,7 +176,7 @@ class NotesHelperTest < ActionView::TestCase
     assert_equal expected_html.squish, output.squish
   end
 
-  test 'markdown_to_html handles bold and italics correctly' do
+  test "markdown_to_html handles bold and italics correctly" do
     markdown = <<~MD
       *Italic text*
       **Bold text**

@@ -3,15 +3,9 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
-  Exclude:
-    - Gemfile
-    - "*.gemspec"
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
-  Exclude:
-    - Gemfile
-    - "*.gemspec"
 
 Layout/EmptyLines:
   Enabled: true

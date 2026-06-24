@@ -5,7 +5,7 @@ class RegistrationsController < ApplicationController
   before_action :resume_session, only: [ :new, :create ]
 
   before_action only: %i[new create] do
-    redirect_to dashboard_path, notice: 'You are already signed in.' if authenticated?
+    redirect_to dashboard_path, notice: "You are already signed in." if authenticated?
   end
 
   def new
@@ -16,9 +16,9 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       start_new_session_for @user
-      redirect_to dashboard_path, success: 'You&#8217;ve successfully signed up to JobJournal. Welcome!'
+      redirect_to dashboard_path, success: "You&#8217;ve successfully signed up to JobJournal. Welcome!"
     else
-      render :new, status: :unprocessable_entity, error: @user.errors.full_messages.join(', ')
+      render :new, status: :unprocessable_entity, error: @user.errors.full_messages.join(", ")
     end
   end
 
@@ -26,9 +26,9 @@ class RegistrationsController < ApplicationController
     @user = Current.user
 
     if @user.destroy
-      redirect_to new_session_path, notice: 'Your account has been deleted.'
+      redirect_to new_session_path, notice: "Your account has been deleted."
     else
-      redirect_back fallback_location: edit_account_path, error: 'Failed to delete your account. Please try again.'
+      redirect_back fallback_location: edit_account_path, error: "Failed to delete your account. Please try again."
     end
   end
 

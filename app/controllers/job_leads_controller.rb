@@ -8,9 +8,9 @@ class JobLeadsController < ApplicationController
   def index
     @tags = Current.user.tags.order(:name)
 
-    @selected_tag_names = params[:tags].to_s.split(',').map(&:strip).uniq
+    @selected_tag_names = params[:tags].to_s.split(",").map(&:strip).uniq
     @selected_status_name = params[:status].presence
-    @selected_job_lead_type = params[:job_lead_type].presence || 'active'
+    @selected_job_lead_type = params[:job_lead_type].presence || "active"
 
     scope = Current.user.job_leads
       .includes(:notes, :tags)
@@ -31,8 +31,8 @@ class JobLeadsController < ApplicationController
 
     @job_leads =
       case @selected_job_lead_type
-      when 'active' then scope.active
-      when 'archived' then scope.archived
+      when "active" then scope.active
+      when "archived" then scope.archived
       else scope
       end
 
@@ -84,56 +84,56 @@ class JobLeadsController < ApplicationController
     @job_lead = Current.user.job_leads.build(job_lead_params)
 
     if @job_lead.save
-      redirect_to @job_lead, success: 'Job lead was successfully created.'
+      redirect_to @job_lead, success: "Job lead was successfully created."
     else
       @tags = Current.user.tags.order(:name)
       set_recents
-      render :new, status: :unprocessable_entity, error: 'Failed to create job lead.'
+      render :new, status: :unprocessable_entity, error: "Failed to create job lead."
     end
   end
 
   # PATCH/PUT /job_leads/1
   def update
     if @job_lead.update(job_lead_params)
-      redirect_to @job_lead, success: 'Job lead was successfully updated.'
+      redirect_to @job_lead, success: "Job lead was successfully updated."
     else
       set_recents
-      render :edit, status: :unprocessable_entity, error: 'Failed to update job lead.'
+      render :edit, status: :unprocessable_entity, error: "Failed to update job lead."
     end
   end
 
   # DELETE /job_leads/1
   def destroy
     if @job_lead.destroy
-      redirect_to job_leads_path, status: :see_other, success: 'Job lead was successfully destroyed.'
+      redirect_to job_leads_path, status: :see_other, success: "Job lead was successfully destroyed."
     else
-      redirect_to @job_lead, error: 'Failed to destroy job lead.'
+      redirect_to @job_lead, error: "Failed to destroy job lead."
     end
   end
 
   # PATCH /job_leads/1/archive
   def archive
     if @job_lead.archive!
-      redirect_to @job_lead, success: 'Job lead was archived.'
+      redirect_to @job_lead, success: "Job lead was archived."
     else
-      redirect_to @job_lead, error: 'Failed to archive job lead.'
+      redirect_to @job_lead, error: "Failed to archive job lead."
     end
   end
 
   # PATCH /job_leads/1/unarchive
   def unarchive
     if @job_lead.unarchive!
-      redirect_to @job_lead, success: 'Job lead was unarchived.'
+      redirect_to @job_lead, success: "Job lead was unarchived."
     else
-      redirect_to @job_lead, error: 'Failed to unarchive job lead.'
+      redirect_to @job_lead, error: "Failed to unarchive job lead."
     end
   end
 
   def advance_status
     case @job_lead.status
-    when 'lead'
+    when "lead"
       @job_lead.applied!
-    when 'offer'
+    when "offer"
       @job_lead.accepted!
     end
 
@@ -142,20 +142,20 @@ class JobLeadsController < ApplicationController
 
   def reject
     @job_lead.rejected!
-    redirect_to @job_lead, notice: 'Job lead marked as Rejected and automatically archived.'
+    redirect_to @job_lead, notice: "Job lead marked as Rejected and automatically archived."
   end
 
   def revert_status
     case @job_lead.status
-    when 'applied'
+    when "applied"
       @job_lead.update!(applied_at: nil)
-    when 'interview'
+    when "interview"
       @job_lead.interviews.destroy_all
-    when 'offer'
+    when "offer"
       @job_lead.update!(offer_at: nil, offer_amount: nil)
-    when 'rejected'
+    when "rejected"
       @job_lead.update!(rejected_at: nil)
-    when 'accepted'
+    when "accepted"
       @job_lead.update!(accepted_at: nil)
     end
 
@@ -165,16 +165,16 @@ class JobLeadsController < ApplicationController
   def offer
     message =
       case @job_lead.status
-      when 'lead'
-        'Cannot advance to Offer before applying.'
-      when 'applied'
-        'Cannot advance to Offer before interviewing.'
-      when 'offer'
-        'Job lead is already in Offer stage.'
-      when 'rejected'
-        'Cannot advance rejected lead to Offer.'
-      when 'accepted'
-        'Job lead is already in Accepted stage.'
+      when "lead"
+        "Cannot advance to Offer before applying."
+      when "applied"
+        "Cannot advance to Offer before interviewing."
+      when "offer"
+        "Job lead is already in Offer stage."
+      when "rejected"
+        "Cannot advance rejected lead to Offer."
+      when "accepted"
+        "Job lead is already in Accepted stage."
       else
         nil
       end
@@ -185,23 +185,23 @@ class JobLeadsController < ApplicationController
       flash.clear
       render :offer
     else
-      redirect_to @job_lead, error: 'Sorry, something went wrong.'
+      redirect_to @job_lead, error: "Sorry, something went wrong."
     end
   end
 
   def set_offer
     message =
       case @job_lead.status
-      when 'lead'
-        'Cannot advance to Offer before applying.'
-      when 'applied'
-        'Cannot advance to Offer before interviewing.'
-      when 'offer'
-        'Job lead is already in Offer stage.'
-      when 'rejected'
-        'Cannot advance rejected lead to Offer.'
-      when 'accepted'
-        'Job lead is already in Accepted stage.'
+      when "lead"
+        "Cannot advance to Offer before applying."
+      when "applied"
+        "Cannot advance to Offer before interviewing."
+      when "offer"
+        "Job lead is already in Offer stage."
+      when "rejected"
+        "Cannot advance rejected lead to Offer."
+      when "accepted"
+        "Job lead is already in Accepted stage."
       else
         nil
       end
@@ -210,13 +210,13 @@ class JobLeadsController < ApplicationController
 
     offer_amount = params[:job_lead][:offer_amount].to_f
 
-    return redirect_back fallback_location: @job_lead, alert: 'Offer amount is required.' unless offer_amount.positive?
+    return redirect_back fallback_location: @job_lead, alert: "Offer amount is required." unless offer_amount.positive?
 
     if @job_lead.update(offer_at: Time.current, offer_amount:)
       flash.clear
-      redirect_to @job_lead, success: 'Offer amount set successfully.'
+      redirect_to @job_lead, success: "Offer amount set successfully."
     else
-      render :offer, status: :unprocessable_entity, error: 'Failed to set offer amount.'
+      render :offer, status: :unprocessable_entity, error: "Failed to set offer amount."
     end
   end
 
@@ -226,10 +226,10 @@ class JobLeadsController < ApplicationController
 
   def update_history
     if @job_lead.update(job_lead_history_params)
-      redirect_to @job_lead, success: 'History updated successfully.'
+      redirect_to @job_lead, success: "History updated successfully."
     else
       @interviews = @job_lead.interviews.order(:scheduled_at)
-      render :history, status: :unprocessable_entity, error: 'Failed to update history.'
+      render :history, status: :unprocessable_entity, error: "Failed to update history."
     end
   end
 
@@ -269,7 +269,7 @@ class JobLeadsController < ApplicationController
 
     @recent_titles = scope.distinct.pluck(:title).sort
     @recent_companies = scope.distinct.pluck(:company).sort
-    @recent_locations = scope.where.not(location: [ nil, '' ]).distinct.pluck(:location).sort
-    @recent_sources = scope.where.not(source: [ nil, '' ]).distinct.pluck(:source).sort
+    @recent_locations = scope.where.not(location: [ nil, "" ]).distinct.pluck(:location).sort
+    @recent_sources = scope.where.not(source: [ nil, "" ]).distinct.pluck(:source).sort
   end
 end

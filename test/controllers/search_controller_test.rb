@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -6,7 +6,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     sign_in_as @user
   end
 
-  test 'should get search' do
+  test "should get search" do
     get search_url
     assert_response :success
   end

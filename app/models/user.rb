@@ -3,9 +3,9 @@ class User < ApplicationRecord
   DEFAULT_SETTINGS = {
     weekly_application_goal: 10,
 
-    job_leads_display: 'grid',
-    interviews_display: 'grid',
-    notes_display: 'grid',
+    job_leads_display: "grid",
+    interviews_display: "grid",
+    notes_display: "grid",
 
     auto_archive_rejected_leads_enabled: true,
 

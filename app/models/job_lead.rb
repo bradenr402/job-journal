@@ -89,7 +89,7 @@ class JobLead < ApplicationRecord
   }
 
   scope :with_status, ->(status) {
-    raise ArgumentError, 'Invalid status' unless STATUSES.include?(status.to_s)
+    raise ArgumentError, "Invalid status" unless STATUSES.include?(status.to_s)
     public_send(status.to_s)
   }
 
@@ -98,7 +98,7 @@ class JobLead < ApplicationRecord
     invalid_statuses = statuses - STATUSES
     raise ArgumentError, "Invalid status: #{invalid_statuses.join(', ')}" if invalid_statuses.any?
 
-    union_sql = statuses.map { public_send(it).select(:id).to_sql }.join(' UNION ')
+    union_sql = statuses.map { public_send(it).select(:id).to_sql }.join(" UNION ")
     where(id: from("(#{union_sql}) AS unioned").select(:id))
   }
 
@@ -138,9 +138,9 @@ class JobLead < ApplicationRecord
     return none if tag_names.empty?
 
     matching_ids = joins(:tags)
-      .where('LOWER(tags.name) IN (?)', tag_names)
-      .group('job_leads.id')
-      .having('COUNT(DISTINCT tags.id) = ?', tag_names.size)
+      .where("LOWER(tags.name) IN (?)", tag_names)
+      .group("job_leads.id")
+      .having("COUNT(DISTINCT tags.id) = ?", tag_names.size)
       .pluck(:id)
 
     where(id: matching_ids)
@@ -150,7 +150,7 @@ class JobLead < ApplicationRecord
     return none if tag_names.empty?
 
     joins(:tags)
-      .where('LOWER(tags.name) IN (?)', tag_names)
+      .where("LOWER(tags.name) IN (?)", tag_names)
       .distinct
   }
 
@@ -184,12 +184,12 @@ class JobLead < ApplicationRecord
 
   # Instance Methods
   def inferred_status
-    return 'accepted' if accepted_at?
-    return 'rejected' if rejected_at?
-    return 'offer' if offer_at?
-    return 'interview' if interviews.exists?
-    return 'applied' if applied_at?
-    'lead'
+    return "accepted" if accepted_at?
+    return "rejected" if rejected_at?
+    return "offer" if offer_at?
+    return "interview" if interviews.exists?
+    return "applied" if applied_at?
+    "lead"
   end
   alias status inferred_status
 
@@ -205,12 +205,12 @@ class JobLead < ApplicationRecord
 
   def previous_status
     timeline = {
-      'lead' => created_at,
-      'applied' => applied_at,
-      'interview' => interviews.minimum(:scheduled_at),
-      'offer' => offer_at,
-      'rejected' => rejected_at,
-      'accepted' => accepted_at
+      "lead" => created_at,
+      "applied" => applied_at,
+      "interview" => interviews.minimum(:scheduled_at),
+      "offer" => offer_at,
+      "rejected" => rejected_at,
+      "accepted" => accepted_at
     }.compact
 
     sorted_statuses = timeline.sort_by { |_, time| time }.map(&:first)
@@ -227,12 +227,12 @@ class JobLead < ApplicationRecord
 
   def latest_status_at
     case inferred_status
-    when 'lead' then  created_at
-    when 'applied' then  applied_at
-    when 'interview' then next_interview_at || last_interview_at
-    when 'offer' then  offer_at
-    when 'rejected' then  rejected_at
-    when 'accepted' then  accepted_at
+    when "lead" then  created_at
+    when "applied" then  applied_at
+    when "interview" then next_interview_at || last_interview_at
+    when "offer" then  offer_at
+    when "rejected" then  rejected_at
+    when "accepted" then  accepted_at
     else
       nil
     end
@@ -242,7 +242,7 @@ class JobLead < ApplicationRecord
     self.class.status_quality(inferred_status)
   end
 
-  def type = archived? ? 'archived' : 'active'
+  def type = archived? ? "archived" : "active"
 
   def active? = archived_at.nil?
   def archived? = archived_at.present?
@@ -252,10 +252,10 @@ class JobLead < ApplicationRecord
 
   def stale? = created_at.before?(user.get_setting(:job_lead_stale_after_days).days.ago)
 
-  def tag_list = tags.pluck(:name).join(', ')
+  def tag_list = tags.pluck(:name).join(", ")
 
   def tag_list=(names)
-    @pending_tag_names = names.to_s.split(',').map { it.strip.downcase }.reject(&:blank?).uniq
+    @pending_tag_names = names.to_s.split(",").map { it.strip.downcase }.reject(&:blank?).uniq
   end
 
   # Class Methods
@@ -267,7 +267,7 @@ class JobLead < ApplicationRecord
 
   # Returns a hash of the top sources by quality.
   def self.top_sources_by_quality(limit = 4)
-    leads = where.not(source: [ nil, '' ])
+    leads = where.not(source: [ nil, "" ])
 
     grouped = leads.group_by { it.source.downcase }
 
@@ -359,10 +359,10 @@ class JobLead < ApplicationRecord
   end
 
   def single_terminal_status
-    errors.add(:base, 'cannot be both rejected and accepted') if rejected_at? && accepted_at?
+    errors.add(:base, "cannot be both rejected and accepted") if rejected_at? && accepted_at?
   end
 
   def offer_amount_presence_for_offer_at
-    errors.add(:base, 'cannot advance to Offer without specifying an offer amount') if offer_at? && !offer_amount?
+    errors.add(:base, "cannot advance to Offer without specifying an offer amount") if offer_at? && !offer_amount?
   end
 end

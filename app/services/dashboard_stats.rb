@@ -79,7 +79,7 @@ class DashboardStats
     interviews_no_notes = recent.where.not(
       id: recent
         .joins(:notes)
-        .where('notes.updated_at >= interviews.scheduled_at')
+        .where("notes.updated_at >= interviews.scheduled_at")
         .distinct
         .select(:id)
     )

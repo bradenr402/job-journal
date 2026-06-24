@@ -4,9 +4,9 @@ module ApplicationHelper
       if number.zero?
         options[:zero_sign].presence
       elsif number.positive?
-        '+'
+        "+"
       else
-        '-'
+        "-"
       end
 
     formatted = number_with_precision(number.abs, **options)

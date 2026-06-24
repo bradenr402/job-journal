@@ -5,8 +5,8 @@ class TagsController < ApplicationController
     @tags = Current.user.tags
       .joins(:taggings)
       .group(:id)
-      .select('tags.*, COUNT(taggings.id) as taggings_count')
-      .order('taggings_count DESC', :name)
+      .select("tags.*, COUNT(taggings.id) as taggings_count")
+      .order("taggings_count DESC", :name)
   end
 
   def edit
@@ -14,7 +14,7 @@ class TagsController < ApplicationController
 
   def update
     if @tag.update(tag_params)
-      redirect_to tags_path, success: 'Tag was successfully updated.'
+      redirect_to tags_path, success: "Tag was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -22,9 +22,9 @@ class TagsController < ApplicationController
 
   def destroy
     if @tag.destroy
-      redirect_to tags_path, success: 'Tag was successfully deleted.'
+      redirect_to tags_path, success: "Tag was successfully deleted."
     else
-      redirect_to tags_path, error: 'Failed to delete tag.'
+      redirect_to tags_path, error: "Failed to delete tag."
     end
   end
 

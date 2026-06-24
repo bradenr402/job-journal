@@ -19,18 +19,18 @@ class SettingsController < ApplicationController
     end
 
     if updated
-      redirect_to settings_path, success: 'Settings updated successfully.'
+      redirect_to settings_path, success: "Settings updated successfully."
     else
       @settings = @user.all_settings
-      render :edit, status: :unprocessable_entity, error: 'Failed to update settings.'
+      render :edit, status: :unprocessable_entity, error: "Failed to update settings."
     end
   end
 
   def reset
     if Current.user.reset_all_settings
-      flash[:success] = 'Settings reset to defaults successfully.'
+      flash[:success] = "Settings reset to defaults successfully."
     else
-      flash[:error] = 'Failed to reset settings.'
+      flash[:error] = "Failed to reset settings."
     end
     redirect_to settings_path
   end
@@ -39,9 +39,9 @@ class SettingsController < ApplicationController
 
   def parse_setting_value(raw_value, default_value)
     case raw_value
-    when 'true'
+    when "true"
       true
-    when 'false'
+    when "false"
       false
     else
       if raw_value.to_s.match?(/\A\d+\z/) && default_value.is_a?(Integer)

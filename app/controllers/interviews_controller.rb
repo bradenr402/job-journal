@@ -16,9 +16,9 @@ class InterviewsController < ApplicationController
       )
 
     @interviews =
-      if params[:scheduled] == 'upcoming'
+      if params[:scheduled] == "upcoming"
         scope.future.order(scheduled_at: :desc)
-      elsif params[:scheduled] == 'completed'
+      elsif params[:scheduled] == "completed"
         scope.past.order(scheduled_at: :desc)
       else
         scope.order(scheduled_at: :desc)
@@ -45,27 +45,27 @@ class InterviewsController < ApplicationController
     @interview = Interview.new(interview_params)
 
     if @interview.save
-      redirect_to @interview, success: 'Interview was successfully created.'
+      redirect_to @interview, success: "Interview was successfully created."
     else
-      render :new, status: :unprocessable_entity, error: 'Failed to create the interview.'
+      render :new, status: :unprocessable_entity, error: "Failed to create the interview."
     end
   end
 
   # PATCH/PUT /interviews/1
   def update
     if @interview.update(interview_params)
-      redirect_to @interview, success: 'Interview was successfully updated.', status: :see_other
+      redirect_to @interview, success: "Interview was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity, error: 'Failed to update the interview.'
+      render :edit, status: :unprocessable_entity, error: "Failed to update the interview."
     end
   end
 
   # DELETE /interviews/1
   def destroy
     if @interview.destroy
-      redirect_to @interview.job_lead, success: 'Interview was successfully destroyed.', status: :see_other
+      redirect_to @interview.job_lead, success: "Interview was successfully destroyed.", status: :see_other
     else
-      redirect_to @interview, error: 'Failed to destroy the interview.', status: :unprocessable_entity
+      redirect_to @interview, error: "Failed to destroy the interview.", status: :unprocessable_entity
     end
   end
 
@@ -86,8 +86,8 @@ class InterviewsController < ApplicationController
 
     send_data calendar.to_ical,
               filename: "#{@interview.title.parameterize}-#{@interview.scheduled_at.to_date}.ics",
-              type: 'text/calendar',
-              disposition: 'inline'
+              type: "text/calendar",
+              disposition: "inline"
   end
 
   private

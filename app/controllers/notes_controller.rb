@@ -3,7 +3,7 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    @selected_note_type = params[:note_type].presence || 'active'
+    @selected_note_type = params[:note_type].presence || "active"
 
     scope =
       Current.user.notes
@@ -13,15 +13,15 @@ class NotesController < ApplicationController
 
     @notes =
       case @selected_note_type
-      when 'active'
+      when "active"
         scope
           .where.not(
-            notable_type: 'JobLead',
+            notable_type: "JobLead",
             notable_id: Current.user.job_leads.archived.select(:id)
           )
-      when 'archived'
+      when "archived"
         scope.where(
-          notable_type: 'JobLead',
+          notable_type: "JobLead",
           notable_id: Current.user.job_leads.archived.select(:id)
         )
       else
@@ -51,27 +51,27 @@ class NotesController < ApplicationController
     @note = Current.user.notes.build(note_params)
 
     if @note.save
-      redirect_to @note, success: 'Note was successfully created.'
+      redirect_to @note, success: "Note was successfully created."
     else
-      render :new, status: :unprocessable_entity, error: 'Failed to create the note.'
+      render :new, status: :unprocessable_entity, error: "Failed to create the note."
     end
   end
 
   # PATCH/PUT /notes/1
   def update
     if @note.update(note_params)
-      redirect_to @note, success: 'Note was successfully updated.', status: :see_other
+      redirect_to @note, success: "Note was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity, error: 'Failed to update the note.'
+      render :edit, status: :unprocessable_entity, error: "Failed to update the note."
     end
   end
 
   # DELETE /notes/1
   def destroy
     if @note.destroy
-      redirect_to @note.notable, success: 'Note was successfully destroyed.', status: :see_other
+      redirect_to @note.notable, success: "Note was successfully destroyed.", status: :see_other
     else
-      redirect_to @note, error: 'Failed to delete the note.', status: :unprocessable_entity
+      redirect_to @note, error: "Failed to delete the note.", status: :unprocessable_entity
     end
   end
 

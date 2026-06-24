@@ -36,7 +36,7 @@ puts "  Created #{tags.size} tags"
 # ── Helper ──
 # Clamp any timestamp to be safely in the past
 def past(time)
-  [time, 1.minute.ago].min
+  [ time, 1.minute.ago ].min
 end
 
 now = Time.current
@@ -60,7 +60,7 @@ stripe = user.job_leads.create!(
   offer_at: past(mon1 + 4.days),
   accepted_at: past(mon0)
 )
-stripe.tags << [tags["remote"], tags["priority"]]
+stripe.tags << [ tags["remote"], tags["priority"] ]
 
 # 2. Active offer pending decision
 notion = user.job_leads.create!(
@@ -75,7 +75,7 @@ notion = user.job_leads.create!(
   applied_at: past(mon2 + 3.days),
   offer_at: past(mon1 + 3.days)
 )
-notion.tags << [tags["hybrid"], tags["referral"]]
+notion.tags << [ tags["hybrid"], tags["referral"] ]
 
 # 3. Interview stage — upcoming interview
 shopify = user.job_leads.create!(
@@ -88,7 +88,7 @@ shopify = user.job_leads.create!(
   created_at: mon1,
   applied_at: past(mon1 + 1.day)
 )
-shopify.tags << [tags["remote"], tags["enterprise"]]
+shopify.tags << [ tags["remote"], tags["enterprise"] ]
 
 # 4. Interview stage — past interview, rated well
 airbnb = user.job_leads.create!(
@@ -101,7 +101,7 @@ airbnb = user.job_leads.create!(
   created_at: mon2 + 1.day,
   applied_at: past(mon2 + 2.days)
 )
-airbnb.tags << [tags["hybrid"], tags["priority"]]
+airbnb.tags << [ tags["hybrid"], tags["priority"] ]
 
 # 5. Applied this week
 github = user.job_leads.create!(
@@ -114,7 +114,7 @@ github = user.job_leads.create!(
   created_at: mon0,
   applied_at: past(mon0 + 6.hours)
 )
-github.tags << [tags["remote"], tags["referral"], tags["priority"]]
+github.tags << [ tags["remote"], tags["referral"], tags["priority"] ]
 
 # 6. Applied last week
 figma = user.job_leads.create!(
@@ -127,7 +127,7 @@ figma = user.job_leads.create!(
   created_at: mon1 + 1.day,
   applied_at: past(mon1 + 2.days)
 )
-figma.tags << [tags["hybrid"]]
+figma.tags << [ tags["hybrid"] ]
 
 # 7. Lead — saved this week, not yet applied
 vercel = user.job_leads.create!(
@@ -138,7 +138,7 @@ vercel = user.job_leads.create!(
   location: "Remote",
   created_at: past(mon0 + 8.hours)
 )
-vercel.tags << [tags["remote"], tags["startup"]]
+vercel.tags << [ tags["remote"], tags["startup"] ]
 
 # 8. Lead — saved recently
 linear = user.job_leads.create!(
@@ -149,7 +149,7 @@ linear = user.job_leads.create!(
   location: "Remote",
   created_at: past(mon0 + 4.hours)
 )
-linear.tags << [tags["remote"], tags["startup"], tags["referral"]]
+linear.tags << [ tags["remote"], tags["startup"], tags["referral"] ]
 
 # 9. Rejected last week
 slack = user.job_leads.create!(
@@ -163,7 +163,7 @@ slack = user.job_leads.create!(
   applied_at: past(mon2 + 4.days),
   rejected_at: past(mon1 + 3.days)
 )
-slack.tags << [tags["hybrid"], tags["enterprise"]]
+slack.tags << [ tags["hybrid"], tags["enterprise"] ]
 
 # 10. Rejected two weeks ago
 dropbox = user.job_leads.create!(
@@ -177,7 +177,7 @@ dropbox = user.job_leads.create!(
   applied_at: past(mon2 + 1.day),
   rejected_at: past(mon2 + 5.days)
 )
-dropbox.tags << [tags["remote"]]
+dropbox.tags << [ tags["remote"] ]
 
 # 11. Applied this week
 netflix = user.job_leads.create!(
@@ -190,7 +190,7 @@ netflix = user.job_leads.create!(
   created_at: mon0,
   applied_at: past(mon0 + 10.hours)
 )
-netflix.tags << [tags["remote"], tags["priority"]]
+netflix.tags << [ tags["remote"], tags["priority"] ]
 
 # 12. Lead — saved a few days ago
 square = user.job_leads.create!(
@@ -201,7 +201,7 @@ square = user.job_leads.create!(
   location: "Oakland, CA (Hybrid)",
   created_at: past(mon0 + 6.hours)
 )
-square.tags << [tags["hybrid"]]
+square.tags << [ tags["hybrid"] ]
 
 # 13. Applied last week
 coinbase = user.job_leads.create!(
@@ -214,7 +214,7 @@ coinbase = user.job_leads.create!(
   created_at: mon1 + 2.days,
   applied_at: past(mon1 + 3.days)
 )
-coinbase.tags << [tags["remote"], tags["startup"]]
+coinbase.tags << [ tags["remote"], tags["startup"] ]
 
 # 14. Interview stage — past interview
 datadog = user.job_leads.create!(
@@ -227,7 +227,7 @@ datadog = user.job_leads.create!(
   created_at: mon2 + 2.days,
   applied_at: past(mon2 + 3.days)
 )
-datadog.tags << [tags["hybrid"], tags["enterprise"]]
+datadog.tags << [ tags["hybrid"], tags["enterprise"] ]
 
 puts "  Created #{user.job_leads.count} job leads"
 

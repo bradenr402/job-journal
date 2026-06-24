@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class NotesControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -16,42 +16,42 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get index' do
+  test "should get index" do
     get notes_url
     assert_response :success
   end
 
-  test 'should get new' do
+  test "should get new" do
     get new_note_url(notable_type: @note.notable.model_name, notable_id: @note.notable.id)
     assert_response :success
   end
 
-  test 'should create note' do
-    assert_difference('Note.count') do
-      post notes_url, params: { note: { content: 'This is a test.', notable_id: @note.notable_id, notable_type: @note.notable_type } }
+  test "should create note" do
+    assert_difference("Note.count") do
+      post notes_url, params: { note: { content: "This is a test.", notable_id: @note.notable_id, notable_type: @note.notable_type } }
     end
 
     assert_redirected_to note_url(Note.last)
   end
 
-  test 'should show note' do
+  test "should show note" do
     get note_url(@note)
     assert_response :success
   end
 
-  test 'should get edit' do
+  test "should get edit" do
     get edit_note_url(@note)
     assert_response :success
   end
 
-  test 'should update note' do
-    patch note_url(@note), params: { note: { content: 'This is a test.' } }
+  test "should update note" do
+    patch note_url(@note), params: { note: { content: "This is a test." } }
     assert_redirected_to note_url(@note)
   end
 
-  test 'should destroy note' do
+  test "should destroy note" do
     notable = @note.notable
-    assert_difference('Note.count', -1) do
+    assert_difference("Note.count", -1) do
       delete note_url(@note)
     end
 

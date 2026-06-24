@@ -1,6 +1,6 @@
 module NotesHelper
   def markdown_to_html(content)
-    return '' if content.blank?
+    return "" if content.blank?
 
     html = Commonmarker.to_html(content)
 

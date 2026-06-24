@@ -15,11 +15,11 @@ class SearchQuery
     return EMPTY_RESULTS if @query.blank?
 
     case @filter
-    when 'job_leads'
+    when "job_leads"
       single_result(:job_leads, search_job_leads.limit(30))
-    when 'interviews'
+    when "interviews"
       single_result(:interviews, search_interviews.limit(30))
-    when 'notes'
+    when "notes"
       single_result(:notes, search_notes.limit(30))
     else
       all_results
@@ -75,9 +75,9 @@ class SearchQuery
 
     scope =
       case @date_range
-      when 'upcoming'
+      when "upcoming"
         scope.future
-      when 'completed'
+      when "completed"
         scope.past
       else
         scope
@@ -110,7 +110,7 @@ class SearchQuery
     scope = scope.where(notable_type: @notable_type) if @notable_type.present?
 
     terms.reduce(scope) do |current_scope, term|
-      current_scope.where('LOWER(content) LIKE ?', "%#{term}%")
+      current_scope.where("LOWER(content) LIKE ?", "%#{term}%")
     end
   end
 end

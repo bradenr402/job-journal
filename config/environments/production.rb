@@ -1,4 +1,4 @@
-require 'active_support/core_ext/integer/time'
+require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -16,7 +16,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   # Cache assets for far-future expiry since they are all digest stamped.
-  config.public_file_server.headers = { 'cache-control' => "public, max-age=#{1.year.to_i}" }
+  config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
@@ -38,10 +38,10 @@ Rails.application.configure do
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
-  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Prevent health checks from clogging up the logs.
-  config.silence_healthcheck_path = '/up'
+  config.silence_healthcheck_path = "/up"
 
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
@@ -62,7 +62,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     user_name:            Rails.application.credentials.dig(:gmail, :username),
     password:             Rails.application.credentials.dig(:gmail, :password),
-    address:              'smtp.gmail.com',
+    address:              "smtp.gmail.com",
     port:                 587,
     authentication:       :plain,
     enable_starttls_auto: true
@@ -70,10 +70,10 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
   # TODO: update host with JobJournal URL
-  config.action_mailer.default_url_options = { host: 'job-journal.fly.dev' }
+  config.action_mailer.default_url_options = { host: "job-journal.fly.dev" }
   config.action_mailer.default_options = {
-    from: 'JobJournal <jobjournalapp@gmail.com>',
-    reply_to: 'jobjournalapp@gmail.com'
+    from: "JobJournal <jobjournalapp@gmail.com>",
+    reply_to: "jobjournalapp@gmail.com"
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

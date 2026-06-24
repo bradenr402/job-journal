@@ -16,7 +16,7 @@ class Tag < ApplicationRecord
   scope :top_by_usage, -> {
     joins(:taggings)
       .group(:id, :name)
-      .order(Arel.sql('COUNT(taggings.id) DESC'))
+      .order(Arel.sql("COUNT(taggings.id) DESC"))
   }
 
   # Class Methods

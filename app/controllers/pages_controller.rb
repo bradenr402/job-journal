@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   allow_unauthenticated_access only: :landing
-  layout 'landing', only: :landing
+  layout "landing", only: :landing
 
   before_action :cleanup_leads, only: :home
 
@@ -26,46 +26,46 @@ class PagesController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def build_demo_data
-    demo_user = User.new(id: 0, name: 'Demo User')
+    demo_user = User.new(id: 0, name: "Demo User")
 
     # ── Job Leads ──────────────────────────────────────────────
     stripe_lead = demo_lead(
       id: 1001, user: demo_user,
-      title: 'Senior Software Engineer', company: 'Stripe',
-      application_url: 'https://stripe.com/jobs/1234',
+      title: "Senior Software Engineer", company: "Stripe",
+      application_url: "https://stripe.com/jobs/1234",
       applied_at: 10.days.ago + 9.hours,
       created_at: 14.days.ago + 2.hours + 17.minutes, updated_at: 2.days.ago + 11.hours + 42.minutes,
-      status: 'interview', status_at: 5.days.ago + 14.hours + 5.minutes,
-      tags: [ 'remote', 'dream job' ], notes_count: 5
+      status: "interview", status_at: 5.days.ago + 14.hours + 5.minutes,
+      tags: [ "remote", "dream job" ], notes_count: 5
     )
 
     notion_lead = demo_lead(
       id: 1002, user: demo_user,
-      title: 'Staff Frontend Developer', company: 'Notion',
-      application_url: 'https://notion.so/careers/5678',
+      title: "Staff Frontend Developer", company: "Notion",
+      application_url: "https://notion.so/careers/5678",
       applied_at: 8.days.ago + 15.hours + 30.minutes,
       created_at: 12.days.ago + 10.hours + 51.minutes, updated_at: 4.days.ago + 8.hours + 3.minutes,
-      status: 'applied', status_at: 8.days.ago + 15.hours + 30.minutes,
-      tags: [ 'hybrid', 'referral' ], notes_count: 2
+      status: "applied", status_at: 8.days.ago + 15.hours + 30.minutes,
+      tags: [ "hybrid", "referral" ], notes_count: 2
     )
 
     vercel_lead = demo_lead(
       id: 1003, user: demo_user,
-      title: 'Principal Engineer', company: 'Vercel',
-      application_url: 'https://vercel.com/careers/9012',
+      title: "Principal Engineer", company: "Vercel",
+      application_url: "https://vercel.com/careers/9012",
       applied_at: 20.days.ago + 11.hours + 22.minutes, offer_at: 3.days.ago + 16.hours + 48.minutes,
       created_at: 25.days.ago + 17.hours + 9.minutes, updated_at: 3.days.ago + 16.hours + 50.minutes,
-      status: 'offer', status_at: 3.days.ago + 16.hours + 48.minutes,
-      tags: [ 'remote', 'referral' ], notes_count: 8
+      status: "offer", status_at: 3.days.ago + 16.hours + 48.minutes,
+      tags: [ "remote", "referral" ], notes_count: 8
     )
 
     shopify_lead = demo_lead(
       id: 1004, user: demo_user,
-      title: 'Engineering Manager', company: 'Shopify',
-      application_url: 'https://shopify.com/careers/3456',
+      title: "Engineering Manager", company: "Shopify",
+      application_url: "https://shopify.com/careers/3456",
       created_at: 11.days.ago + 13.hours + 34.minutes, updated_at: 7.days.ago + 9.hours + 17.minutes,
-      status: 'lead', status_at: 11.days.ago + 13.hours + 34.minutes,
-      tags: [ 'remote' ], notes_count: 0
+      status: "lead", status_at: 11.days.ago + 13.hours + 34.minutes,
+      tags: [ "remote" ], notes_count: 0
     )
 
     @demo_leads = [ stripe_lead, notion_lead, vercel_lead, shopify_lead ]
@@ -73,18 +73,18 @@ class PagesController < ApplicationController
     # ── Interviews ─────────────────────────────────────────────
     stripe_interview = demo_interview(
       id: 2001, job_lead: stripe_lead,
-      interviewer: 'Sarah Chen',
+      interviewer: "Sarah Chen",
       scheduled_at: 2.days.from_now + 14.hours,
-      location: 'Google Meet',
+      location: "Google Meet",
       created_at: 3.days.ago + 10.hours + 28.minutes, updated_at: 1.day.ago + 16.hours + 5.minutes,
       notes_count: 3
     )
 
     notion_interview = demo_interview(
       id: 2002, job_lead: notion_lead,
-      interviewer: 'James Park',
+      interviewer: "James Park",
       scheduled_at: 12.days.ago + 10.hours,
-      location: 'On-site at SF Office',
+      location: "On-site at SF Office",
       rating: 4,
       created_at: 14.days.ago + 11.hours + 15.minutes, updated_at: 11.days.ago + 22.hours + 37.minutes,
       notes_count: 4
@@ -116,49 +116,49 @@ class PagesController < ApplicationController
       ),
       Note.new(
         id: 3005, user: demo_user, notable: stripe_interview,
-        content: 'Interview went well. Sarah asked about my experience with distributed systems and how I would design a scalable payment processing system. She seemed impressed with my approach to handling edge cases.',
+        content: "Interview went well. Sarah asked about my experience with distributed systems and how I would design a scalable payment processing system. She seemed impressed with my approach to handling edge cases.",
         created_at: 1.day.ago + 15.hours + 7.minutes, updated_at: 1.day.ago + 15.hours + 7.minutes
       ),
       Note.new(
         id: 3006, user: demo_user, notable: notion_lead,
-        content: 'Followed up via email. He mentioned that the team is still reviewing applications and will get back to me within the next week.',
+        content: "Followed up via email. He mentioned that the team is still reviewing applications and will get back to me within the next week.",
         created_at: 10.days.ago + 14.hours + 33.minutes, updated_at: 10.days.ago + 14.hours + 33.minutes
       )
     ]
 
     # ── Stats (rendered inline, no partial) ────────────────────
-    @demo_job_lead_stats = { count: 12, change: '+4 from last week' }
-    @demo_application_stats = { count: 7, change: '+3 from last week', goal: 10 }
-    @demo_interview_stats = { count: 3, change: '+1 from last week', average_rating: 4.0 }
+    @demo_job_lead_stats = { count: 12, change: "+4 from last week" }
+    @demo_application_stats = { count: 7, change: "+3 from last week", goal: 10 }
+    @demo_interview_stats = { count: 3, change: "+1 from last week", average_rating: 4.0 }
 
     # ── Follow-up suggestions (rendered inline) ────────────────
     @demo_suggestions = [
-      { title: 'Staff Frontend Developer', company: 'Notion', status: 'applied', status_at: 8.days.ago, action: 'applied to', time_ago: '8 days' },
-      { title: 'Senior Software Engineer', company: 'Stripe', status: 'interview', status_at: 5.days.ago, action: 'interviewed for' }
+      { title: "Staff Frontend Developer", company: "Notion", status: "applied", status_at: 8.days.ago, action: "applied to", time_ago: "8 days" },
+      { title: "Senior Software Engineer", company: "Stripe", status: "interview", status_at: 5.days.ago, action: "interviewed for" }
     ]
 
     @demo_stale_leads = [
       demo_lead(
         id: 1005, user: demo_user,
-        title: 'Engineering Manager', company: 'Shopify',
-        application_url: 'https://shopify.com/careers/8910',
+        title: "Engineering Manager", company: "Shopify",
+        application_url: "https://shopify.com/careers/8910",
         created_at: 19.days.ago + 4.hours + 1.minute, updated_at: 19.days.ago + 4.hours + 1.minute,
-        status: 'lead', status_at: 19.days.ago + 4.hours + 1.minute
+        status: "lead", status_at: 19.days.ago + 4.hours + 1.minute
       ),
       demo_lead(
         id: 1006, user: demo_user,
-        title: 'Senior Security Engineer', company: 'OpenAI',
-        application_url: 'https://openai.com/careers/1112',
+        title: "Senior Security Engineer", company: "OpenAI",
+        application_url: "https://openai.com/careers/1112",
         created_at: 27.days.ago + 3.hours - 12.minutes, updated_at: 27.days.ago + 3.hours - 12.minutes,
-        status: 'lead', status_at: 27.days.ago + 3.hours - 12.minutes
+        status: "lead", status_at: 27.days.ago + 3.hours - 12.minutes
       )
     ]
 
     # ── Insights data (rendered inline) ────────────────────────
     @demo_sources = {
-      'LinkedIn' => { count: 8, interview_count: 3, offer_count: 1 },
-      'Referral' => { count: 4, interview_count: 2, offer_count: 1 },
-      'Company Website' => { count: 5, interview_count: 1, offer_count: 0 }
+      "LinkedIn" => { count: 8, interview_count: 3, offer_count: 1 },
+      "Referral" => { count: 4, interview_count: 2, offer_count: 1 },
+      "Company Website" => { count: 5, interview_count: 1, offer_count: 0 }
     }
 
     @demo_top_tags = %w[remote hybrid referral dream\ job series-b priority]

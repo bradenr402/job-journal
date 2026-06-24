@@ -1,9 +1,9 @@
 class ErrorsController < ApplicationController
   allow_unauthenticated_access only: :show
-  layout 'error'
+  layout "error"
 
   def show
-    @exception = request.env['action_dispatch.exception']
+    @exception = request.env["action_dispatch.exception"]
     @status_code =
       params[:status_code]&.to_i ||
       status_code_from_exception(@exception) ||
@@ -26,6 +26,6 @@ class ErrorsController < ApplicationController
   end
 
   def view_for_code(code)
-    code.to_s.in?(%w[ 404 500 ]) ? code.to_s : '404'
+    code.to_s.in?(%w[ 404 500 ]) ? code.to_s : "404"
   end
 end
