@@ -52,20 +52,13 @@ export default class extends Controller {
   }
 
   _renderTagsContents() {
-    // Show all suggested chips before rendering
+    const selectedTags = new Set(this.tags);
     document
       .querySelectorAll('[data-action="click->tags-input#addTagFromList"]')
       .forEach((chip) => {
-        chip.classList.remove('hidden');
+        const value = chip.dataset.value?.toLowerCase();
+        chip.classList.toggle('hidden', selectedTags.has(value));
       });
-
-    // Hide suggested chips corresponding to current tags
-    this.tags.forEach((tag) => {
-      const suggestedChip = document.querySelector(
-        `[data-action="click->tags-input#addTagFromList"][data-value="${tag}"]`,
-      );
-      if (suggestedChip) suggestedChip.classList.add('hidden');
-    });
 
     // Remove all existing chips
     this.containerTarget.querySelectorAll('.tag-chip').forEach((el) => el.remove());
@@ -77,16 +70,25 @@ export default class extends Controller {
       chip.dataset.action = 'click->tags-input#removeTag';
       chip.dataset.value = tag;
 
-      chip.innerHTML = `
-        <span>${tag}</span>
-        <button type="button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-            <path
-              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-            />
-          </svg>
-        </button>
-      `;
+      const label = document.createElement('span');
+      label.textContent = tag;
+
+      const button = document.createElement('button');
+      button.type = 'button';
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 16 16');
+      svg.setAttribute('fill', 'currentColor');
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute(
+        'd',
+        'M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z',
+      );
+
+      svg.appendChild(path);
+      button.appendChild(svg);
+      chip.append(label, button);
 
       this.containerTarget.insertBefore(chip, this.inputTarget);
     });
