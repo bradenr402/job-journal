@@ -26,6 +26,26 @@
   --text-2xs: 0.675rem;
 
   --container-8xl: calc(var(--spacing) * 88 * 4); /* 88rem */
+
+  --animate-heartbeat: heartbeat 1.2s infinite;
+
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+    }
+    20% {
+      transform: scale(1.1);
+    }
+    30% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.18);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 }
 
 @view-transition {
