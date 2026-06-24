@@ -22,7 +22,7 @@
     >
     <div class="mb-4">
       <h2 class="subheading">Autofill From URL</h2>
-      <p class="text-sm text-muted mt-1 text-pretty">Paste a LinkedIn or Indeed job URL to fill the fields below. Only LinkedIn and Indeed are supported for now.</p>
+      <p class="text-sm text-soft mt-1 text-pretty">JobJournal can autofill details from <span class="text-normal font-medium">LinkedIn</span> or <span class="text-normal font-medium">Indeed</span>.</p>
     </div>
 
 
@@ -40,6 +40,10 @@
         data-action="click->url-autofill#submit"
       >Autofill from URL</button>
     </div>
+    <p class="text-xs text-muted mt-1">
+      Find a bug or want another site supported for autofill?
+      <%= link_to 'Open an issue', 'https://github.com/bradenr402/job-journal/issues/new', target: '_blank', rel: 'noopener', class: 'btn-link-primary text-xs' %> or email <%= mail_to 'jobjournalapp@gmail.com', class: 'btn-link-primary text-xs' %>.
+    </p>
 
     <p
       class="hidden text-xs mt-2"
