@@ -1,5 +1,6 @@
 require "net/http"
 require "resolv"
+require "timeout"
 
 class JobLeadAutofillFromUrl
   Result = Data.define(:success?, :fields, :error) do
@@ -26,16 +27,21 @@ class JobLeadAutofillFromUrl
   end
 
   def call
-    uri = parse_uri @url
-    return failure "Please provide a valid http(s) URL." unless uri
-    uri = canonical_uri uri
-    return failure "That host is not supported yet. Try a LinkedIn or Indeed job URL." unless allowed_host? uri
-    return failure "Refusing to fetch from a private network." unless public_host? uri
+    uri = nil
+    html = Timeout.timeout(REQUEST_TIMEOUT) do
+      uri = parse_uri @url
+      return failure "Please provide a valid https URL." unless uri
+      uri = canonical_uri uri
+      return failure "That host is not supported yet. Try a LinkedIn or Indeed job URL." unless allowed_host? uri
+      return failure "Refusing to fetch from a private network." unless public_host? uri
 
-    html = fetch_html uri
+      fetch_html uri
+    end
     return failure "Could not fetch that page. Double-check the URL and try again." unless html
 
     success parse(uri, html)
+  rescue Timeout::Error
+    failure "Could not fetch that page. Double-check the URL and try again."
   rescue StandardError => e
     Rails.logger.warn "[JobLeadAutofillFromUrl] #{e.class}: #{e.message}"
     failure "Something went wrong while reading that page."
