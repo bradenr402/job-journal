@@ -84,6 +84,14 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     end
   end
 
+  test "call names supported autofill sources for unsupported hosts" do
+    Net::HTTP.stub :start, ->(*) { raise "should not be called" } do
+      result = JobLeadAutofillFromUrl.call("https://example.com/jobs/1")
+
+      assert_equal "That host is not supported yet. Try a LinkedIn or Indeed job URL.", result.error
+    end
+  end
+
   test "call refuses responses with oversized content length before parsing" do
     html = file_fixture("linkedin/2026-05-08-junior-developer-collabera.html").read
 

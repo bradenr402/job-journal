@@ -485,7 +485,7 @@
             icon_bg: 'bg-cyan-100/70 dark:bg-cyan-900/40',
             icon_color: 'text-cyan-600 dark:text-cyan-500',
             title: 'Autofill from URL',
-            description: 'Enter a URL for a job posting and JobJournal autofills the company, title, location, and more&mdash;no manual input required.<br>Works with <strong class="text-normal font-semibold">LinkedIn</strong> and <strong class="text-normal font-semibold">Indeed</strong>, with more sources on the way.'
+            description: "Enter a URL for a job posting and JobJournal autofills the company, title, location, and more&mdash;no manual input required.<br>Works with #{Constants::SUPPORTED_AUTOFILL_SOURCES.map { tag.strong it, class: %w[ text-normal font-semibold ] }.to_sentence}, with more sources on the way."
           }
         ]
       %>

@@ -18,4 +18,8 @@ module Enumerable
   def deep_compact_blank
     deep_dup.deep_compact_blank!
   end
+
+  def to_disjunctive_sentence
+    to_sentence two_words_connector: " or ", last_word_connector: ", or "
+  end
 end

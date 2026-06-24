@@ -23,7 +23,7 @@
     >
     <div class="mb-4">
       <h2 class="subheading">Autofill From URL</h2>
-      <p class="text-sm text-soft mt-1 text-pretty">JobJournal can autofill details from <span class="text-normal font-medium">LinkedIn</span> or <span class="text-normal font-medium">Indeed</span>.</p>
+      <p class="text-sm text-soft mt-1 text-pretty">JobJournal can autofill details from <%= raw Constants::SUPPORTED_AUTOFILL_SOURCES.map { tag.span it, class: %w[ text-normal font-medium ] }.to_sentence %>.</p>
     </div>
 
 

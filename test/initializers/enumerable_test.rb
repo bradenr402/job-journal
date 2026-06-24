@@ -61,6 +61,12 @@ class EnumerableDeepCompactBlankTest < ActiveSupport::TestCase
     assert_equal expected, original
   end
 
+  test "Enumerable#to_disjunctive_sentence joins values with or connectors" do
+    assert_respond_to [], :to_disjunctive_sentence
+    assert_equal "LinkedIn or Indeed", %w[LinkedIn Indeed].to_disjunctive_sentence
+    assert_equal "LinkedIn, Indeed, or ZipRecruiter", %w[LinkedIn Indeed ZipRecruiter].to_disjunctive_sentence
+  end
+
   test "leaves non-enumerable values untouched" do
     object = Object.new
     hash = { a: object, b: nil }
