@@ -5,7 +5,7 @@
 <div class="md:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to @job_lead, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
       <span>Back to Job Lead</span>
     <% end %>
   </div>
@@ -44,7 +44,7 @@
               <% end %>
               <%= link_to interview_path(interview), class: 'btn btn-sm btn-secondary btn-muted' do %>
                 <span>View</span>
-                <%= inline_svg_tag 'icons/link-square.svg', class: 'size-4 shrink-0' %>
+                <%= icon 'link-square', class: 'size-4 shrink-0' %>
               <% end %>
             </div>
             <%= interview_fields.datetime_field :scheduled_at, include_seconds: false, class: 'form-input' %>

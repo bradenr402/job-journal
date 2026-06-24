@@ -1,6 +1,6 @@
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
-<div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless job_lead_page %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
+<div id="<%= dom_id job_lead %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless job_lead_page || @demo %>" style="view-transition-name: job_lead-<%= job_lead.id %>;">
   <div class="flex gap-x-4 gap-y-2 w-full mb-2">
     <div class="<%= job_lead_page ? 'subheading' : 'text-lg font-semibold' %>">
       <span><%= job_lead.title %></span>
@@ -14,35 +14,35 @@
       <div class="ml-auto relative max-h-max" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
         <button class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
           <span class="sr-only">Actions for this job lead</span>
-          <%= inline_svg_tag 'icons/more-horizontal.svg', class: 'size-5.5' %>
+          <%= icon 'more-horizontal', class: 'size-5.5' %>
         </button>
 
         <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
           <%= link_to edit_job_lead_path(job_lead), class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag 'icons/edit.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'edit', class: 'size-5 shrink-0' %>
             <span>Edit</span>
           <% end %>
 
           <%= link_to history_job_lead_path(job_lead), class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'calendar', class: 'size-5 shrink-0' %>
             <span>History</span>
           <% end %>
 
           <% if job_lead.archived_at? %>
             <%= button_to unarchive_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-secondary' do %>
-              <%= inline_svg_tag 'icons/unarchive.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'unarchive', class: 'size-5 shrink-0' %>
               <span>Unarchive</span>
             <% end %>
           <% else %>
             <%= button_to archive_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-secondary' do %>
-              <%= inline_svg_tag 'icons/archive.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'archive', class: 'size-5 shrink-0' %>
               <span>Archive</span>
             <% end %>
           <% end %>
 
           <% unless job_lead.accepted? || job_lead.lead? %>
             <%= button_to reject_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to mark this job lead as rejected?' } do %>
-              <%= inline_svg_tag 'icons/x.svg', class: 'size-5 shrink-0' %>
+              <%= icon 'x', class: 'size-5 shrink-0' %>
               <span>Rejected</span>
             <% end %>
           <% end %>
@@ -50,12 +50,12 @@
           <div class="dropdown-divider"></div>
 
           <%= button_to job_lead, method: :delete, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to delete this job lead?' } do %>
-            <%= inline_svg_tag 'icons/trash.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'trash', class: 'size-5 shrink-0' %>
             <span>Delete</span>
           <% end %>
         </div>
       </div>
-    <% else %>
+    <% elsif !@demo %>
       <%= link_to job_lead, data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
         <span class="sr-only">View</span>
       <% end %>
@@ -64,13 +64,13 @@
 
   <div class="flex items-end flex-wrap gap-x-6 gap-y-2 mb-4">
     <div class="flex items-center gap-1 text-sm text-light">
-      <%= inline_svg_tag 'icons/company.svg', class: 'size-3.75 shrink-0' %>
+      <%= icon 'company', class: 'size-3.75 shrink-0' %>
       <%= job_lead.company %>
     </div>
 
     <% if job_lead.application_url.present? && job_lead_page %>
       <%= link_to job_lead.application_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary text-sm inline-block align-middle relative z-20 max-w-fit' do %>
-        <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 inline' %>
+        <%= icon 'link', class: 'size-4 shrink-0 inline' %>
         <span class="wrap-anywhere"><%= line_wrap_url job_lead.application_url %></span>
       <% end %>
     <% end %>
@@ -83,7 +83,7 @@
           <% if job_lead.offer_amount? %>
             <div>
               <div class="text-muted text-sm flex items-center gap-1">
-                <%= inline_svg_tag 'icons/offer.svg', class: 'size-3.75 shrink-0' %>
+                <%= icon 'offer', class: 'size-3.75 shrink-0' %>
                 <dt>Offer Amount</dt>
               </div>
               <dd class="text-xl text-normal font-bold"><%= number_to_currency(job_lead.offer_amount, precision: 2) %></dd>
@@ -93,7 +93,7 @@
           <% if job_lead.salary? %>
             <div>
               <div class="text-muted text-sm flex items-center gap-1">
-                <%= inline_svg_tag 'icons/money.svg', class: 'size-3.75 shrink-0' %>
+                <%= icon 'money', class: 'size-3.75 shrink-0' %>
                 <dt><%= 'Posted' if job_lead.offer_amount? %> Salary</dt>
               </div>
               <dd class="text-xl text-normal font-bold"><%= job_lead.salary %></dd>
@@ -106,7 +106,7 @@
         <% if job_lead.contact? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
-              <%= inline_svg_tag 'icons/contact.svg', class: 'size-3.75 shrink-0' %>
+              <%= icon 'contact', class: 'size-3.75 shrink-0' %>
               <dt>Contact</dt>
             </div>
             <dd><%= job_lead.contact %></dd>
@@ -116,7 +116,7 @@
         <% if job_lead.location? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
-              <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
+              <%= icon 'location', class: 'size-3.75 shrink-0' %>
               <dt>Location</dt>
             </div>
             <dd><%= job_lead.location %></dd>
@@ -126,7 +126,7 @@
         <% if job_lead.source? %>
           <div>
             <div class="text-muted text-sm flex items-center gap-1">
-              <%= inline_svg_tag 'icons/globe.svg', class: 'size-3.75 shrink-0' %>
+              <%= icon 'globe', class: 'size-3.75 shrink-0' %>
               <dt>Source</dt>
             </div>
             <dd><%= job_lead.source %></dd>
@@ -138,7 +138,7 @@
 
   <% if job_lead.tags.any? %>
     <div class="flex flex-wrap items-center gap-1 mb-4">
-      <% job_lead.tags.order(:name).each do |tag| %>
+      <% job_lead.tags.sort_by(&:name).each do |tag| %>
         <span class="tag"><%= tag.name %></span>
       <% end %>
     </div>
@@ -147,7 +147,7 @@
   <% if job_lead_page %>
     <div class="mb-4">
       <div class="text-muted text-sm flex items-center gap-1 mb-1">
-        <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.75 shrink-0' %>
+        <%= icon 'calendar', class: 'size-3.75 shrink-0' %>
         <dt>History</dt>
       </div>
 
@@ -180,7 +180,7 @@
 
         <% status_history.each do |status_entry| %>
           <div class="flex shrink-0 items-center gap-1.5">
-            <%= inline_svg_tag 'icons/arrow-right.svg', class: 'size-3.5 shrink-0 text-light' %>
+            <%= icon 'arrow-right', class: 'size-3.5 shrink-0 text-light' %>
             <span class="tag tag-<%= status_entry[:status] %> <%= 'relative hover:opacity-75' if status_entry[:status] == 'interview' %>">
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
               <% if status_entry[:status] == 'interview' && job_lead_page %>
@@ -198,19 +198,19 @@
   <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
     <% if job_lead.notes.any? && !job_lead_page %>
       <span class="inline-flex items-center gap-1">
-        <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+        <%= icon 'note', class: 'size-3.5 shrink-0' %>
         <%= pluralize(job_lead.notes.size, 'note') %>
       </span>
     <% end %>
     <% if job_lead.archived_at.present? %>
       <span class="inline-flex items-center gap-1">
-        <%= inline_svg_tag 'icons/archive.svg', class: 'size-3.5 shrink-0' %>
-        Archived: <%= local_time job_lead.archived_at %>
+        <%= icon 'archive', class: 'size-3.5 shrink-0' %>
+        Archived: <%= local_time_short job_lead.archived_at %>
       </span>
     <% else %>
       <span class="inline-flex items-center gap-1">
-        <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
-        Updated: <%= local_time job_lead.updated_at %>
+        <%= icon 'clock', class: 'size-3.5 shrink-0' %>
+        Updated: <%= local_time_short job_lead.updated_at %>
       </span>
     <% end %>
   </div>

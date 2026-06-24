@@ -19,9 +19,13 @@
 }
 
 @utility nav-link {
-  @apply flex max-md:flex-col items-center gap-0.75 md:gap-2 pt-2.25 pb-1.75 md:px-3 md:py-2 rounded-lg text-2xs md:text-sm whitespace-nowrap text-light md:hover:bg-neutral-100 md:hover:dark:bg-neutral-900 focus-visible:bg-neutral-100 hover:text-primary-600 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none  active:scale-97;
+  @apply flex max-md:flex-col items-center max-md:gap-0.5 md:gap-2 max-md:pt-2.75 max-md:pb-2.75 md:px-3 md:py-2 md:rounded-lg max-md:font-medium text-2xs md:text-sm whitespace-nowrap text-light focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-97;
 
   &.nav-link-active {
+    @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600 font-semibold;
+  }
+
+  a:hover & {
     @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600;
   }
 }
@@ -50,19 +54,19 @@
   }
 
   /* Filterable tags */
-  &.tag-filter {
+  &.tag-filter:not(.demo) {
     @apply cursor-pointer hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500 active:scale-94;
   }
 
   /* Selected state for non-status tags */
   &.tag-selected:not(
-      .tag-lead,
-      .tag-applied,
-      .tag-interview,
-      .tag-offer,
-      .tag-rejected,
-      .tag-accepted
-    ) {
+    .tag-lead,
+    .tag-applied,
+    .tag-interview,
+    .tag-offer,
+    .tag-rejected,
+    .tag-accepted
+  ) {
     @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-600;
 
     & > svg {
@@ -81,7 +85,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter:not(.tag-selected) {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-yellow-100/80 hover:text-yellow-500 hover:border-yellow-200 dark:hover:bg-yellow-900/80 dark:hover:border-yellow-900;
     }
 
@@ -103,7 +107,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-blue-100/80 hover:text-blue-500 hover:border-blue-200 dark:hover:bg-blue-900/80 dark:hover:border-blue-900;
     }
 
@@ -125,7 +129,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-purple-100/80 hover:text-purple-500 hover:border-purple-200 dark:hover:bg-purple-900/80 dark:hover:border-purple-900;
     }
 
@@ -147,7 +151,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-green-100/80 hover:text-green-500 hover:border-green-200 dark:hover:bg-green-900/80 dark:hover:border-green-900;
     }
 
@@ -169,7 +173,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-rose-100/80 hover:text-rose-500 hover:border-rose-200 dark:hover:bg-rose-900/80 dark:hover:border-rose-900;
     }
 
@@ -191,7 +195,7 @@
       @apply has-[svg]:pr-1.5;
     }
 
-    &.tag-filter {
+    &.tag-filter:not(.demo) {
       @apply hover:bg-emerald-100/80 hover:text-emerald-500 hover:border-emerald-200 dark:hover:bg-emerald-900/80 dark:hover:border-emerald-900;
     }
 
@@ -249,7 +253,7 @@ Option variants:
   @apply absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col gap-1 rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-150;
 
   .card & {
-    @apply  dark:bg-neutral-800 dark:border-neutral-700;
+    @apply dark:bg-neutral-800 dark:border-neutral-700;
   }
 
   &.dropdown-hidden {

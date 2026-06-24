@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="[--sidebar-width:18rem] <%= authenticated? ? '[--tab-bar-height:3.6rem]' : '[--tab-bar-height:0rem]' %> [--body-padding:0.375rem] max-md:[--main-padding:1rem]">
+<html class="[--sidebar-width:18rem] <%= authenticated? ? '[--tab-bar-height:4rem]' : '[--tab-bar-height:0rem]' %> [--body-padding:0.375rem] max-md:[--main-padding:1rem]">
   <head>
     <%= render 'layouts/head' %>
   </head>
@@ -18,7 +18,7 @@
       <div class="absolute top-3 left-3 md:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
         <button class="dropdown-trigger" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
           <span class="sr-only">Menu</span>
-          <%= inline_svg_tag 'icons/menu.svg', class: 'size-6' %>
+          <%= icon 'menu', class: 'size-6' %>
         </button>
 
         <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden" data-dropdown-target="menu">
@@ -30,7 +30,7 @@
 
           <% dropdown_links.each do |link| %>
             <%= link_to link[:path], class: 'dropdown-option dropdown-option-secondary' do %>
-              <%= inline_svg_tag "icons/#{link[:icon]}.svg", class: 'size-5 shrink-0' %>
+              <%= icon link[:icon], class: 'size-5 shrink-0' %>
               <span><%= link[:label] %></span>
             <% end %>
           <% end  %>
@@ -38,16 +38,23 @@
           <div class="dropdown-divider"></div>
 
           <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
-            <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'logout', class: 'size-5 shrink-0' %>
             <span>Sign Out</span>
           <% end %>
         </div>
       </div>
 
+      <div class="absolute top-4 left-1/2 -translate-x-1/2 md:hidden">
+        <%= link_to root_path, class: 'flex items-center gap-1', tabindex: -1 do %>
+          <%= icon 'note-filled', class: 'size-5 shrink-0 text-primary-600' %>
+          <span class="text-lg font-extrabold tracking-tight text-normal">JobJournal</span>
+        <% end %>
+      </div>
+
       <div class="absolute top-3 right-3 md:hidden">
         <%= link_to search_path, class: "inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96 #{ 'text-primary-600' if current_page?(search_path)}" do %>
           <span class="sr-only">Search</span>
-          <%= inline_svg_tag 'icons/search.svg', class: 'size-6' %>
+          <%= icon 'search', class: 'size-6' %>
         <% end %>
       </div>
     <% end %>

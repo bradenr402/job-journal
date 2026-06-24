@@ -1,27 +1,30 @@
-<nav class="fixed bottom-4 inset-x-4 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
-  <div class="[view-transition-name:nav] h-full overflow-y-auto md:p-2 md:space-y-2 bg-white/60 md:bg-white dark:bg-neutral-900/60 rounded-[1.25rem] md:rounded-2xl md:not-dark:shadow-2xs max-md:backdrop-blur-md border border-neutral-200 dark:border-neutral-800/60 md:dark:border-neutral-900 flex flex-col">
-    <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1 text-primary-600', tabindex: -1 do %>
-      <%= inline_svg_tag 'icons/note-filled.svg', class: 'size-6 shrink-0' %>
-      <span class="text-2xl font-extrabold tracking-tight">JobJournal</span>
+<nav class="fixed bottom-5.5 inset-x-5.5 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
+  <div class="[view-transition-name:nav] h-full overflow-y-auto max-md:px-3 md:p-2 md:space-y-2 bg-white/60 md:bg-white dark:bg-neutral-900/60 rounded-full md:rounded-2xl max-md:backdrop-blur-xs border border-neutral-200 dark:border-neutral-800/60 md:dark:border-neutral-900 flex flex-col">
+    <%= link_to root_path, class: 'max-md:hidden my-4 mx-3 flex items-center gap-1', tabindex: -1 do %>
+      <%= icon 'note-filled', class: 'size-6 shrink-0 text-primary-600' %>
+      <span class="text-2xl font-extrabold tracking-tight text-normal">JobJournal</span>
     <% end %>
 
     <% nav_links = [
-      { key: :root, path: root_path, label: 'Home', icon: 'home' },
-      { key: :job_leads, path: job_leads_path, label: 'Job Leads', icon: 'briefcase' },
+      { key: :dashboard,  path: dashboard_path,  label: 'Home',       icon: 'home' },
+      { key: :job_leads,  path: job_leads_path,  label: 'Job Leads',  icon: 'briefcase' },
       { key: :interviews, path: interviews_path, label: 'Interviews', icon: 'interview' },
-      { key: :notes, path: notes_path, label: 'Notes', icon: 'note' },
-      { key: :tags, path: tags_path, label: 'Tags', icon: 'tag' },
-      { key: :search, path: search_path, label: 'Search', icon: 'search', desktop_only: true },
+      { key: :notes,      path: notes_path,      label: 'Notes',      icon: 'note' },
+      { key: :tags,       path: tags_path,       label: 'Tags',       icon: 'tag' },
+      { key: :search,     path: search_path,     label: 'Search',     icon: 'search', desktop_only: true },
     ] %>
 
     <div class="md:grow md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80">
-      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col md:gap-px">
+      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
+          <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
 
-          <%= link_to link[:path], class: "nav-link #{'nav-link-active' if active} #{'max-md:hidden' if link[:desktop_only]}" do %>
-            <%= inline_svg_tag "icons/#{active ? "#{link[:icon]}-filled" : link[:icon]}.svg", class: 'size-5 sm:size-4 shrink-0' %>
-            <span><%= link[:label] %></span>
+          <%= link_to link[:path], class: "md:py-px #{'max-md:hidden' if link[:desktop_only]}" do %>
+            <span class="nav-link <%= 'nav-link-active' if active %>">
+              <%= icon icon_name, class: 'size-5.75 md:size-4 shrink-0' %>
+              <span><%= link[:label] %></span>
+            </span>
           <% end %>
         <% end %>
       </ul>
@@ -29,7 +32,7 @@
 
     <div class="max-md:hidden">
       <%= link_to new_job_lead_path, class: 'btn btn-primary w-full' do %>
-        <%= inline_svg_tag 'icons/plus.svg', class: 'size-5 shrink-0' %>
+        <%= icon 'plus', class: 'size-5 shrink-0' %>
         <span>New Job Lead</span>
       <% end %>
     </div>
@@ -48,7 +51,7 @@
 
         <% dropdown_links.each do |link| %>
           <%= link_to link[:path], class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag "icons/#{link[:icon]}.svg", class: 'size-5 shrink-0' %>
+            <%= icon link[:icon], class: 'size-5 shrink-0' %>
             <span><%= link[:label] %></span>
           <% end %>
         <% end  %>
@@ -56,10 +59,20 @@
         <div class="dropdown-divider"></div>
 
         <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
-          <%= inline_svg_tag 'icons/logout.svg', class: 'size-5 shrink-0' %>
+          <%= icon 'logout', class: 'size-5 shrink-0' %>
           <span>Sign Out</span>
         <% end %>
       </div>
     </div>
   </div>
 </nav>
+
+<% excluded_paths = [ new_job_lead_path, settings_path, "/edit" ] %>
+<% unless excluded_paths.any? { request.path.include? it } %>
+  <div class="md:hidden fixed bottom-24 right-5.5 z-20">
+    <%= link_to new_job_lead_path, class: 'btn btn-primary btn-lg btn-circle grid place-items-center aspect-square shadow-lg shadow-primary-500/15' do %>
+      <%= icon 'plus', class: 'size-8 shrink-0 stroke-2' %>
+      <span class="sr-only">New Job Lead</span>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,595 @@
+<% content_for(:title) { 'JobJournal • Personal Job Search Tracker' } %>
+
+<%# ─── NAV ─── %>
+<nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-neutral-800/40">
+  <div class="max-w-8xl mx-auto px-6 h-16 flex items-center justify-between">
+    <%= link_to root_path, class: 'flex items-center gap-1.5' do %>
+      <%= icon 'note-filled', class: 'size-6 shrink-0 text-primary-600' %>
+      <span class="text-xl font-extrabold tracking-tight text-normal">JobJournal</span>
+    <% end %>
+
+    <div class="flex items-center gap-3">
+      <%= link_to 'Sign In', new_session_path, data: { turbo: false }, class: 'btn btn-transparent' %>
+      <%= link_to 'Sign Up Free', new_registrations_path, data: { turbo: false }, class: 'btn btn-primary' %>
+    </div>
+  </div>
+</nav>
+
+<main class="*:even:bg-neutral-50 dark:*:even:bg-neutral-900/40">
+  <%# ─── HERO ─── %>
+  <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6 *:max-w-8xl *:mx-auto">
+    <div class="text-center">
+      <h1 class="text-[clamp(2.6rem,8vw,6rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
+        Your Job Search.<br>
+        Your Terms.
+      </h1>
+
+      <p class="mt-5 text-[clamp(1rem,1.65vw,1.25rem)] text-light max-w-2xl mx-auto text-balance leading-relaxed">
+        Organize every lead, application, and interview in&nbsp;one&nbsp;place.
+        No messy spreadsheets.&nbsp;No data selling.&nbsp;No recruiter dashboards.
+      </p>
+
+      <div class="mt-10 flex items-center justify-center">
+        <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
+          <span>Track Your First Lead</span>
+          <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
+        <% end %>
+      </div>
+      <p class="text-sm text-soft mt-4">Free forever. No credit card required.</p>
+    </div>
+
+    <%# ── Hero screenshot ── %>
+    <div class="mt-20 md:mt-28 rounded-[clamp(0.25rem,1vw,1.25rem)] border border-neutral-200/60 dark:border-neutral-800/30 not-dark:shadow-xl overflow-hidden">
+      <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'dark:hidden w-full h-auto', loading: 'eager' %>
+      <%= image_tag 'dashboard-dark.webp', alt: '', aria: { hidden: true }, class: 'not-dark:hidden w-full h-auto', loading: 'eager' %>
+    </div>
+  </section>
+
+  <%# ─── PROBLEM & SOLUTION ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div
+      class="
+        max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2
+        max-lg:divide-y lg:divide-x divide-neutral-200 dark:divide-neutral-800
+        *:w-full *:max-lg:max-w-3xl *:max-lg:mx-auto
+        *:first:lg:pr-12 *:first:max-lg:pb-14
+        *:last:lg:pl-12 *:last:max-lg:pt-12
+      "
+    >
+      <%# ── Problem ── %>
+      <div>
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          Spreadsheets weren’t built&nbsp;for&nbsp;this.
+        </h2>
+
+        <div class="mt-8 space-y-5 text-light text-pretty">
+          <p class="leading-relaxed">
+            When you’re juggling multiple applications, deadlines, and interviews, everyone seems to preach the same gospel: “just open Excel or Google Sheets and log every lead.” It works&mdash;until it doesn’t.
+          </p>
+
+          <ul class="space-y-2 list-none">
+            <% [
+              "Spreadsheets don’t remind you to follow up, flag stale leads, or tell you which sources are working.",
+              "Notes, meeting links, and interview prep end up scattered across apps.",
+              "The more applications you add, the harder they are to maintain&mdash;and the less useful they become."
+            ].each do |text| %>
+              <li class="flex gap-3 items-start">
+                <span class="mt-2.5 size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+                <span><%= text.html_safe %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <%# ── Solution ── %>
+      <div>
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
+          JobJournal flips that&nbsp;script.
+        </h2>
+
+        <div class="mt-8 space-y-5 text-light leading-relaxed text-pretty">
+          <p>
+            Instead of babysitting cells, every opportunity becomes a <span class="text-normal font-semibold">living record</span>. Follow-up suggestions and stale job lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search finds anything instantly.
+          </p>
+
+          <p>
+            <span class="text-neutral-900 dark:text-neutral-100 font-semibold">Focus on your workflow, not managing rows.</span>
+            JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── DEMO: DASHBOARD STATS ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <p class="text-center text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Your dashboard at a glance</p>
+      <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
+        See where you stand&mdash;instantly.
+      </h2>
+
+      <%# ── Hero screenshot ── %>
+      <div class="card p-1 -m-1 rounded-3xl max-md:hidden not-dark:shadow-xl overflow-hidden relative">
+        <span class="select-none font-semibold uppercase tracking-[-0.015em] text-light mt-2 mb-3 absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 px-4 py-2 rounded-[0.625rem] shadow-lg">Dashboard demo</span>
+
+        <div class="relative">
+          <iframe src="<%= asset_path "JobJournal-demo.html" %>" id="JobJournal-demo" class="w-full aspect-3/2 rounded-[clamp(0.25rem,1vw,1.25rem)] border border-neutral-300/60 dark:border-neutral-700/30 overflow-hidden"></iframe>
+
+          <%# inset shadow to simulate depth of iframe %>
+          <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_8px_rgba(0,0,0,0.2)] rounded-[1.25rem]"></div>
+        </div>
+      </div>
+
+      <div class="md:hidden @container max-w-5xl mx-auto mt-20">
+        <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
+          <div class="relative card flex flex-col">
+            <div class="flex items-start justify-between mb-5">
+              <p class="font-semibold">Job Leads This Week</p>
+              <%= icon 'briefcase', class: 'size-5 shrink-0' %>
+            </div>
+            <div class="mt-auto">
+              <p class="font-extrabold text-4xl mb-1"><%= @demo_job_lead_stats[:count] %></p>
+              <p class="text-xs text-muted"><%= @demo_job_lead_stats[:change] %></p>
+            </div>
+          </div>
+
+          <div class="relative card flex flex-col @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
+            <div class="flex items-start justify-between mb-5">
+              <p class="font-semibold">Applications This Week</p>
+              <%= icon 'application', class: 'size-5 shrink-0' %>
+            </div>
+            <div class="mt-auto flex items-end justify-between">
+              <div>
+                <p class="font-extrabold text-4xl mb-1">
+                  <%= applications_count = @demo_application_stats[:count] %>
+                  <span class="text-sm font-normal text-muted">/ <%= applications_goal = @demo_application_stats[:goal] %></span>
+                </p>
+                <p class="text-xs text-muted"><%= @demo_application_stats[:change] %></p>
+              </div>
+              <% percent = applications_count.to_f / applications_goal.to_f * 100  %>
+              <%= render 'shared/progress_dial', percent: percent %>
+            </div>
+          </div>
+
+          <div class="relative card flex flex-col">
+            <div class="flex items-start justify-between mb-5">
+              <p class="font-semibold">Interviews This Week</p>
+              <%= icon 'interview', class: 'size-5 shrink-0' %>
+            </div>
+            <div class="mt-auto flex items-end justify-between">
+              <div>
+                <p class="font-extrabold text-4xl mb-1"><%= @demo_interview_stats[:count] %></p>
+                <p class="text-xs text-muted"><%= @demo_interview_stats[:change] %></p>
+              </div>
+              <% average_rating = @demo_interview_stats[:average_rating] %>
+              <div class="flex flex-col items-end">
+                <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
+                <div class="font-bold flex items-center gap-x-1">
+                  <% 1.upto(5) do |star| %>
+                    <%= icon 'star', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── DEMO: JOB LEADS & INTERVIEWS ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <p class="text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Track every opportunity</p>
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
+        From first lead to final&nbsp;offer.
+      </h2>
+      <p class="text-light max-w-2xl text-pretty leading-relaxed mb-12">
+        Status. Tags. Notes. A complete timeline. One opportunity, one place, nothing lost. Interviews and notes stay anchored to where they belong, not buried in separate tabs.
+      </p>
+
+      <div aria-hidden="true">
+        <%# ── Job Lead Cards ── %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-12">
+          <% @demo_leads.each do |lead| %>
+            <%= render lead %>
+          <% end %>
+        </div>
+
+        <%# ── Interview Cards ── %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <% @demo_interviews.each do |interview| %>
+            <%= render interview %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── WHY JOBJOURNAL ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <% conditional_break = '<br class="max-lg:hidden"/>' %>
+    <% @features = [
+      {
+        title: "Built for you.#{conditional_break} Not for companies.".html_safe,
+        body: 'Recruiter tools serve companies. Job boards serve advertisers. JobJournal serves <strong class="text-normal font-semibold">you</strong>&mdash;keeping you in control of your job search and your data.'.html_safe,
+      },
+      {
+        title: "100% Free.#{conditional_break} Forever.",
+        body: 'JobJournal is <strong class="text-normal font-semibold">free forever</strong>&mdash;because a tool for your job search shouldn’t profit from your job search. No trials, no paywalls, no “upgrade to unlock”, no subscriptions, and no hidden fees.'.html_safe,
+      },
+      {
+        title: 'Your Data is Truly Yours.'.html_safe,
+        body: 'JobJournal is <strong class="text-normal font-semibold">privacy-first</strong> by design&mdash;no third-party sharing, no data selling, no recruiter analytics. Your data stays scoped to your account, and you can delete it all at any time.'.html_safe,
+      }
+    ] %>
+
+    <div
+      class="
+        max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3
+        gap-12 lg:gap-y-20 max-lg:divide-y
+        lg:*:first:pr-12 max-lg:*:first:pb-12
+        lg:*:first:border-r *:first:border-neutral-200 dark:*:first:border-neutral-800
+        2xl:*:nth-2:pr-12 max-lg:*:nth-2:pb-12
+        2xl:*:nth-2:border-r *:nth-2:border-neutral-200 dark:*:nth-2:border-neutral-800
+      "
+    >
+      <% @features.each.with_index(1) do |feature, index| %>
+        <div class="<%= 'lg:max-2xl:col-span-2 lg:max-2xl:mx-auto lg:max-2xl:max-w-3xl' if index == 3 %>">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight leading-tight text-balance">
+            <%= raw feature[:title] %>
+          </h2>
+
+          <p class="mt-6 text-light leading-relaxed text-pretty max-w-[75ch]">
+            <%= raw feature[:body] %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# ─── DEMO: NOTES ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div class="lg:sticky lg:top-24">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            Everything exactly where it should be.
+          </h2>
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
+            Attach notes directly to job leads and interviews. Prep for interviews, jot down reflection notes, and track offer details without ever losing context.
+          </p>
+        </div>
+
+      <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <% @demo_notes.each do |note| %>
+          <%= render note %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── FEATURE SHOWCASE: ALERTS & REMINDERS ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div class="lg:sticky lg:top-24">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            Nothing falls through the cracks.
+          </h2>
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
+            Upcoming interviews surface automatically. Stale leads you forgot to apply to are flagged for you. After every application and interview, a nudge to follow up appears.
+          </p>
+        </div>
+
+        <div class="space-y-8" aria-hidden="true">
+          <%# Follow-up suggestions %>
+          <div class="@container">
+            <div class="mb-4">
+              <h2 class="subheading">Follow Up Suggestions</h2>
+              <p class="text-sm text-muted mt-1 text-pretty">
+                <%
+                  suggest_demo_days = 3
+                  demo_days = { application: 7, interview: 2 }
+                  stop_follow_up = demo_days.transform_values { |days| days + suggest_demo_days }
+                %>
+                Active job leads not updated in <%= demo_days[:application] %>&ndash;<%= stop_follow_up[:application] %> days since applying or <%= demo_days[:interview] %>&ndash;<%= stop_follow_up[:interview] %> days since interviewing.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="grid grid-cols-1 @xl:grid-cols-2 gap-1.5">
+                <% @demo_suggestions.each do |suggestion| %>
+                  <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
+                    <div class="flex items-center gap-2.5">
+                      <div class="flex flex-col">
+                        <div class="text-lg font-semibold">
+                          <span><%= suggestion[:title] %></span>
+                          <span class="font-normal ml-0.5 tag tag-<%= suggestion[:status] %>">
+                            <%= suggestion[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short suggestion[:status_at] %></span>
+                          </span>
+                        </div>
+
+                        <div class="flex items-center gap-1 text-sm text-soft">
+                          <%= icon 'company', class: 'size-3.75 shrink-0' %>
+                          <%= suggestion[:company] %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p class="text-xs text-muted">
+                      <%
+                        action = suggestion[:status] == 'applied' ? 'applied to' : 'interviewed for'
+                        time   = suggestion[:status_at]
+                      %>
+                      You <%= action %> this job <span class="font-semibold text-soft"><%= time_ago_in_words time %> ago</span>.
+                      Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
+                    </p>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <%# Stale lead %>
+          <div>
+            <div class="mb-4">
+              <h2 class="subheading">Stale Job Leads</h2>
+              <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over 7 days ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
+            </div>
+            <div id="job_leads" class="@container">
+              <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@4xl:grid-cols-3' if @demo_stale_leads.size >= 3 && @demo_stale_leads.size != 4 %> gap-3">
+                <% @demo_stale_leads.each do |job_lead| %>
+                  <%= render 'job_leads/job_lead', job_lead: job_lead %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── FEATURE SHOWCASE: INSIGHTS ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div class="lg:sticky lg:top-24">
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            See what&#8217;s actually working.
+          </h2>
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
+            Track leads, applications, and interviews week over week. Set a weekly application goal and watch your progress. See which sources produce interviews and offers&mdash;and which are wasting your time.
+          </p>
+        </div>
+
+        <div class="@container space-y-3" aria-hidden="true">
+          <%# Top Sources %>
+          <div class="card">
+            <div class="mb-5">
+              <div class="flex items-start justify-between">
+                <p class="font-semibold">Top Sources</p>
+                <%= icon 'globe', class: 'size-5 shrink-0' %>
+              </div>
+              <p class="text-xs text-muted">See where your best job leads are coming from.</p>
+            </div>
+
+            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @demo_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @demo_sources.size >= 3 && @demo_sources.size != 4 %> gap-1.5">
+              <% @demo_sources.each.with_index(1) do |(source, data), index| %>
+                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
+                  <div class="flex items-center gap-2.5">
+                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+                      #<%= index %>
+                    </div>
+                    <div class="flex flex-col">
+                      <p class="font-bold text-lg/snug"><%= source %></p>
+                      <p class="text-xs/snug text-muted"><%= pluralize data[:count], 'lead' %></p>
+                    </div>
+                  </div>
+
+                  <%
+                    items = [
+                      [data[:interview_count], 'interview'],
+                      [data[:offer_count], 'offer']
+                    ].select { |count, _| count.positive? }
+                  %>
+
+                  <p class="text-sm/none text-soft">
+                    <%= safe_join(
+                      items.map { |count, label| content_tag(:span, pluralize(count, label)) },
+                      ', '
+                    ) %>
+                  </p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <%# Top Tags %>
+          <div class="card">
+            <div class="mb-5">
+              <div class="flex items-start justify-between">
+                <p class="font-semibold">Top Tags</p>
+                <%= icon 'tag', class: 'size-5 shrink-0' %>
+              </div>
+              <p class="text-xs text-muted">Up to 20 of your most frequently used tags across your job leads.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1 mb-4">
+              <% @demo_top_tags.each do |tag| %>
+                <span class="tag tag-filter demo"><%= tag %></span>
+              <% end %>
+            </div>
+
+            <p class="text-xs text-muted">
+              Filter by tags to find your job leads fast.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── MORE FEATURES ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <div class="max-w-3xl mb-14">
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+          Along with everything else you’d expect&mdash;and&nbsp;more.
+        </h2>
+      </div>
+
+      <%
+        features = [
+          {
+            icon: 'briefcase',
+            icon_bg: 'bg-sky-100/70 dark:bg-sky-900/40',
+            icon_color: 'text-sky-600 dark:text-sky-500',
+            title: 'Job Lead Management',
+            description: 'Capture important details like company, title, salary, contact, and location. Track each opportunity through a simple progression from lead to accepted. Tag and annotate with unlimited notes.'
+          },
+          {
+            icon: 'globe',
+            icon_bg: 'bg-emerald-100/70 dark:bg-emerald-900/40',
+            icon_color: 'text-emerald-600 dark:text-emerald-500',
+            title: 'Insights That Guide You',
+            description: 'Track leads, applications, and interviews week over week, set an application goal, and see which sources actually convert to interviews and offers.'
+          },
+          {
+            icon: 'interview',
+            icon_bg: 'bg-purple-100/70 dark:bg-purple-900/40',
+            icon_color: 'text-purple-600 dark:text-purple-500',
+            title: 'Interview Tracking',
+            description: 'Log interviewer, date, location, and call link. Add to your calendar in one click. Rate how it went and capture prep notes, debriefs, and feedback.'
+          },
+          {
+            icon: 'home',
+            icon_bg: 'bg-indigo-100/70 dark:bg-indigo-900/40',
+            icon_color: 'text-indigo-600 dark:text-indigo-500',
+            title: 'Dashboard Overview',
+            description: 'Your entire job search in one view. Weekly stats, progress toward your application goal, smart suggestions, upcoming interviews, and recent notes.'
+          },
+          {
+            icon: 'search',
+            icon_bg: 'bg-amber-100/70 dark:bg-amber-900/40',
+            icon_color: 'text-amber-600 dark:text-amber-500',
+            title: 'Smart Search & Filters',
+            description: 'Find anything instantly&mdash;leads, interviews, notes. Narrow results by tag, status, date, or active vs. archived.'
+          },
+          {
+            icon: 'link',
+            icon_bg: 'bg-cyan-100/70 dark:bg-cyan-900/40',
+            icon_color: 'text-cyan-600 dark:text-cyan-500',
+            title: 'Autofill from URL',
+            description: 'Enter a URL for a job posting and JobJournal autofills the company, title, location, and more&mdash;no manual input required.<br>Works with <strong class="text-normal font-semibold">LinkedIn</strong> and <strong class="text-normal font-semibold">Indeed</strong>, with more sources on the way.'
+          }
+        ]
+      %>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <% features.each do |feature| %>
+          <div class="card">
+
+            <div class="flex items-start justify-between mb-4">
+              <h3 class="font-semibold text-normal"><%= feature[:title] %></h3>
+              <div class="rounded-md p-1.5 -m-0.75 <%= feature[:icon_bg] %> inline-flex">
+                <%= icon feature[:icon], class: "size-4.5 #{feature[:icon_color]}" %>
+              </div>
+            </div>
+
+            <p class="mt-2 text-sm text-light leading-relaxed text-pretty">
+              <%= feature[:description].html_safe %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <%# ─── FINAL CTA ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        Ready to ditch the&nbsp;spreadsheet?
+      </h2>
+
+      <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+      Stay organized, stay motivated, and stay private&mdash;free forever.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
+          <span>Take Control of Your Search</span>
+          <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%# ─── FOOTER ─── %>
+<footer class="p-4 [main:has(>_:nth-last-child(2n):first-child)+&]:bg-neutral-50 dark:[main:has(>_:nth-last-child(2n):first-child)+&]:bg-neutral-900/40">
+  <div
+    class="
+      group/footer max-w-8xl md:mx-auto
+      rounded-4xl dark:ring-1 dark:ring-neutral-800/60 text-neutral-700 dark:text-neutral-300
+      [--footer-padding:calc(var(--spacing)*8)] md:[--footer-padding:calc(var(--spacing)*12)] p-(--footer-padding)
+      [--footer-gap:calc(var(--spacing)*8)] md:[--footer-gap:calc(var(--spacing)*16)]
+
+      not-[main:has(>_:nth-last-child(2n):first-child)+footer>&]:bg-neutral-50 not-[main:has(>_:nth-last-child(2n):first-child)+footer>&]:dark:bg-neutral-900/40
+      [main:has(>_:nth-last-child(2n):first-child)+footer>&]:bg-white [main:has(>_:nth-last-child(2n):first-child)+footer>&]:dark:bg-neutral-950
+    "
+  >
+    <%# ── Top grid ── %>
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-(--footer-gap)">
+      <%# Brand %>
+      <div class="space-y-4">
+        <div class="flex items-center gap-1.5 text-primary-500">
+          <%= icon 'note-filled', class: 'size-7 shrink-0' %>
+          <span class="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-white">JobJournal</span>
+        </div>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-xs text-pretty">
+          A privacy-first job search tracker. Organize every lead, application, and interview in one place.
+        </p>
+      </div>
+
+      <%# Resources %>
+      <div class="space-y-2 md:text-right">
+        <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-neutral-600 dark:text-neutral-500">Resources</p>
+        <ul>
+          <li>
+            <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-150' do %>
+              <%= icon 'github', class: 'size-4 shrink-0' %>
+              <span>GitHub</span>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+
+      <%# Contact %>
+      <div class="space-y-2 md:text-right">
+        <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-neutral-600 dark:text-neutral-500">Contact</p>
+        <ul>
+          <li>
+            <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400 transition-colors duration-150' do %>
+              <%= icon 'mail', class: 'size-4 shrink-0' %>
+              <span>jobjournalapp@gmail.com</span>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <%# ── Bottom row ── %>
+    <div class="mt-[calc(var(--footer-padding)*2)] pt-(--footer-padding) border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap gap-2 items-center justify-between text-xs text-neutral-600 dark:text-neutral-500">
+      <p>&copy; <%= Date.current.year %> JobJournal. All Rights Reserved.</p>
+      <p>
+        Created with
+        <%= icon 'heart', class: 'inline align-middle size-3.75 mx-px motion-safe:animate-heartbeat text-rose-500' %>
+        by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-normal hover:text-primary-500 transition-colors duration-150' %>
+      </p>
+    </div>
+  </div>
+</footer>

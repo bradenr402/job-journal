@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # Defines the root path route ("/")
-  root 'pages#home'
+  root 'pages#landing'
+  get 'dashboard', to: 'pages#home', as: :dashboard
 
   resource :session, only: [ :new, :create, :destroy ]
   resource :registrations, only: [ :new, :create, :destroy ]

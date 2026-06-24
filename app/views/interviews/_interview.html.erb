@@ -1,7 +1,7 @@
 <% interview_page = current_page?(interview_path(interview)) %>
 <% job_lead = interview.job_lead %>
 
-<div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless interview_page %>" style="view-transition-name: interview-<%= interview.id %>;">
+<div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hover' unless interview_page || @demo %>" style="view-transition-name: interview-<%= interview.id %>;">
   <div class="flex items-start gap-x-4 gap-y-2 w-full mb-2">
     <div class="mb-2">
       <div class="<%= interview_page ? 'subheading' : 'text-lg font-semibold' %>">
@@ -24,29 +24,29 @@
       <div class="ml-auto relative" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
         <button class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
           <span class="sr-only">Actions for this interview</span>
-          <%= inline_svg_tag 'icons/more-horizontal.svg', class: 'size-5.5' %>
+          <%= icon 'more-horizontal', class: 'size-5.5' %>
         </button>
 
         <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
           <%= link_to edit_interview_path(interview), class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag 'icons/edit.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'edit', class: 'size-5 shrink-0' %>
             <span>Edit</span>
           <% end %>
 
           <%= link_to add_to_calendar_interview_path(interview), class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= inline_svg_tag 'icons/calendar.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'calendar', class: 'size-5 shrink-0' %>
             <span>Add to Calendar</span>
           <% end %>
 
           <div class="dropdown-divider"></div>
 
           <%= button_to interview, method: :delete, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to delete this interview?' } do %>
-            <%= inline_svg_tag 'icons/trash.svg', class: 'size-5 shrink-0' %>
+            <%= icon 'trash', class: 'size-5 shrink-0' %>
             <span>Delete</span>
           <% end %>
         </div>
       </div>
-    <% else %>
+    <% elsif !@demo %>
       <%= link_to interview, data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
         <span class="sr-only">View</span>
       <% end %>
@@ -55,12 +55,12 @@
 
   <div class="flex items-center gap-x-6 gap-y-2 mb-4">
     <div class="flex items-center gap-1 text-sm text-soft">
-      <%= inline_svg_tag 'icons/calendar.svg', class: 'size-3.75 shrink-0' %>
-      <%= interview.scheduled_at ? local_time(interview.scheduled_at) : "Not scheduled" %>
+      <%= icon 'calendar', class: 'size-3.75 shrink-0' %>
+      <%= interview.scheduled_at ? local_time_short(interview.scheduled_at) : "Not scheduled" %>
     </div>
     <% if interview.location.present? %>
       <div class="flex items-center gap-1 text-sm text-soft">
-        <%= inline_svg_tag 'icons/location.svg', class: 'size-3.75 shrink-0' %>
+        <%= icon 'location', class: 'size-3.75 shrink-0' %>
         <%= interview.location %>
       </div>
     <% end %>
@@ -70,7 +70,7 @@
     <% if interview.call_url.present? %>
       <div class="flex items-center gap-1 text-sm text-soft mb-4">
         <%= link_to interview.call_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
-          <%= inline_svg_tag 'icons/link.svg', class: 'size-4 shrink-0 mt-0.5' %>
+          <%= icon 'link', class: 'size-4 shrink-0 mt-0.5' %>
           <span><%= interview.call_url %></span>
         <% end %>
       </div>
@@ -81,7 +81,7 @@
       <dd class="text-xl text-normal font-bold flex items-center gap-x-1">
         <% if interview.rating? %>
           <% 1.upto(5) do |star| %>
-            <%= inline_svg_tag 'icons/star.svg', class: "size-6 transition-all duration-200 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+            <%= icon 'star', class: "size-6 transition-all duration-200 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
           <% end %>
         <% else %>
           <span class="text-sm text-muted">No rating</span>
@@ -93,13 +93,13 @@
   <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
     <% if interview.notes.any? && !interview_page %>
       <span class="inline-flex items-center gap-1">
-        <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
+        <%= icon 'note', class: 'size-3.5 shrink-0' %>
         <%= pluralize(interview.notes.size, 'note') %>
       </span>
     <% end %>
     <span class="inline-flex items-center gap-1">
-      <%= inline_svg_tag 'icons/clock.svg', class: 'size-3.5 shrink-0' %>
-      Updated: <%= local_time interview.updated_at %>
+      <%= icon 'clock', class: 'size-3.5 shrink-0' %>
+      Updated: <%= local_time_short interview.updated_at %>
     </span>
   </div>
 </div>

@@ -22,4 +22,9 @@ module ApplicationHelper
       text.to_s.split(/([\/-])/).map { |part| part.match?(/[\/-]/) ? part + "\u200B" : part }
     )
   end
+
+  def icon(icon, **kwargs)
+    return unless icon.present?
+    inline_svg_tag "icons/#{icon}.svg", **kwargs
+  end
 end

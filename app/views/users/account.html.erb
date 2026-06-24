@@ -2,8 +2,8 @@
 
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
-    <%= link_to root_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= inline_svg_tag 'icons/arrow-left.svg', class: 'size-3.5 shrink-0' %>
+    <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
+      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
       <span>Back Home</span>
     <% end %>
   </div>
@@ -15,7 +15,7 @@
     </div>
 
     <%= link_to edit_account_path, class: 'btn btn-secondary' do %>
-      <%= inline_svg_tag 'icons/user-edit.svg', class: 'size-5 shrink-0' %>
+      <%= icon 'user-edit', class: 'size-5 shrink-0' %>
       <span>Edit Account</span>
     <% end %>
   </div>
@@ -46,7 +46,7 @@
 
       <% stats.each do |stat| %>
         <div class="flex items-center gap-1 text-sm text-light">
-          <%= inline_svg_tag "icons/#{stat[:icon]}.svg", class: 'size-3.75 shrink-0 text-normal *:stroke-[1.75]' %>
+          <%= icon stat[:icon], class: 'size-3.75 shrink-0 text-normal' %>
           <span class="font-semibold"><%= stat[:value] %></span>
           <span class="text-soft"><%= stat[:label] %></span>
         </div>

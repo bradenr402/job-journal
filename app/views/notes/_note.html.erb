@@ -1,12 +1,12 @@
 <%
   note_page = current_page?(note_path(note))
-  display_title = note_page || current_page?(notes_path) || current_page?(root_path) || current_page?(search_path)
+  display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path) || @demo
 
   note_title = note.title if display_title
 %>
 
-<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page ? 'card' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
-  <% unless note_page %>
+<div id="<%= dom_id note %>" class="relative flex flex-col <%= note_page || @demo ? 'card' : 'group card-sm card-hover' %>" style="view-transition-name: note-<%= note.id %>;">
+  <% unless note_page || @demo %>
     <%= link_to note, data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
       <span class="sr-only">View Note</span>
     <% end %>
@@ -15,9 +15,9 @@
   <% if display_title %>
     <p class="text-xs font-semibold mb-2 inline-flex items-start gap-1">
       <% if note.notable.is_a?(Interview) %>
-        <%= inline_svg_tag 'icons/interview-filled.svg', class: 'size-3 shrink-0 mt-0.5' %>
+        <%= icon 'interview-filled', class: 'size-3 shrink-0 mt-0.5' %>
       <% elsif note.notable.is_a?(JobLead) %>
-        <%= inline_svg_tag 'icons/briefcase-filled.svg', class: 'size-3 shrink-0 mt-0.5' %>
+        <%= icon 'briefcase-filled', class: 'size-3 shrink-0 mt-0.5' %>
       <% end %>
       <%= note_title %>
     </p>
@@ -29,14 +29,14 @@
 
     <%= content_tag(:div, note_content, class: note_classes) %>
     <% unless note_page %>
-      <div class="pointer-events-none absolute inset-x-0 top-16 h-8 bg-gradient-to-t from-white dark:from-neutral-900 group-hover:from-transparent to-transparent transition-colors duration-150"></div>
+      <div class="pointer-events-none absolute inset-x-0 top-12 h-12 bg-linear-to-t from-white/80 dark:from-neutral-900/80 group-hover:from-transparent to-transparent transition-colors duration-150 supports-[-webkit-touch-callout:none]:hidden"></div>
     <% end %>
   </div>
 
   <% if note_page %>
     <div class="text-xs text-muted text-right flex items-center justify-end gap-1">
-      <%= inline_svg_tag 'icons/note.svg', class: 'size-3.5 shrink-0' %>
-      <%== note.edited? ? "Updated: #{local_time note.updated_at}" : "Created: #{local_time note.created_at}" %>
+      <%= icon 'note', class: 'size-3.5 shrink-0' %>
+      <%== note.edited? ? "Updated: #{local_time_short note.updated_at}" : "Created: #{local_time_short note.created_at}" %>
     </div>
   <% end %>
 </div>

@@ -1,22 +1,44 @@
+<% if params[:notable_type].present? %>
+  <div class="mb-4">
+    <%= link_to 'Clear Filters', notes_path, class: 'btn btn-sm btn-destructive btn-muted' %>
+  </div>
+<% end %>
+
+<div class="mb-4">
+  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:job-lead-type-filters-label]">
+    Filter notes by type:
+  </p>
+  <div class="flex flex-wrap items-center gap-1">
+    <% ['active', 'archived'].each do |note_type| %>
+      <%= link_to notes_path(params.permit(:notable_type).merge(note_type: note_type == @selected_note_type ? 'all' : note_type)), class: 'inline-block', style: "view-transition-name: #{note_type}-notes" do %>
+        <span class="tag tag-filter <%= 'tag-selected' if note_type == @selected_note_type %>">
+          <span><%= note_type.titlecase %></span>
+          <%= icon 'x-mini' if note_type == @selected_note_type && note_type != 'all' %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
 <div class="mb-4">
   <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:note-filters-label]">
     Show notes for:
   </p>
   <div class="flex flex-wrap items-center gap-1">
-    <%= link_to notes_path(notable_type: nil), class: 'inline-block', style: "view-transition-name: all-notes" do %>
+    <%= link_to notes_path(notable_type: nil, note_type: @selected_note_type), class: 'inline-block', style: "view-transition-name: all-notes" do %>
       <span class="tag tag-filter <%= 'tag-selected' unless params[:notable_type].present? %>">All</span>
     <% end %>
 
-    <%= link_to notes_path(notable_type: params[:notable_type] == 'JobLead' ? nil : 'JobLead'), class: 'inline-block', style: "view-transition-name: job-lead-notes" do %>
+    <%= link_to notes_path(notable_type: params[:notable_type] == 'JobLead' ? nil : 'JobLead', note_type: @selected_note_type), class: 'inline-block', style: "view-transition-name: job-lead-notes" do %>
       <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'JobLead' %>">
         <span>Job Leads</span>
-        <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'JobLead' %>
+        <%= icon 'x-mini' if params[:notable_type] == 'JobLead' %>
       </span>
     <% end %>
-    <%= link_to notes_path(notable_type: params[:notable_type] == 'Interview' ? nil : 'Interview'), class: 'inline-block', style: "view-transition-name: interview-notes" do %>
+    <%= link_to notes_path(notable_type: params[:notable_type] == 'Interview' ? nil : 'Interview', note_type: @selected_note_type), class: 'inline-block', style: "view-transition-name: interview-notes" do %>
       <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'Interview' %>">
         <span>Interviews</span>
-        <%= inline_svg_tag 'icons/x-mini.svg' if params[:notable_type] == 'Interview' %>
+        <%= icon 'x-mini' if params[:notable_type] == 'Interview' %>
       </span>
     <% end %>
   </div>

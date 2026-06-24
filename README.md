@@ -1,6 +1,6 @@
 # JobJournal
 
-A privacy-first web app to help job seekers stay organized, track every lead, application, and interview, and gain insight into their job search journey&mdash;all in one place. No messy spreadsheets. No recruiter dashboards. Just your personal job search HQ.
+A privacy-first job search tracker. Organize every lead, application, and interview in one place&NoBreak;&mdash;with smart insights to help you see what’s working. No messy spreadsheets. No data selling. No recruiter dashboards.
 
 ---
 

@@ -1,9 +1,11 @@
 class SessionsController < ApplicationController
+  layout "auth", only: %i[ new create ]
+
   allow_unauthenticated_access only: %i[ new create ]
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: 'Try again later.' }
 
   before_action only: %i[new create] do
-    redirect_to root_path, notice: 'You are already signed in.' if authenticated?
+    redirect_to dashboard_path, notice: 'You are already signed in.' if authenticated?
   end
 
   def new
