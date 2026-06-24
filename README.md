@@ -156,6 +156,14 @@ bin/rails test
 - See how far each source gets you in the hiring process
 - See your most frequently used tags
 
+### Autofill from URL
+
+- Paste a job posting URL to auto-extract job details
+- Fills in company, job title, location, and more&mdash;no manual entry required
+- Review and edit any field before saving
+- Currently supports **LinkedIn** and **Indeed**, with more sources on the way
+  - Want autofill for another source? Feel free to [open an issue](https://github.com/bradenr402/job-journal/issues/new) or contribute a PR!
+
 ---
 
 ## Privacy & Security
