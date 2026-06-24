@@ -26,15 +26,16 @@
 
       <p class="mt-5 text-[clamp(1rem,1.65vw,1.25rem)] text-light max-w-2xl mx-auto text-balance leading-relaxed">
         Organize every lead, application, and interview in&nbsp;one&nbsp;place.
-        No messy spreadsheets.&nbsp;No tracking.&nbsp;No recruiter dashboards.
+        No messy spreadsheets.&nbsp;No data selling.&nbsp;No recruiter dashboards.
       </p>
 
       <div class="mt-10 flex items-center justify-center">
         <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
-          <span>Get Started Free</span>
+          <span>Track Your First Lead</span>
           <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
         <% end %>
       </div>
+      <p class="text-sm text-soft mt-4">Free forever. No credit card required.</p>
     </div>
 
     <%# ── Hero screenshot ── %>
@@ -486,12 +487,12 @@
       </h2>
 
       <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
-      Stay organized, stay motivated, and stay private with JobJournal.
+      Stay organized, stay motivated, and stay private&mdash;free forever.
       </p>
 
       <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
         <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
-          <span>Start Tracking Your Search</span>
+          <span>Take Control of Your Search</span>
           <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
         <% end %>
       </div>

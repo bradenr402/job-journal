@@ -106,13 +106,23 @@ class PagesController < ApplicationController
       ),
       Note.new(
         id: 3003, user: demo_user, notable: vercel_lead,
-        content: 'Initial offer: $245k base, $180k RSUs over 4 years, $25k signing bonus. Want to negotiate equity — comparable roles at this level are closer to $250k in RSUs. Set deadline to respond by April 2.',
+        content: "Initial offer: $245k base, $180k RSUs over 4 years, $25k signing bonus. Want to negotiate equity—comparable roles at this level are closer to $250k in RSUs. Set deadline to respond by #{10.days.from_now.strftime "%B %e"}.",
         created_at: 3.days.ago + 17.hours + 22.minutes, updated_at: 3.days.ago + 17.hours + 22.minutes
       ),
       Note.new(
         id: 3004, user: demo_user, notable: shopify_lead,
         content: "Recruiter mentioned the team is fully remote, working on checkout infrastructure. They're looking for someone to lead a team of 4–6 engineers. Next step is a technical screen with the hiring manager.",
         created_at: 1.day.ago + 11.hours + 58.minutes, updated_at: 1.day.ago + 11.hours + 58.minutes
+      ),
+      Note.new(
+        id: 3005, user: demo_user, notable: stripe_interview,
+        content: 'Interview went well. Sarah asked about my experience with distributed systems and how I would design a scalable payment processing system. She seemed impressed with my approach to handling edge cases.',
+        created_at: 1.day.ago + 15.hours + 7.minutes, updated_at: 1.day.ago + 15.hours + 7.minutes
+      ),
+      Note.new(
+        id: 3006, user: demo_user, notable: notion_lead,
+        content: 'Followed up via email. He mentioned that the team is still reviewing applications and will get back to me within the next week.',
+        created_at: 10.days.ago + 14.hours + 33.minutes, updated_at: 10.days.ago + 14.hours + 33.minutes
       )
     ]
 
