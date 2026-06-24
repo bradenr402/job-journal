@@ -69,6 +69,7 @@ module Parsers
       (?<amount>
        \$\s*[\d]{1,3}(?:,\d{3})*(?:\.\d{2})?
          (?:\s*(?:to|-|–)\s*\$?\s*[\d]{1,3}(?:,\d{3})*(?:\.\d{2})?)?
+         \+?
       )
     (?<unit>
      \s*(?:per\s+(?:hour|hr|year|yr|month|mo|week|wk|annum)
