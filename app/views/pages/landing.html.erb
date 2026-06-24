@@ -264,8 +264,10 @@
         </div>
 
       <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <% @demo_notes.each do |note| %>
-          <%= render note %>
+        <% @demo_notes.each_with_index do |note, index| %>
+          <div class="<%= 'max-md:hidden' if index >= 3 %>">
+            <%= render note %>
+          </div>
         <% end %>
       </div>
     </div>
