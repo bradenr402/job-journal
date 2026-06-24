@@ -29,17 +29,16 @@
 
     <%= label_tag :autofill_url, 'Job URL', class: 'form-label' %>
     <div class="flex flex-col @md:flex-row gap-2">
-      <%= url_field_tag :autofill_url, nil,
-            class: 'form-input grow',
-            placeholder: 'https://www.linkedin.com/jobs/view/...',
-            data: { url_autofill_target: 'url', action: 'keydown.enter->url-autofill#submit' } %>
+      <%= url_field_tag :autofill_url, nil, class: 'form-input grow', placeholder: 'https://www.linkedin.com/jobs/view/...', data: { url_autofill_target: 'url', action: 'keydown.enter->url-autofill#submit' } %>
 
       <button
         type="button"
         class="btn btn-secondary whitespace-nowrap"
         data-url-autofill-target="submit"
         data-action="click->url-autofill#submit"
-      >Autofill from URL</button>
+      >
+        Autofill from URL
+      </button>
     </div>
     <p class="text-xs text-muted mt-1">
       Find a bug or want another site supported for autofill?
