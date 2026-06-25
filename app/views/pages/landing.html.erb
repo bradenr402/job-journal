@@ -235,7 +235,7 @@
     <div
       class="
         max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3
-        gap-12 lg:gap-y-20 max-lg:divide-y
+        gap-12 lg:gap-y-24 max-lg:divide-y
         lg:*:first:pr-12 max-lg:*:first:pb-12
         lg:*:first:border-r *:first:border-neutral-200 dark:*:first:border-neutral-800
         2xl:*:nth-2:pr-12 max-lg:*:nth-2:pb-12
@@ -243,7 +243,7 @@
       "
     >
       <% @features.each.with_index(1) do |feature, index| %>
-        <div class="<%= 'lg:max-2xl:col-span-2 lg:max-2xl:mx-auto lg:max-2xl:max-w-3xl' if index == 3 %>">
+        <div class="<%= 'lg:max-2xl:col-span-2 lg:max-2xl:mx-auto lg:max-2xl:max-w-2xl' if index == 3 %>">
           <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight leading-tight text-balance">
             <%= raw feature[:title] %>
           </h2>
