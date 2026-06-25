@@ -50,7 +50,7 @@
   }
 
   > label {
-    @apply inline-flex cursor-default items-center gap-1.25 rounded-lg border px-2 py-1 text-xs whitespace-nowrap text-soft transition-all duration-150 select-none;
+    @apply inline-flex cursor-default items-center gap-1.25 rounded-lg border px-2 py-1 text-xs whitespace-nowrap text-soft transition-all duration-80 select-none;
 
     /* Default (neutral) tag style */
     @apply cursor-pointer border-neutral-200 bg-neutral-50 dark:bg-neutral-900/80 dark:border-neutral-800/80 hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500;
@@ -64,13 +64,13 @@
     @apply peer-checked:border-primary-200 dark:peer-checked:border-primary-900 peer-checked:bg-primary-100/80 dark:peer-checked:bg-primary-950/80 peer-checked:text-primary-600 has-[svg]:peer-checked:pr-1.5 not-peer-checked:[&_svg]:hidden peer-checked:hover:[&_svg]:bg-rose-200/70 peer-checked:hover:[&_svg]:text-rose-600;
 
     & > svg {
-      @apply size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-150;
+      @apply size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-80;
     }
   }
 }
 
 @utility form-checkbox {
-  @apply appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white dark:bg-neutral-800 mt-0.25 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-150;
+  @apply appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white dark:bg-neutral-800 mt-0.25 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-80;
 
   & + svg {
     @apply size-3.5 text-white absolute translate-y-[0.22rem] translate-x-0.5 pointer-events-none;
@@ -99,9 +99,9 @@
 }
 
 @utility form-number-decrement {
-  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-l-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-150 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-l-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
 }
 
 @utility form-number-increment {
-  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-r-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-150 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-r-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
 }

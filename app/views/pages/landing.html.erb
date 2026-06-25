@@ -183,7 +183,7 @@
                 <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
                 <div class="font-bold flex items-center gap-x-1">
                   <% 1.upto(5) do |star| %>
-                    <%= icon 'star', class: "size-5 transition-all duration-200 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                    <%= icon 'star', class: "size-5 transition-all duration-120 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
                   <% end %>
                 </div>
               </div>
@@ -576,7 +576,7 @@
         <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-muted dark:text-soft">Resources</p>
         <ul>
           <li>
-            <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-150' do %>
+            <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-80' do %>
               <%= icon 'github', class: 'size-4 shrink-0' %>
               <span>GitHub</span>
             <% end %>
@@ -589,7 +589,7 @@
         <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-muted dark:text-soft">Contact</p>
         <ul>
           <li>
-            <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400 transition-colors duration-150' do %>
+            <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400 transition-colors duration-80' do %>
               <%= icon 'mail', class: 'size-4 shrink-0' %>
               <span>jobjournalapp@gmail.com</span>
             <% end %>
@@ -604,7 +604,7 @@
       <p>
         Created with
         <%= icon 'heart', class: 'inline align-middle size-3.75 mx-px motion-safe:animate-heartbeat text-rose-500' %>
-        by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-normal hover:text-primary-500 transition-colors duration-150' %>
+        by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-normal hover:text-primary-500 transition-colors duration-80' %>
       </p>
     </div>
   </div>

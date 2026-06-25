@@ -81,7 +81,7 @@
       <dd class="text-xl text-normal font-bold flex items-center gap-x-1">
         <% if interview.rating? %>
           <% 1.upto(5) do |star| %>
-            <%= icon 'star', class: "size-6 transition-all duration-200 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+            <%= icon 'star', class: "size-6 transition-all duration-120 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
           <% end %>
         <% else %>
           <span class="text-sm text-muted">No rating</span>
