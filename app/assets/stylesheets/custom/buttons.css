@@ -1,5 +1,9 @@
 @utility btn {
-  @apply inline-flex gap-2 cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium no-underline transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex cursor-pointer items-center justify-center font-medium no-underline transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+
+  &:not(.btn-sm, .btn-lg) {
+    @apply gap-2 px-4 py-2 text-sm rounded-lg;
+  }
 
   &.btn-sm {
     @apply gap-1.5 px-3 py-1.5 text-xs rounded-md;
@@ -29,6 +33,18 @@
 @utility btn-primary {
   &:not(.btn-muted) {
     @apply bg-primary-600 dark:bg-primary-700 text-white hover:bg-primary-700 dark:hover:bg-primary-600;
+
+    &:not(.btn-sm, .btn-lg) {
+      @apply not-dark:shadow-md;
+    }
+
+    &.btn-sm {
+      @apply not-dark:shadow-sm;
+    }
+
+    &.btn-lg {
+      @apply not-dark:shadow-lg;
+    }
   }
 
   &.btn-muted {
