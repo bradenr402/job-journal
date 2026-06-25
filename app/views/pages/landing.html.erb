@@ -541,7 +541,7 @@
   <div
     class="
       group/footer max-w-8xl md:mx-auto
-      rounded-4xl dark:ring-1 dark:ring-neutral-800/60 text-neutral-700 dark:text-neutral-300
+      rounded-4xl dark:ring-1 dark:ring-neutral-800/60
       [--footer-padding:calc(var(--spacing)*8)] md:[--footer-padding:calc(var(--spacing)*12)] p-(--footer-padding)
       [--footer-gap:calc(var(--spacing)*8)] md:[--footer-gap:calc(var(--spacing)*16)]
 
@@ -564,7 +564,7 @@
 
       <%# Resources %>
       <div class="space-y-2 md:text-right">
-        <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-neutral-600 dark:text-neutral-500">Resources</p>
+        <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-muted dark:text-soft">Resources</p>
         <ul>
           <li>
             <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-150' do %>
@@ -577,7 +577,7 @@
 
       <%# Contact %>
       <div class="space-y-2 md:text-right">
-        <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-neutral-600 dark:text-neutral-500">Contact</p>
+        <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-muted dark:text-soft">Contact</p>
         <ul>
           <li>
             <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400 transition-colors duration-150' do %>
