@@ -1,5 +1,5 @@
 @utility btn {
-  @apply inline-flex cursor-pointer items-center justify-center font-medium no-underline transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex cursor-pointer items-center justify-center font-medium no-underline transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 
   &:not(.btn-sm, .btn-lg) {
     @apply gap-2 px-4 py-2 text-sm rounded-lg;
@@ -78,14 +78,14 @@
 
 @utility btn-link {
   &:not(.btn-muted) {
-    @apply cursor-pointer text-sm text-light underline transition-colors duration-150 hover:text-soft;
+    @apply cursor-pointer text-sm text-light underline transition-colors duration-80 hover:text-soft;
   }
 
   &.btn-muted {
-    @apply cursor-pointer text-sm text-muted transition-colors duration-150 hover:text-soft;
+    @apply cursor-pointer text-sm text-muted transition-colors duration-80 hover:text-soft;
   }
 }
 
 @utility btn-link-primary {
-  @apply text-primary-600 focus:ring-primary-500 underline transition-colors duration-150 hover:text-primary-700;
+  @apply text-primary-600 focus:ring-primary-500 underline transition-colors duration-80 hover:text-primary-700;
 }

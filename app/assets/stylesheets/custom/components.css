@@ -2,7 +2,7 @@
   @apply bg-white dark:bg-neutral-900 p-3.75 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
 
   &.card-hover {
-    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
+    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98;
   }
 }
 
@@ -10,7 +10,7 @@
   @apply bg-white dark:bg-neutral-900 p-2.5 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-2xs has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-primary-600 [&_a]:focus:outline-none;
 
   &.card-hover {
-    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-150 active:scale-98;
+    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98;
   }
 }
 
@@ -38,7 +38,7 @@
   }
 
   a:has(&) {
-    @apply transition-all duration-150;
+    @apply transition-all duration-80;
   }
 
   a:active:has(&) {
@@ -47,10 +47,10 @@
 }
 
 @utility tag-chip {
-  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white dark:bg-neutral-800/40 border border-neutral-300 dark:border-neutral-800 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-150 active:scale-94;
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white dark:bg-neutral-800/40 border border-neutral-300 dark:border-neutral-800 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-80 active:scale-94;
 
   > button {
-    @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 dark:bg-neutral-800/60 hover:bg-neutral-300/60 dark:hover:bg-neutral-700/60 hover:text-light transition-all duration-150;
+    @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 dark:bg-neutral-800/60 hover:bg-neutral-300/60 dark:hover:bg-neutral-700/60 hover:text-light transition-all duration-80;
 
     > svg {
       @apply size-3;
@@ -59,7 +59,7 @@
 }
 
 @utility tag {
-  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-neutral-500 dark:text-neutral-400 text-xs whitespace-nowrap cursor-default select-none transition-all duration-150;
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-neutral-500 dark:text-neutral-400 text-xs whitespace-nowrap cursor-default select-none transition-all duration-80;
 
   /* Default (neutral) tag style */
   @apply bg-neutral-50 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800;
@@ -86,7 +86,7 @@
     @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-600;
 
     & > svg {
-      @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+      @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
     }
   }
 
@@ -108,7 +108,7 @@
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -130,7 +130,7 @@
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -152,7 +152,7 @@
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -174,7 +174,7 @@
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -196,7 +196,7 @@
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -218,7 +218,7 @@
     &.tag-selected,
     &:not(.tag-filter) {
       & > svg {
-        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-150 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
+        @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
   }
@@ -257,7 +257,7 @@ Option variants:
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-150 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 
   .card &,
   .card-sm & {
@@ -318,7 +318,7 @@ Option variants:
   }
 
   .dropdown-option {
-    @apply inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline transition-all duration-150 focus:ring-2 focus:outline-none;
+    @apply inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
       @apply text-primary-600 dark:text-primary-400 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-300/60 dark:hover:bg-primary-600/60 dark:active:bg-primary-600;
