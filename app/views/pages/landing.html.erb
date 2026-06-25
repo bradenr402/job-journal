@@ -30,8 +30,8 @@
       </p>
 
       <div class="mt-10 flex items-center justify-center">
-        <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
-          <span>Track Your First Lead</span>
+        <%= link_to "#demo", data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
+          <span>See How it Works</span>
           <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
         <% end %>
       </div>
@@ -109,7 +109,7 @@
   </section>
 
   <%# ─── DEMO: DASHBOARD STATS ─── %>
-  <section class="py-28 md:py-36 px-6">
+  <section id="demo" class="py-28 md:py-36 px-6">
     <div class="max-w-8xl mx-auto">
       <p class="text-center text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Your dashboard at a glance</p>
       <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
@@ -117,14 +117,23 @@
       </h2>
 
       <%# ── Hero screenshot ── %>
-      <div class="card p-1 -m-1 rounded-3xl max-md:hidden not-dark:shadow-xl overflow-hidden relative">
-        <span class="select-none font-semibold uppercase tracking-[-0.015em] text-light mt-2 mb-3 absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 px-4 py-2 rounded-[0.625rem] shadow-lg">Dashboard demo</span>
+      <div
+        class="
+          [--demo-padding:calc(var(--spacing)*1)]
+          [--demo-inner-radius:var(--radius-2xl)]
+          [--demo-outer-radius:calc(var(--demo-inner-radius)+var(--demo-padding))]
+          p-(--demo-padding) rounded-(--demo-outer-radius)
+          card max-md:hidden not-dark:shadow-lg overflow-hidden relative
+          [--demo-border-width:1px]
+        "
+      >
+        <span class="select-none font-semibold uppercase tracking-[-0.015em] text-light mt-2 mb-3 absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-white dark:bg-neutral-950 border-(length:--demo-border-width) border-neutral-200/60 dark:border-neutral-800/60 px-4 py-2 rounded-[0.65rem] shadow-lg">Dashboard demo</span>
 
-        <div class="relative">
-          <iframe src="<%= asset_path "JobJournal-demo.html" %>" id="JobJournal-demo" class="w-full aspect-3/2 rounded-[clamp(0.5rem,1vw,1.25rem)] border border-neutral-300/60 dark:border-neutral-700/30 overflow-hidden"></iframe>
+        <div class="relative rounded-(--demo-inner-radius) border-(length:--demo-border-width) border-neutral-300 dark:border-neutral-800 overflow-hidden">
+          <iframe src="<%= asset_path "JobJournal-demo.html" %>" id="JobJournal-demo" class="w-full aspect-3/2"></iframe>
 
           <%# inset shadow to simulate depth of iframe %>
-          <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_8px_rgba(0,0,0,0.2)] rounded-[1.25rem]"></div>
+          <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_8px_rgba(0,0,0,0.2)] rounded-[calc(var(--demo-inner-radius)-var(--demo-border-width))]"></div>
         </div>
       </div>
 
