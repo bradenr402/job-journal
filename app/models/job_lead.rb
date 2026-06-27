@@ -22,6 +22,9 @@ class JobLead < ApplicationRecord
     rejected:  0
   }.freeze
 
+  PRIOR_WEIGHT  = 3
+  PRIOR_QUALITY = 20.0
+
   # Attributes
   attr_reader :pending_tag_names
 
@@ -267,45 +270,60 @@ class JobLead < ApplicationRecord
 
   # Returns a hash of the top sources by quality.
   def self.top_sources_by_quality(limit = 4)
-    leads = where.not(source: [ nil, "" ])
+    leads_with_sources = where.not(source: [ nil, "" ])
+    top_sources_by_quality_for(leads_with_sources, limit)
+  end
 
-    grouped = leads.group_by { it.source.downcase }
+  private_class_method def self.top_sources_by_quality_for(leads, limit = 4)
+    grouped_by_normalized_source = leads.group_by { it.source.downcase }
 
-    ranked = grouped.map do |_, group|
-      most_common_casing = group.group_by(&:source).max_by { |_, leads| leads.size }.first
+    ranked_sources = grouped_by_normalized_source.map do |_normalized_source, leads_for_source|
+      most_common_casing = leads_for_source.group_by(&:source).max_by { |_casing, leads_with_casing| leads_with_casing.size }.first
 
-      count = group.size
-      qualities = group.map { |lead| status_quality(lead.status) }
-      highest_quality = qualities.max
+      lead_count = leads_for_source.size
+      qualities  = leads_for_source.map { |lead| status_quality(lead.status) }
 
-      latest_created_at = group.max_by(&:created_at)&.created_at
+      interview_count = leads_for_source.count { it.status == "interview" }
+      offer_count     = leads_for_source.count { it.status == "offer" }
+      accepted_count  = leads_for_source.count { it.status == "accepted" }
 
-      interview_count = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:interview] }
-      offer_count     = group.count { |lead| status_quality(lead.status) == STATUS_QUALITY[:offer] || status_quality(lead.status) == STATUS_QUALITY[:accepted] }
+      real_opportunity_count = interview_count + offer_count + accepted_count
+      conversion_rate        = real_opportunity_count.to_f / lead_count
+
+      smoothed_quality = (qualities.sum + PRIOR_WEIGHT * PRIOR_QUALITY) / (lead_count + PRIOR_WEIGHT)
+      score = smoothed_quality * (1 + conversion_rate)
+
+      latest_created_at = leads_for_source.max_by(&:created_at)&.created_at
 
       {
         source: most_common_casing,
-        count: count,
-        highest_quality: highest_quality,
-        latest_created_at: latest_created_at,
-        interview_count: interview_count,
-        offer_count: offer_count
+        lead_count:,
+        score:,
+        conversion_rate:,
+        interview_count:,
+        offer_count:,
+        accepted_count:,
+        latest_created_at:
       }
     end
 
-    filtered = ranked.select { it[:interview_count].positive? || it[:offer_count].positive? }
-
-    sorted = filtered.sort_by do |h|
-      [ -h[:highest_quality], -h[:count], -(h[:latest_created_at]&.to_i || 0) ]
+    sorted = ranked_sources.select { it[:conversion_rate].positive? }.sort_by do |source_data|
+      [
+        -source_data[:score],
+        -source_data[:lead_count],
+        -(source_data[:latest_created_at]&.to_i || 0)
+      ]
     end
 
-    # Return a hash: { 'Source Name' => { count:, interview_count:, offer_count: }, ... }
-    sorted.first(limit).to_h do |h|
-      [ h[:source], { count: h[:count], interview_count: h[:interview_count], offer_count: h[:offer_count] } ]
+    sorted.first(limit).to_h do |source_data|
+      [
+        source_data[:source],
+        source_data
+          .slice(:lead_count, :interview_count, :offer_count, :accepted_count, :conversion_rate)
+      ]
     end
   end
 
-  # Class Methods
   def self.cleanup_for_user(user)
     if user.get_setting(:auto_archive_stale_leads_enabled)
       stale_days = user.get_setting(:job_lead_stale_after_days)

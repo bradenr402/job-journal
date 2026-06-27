@@ -165,11 +165,11 @@ class JobLeadTest < ActiveSupport::TestCase
 
     assert_equal %w[LinkedIn Indeed], top_sources.keys
 
-    assert_equal 2, top_sources["LinkedIn"][:count]
+    assert_equal 2, top_sources["LinkedIn"][:lead_count]
     assert_equal 1, top_sources["LinkedIn"][:offer_count]
     assert_equal 0, top_sources["LinkedIn"][:interview_count]
 
-    assert_equal 3, top_sources["Indeed"][:count]
+    assert_equal 3, top_sources["Indeed"][:lead_count]
     assert_equal 0, top_sources["Indeed"][:offer_count]
     assert_equal 1, top_sources["Indeed"][:interview_count]
 
