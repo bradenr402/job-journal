@@ -1,0 +1,47 @@
+<div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if sources.size >= 2 %> <%= '@3xl:grid-cols-3' if sources.size >= 3 && sources.size != 4 %> gap-1.5">
+  <% sources.each.with_index(1) do |(source, data), index| %>
+    <div class="flex flex-col justify-between gap-4 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md relative">
+      <%
+        lead_count, interview_count, offer_count, accepted_count, conversion_rate =
+          data.values_at(:lead_count, :interview_count, :offer_count, :accepted_count, :conversion_rate)
+
+        conversions = {
+          "interview" => interview_count,
+          "offer" => offer_count,
+          "accepted offer" => accepted_count,
+        }.select { _2.positive? }
+        conversion_count = conversions.values.sum
+
+        conversion_rate_display = number_to_percentage(conversion_rate * 100, precision: 1, strip_insignificant_zeros: true)
+        normalized_labels = conversions.keys.map { |key| key == "accepted offer" ? "offer" : key }.uniq
+      %>
+
+      <div class="flex items-start gap-2.5">
+        <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center shrink-0 rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+          #<%= index %>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-bold text-lg/snug"><%= source %></p>
+          <p class="text-xs/snug text-muted">
+            <%= conversion_count %> of <%= pluralize lead_count, "lead" %>
+            (<%= tag.span conversion_rate_display, class: "text-soft font-semibold" %>)
+            converted to <%= conversion_count == 1 ? "an #{normalized_labels.first}" : normalized_labels.map(&:pluralize).to_disjunctive_sentence %>.
+          </p>
+        </div>
+      </div>
+
+      <% if conversions.any? %>
+        <p class="text-sm/none text-soft">
+          <%= safe_join(
+            conversions.map { |label, count| tag.span pluralize(count, label) },
+            ", "
+          ) %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% if sources.size == 1 %>
+  <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
+<% end %>

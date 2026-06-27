@@ -388,40 +388,7 @@
           </div>
 
           <% if @top_sources.any? %>
-            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @top_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @top_sources.size >= 3 && @top_sources.size != 4 %> gap-1.5">
-              <% @top_sources.each.with_index(1) do |(source, data), index| %>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #<%= index %>
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug"><%= source %></p>
-                      <p class="text-xs/snug text-muted"><%= pluralize data[:count], 'lead' %></p>
-                    </div>
-                  </div>
-
-                  <%
-                    items = [
-                      [data[:interview_count], 'interview'],
-                      [data[:offer_count], 'offer']
-                    ].select { |count, _| count.positive? }
-                  %>
-
-                  <% if items.any? %>
-                    <p class="text-sm/none text-soft">
-                      <%= safe_join(
-                        items.map { |count, label| content_tag(:span, pluralize(count, label)) },
-                        ', '
-                      ) %>
-                    </p>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-            <% if @top_sources.size == 1 %>
-              <p class="text-sm text-muted mt-2">So far, no job leads from any other sources have resulted in an interview or offer.</p>
-            <% end %>
+            <%= render "shared/sources", sources: @top_sources %>
           <% else %>
             <p class="text-sm text-muted">No sources recorded yet.</p>
           <% end %>

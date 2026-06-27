@@ -400,35 +400,7 @@
               <p class="text-xs text-muted">See where your best job leads are coming from.</p>
             </div>
 
-            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @demo_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @demo_sources.size >= 3 && @demo_sources.size != 4 %> gap-1.5">
-              <% @demo_sources.each.with_index(1) do |(source, data), index| %>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #<%= index %>
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug"><%= source %></p>
-                      <p class="text-xs/snug text-muted"><%= pluralize data[:count], 'lead' %></p>
-                    </div>
-                  </div>
-
-                  <%
-                    items = [
-                      [data[:interview_count], 'interview'],
-                      [data[:offer_count], 'offer']
-                    ].select { |count, _| count.positive? }
-                  %>
-
-                  <p class="text-sm/none text-soft">
-                    <%= safe_join(
-                      items.map { |count, label| content_tag(:span, pluralize(count, label)) },
-                      ', '
-                    ) %>
-                  </p>
-                </div>
-              <% end %>
-            </div>
+            <%= render "shared/sources", sources: @demo_sources %>
           </div>
 
           <%# Top Tags %>
