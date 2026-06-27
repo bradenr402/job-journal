@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def page_title
+    title = content_for(:title).presence || "JobJournal"
+    "JobJournal".in?(title) ? title : "#{title} • JobJournal"
+  end
+
   def number_with_sign(number, **options)
     sign =
       if number.zero?
