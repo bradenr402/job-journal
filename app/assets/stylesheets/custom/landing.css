@@ -19,6 +19,42 @@
   }
 }
 
+@property --nav-float-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes floating-nav {
+  from {
+    background-color: color-mix(in oklch, var(--color-white) 80%, transparent);
+    border-bottom-color: color-mix(in oklch, var(--color-black) 6%, transparent);
+
+    @variant dark {
+      background-color: color-mix(in oklch, var(--color-neutral-950) 80%, transparent);
+      border-bottom-color: color-mix(in oklch, var(--color-white) 6%, transparent);
+    }
+  }
+  to {
+    background-color: transparent;
+    border-bottom-color: transparent;
+
+    @variant dark {
+      background-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+}
+
+@keyframes floating-nav-bar {
+  from {
+    --nav-float-progress: 0;
+  }
+  to {
+    --nav-float-progress: 1;
+  }
+}
+
 @utility hero-title-word {
   @apply inline-block whitespace-pre;
 
@@ -40,5 +76,44 @@
     animation-fill-mode: both;
     animation-delay: calc(var(--enter-delay, 0) * 1ms);
     will-change: transform, opacity, filter;
+  }
+}
+
+@utility floating-nav {
+  @variant motion-safe {
+    animation-name: floating-nav;
+    animation-duration: 1ms;
+    animation-timeline: scroll();
+    animation-range: 0 80px;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+  }
+}
+
+@utility floating-nav-bar {
+  @variant motion-safe {
+    --nav-float-progress: 0;
+    animation-name: floating-nav-bar;
+    animation-duration: 1ms;
+    animation-timeline: scroll();
+    animation-range: 0 150px;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    transform: translateY(calc(var(--nav-float-progress) * 10px));
+    border-radius: calc(var(--nav-float-progress) * 1.25rem);
+    background-color: color-mix(in oklch, var(--color-white) calc(var(--nav-float-progress) * 80%), transparent);
+    box-shadow:
+      0 1px 2px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 4%), transparent),
+      0 10px 28px -14px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 14%), transparent),
+      0 0 0 1px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 5%), transparent);
+    will-change: transform, border-radius, background-color, box-shadow;
+
+    @variant dark {
+      background-color: color-mix(in oklch, var(--color-neutral-900) calc(var(--nav-float-progress) * 80%), transparent);
+      box-shadow:
+        0 1px 2px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 40%), transparent),
+        0 10px 28px -14px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 55%), transparent),
+        0 0 0 1px color-mix(in oklch, var(--color-white) calc(var(--nav-float-progress) * 6%), transparent);
+    }
   }
 }
