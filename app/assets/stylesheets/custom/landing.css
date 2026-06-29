@@ -1,0 +1,44 @@
+:root {
+  --hero-stagger-duration: 800ms;
+  --hero-stagger-distance: 12px;
+  --hero-stagger-stagger: 80ms;
+  --hero-stagger-blur: 3px;
+  --hero-stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes hero-stagger-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hero-stagger-distance));
+    filter: blur(var(--hero-stagger-blur));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@utility hero-title-word {
+  @apply inline-block whitespace-pre;
+
+  @variant motion-safe {
+    animation-name: hero-stagger-reveal;
+    animation-duration: var(--hero-stagger-duration);
+    animation-timing-function: var(--hero-stagger-ease);
+    animation-fill-mode: both;
+    animation-delay: calc(var(--hero-stagger-index, 0) * var(--hero-stagger-stagger));
+    will-change: transform, opacity, filter;
+  }
+}
+
+@utility hero-stagger-item {
+  @variant motion-safe {
+    animation-name: hero-stagger-reveal;
+    animation-duration: var(--hero-stagger-duration);
+    animation-timing-function: var(--hero-stagger-ease);
+    animation-fill-mode: both;
+    animation-delay: calc(var(--enter-delay, 0) * 1ms);
+    will-change: transform, opacity, filter;
+  }
+}
