@@ -9,8 +9,8 @@
     <% elsif any_results %>
       <% if @results[:job_leads].any? %>
         <% unless @selected_filter == 'job_leads' %>
-          <p class="ml-1 text-lg font-semibold mt-6 mb-1">
-            Job Leads:
+          <p class="ml-1 font-semibold mt-10 mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-1">
+            <%= pluralize @results[:job_leads].count, "Job Lead" %>
           </p>
         <% end %>
 
@@ -23,8 +23,8 @@
 
       <% if @results[:interviews].any? %>
         <% unless @selected_filter == 'interviews' %>
-          <p class="ml-1 text-lg font-semibold mt-6 mb-1">
-            Interviews:
+          <p class="ml-1 font-semibold mt-10 mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-1">
+            <%= pluralize @results[:interviews].count, "Interview" %>
           </p>
         <% end %>
 
@@ -37,8 +37,8 @@
 
       <% if @results[:notes].any? %>
         <% unless @selected_filter == 'notes' %>
-          <p class="ml-1 text-lg font-semibold mt-6 mb-1">
-            Notes:
+          <p class="ml-1 font-semibold mt-10 mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-1">
+            <%= pluralize @results[:notes].count, "Note" %>
           </p>
         <% end %>
         <div class="<%= Current.user.get_setting(:notes_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @results[:notes].size >= 3 && @results[:notes].size != 4}" %> gap-3">
