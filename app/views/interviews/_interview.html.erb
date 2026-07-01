@@ -4,20 +4,20 @@
 <div id="<%= dom_id interview %>" class="relative card w-full sm:w-auto flex flex-col <%= 'card-hoverable' unless interview_page || @demo %>" style="view-transition-name: interview-<%= interview.id %>;">
   <div class="flex items-start gap-x-4 gap-y-2 w-full mb-2">
     <div class="mb-2">
-      <div class="<%= interview_page ? 'subheading' : 'text-lg font-semibold leading-snug mb-1' %>">
-        <span>Interview with <%= interview.interviewer %></span>
+      <div class="<%= interview_page ? 'subheading' : 'text-lg font-semibold leading-snug' %>">
+        <span class="mr-0.5">Interview with <%= interview.interviewer %></span>
         <% if interview.scheduled_at.past? %>
-          <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-accepted">
+          <span class="align-middle whitespace-nowrap font-normal tag tag-accepted">
             Completed
           </span>
         <% else %>
-          <span class="align-middle whitespace-nowrap font-normal ml-0.5 tag tag-interview">
+          <span class="align-middle whitespace-nowrap font-normal tag tag-interview">
             Scheduled: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span>
           </span>
         <% end %>
       </div>
       <% unless current_page?(job_lead_path(job_lead)) %>
-        <p class="text-xs text-muted mt-1">for <%= job_lead.title %> @ <%= job_lead.company %></p>
+        <p class="text-xs text-muted mt-0.5">for <%= job_lead.title %> @ <%= job_lead.company %></p>
       <% end %>
     </div>
     <% if interview_page %>
