@@ -1,13 +1,8 @@
 <% if params[:notable_type].present? %>
-  <div class="mb-4">
-    <%= link_to 'Clear Filters', notes_path, class: 'btn btn-sm btn-destructive btn-muted' %>
-  </div>
+  <%= link_to 'Clear Filters', notes_path, class: 'btn btn-sm btn-destructive btn-muted' %>
 <% end %>
 
-<div class="mb-4">
-  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:job-lead-type-filters-label]">
-    Filter notes by type:
-  </p>
+<div id="note-filters" class="my-4 space-y-1">
   <div class="flex flex-wrap items-center gap-1">
     <% ['active', 'archived'].each do |note_type| %>
       <%= link_to notes_path(params.permit(:notable_type).merge(note_type: note_type == @selected_note_type ? 'all' : note_type)), class: 'inline-block', style: "view-transition-name: #{note_type}-notes" do %>
@@ -18,12 +13,7 @@
       <% end %>
     <% end %>
   </div>
-</div>
 
-<div class="mb-4">
-  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:note-filters-label]">
-    Show notes for:
-  </p>
   <div class="flex flex-wrap items-center gap-1">
     <%= link_to notes_path(notable_type: nil, note_type: @selected_note_type), class: 'inline-block', style: "view-transition-name: all-notes" do %>
       <span class="tag tag-filter <%= 'tag-selected' unless params[:notable_type].present? %>">All</span>

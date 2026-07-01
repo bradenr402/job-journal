@@ -1,13 +1,8 @@
 <% if @selected_tags.any? || @selected_status.present? %>
-  <div class="mb-4">
-    <%= link_to 'Clear Filters', job_leads_path, class: 'btn btn-sm btn-destructive btn-muted' %>
-  </div>
+  <%= link_to 'Clear Filters', job_leads_path, class: 'btn btn-sm btn-destructive btn-muted' %>
 <% end %>
 
-<div class="mb-4">
-  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:job-lead-type-filters-label]">
-    Filter job leads by type:
-  </p>
+<div id="job-lead-filters" class="my-4 space-y-1">
   <div class="flex flex-wrap items-center gap-1">
     <% ['active', 'archived'].each do |job_lead_type| %>
       <%= link_to job_leads_path(params.permit(:tags, :status).merge(job_lead_type: job_lead_type == @selected_job_lead_type ? 'all' : job_lead_type)), class: 'inline-block', style: "view-transition-name: #{job_lead_type}-job-leads" do %>
@@ -18,12 +13,7 @@
       <% end %>
     <% end %>
   </div>
-</div>
 
-<div class="mb-4">
-  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
-    Filter job leads by status:
-  </p>
   <div class="flex flex-wrap items-center gap-1">
     <% @all_status_names.each do |status| %>
       <%= link_to job_leads_path(params.permit(:tags, :job_lead_type).merge(status: status == @selected_status ? nil : status)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
@@ -34,12 +24,7 @@
       <% end %>
     <% end %>
   </div>
-</div>
 
-<div class="mb-4">
-  <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:tags-filter-label]">
-    Filter job leads by tags:
-  </p>
   <div class="flex flex-wrap items-center gap-1">
     <% @selected_tags.each do |tag| %>
       <% remaining_tags = @selected_tag_names - [tag.name] %>
