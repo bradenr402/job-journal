@@ -73,7 +73,7 @@
       <div class="flex items-center gap-1 text-sm text-soft mb-4">
         <%= link_to interview.call_url, target: '_blank', rel: 'noopener', class: 'btn-link-primary inline-flex gap-1 relative z-20' do %>
           <%= icon 'link', class: 'size-4 shrink-0 mt-0.5' %>
-          <span><%= interview.call_url %></span>
+          <span class="wrap-anywhere"><%= line_wrap_url interview.call_url.sub(%r{\Ahttps?://}, "") %></span>
         <% end %>
       </div>
     <% end %>
