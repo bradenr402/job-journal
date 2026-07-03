@@ -1,65 +1,45 @@
-<div id="search-filters" class="mt-4 space-y-4">
-  <div>
-    <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:search-filters-label]">
-      Filter search results by type:
-    </p>
-    <div class="flex flex-wrap items-center gap-1">
-      <% ['all', 'job_leads', 'interviews', 'notes'].each do |filter| %>
-        <div class="form-radio-tag" style="view-transition-name: search-filter-<%= filter %>">
-          <%= radio_button_tag :filter, filter, checked: (@selected_filter == filter), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
-          <%= label_tag "filter_#{filter}", filter.titlecase %>
-        </div>
-      <% end %>
-    </div>
+<div id="search-filters" class="mt-3 space-y-1">
+  <div class="flex flex-wrap items-center gap-1">
+    <% ['all', 'job_leads', 'interviews', 'notes'].each do |filter| %>
+      <div class="form-radio-tag" style="view-transition-name: search-filter-<%= filter %>">
+        <%= radio_button_tag :filter, filter, checked: (@selected_filter == filter), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
+        <%= label_tag "filter_#{filter}", filter.titlecase %>
+      </div>
+    <% end %>
   </div>
 
   <% if @selected_filter == 'job_leads' %>
-    <div>
-      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:status-filters-label]">
-        Filter job leads by status:
-      </p>
-      <div class="flex flex-wrap items-center gap-1">
-        <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_status.present? %>
+    <div class="flex flex-wrap items-center gap-1">
+      <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_status.present? %>
 
-        <% @all_status_names.each do |status| %>
-          <div class="form-radio-tag" style="view-transition-name: job-leads-filter-<%= status %>">
-            <%= radio_button_tag :status, status, checked: (@selected_status == status), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
-            <%= label_tag "status_#{status}", status.titlecase %>
-          </div>
-        <% end %>
-      </div>
+      <% @all_status_names.each do |status| %>
+        <div class="form-radio-tag" style="view-transition-name: job-leads-filter-<%= status %>">
+          <%= radio_button_tag :status, status, checked: (@selected_status == status), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
+          <%= label_tag "status_#{status}", status.titlecase %>
+        </div>
+      <% end %>
     </div>
   <% elsif @selected_filter == 'interviews' %>
-    <div>
-      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:interviews-filters-label]">
-        Filter interviews by date:
-      </p>
-      <div class="flex flex-wrap items-center gap-1">
-        <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_date_range.present? %>
+    <div class="flex flex-wrap items-center gap-1">
+      <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_date_range.present? %>
 
-        <% @all_date_ranges.each do |date_range| %>
-          <div class="form-radio-tag" style="view-transition-name: interviews-filter-<%= date_range %>">
-            <%= radio_button_tag :date_range, date_range, checked: (@selected_date_range == date_range), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
-            <%= label_tag "date_range_#{date_range}", date_range.titlecase %>
-          </div>
-        <% end %>
-      </div>
+      <% @all_date_ranges.each do |date_range| %>
+        <div class="form-radio-tag" style="view-transition-name: interviews-filter-<%= date_range %>">
+          <%= radio_button_tag :date_range, date_range, checked: (@selected_date_range == date_range), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
+          <%= label_tag "date_range_#{date_range}", date_range.titlecase %>
+        </div>
+      <% end %>
     </div>
   <% elsif @selected_filter == 'notes' %>
-    <div>
-      <p class="ml-1 text-sm text-muted mb-1 [view-transition-name:notes-filters-label]">
-        Show notes for:
-      </p>
-      <div class="flex flex-wrap items-center gap-1">
-        <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_notable_type.present? %>
+    <div class="flex flex-wrap items-center gap-1">
+      <%= link_to 'Clear', search_path(q: @query, filter: @selected_filter), class: 'btn btn-sm btn-destructive btn-muted' if @selected_notable_type.present? %>
 
-        <% @all_notable_types.each do |notable_type| %>
-          <div class="form-radio-tag" style="view-transition-name: notes-filter-<%= notable_type %>">
-            <%= radio_button_tag :notable_type, notable_type, checked: (@selected_notable_type == notable_type), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
-            <%= label_tag "notable_type_#{notable_type}", notable_type.titlecase %>
-          </div>
-        <% end %>
-      </div>
+      <% @all_notable_types.each do |notable_type| %>
+        <div class="form-radio-tag" style="view-transition-name: notes-filter-<%= notable_type %>">
+          <%= radio_button_tag :notable_type, notable_type, checked: (@selected_notable_type == notable_type), data: { action: 'change->auto-submit#submit' }, class: 'peer' %>
+          <%= label_tag "notable_type_#{notable_type}", "#{notable_type.titlecase} Notes" %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>

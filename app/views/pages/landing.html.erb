@@ -1,11 +1,11 @@
-<% content_for(:title) { 'JobJournal • Personal Job Search Tracker' } %>
+<% content_for :title, 'JobJournal • Personal Job Search Tracker' %>
 
 <%# ─── NAV ─── %>
-<nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-200/60 dark:border-neutral-800/40">
-  <div class="max-w-8xl mx-auto px-6 h-16 flex items-center justify-between">
-    <%= link_to root_path, class: 'flex items-center gap-1.5' do %>
-      <%= icon 'note-filled', class: 'size-6 shrink-0 text-primary-600' %>
-      <span class="text-xl font-extrabold tracking-tight text-normal">JobJournal</span>
+<nav class="floating-nav fixed top-0 inset-x-0 z-50 border-b border-neutral-200/60 dark:border-neutral-800/40">
+  <div class="floating-nav-bar max-w-8xl max-md:mx-4 md:mx-auto py-3 pl-4.5 pr-3 flex items-center justify-between backdrop-blur-sm">
+    <%= link_to root_path, class: 'flex items-center max-md:gap-0.75 md:gap-1.5' do %>
+      <%= icon 'note-filled', class: 'max-md:size-4.5 md:size-6 shrink-0 text-primary-600' %>
+      <span class="max-md:text-base md:text-xl font-extrabold tracking-tight text-normal">JobJournal</span>
     <% end %>
 
     <div class="flex items-center gap-3">
@@ -27,26 +27,36 @@
   <section class="pt-36 md:pt-44 pb-24 md:pb-32 px-6 *:max-w-8xl *:mx-auto">
     <div class="text-center">
       <h1 class="text-[clamp(2.6rem,8vw,6rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 leading-[1.08] text-balance">
-        Your Job Search.<br>
-        Your Terms.
+        <% hero_title = "Your Job Search. <br> Your Terms." %>
+
+        <span class="sr-only"><%= hero_title %></span>
+        <span aria-hidden="true">
+          <% hero_title.split.each.with_index do |word, index| %>
+            <% if word == "<br>" %>
+              <br>
+            <% else %>
+              <span class="hero-title-word" style="--hero-stagger-index: <%= index %>;"><%= word %></span>
+            <% end %>
+          <% end %>
+        </span>
       </h1>
 
-      <p class="mt-5 text-[clamp(1rem,1.65vw,1.25rem)] text-light max-w-2xl mx-auto text-balance leading-relaxed">
+      <p class="hero-stagger-item [--enter-delay:520] mt-5 text-[clamp(1rem,1.65vw,1.25rem)] text-light max-w-2xl mx-auto text-balance leading-relaxed">
         Organize every lead, application, and interview in&nbsp;one&nbsp;place.
         No messy spreadsheets.&nbsp;No data selling.&nbsp;No recruiter dashboards.
       </p>
 
-      <div class="mt-10 flex items-center justify-center">
+      <div class="hero-stagger-item [--enter-delay:640] mt-10 flex items-center justify-center">
         <%= link_to "#demo", data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
           <span>See How it Works</span>
           <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
         <% end %>
       </div>
-      <p class="text-sm text-soft mt-4">Free forever. No credit card required.</p>
+      <p class="hero-stagger-item [--enter-delay:760] text-sm text-soft mt-4">Free forever. No credit card required.</p>
     </div>
 
     <%# ── Hero screenshot ── %>
-    <div class="max-md:-mx-4 mt-20 md:mt-28 rounded-[clamp(0.5rem,1vw,1.25rem)] border border-neutral-200/60 dark:border-neutral-800/30 not-dark:shadow-xl overflow-hidden">
+    <div class="hero-stagger-item [--enter-delay:880] max-md:-mx-4 mt-20 md:mt-28 rounded-[clamp(0.5rem,1vw,1.1rem)] ring-1 ring-neutral-200/60 dark:ring-neutral-800/30 not-dark:shadow-xl overflow-hidden">
       <div class="max-md:hidden">
         <%= image_tag 'dashboard.webp', alt: 'JobJournal dashboard showing weekly stats, upcoming interviews, and follow-up suggestions', class: 'dark:hidden w-full h-auto', loading: 'eager' %>
         <%= image_tag 'dashboard-dark.webp', alt: '', aria: { hidden: true }, class: 'not-dark:hidden w-full h-auto', loading: 'eager' %>
@@ -139,7 +149,6 @@
         <div class="relative rounded-(--demo-inner-radius) border-(length:--demo-border-width) border-neutral-300 dark:border-neutral-800 overflow-hidden">
           <iframe src="<%= asset_path "JobJournal-demo.html" %>" id="JobJournal-demo" class="w-full aspect-3/2"></iframe>
 
-          <%# inset shadow to simulate depth of iframe %>
           <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_8px_rgba(0,0,0,0.2)] rounded-[calc(var(--demo-inner-radius)-var(--demo-border-width))]"></div>
         </div>
       </div>
@@ -152,8 +161,8 @@
               <%= icon 'briefcase', class: 'size-5 shrink-0' %>
             </div>
             <div class="mt-auto">
-              <p class="font-extrabold text-4xl mb-1"><%= @demo_job_lead_stats[:count] %></p>
-              <p class="text-xs text-muted"><%= @demo_job_lead_stats[:change] %></p>
+              <p class="font-extrabold text-4xl mb-1"><%= @demo.job_lead_stats[:count] %></p>
+              <p class="text-xs text-muted"><%= @demo.job_lead_stats[:change] %></p>
             </div>
           </div>
 
@@ -165,10 +174,10 @@
             <div class="mt-auto flex items-end justify-between">
               <div>
                 <p class="font-extrabold text-4xl mb-1">
-                  <%= applications_count = @demo_application_stats[:count] %>
-                  <span class="text-sm font-normal text-muted">/ <%= applications_goal = @demo_application_stats[:goal] %></span>
+                  <%= applications_count = @demo.application_stats[:count] %>
+                  <span class="text-sm font-normal text-muted">/ <%= applications_goal = @demo.application_stats[:goal] %></span>
                 </p>
-                <p class="text-xs text-muted"><%= @demo_application_stats[:change] %></p>
+                <p class="text-xs text-muted"><%= @demo.application_stats[:change] %></p>
               </div>
               <% percent = applications_count.to_f / applications_goal.to_f * 100  %>
               <%= render 'shared/progress_dial', percent: percent %>
@@ -182,10 +191,10 @@
             </div>
             <div class="mt-auto flex items-end justify-between">
               <div>
-                <p class="font-extrabold text-4xl mb-1"><%= @demo_interview_stats[:count] %></p>
-                <p class="text-xs text-muted"><%= @demo_interview_stats[:change] %></p>
+                <p class="font-extrabold text-4xl mb-1"><%= @demo.interview_stats[:count] %></p>
+                <p class="text-xs text-muted"><%= @demo.interview_stats[:change] %></p>
               </div>
-              <% average_rating = @demo_interview_stats[:average_rating] %>
+              <% average_rating = @demo.interview_stats[:average_rating] %>
               <div class="flex flex-col items-end">
                 <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
                 <div class="font-bold flex items-center gap-x-1">
@@ -215,14 +224,14 @@
       <div aria-hidden="true">
         <%# ── Job Lead Cards ── %>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-12">
-          <% @demo_leads.each do |lead| %>
+          <% @demo.leads.each do |lead| %>
             <%= render lead %>
           <% end %>
         </div>
 
         <%# ── Interview Cards ── %>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <% @demo_interviews.each do |interview| %>
+          <% @demo.interviews.each do |interview| %>
             <%= render interview %>
           <% end %>
         </div>
@@ -285,12 +294,13 @@
           </p>
         </div>
 
-      <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <% @demo_notes.each_with_index do |note, index| %>
-          <div class="<%= 'max-md:hidden' if index >= 3 %>">
-            <%= render note %>
-          </div>
-        <% end %>
+        <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <% @demo.notes.each_with_index do |note, index| %>
+            <div class="<%= 'max-md:hidden' if index >= 3 %>">
+              <%= render note %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </section>
@@ -325,7 +335,7 @@
 
             <div class="card">
               <div class="grid grid-cols-1 @xl:grid-cols-2 gap-1.5">
-                <% @demo_suggestions.each do |suggestion| %>
+                <% @demo.suggestions.each do |suggestion| %>
                   <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
                     <div class="flex items-center gap-2.5">
                       <div class="flex flex-col">
@@ -364,8 +374,8 @@
               <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over 7 days ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
             </div>
             <div id="job_leads" class="@container">
-              <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@4xl:grid-cols-3' if @demo_stale_leads.size >= 3 && @demo_stale_leads.size != 4 %> gap-3">
-                <% @demo_stale_leads.each do |job_lead| %>
+              <div class="grid grid-cols-1 @xl:grid-cols-2 <%= '@4xl:grid-cols-3' if @demo.stale_leads.size >= 3 && @demo.stale_leads.size != 4 %> gap-3">
+                <% @demo.stale_leads.each do |job_lead| %>
                   <%= render 'job_leads/job_lead', job_lead: job_lead %>
                 <% end %>
               </div>
@@ -400,35 +410,7 @@
               <p class="text-xs text-muted">See where your best job leads are coming from.</p>
             </div>
 
-            <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if @demo_sources.size >= 2 %> <%= '@3xl:grid-cols-3' if @demo_sources.size >= 3 && @demo_sources.size != 4 %> gap-1.5">
-              <% @demo_sources.each.with_index(1) do |(source, data), index| %>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #<%= index %>
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug"><%= source %></p>
-                      <p class="text-xs/snug text-muted"><%= pluralize data[:count], 'lead' %></p>
-                    </div>
-                  </div>
-
-                  <%
-                    items = [
-                      [data[:interview_count], 'interview'],
-                      [data[:offer_count], 'offer']
-                    ].select { |count, _| count.positive? }
-                  %>
-
-                  <p class="text-sm/none text-soft">
-                    <%= safe_join(
-                      items.map { |count, label| content_tag(:span, pluralize(count, label)) },
-                      ', '
-                    ) %>
-                  </p>
-                </div>
-              <% end %>
-            </div>
+            <%= render "shared/sources", sources: @demo.sources %>
           </div>
 
           <%# Top Tags %>
@@ -442,7 +424,7 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-1 mb-4">
-              <% @demo_top_tags.each do |tag| %>
+              <% @demo.top_tags.each do |tag| %>
                 <span class="tag tag-filter demo"><%= tag %></span>
               <% end %>
             </div>
@@ -556,7 +538,7 @@
 <footer class="p-4 [main:has(>_:nth-last-child(2n):first-child)+&]:bg-neutral-50 dark:[main:has(>_:nth-last-child(2n):first-child)+&]:bg-neutral-900/40">
   <div
     class="
-      group/footer max-w-8xl md:mx-auto
+      footer-reveal group/footer max-w-8xl md:mx-auto
       rounded-4xl ring-1 ring-neutral-200/60 dark:ring-neutral-800/60
       [--footer-padding:calc(var(--spacing)*8)] md:[--footer-padding:calc(var(--spacing)*12)] p-(--footer-padding)
       [--footer-gap:calc(var(--spacing)*8)] md:[--footer-gap:calc(var(--spacing)*16)]
