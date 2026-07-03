@@ -100,6 +100,16 @@
   height: 100%;
 }
 
+::view-transition-group(root) {
+  background-color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::view-transition-group(root) {
+    background-color: var(--color-neutral-925);
+  }
+}
+
 :root {
   color-scheme: light dark;
 

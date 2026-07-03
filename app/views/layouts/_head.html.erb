@@ -1,3 +1,16 @@
+<script>
+  // Detect iOS/macOS Safari and selectively disable the buggy native VT engine
+  if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes('CriOS')) {
+    if (window.document.startViewTransition) {
+      Object.defineProperty(window.document, 'startViewTransition', {
+        value: undefined,
+        writable: true,
+        configurable: true
+      });
+    }
+  }
+</script>
+
 <title><%= page_title %></title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -24,3 +37,6 @@
 <%= javascript_importmap_tags %>
 
 <meta name="view-transition" content="same-origin" />
+
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
