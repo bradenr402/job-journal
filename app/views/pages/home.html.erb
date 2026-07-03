@@ -98,7 +98,7 @@
               <% unless average_rating.nil? %>
                 <div class="flex flex-col items-end">
                   <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
-                  <div class="font-bold flex items-center gap-x-1">
+                  <div class="font-bold flex items-center">
                     <% 1.upto(5) do |star| %>
                       <%= icon 'star', class: "size-5 transition-all duration-120 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
                     <% end %>
@@ -322,7 +322,7 @@
               <% unless average_rating.nil? %>
                 <div class="flex flex-col items-end">
                   <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
-                  <div class="font-bold flex items-center gap-x-1">
+                  <div class="font-bold flex items-center">
                     <% 1.upto(5) do |star| %>
                       <%= icon 'star', class: "size-5 transition-all duration-120 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
                     <% end %>
