@@ -34,21 +34,13 @@
 @keyframes floating-nav {
   from {
     background-color: color-mix(in oklch, var(--color-white) 80%, transparent);
-    border-bottom-color: color-mix(in oklch, var(--color-black) 6%, transparent);
 
     @variant dark {
       background-color: color-mix(in oklch, var(--color-neutral-950) 80%, transparent);
-      border-bottom-color: color-mix(in oklch, var(--color-white) 6%, transparent);
     }
   }
   to {
     background-color: transparent;
-    border-bottom-color: transparent;
-
-    @variant dark {
-      background-color: transparent;
-      border-bottom-color: transparent;
-    }
   }
 }
 
