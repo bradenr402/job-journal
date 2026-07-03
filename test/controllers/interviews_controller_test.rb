@@ -56,10 +56,32 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal "text/calendar", @response.media_type
     assert_match(/BEGIN:VCALENDAR/, @response.body)
-    assert_match(/SUMMARY:#{Regexp.escape(@interview.title)}/, @response.body)
+
+    calendar = Icalendar::Calendar.parse(@response.body).first
+    event = calendar.events.first
+    assert_includes @response.body, "DTSTART:#{@interview.scheduled_at.strftime("%Y%m%dT%H%M%S")}"
+    assert_includes @response.body, "DTEND:#{@interview.scheduled_at.advance(hours: 1).strftime("%Y%m%dT%H%M%S")}"
+    assert_equal @interview.title, event.summary.to_s
+    assert_equal "JobJournal: #{calendar_interview_url(@interview)}", event.description.to_s
+    assert_equal @interview.location, event.location.to_s
+    assert_equal @interview.call_url, event.url.to_s
+    assert_equal "interview-#{@interview.id}@#{calendar_request_host}", event.uid.to_s
 
     disposition = @response.headers["Content-Disposition"]
     assert_includes disposition, "inline"
     assert_includes disposition, "filename=\"#{@interview.title.parameterize}-#{@interview.scheduled_at.to_date}.ics\""
+  end
+
+  private
+
+  def calendar_interview_url(interview)
+    Rails.application.routes.url_helpers.interview_url(
+      interview,
+      Rails.application.config.action_mailer.default_url_options
+    )
+  end
+
+  def calendar_request_host
+    URI.parse(add_to_calendar_interview_url(@interview)).host
   end
 end
