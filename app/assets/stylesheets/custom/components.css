@@ -85,7 +85,7 @@
   ) {
     @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-600;
 
-    & > svg {
+    > svg:not([class*=size-]) {
       @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
     }
   }
@@ -107,7 +107,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      & > svg {
+      > svg:not([class*=size-]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -129,7 +129,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      & > svg {
+      > svg:not([class*=size-]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -151,7 +151,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      & > svg {
+      > svg:not([class*=size-]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -173,7 +173,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      & > svg {
+      > svg:not([class*=size-]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -195,7 +195,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      & > svg {
+      > svg:not([class*=size-]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -217,7 +217,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      & > svg {
+      > svg:not([class*=size-]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }

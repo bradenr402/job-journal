@@ -1,11 +1,8 @@
 <div id="interview-filters" class="my-4 space-y-1">
   <div class="flex flex-wrap items-center gap-1">
-    <%= link_to interviews_path(scheduled: nil), class: 'inline-block', style: "view-transition-name: all-interviews" do %>
-      <span class="tag tag-filter <%= 'tag-selected' unless params[:scheduled].present? %>">All</span>
-    <% end %>
-
     <%= link_to interviews_path(scheduled: params[:scheduled] == 'upcoming' ? nil : 'upcoming'), class: 'inline-block', style: "view-transition-name: upcoming-interviews" do %>
       <span class="tag tag-filter tag-interview <%= 'tag-selected' if params[:scheduled] == 'upcoming' %>">
+        <%= icon "calendar", class: "size-4 -ml-px shrink-0" %>
         <span>Upcoming</span>
         <%= icon 'x-mini' if params[:scheduled] == 'upcoming' %>
       </span>
@@ -13,6 +10,7 @@
 
     <%= link_to interviews_path(scheduled: params[:scheduled] == 'completed' ? nil : 'completed'), class: 'inline-block', style: "view-transition-name: completed-interviews" do %>
       <span class="tag tag-filter tag-accepted <%= 'tag-selected' if params[:scheduled] == 'completed' %>">
+        <%= icon "check-circle", class: "size-4 -ml-px shrink-0" %>
         <span>Completed</span>
         <%= icon 'x-mini' if params[:scheduled] == 'completed' %>
       </span>

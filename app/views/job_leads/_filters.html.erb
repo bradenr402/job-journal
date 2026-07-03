@@ -4,9 +4,24 @@
 
 <div id="job-lead-filters" class="my-4 space-y-1">
   <div class="flex flex-wrap items-center gap-1">
-    <% ['active', 'archived'].each do |job_lead_type| %>
+    <%= link_to job_leads_path(job_lead_type: "all"), class: 'inline-block', style: "view-transition-name: all-job-leads" do %>
+      <span class="tag tag-filter <%= 'tag-selected' unless @selected_job_lead_type.in?(%w[active archived]) %>">
+        <%= icon "layers", class: "size-4 -ml-px shrink-0" %>
+        <span>All</span>
+      </span>
+    <% end %>
+
+    <% %w[active archived].each do |job_lead_type| %>
       <%= link_to job_leads_path(params.permit(:tags, :status).merge(job_lead_type: job_lead_type == @selected_job_lead_type ? 'all' : job_lead_type)), class: 'inline-block', style: "view-transition-name: #{job_lead_type}-job-leads" do %>
         <span class="tag tag-filter <%= 'tag-selected' if job_lead_type == @selected_job_lead_type %>">
+          <%
+            job_lead_type_icon =
+              case job_lead_type
+              when "active" then "check-circle"
+              when "archived" then "archive"
+              end
+          %>
+          <%= icon job_lead_type_icon, class: "size-4 -ml-px shrink-0" %>
           <span><%= job_lead_type.titlecase %></span>
           <%= icon 'x-mini' if job_lead_type == @selected_job_lead_type && job_lead_type != 'all' %>
         </span>
@@ -18,7 +33,8 @@
     <% @all_status_names.each do |status| %>
       <%= link_to job_leads_path(params.permit(:tags, :job_lead_type).merge(status: status == @selected_status ? nil : status)), class: 'inline-block', style: "view-transition-name: status-#{status}" do %>
         <span class="tag tag-filter <%= 'tag-selected' if status == @selected_status %> tag-<%= status %>">
-          <%= status.titlecase %>
+          <%= icon_for_status status, class: "size-4 -ml-px shrink-0" %>
+          <span><%= status.titlecase %></span>
           <%= icon 'x-mini' if status == @selected_status %>
         </span>
       <% end %>
@@ -30,7 +46,8 @@
       <% remaining_tags = @selected_tag_names - [tag.name] %>
       <%= link_to job_leads_path(params.permit(:job_lead_type, :status).merge(tags: remaining_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
         <span class="tag tag-filter tag-selected">
-          <%= tag.name %>
+          <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
+          <span><%= tag.name %></span>
           <%= icon 'x-mini' %>
         </span>
       <% end %>
@@ -39,7 +56,10 @@
     <% @unselected_tags.each do |tag| %>
       <% new_tags = (@selected_tag_names + [tag.name]).uniq %>
       <%= link_to job_leads_path(params.permit(:job_lead_type, :status).merge(tags: new_tags.join(','))), class: 'inline-block', style: "view-transition-name: tag-#{tag.name.parameterize}" do %>
-        <span class="tag tag-filter"><%= tag.name %></span>
+        <span class="tag tag-filter">
+          <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
+          <span><%= tag.name %></span>
+        </span>
       <% end %>
     <% end %>
   </div>

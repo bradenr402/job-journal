@@ -8,11 +8,13 @@
         <span class="mr-0.5">Interview with <%= interview.interviewer %></span>
         <% if interview.scheduled_at.past? %>
           <span class="align-middle whitespace-nowrap font-normal tag tag-accepted">
-            Completed
+            <%= icon "check-circle", class: "size-4 -ml-px shrink-0" %>
+            <span>Completed</span>
           </span>
         <% else %>
           <span class="align-middle whitespace-nowrap font-normal tag tag-interview">
-            Scheduled: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span>
+            <%= icon "calendar", class: "size-4 -ml-px shrink-0" %>
+            <span>Scheduled: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span></span>
           </span>
         <% end %>
       </div>

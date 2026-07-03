@@ -6,6 +6,7 @@
       <span><%= job_lead.title %></span>
       <% unless job_lead_page %>
         <span class="font-normal ml-0.5 tag tag-<%= job_lead.status %>">
+          <%= icon_for_status job_lead.status, class: "size-4 -ml-px shrink-0" %>
           <%= job_lead.status.titlecase %>: <span class="text-xs opacity-65"><%= local_date_short job_lead.latest_status_at %></span>
         </span>
       <% end %>
@@ -42,7 +43,7 @@
 
           <% unless job_lead.accepted? || job_lead.lead? %>
             <%= button_to reject_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to mark this job lead as rejected?' } do %>
-              <%= icon 'x', class: 'size-5 shrink-0' %>
+              <%= icon "x-circle", class: "size-5 shrink-0" %>
               <span>Rejected</span>
             <% end %>
           <% end %>
@@ -139,7 +140,10 @@
   <% if job_lead.tags.any? %>
     <div class="flex flex-wrap items-center gap-1 mb-4">
       <% job_lead.tags.sort_by(&:name).each do |tag| %>
-        <span class="tag"><%= tag.name %></span>
+        <span class="tag">
+          <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
+          <span><%= tag.name %></span>
+        </span>
       <% end %>
     </div>
   <% end %>
@@ -160,6 +164,7 @@
         "
       >
         <span class="tag tag-lead shrink-0">
+          <%= icon_for_status :lead, class: "size-4 -ml-px shrink-0" %>
           Lead: <span class="text-xs opacity-65"><%= local_date_short job_lead.created_at %></span>
         </span>
 
@@ -181,6 +186,7 @@
           <div class="flex shrink-0 items-center gap-1.5">
             <%= icon 'arrow-right', class: 'size-3.5 shrink-0 text-light' %>
             <span class="tag tag-<%= status_entry[:status] %> <%= 'relative hover:opacity-75' if status_entry[:status] == 'interview' %>">
+              <%= icon_for_status status_entry[:status], class: "size-4 -ml-px shrink-0" %>
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
               <% if status_entry[:status] == 'interview' && job_lead_page %>
                 <%= link_to interview_path(status_entry[:interview]), data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>

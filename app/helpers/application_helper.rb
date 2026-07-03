@@ -39,4 +39,19 @@ module ApplicationHelper
 
     icon_tag
   end
+
+  def icon_for_status(status, **kwargs)
+    icon_name =
+      case status.to_s
+      when "lead" then "briefcase"
+      when "applied" then "application"
+      when "interview" then "interview"
+      when "offer" then "offer"
+      when "accepted" then "check-circle"
+      when "rejected" then "x-circle"
+      else "circle"
+      end
+
+    icon icon_name, **kwargs
+  end
 end
