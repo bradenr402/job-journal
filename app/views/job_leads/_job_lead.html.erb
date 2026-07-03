@@ -169,17 +169,13 @@
         </span>
 
         <%
-          status_history = []
-          status_history << { status: 'applied', timestamp: job_lead.applied_at }
-          job_lead.interviews.order(:scheduled_at).each do |interview|
-            status_history << { status: 'interview', timestamp: interview.scheduled_at, interview: }
-          end
-          status_history << { status: 'offer', timestamp: job_lead.offer_at }
-          status_history << { status: 'accepted', timestamp: job_lead.accepted_at }
-          status_history << { status: 'rejected', timestamp: job_lead.rejected_at }
-
-          status_history.compact!
-          status_history.select! { it[:timestamp].present? }
+          status_history = [
+            { status: "applied", timestamp: job_lead.applied_at },
+            *job_lead.interviews.order(:scheduled_at).map { |interview| { interview:, status: "interview", timestamp: interview.scheduled_at } },
+            { status: "offer", timestamp: job_lead.offer_at },
+            { status: "accepted", timestamp: job_lead.accepted_at },
+            { status: "rejected", timestamp: job_lead.rejected_at }
+          ].filter_map { it if it[:timestamp].present? }
         %>
 
         <% status_history.each do |status_entry| %>
