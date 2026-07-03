@@ -30,6 +30,13 @@ module ApplicationHelper
 
   def icon(icon, **kwargs)
     return unless icon.present?
-    inline_svg_tag "icons/#{icon}.svg", **kwargs
+
+    icon_tag = inline_svg_tag("icons/#{icon}.svg", **kwargs)
+
+    if icon_tag.include?("SVG file not found")
+      raise ArgumentError, "Unknown icon: #{icon.inspect} (expected app/assets/images/icons/#{icon}.svg)"
+    end
+
+    icon_tag
   end
 end
