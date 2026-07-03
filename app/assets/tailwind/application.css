@@ -110,6 +110,10 @@
   }
 }
 
+@custom-variant pwa (@media (display-mode: standalone));
+@custom-variant browser (@media (display-mode: browser));
+@custom-variant ios-pwa (&:where(html.ios-pwa *));
+
 :root {
   color-scheme: light dark;
 

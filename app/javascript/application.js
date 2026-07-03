@@ -47,3 +47,15 @@ const disableTransitionsTemporarily = () => {
 window
   .matchMedia('(prefers-color-scheme: dark)')
   .addEventListener('change', () => disableTransitionsTemporarily());
+
+const ua = navigator.userAgent
+
+const isIOS =
+  /iP(ad|hone|od)/.test(ua) ||
+  // iPadOS 13+ presents a desktop-Mac UA; distinguish by touch support
+  (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)
+
+const isIOSStandalone = isIOS && window.navigator.standalone === true
+
+document.documentElement.classList.toggle('ios-pwa', isIOSStandalone)
+
