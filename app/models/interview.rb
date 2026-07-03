@@ -44,7 +44,28 @@ class Interview < ApplicationRecord
     end
   end
 
+  def calendar_event(request)
+    event = Icalendar::Event.new
+    event.dtstart = scheduled_at
+    event.dtend = scheduled_at.advance(hours: 1)
+    event.summary = title
+    event.description = calendar_description
+    event.location = location.presence
+    event.url = call_url.presence
+    event.uid = "interview-#{id}@#{request.host}"
+
+    event
+  end
+
   private
+
+  def calendar_description
+    link = Rails.application.routes.url_helpers.interview_url(self, Rails.application.config.action_mailer.default_url_options)
+    [
+      "JobJournal: #{link}",
+      notes.map(&:content).join("\n").presence
+    ].compact.join("\n\n")
+  end
 
   def convert_zero_rating_to_nil
     self.rating = nil if rating == 0

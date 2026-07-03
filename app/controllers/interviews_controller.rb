@@ -71,16 +71,9 @@ class InterviewsController < ApplicationController
 
   # GET /interviews/:id/add_to_calendar
   def add_to_calendar
-    calendar = Icalendar::Calendar.new
-    event = Icalendar::Event.new
-    event.dtstart = @interview.scheduled_at
-    event.dtend = @interview.scheduled_at.advance(hours: 1)
-    event.summary = @interview.title
-    event.description = @interview.notes.map(&:content).join("\n") if @interview.notes.exists?
-    event.location = @interview.location.presence
-    event.url = @interview.call_url.presence
-    event.uid = "interview-#{@interview.id}@#{request.host}"
+    event = @interview.calendar_event(request)
 
+    calendar = Icalendar::Calendar.new
     calendar.add_event(event)
     calendar.publish
 
