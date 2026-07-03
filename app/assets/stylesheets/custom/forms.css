@@ -104,4 +104,42 @@
 
 @utility form-number-increment {
   @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-r-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+@utility star-active {
+  @apply text-yellow-400! fill-yellow-400!;
+}
+
+@utility stars-radio-group {
+  @apply flex items-center select-none;
+
+  label {
+    @apply relative select-none inline-flex cursor-pointer items-center justify-center rounded-lg transition-transform duration-80 hover:scale-115 active:scale-96 has-[input:focus-visible]:outline-none has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary-600;
+
+    > input[type="radio"] {
+      @apply sr-only;
+    }
+
+    > svg {
+      @apply size-9 text-muted fill-transparent transition-colors duration-80;
+    }
+  }
+
+  /* Hover */
+  label:is(
+    :hover,
+    :has(~ label:hover)
+  ) > svg {
+    @apply star-active;
+  }
+
+  /* Checked (when not hovering) */
+  label:not(
+    :hover,
+    :has(~ label:hover),
+    :hover ~ label
+  ):has(
+    input:checked,
+    ~ label > input:checked
+  ) > svg {
+    @apply star-active;
+  }
 }
