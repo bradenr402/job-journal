@@ -86,7 +86,9 @@
 }
 
 @utility form-number-frame {
-  @apply relative w-full md:max-w-54 flex items-stretch shadow-sm rounded-[0.625rem] has-[.form-number:focus]:ring-2 has-[.form-number:focus]:ring-primary-600 select-none;
+  --form-number-radius: 0.625rem;
+
+  @apply relative w-full md:max-w-54 flex items-stretch shadow-sm rounded-(--form-number-radius) has-[.form-number:focus]:ring-2 has-[.form-number:focus]:ring-primary-600 select-none;
 }
 
 @utility form-number {
@@ -98,12 +100,18 @@
   }
 }
 
+@utility form-number-button {
+  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+}
+
 @utility form-number-decrement {
-  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-l-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+  @apply form-number-button rounded-l-(--form-number-radius);
 }
 
 @utility form-number-increment {
-  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-r-[0.625rem] px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+  @apply form-number-button rounded-r-(--form-number-radius);
+}
+
 @utility star-active {
   @apply text-yellow-400! fill-yellow-400!;
 }
