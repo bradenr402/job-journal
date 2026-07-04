@@ -163,13 +163,9 @@
           animate-[timeline-fade_linear_both] [animation-timeline:scroll(self_inline)]
         "
       >
-        <span class="tag tag-lead shrink-0">
-          <%= icon_for_status :lead, class: "size-4 -ml-px shrink-0" %>
-          Lead: <span class="text-xs opacity-65"><%= local_date_short job_lead.created_at %></span>
-        </span>
-
         <%
           status_history = [
+            { status: "lead", timestamp: job_lead.created_at },
             { status: "applied", timestamp: job_lead.applied_at },
             *job_lead.interviews.order(:scheduled_at).map { |interview| { interview:, status: "interview", timestamp: interview.scheduled_at } },
             { status: "offer", timestamp: job_lead.offer_at },
@@ -178,9 +174,9 @@
           ].filter_map { it if it[:timestamp].present? }
         %>
 
-        <% status_history.each do |status_entry| %>
+        <% status_history.each_with_index do |status_entry, index| %>
           <div class="flex shrink-0 items-center gap-1.5">
-            <%= icon 'arrow-right', class: 'size-3.5 shrink-0 text-light' %>
+            <%= icon 'arrow-right', class: 'size-3.5 shrink-0 text-light' if index.positive? %>
             <span class="tag tag-<%= status_entry[:status] %> <%= 'relative hover:opacity-75' if status_entry[:status] == 'interview' %>">
               <%= icon_for_status status_entry[:status], class: "size-4 -ml-px shrink-0" %>
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
