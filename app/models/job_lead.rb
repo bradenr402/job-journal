@@ -261,6 +261,19 @@ class JobLead < ApplicationRecord
     @pending_tag_names = names.to_s.split(",").map { it.strip.downcase }.reject(&:blank?).uniq
   end
 
+  def status_history
+    timeline = [
+      { status: "lead", timestamp: created_at },
+      { status: "applied", timestamp: applied_at },
+      *interviews.order(:scheduled_at).map { |interview| { interview:, status: "interview", timestamp: interview.scheduled_at } },
+      { status: "offer", timestamp: offer_at },
+      { status: "accepted", timestamp: accepted_at },
+      { status: "rejected", timestamp: rejected_at }
+    ]
+
+    timeline.select { it[:timestamp].present? }
+  end
+
   # Class Methods
 
   # Returns the numeric quality for a given status symbol or string.

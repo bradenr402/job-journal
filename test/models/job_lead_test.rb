@@ -125,6 +125,36 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal %w[fake here right tags], @lead.tags.pluck(:name).sort
   end
 
+  test "status_history returns ordered timeline with interviews and excludes nil timestamps" do
+    user = users(:one)
+
+    lead = user.job_leads.create!(
+      title: "Example",
+      company: "Example Co.",
+      application_url: "https://example.com/apply",
+      created_at: 1.day.ago,
+      applied_at: 23.hours.ago,
+      offer_at: nil,
+      accepted_at: nil,
+      rejected_at: nil
+    )
+
+    interview1 = lead.interviews.create!(interviewer: "A", scheduled_at: 12.hours.ago)
+    interview2 = lead.interviews.create!(interviewer: "B", scheduled_at: 6.hours.ago)
+
+    history = lead.status_history
+
+    assert_equal %w[lead applied interview interview], history.map { _1[:status] }
+
+    assert_equal lead.created_at, history[0][:timestamp]
+    assert_equal lead.applied_at, history[1][:timestamp]
+
+    assert_equal interview1, history[2][:interview]
+    assert_equal interview2, history[3][:interview]
+
+    assert history.none? { _1[:timestamp].nil? }
+  end
+
   test "top_sources_by_quality returns expected structure and sorts correctly" do
     user = users(:one)
     JobLead.destroy_all
