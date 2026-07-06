@@ -49,6 +49,10 @@
 @utility tag-chip {
   @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg bg-white dark:bg-neutral-800/40 border border-neutral-300 dark:border-neutral-800 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-80 active:scale-94;
 
+  > svg:first-child {
+    @apply size-4 -ml-px shrink-0;
+  }
+
   > button {
     @apply cursor-pointer text-soft focus:outline-none p-0.5 rounded-full bg-neutral-200/60 dark:bg-neutral-800/60 hover:bg-neutral-300/60 dark:hover:bg-neutral-700/60 hover:text-light transition-all duration-80;
 
