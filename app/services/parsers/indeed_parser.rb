@@ -2,8 +2,8 @@ module Parsers
   class IndeedParser < Base
     SOURCE_NAME = "Indeed".freeze
     ALLOWED_HOSTS = %w[
-      linkedin.com
-      www.linkedin.com
+      indeed.com
+      www.indeed.com
     ].freeze
 
     private
