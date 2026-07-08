@@ -17,7 +17,8 @@ module Parsers
     end
 
     def application_url
-      attr_at("[data-indeed-apply-joburl]", attr: "data-indeed-apply-joburl")
+      attr_at('link[rel="canonical"]', attr: "href") ||
+        attr_at("[data-indeed-apply-joburl]", attr: "data-indeed-apply-joburl")
     end
 
     def salary
