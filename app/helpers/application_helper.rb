@@ -54,4 +54,12 @@ module ApplicationHelper
 
     icon icon_name, **kwargs
   end
+
+  def human(string)
+    string.presence.to_s.underscore.humanize
+  end
+
+  def back_path(fallback: root_path)
+    request.referer || fallback
+  end
 end

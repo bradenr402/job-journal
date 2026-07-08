@@ -1,8 +1,10 @@
-<% content_for :title, '404 Not Found' %>
+<% content_for :title, "404 Not Found" %>
 
-<%= render 'error',
+<%= render "error",
     code: 404,
-    error_message: 'Not Found',
-    error_description: 'Sorry, the page you were looking for doesn’t exist.',
-    help_text: 'Click the button below to return home.'
+    error_message: "Not Found",
+    error_description: "Sorry, the #{human(@exception&.model.presence || "page").downcase} you were looking for doesn’t exist. It may have been moved, deleted, or never existed.",
+    help_text: "Check the URL or head back home.",
+    include_back_link: true,
+    include_home_link: true
 %>

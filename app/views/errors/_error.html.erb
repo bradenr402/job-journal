@@ -1,20 +1,36 @@
-<section class="h-screen mx-auto px-4">
-  <div class="text-center space-y-12">
-    <div class="relative leading-none">
-      <h1 class="font-black text-[clamp(9rem,14vw,12rem)]/none text-neutral-400/25 dark:text-neutral-600/35"><%= code %></h1>
-      <p class="absolute top-[53%] left-1/2 -translate-1/2 whitespace-nowrap font-extrabold tracking-tight text-[clamp(1.65rem,2.5vw,2rem)] text-rose-500"><%= error_message %></p>
+<div class="space-y-12 max-w-3xl mx-auto">
+  <div class="relative leading-none select-none max-w-max">
+    <h1 class="font-extrabold text-[clamp(9rem,14vw,12rem)]/none text-neutral-400/25 dark:text-neutral-600/35"><%= code %></h1>
+    <p class="absolute top-[53%] left-1/2 -translate-1/2 whitespace-nowrap font-extrabold tracking-tight text-[clamp(1.65rem,2.5vw,2rem)] text-rose-500"><%= error_message %></p>
+  </div>
+
+  <div class="space-y-9 text-pretty">
+    <div class="space-y-3">
+      <p class="text-lg font-medium max-w-[65ch]"><%= error_description.html_safe %></p>
+      <%= tag.p help_text, class: 'text-soft' if local_assigns[:help_text].present? %>
     </div>
 
-    <div class="space-y-9 text-pretty text-left max-w-md mx-auto">
-      <div class="space-y-3">
-        <p class="text-lg font-medium"><%= error_description %></p>
-        <p class="text-soft"><%= help_text %></p>
-      </div>
+    <div class="flex items-center gap-2">
+      <% if local_assigns[:include_back_link] %>
+        <%= link_to back_path, data: { turbo: false }, class: "btn btn-secondary" do %>
+          <%= icon "arrow-left", class: "size-5 shrink-0" %>
+          <span>Go Back</span>
+        <% end %>
+      <% end %>
 
-      <%= link_to dashboard_path, data: { turbo: false }, class: 'btn btn-secondary' do %>
-        <%= icon 'arrow-left', class: 'size-5 shrink-0' %>
-        <span>Back Home</span>
+      <% if local_assigns[:include_refresh_link] && request.get? %>
+        <%= link_to request.original_url, data: { turbo: false }, class: "btn btn-secondary" do %>
+          <%= icon "refresh", class: "size-5 shrink-0" %>
+          <span>Reload Page</span>
+        <% end %>
+      <% end %>
+
+      <% if local_assigns[:include_home_link] %>
+        <%= link_to dashboard_path, data: { turbo: false }, class: "btn btn-secondary" do %>
+          <%= icon "home", class: "size-5 shrink-0" %>
+          <span>Return Home</span>
+        <% end %>
       <% end %>
     </div>
   </div>
-</section>
+</div>

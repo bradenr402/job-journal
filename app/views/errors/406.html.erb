@@ -1,0 +1,10 @@
+<% content_for :title, "406 Not Acceptable" %>
+
+<%= render "error",
+    code: 406,
+    error_message: "Not Available",
+    error_description: "We couldn’t display this page in the requested format.",
+    help_text: "Try going back or returning home.",
+    include_back_link: true,
+    include_home_link: true
+%>

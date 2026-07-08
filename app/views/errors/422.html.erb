@@ -1,0 +1,9 @@
+<% content_for :title, "422 Unprocessable Entity" %>
+
+<%= render "error",
+    code: 422,
+    error_message: "Something Went Wrong",
+    error_description: "We couldn’t complete that action. The page may have expired, or the information may no longer be valid.",
+    help_text: "Go back and try again.",
+    include_back_link: true
+%>
