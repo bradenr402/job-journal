@@ -13,7 +13,14 @@ module Parsers
     end
 
     def company
-      text_at '[data-testid="inlineHeader-companyName"]', strip: %w[style]
+      name = text_at '[data-testid="inlineHeader-companyName"]'
+      return name unless name&.match?(/confidential/i)
+
+      href = attr_at '[data-testid="inlineHeader-companyName"] a', attr: "href"
+      company_page = fetch_document(href)
+      return name unless company_page
+
+      text_at('[data-testid="cmp-HeaderLayout"] [itemprop="name"]', within: company_page) || name
     end
 
     def application_url

@@ -195,5 +195,10 @@ module Parsers
 
       node.attr(attr).to_s.squish.presence
     end
+
+    def fetch_document(url, allowed_hosts: self.class::ALLOWED_HOSTS)
+      html = PageFetcher.fetch(url, allowed_hosts:)
+      Nokolexbor::HTML(html) if html
+    end
   end
 end

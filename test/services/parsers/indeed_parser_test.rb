@@ -1,4 +1,5 @@
 require "test_helper"
+require "minitest/mock"
 
 class IndeedParserTest < ActiveSupport::TestCase
   FIXTURES_DIR = "indeed".freeze
@@ -65,5 +66,48 @@ class IndeedParserTest < ActiveSupport::TestCase
     fields = Parsers::IndeedParser.new(Nokolexbor::HTML(html)).to_h
 
     assert_equal "$50/hr", fields[:salary]
+  end
+
+  test "resolves a confidential company name by following its company page" do
+    html = <<~HTML
+      <html><body>
+        <h1 class="jobsearch-JobInfoHeader-title">Engineer</h1>
+        <span data-testid="inlineHeader-companyName">
+          <a href="https://www.indeed.com/cmp/Acme-Corp">Confidential</a>
+        </span>
+      </body></html>
+    HTML
+
+    company_page = <<~HTML
+      <html><body>
+        <div data-testid="cmp-HeaderLayout"><span itemprop="name">Acme Corp</span></div>
+      </body></html>
+    HTML
+
+    fetcher = lambda do |url, **|
+      assert_equal "https://www.indeed.com/cmp/Acme-Corp", url
+      company_page
+    end
+
+    PageFetcher.stub(:fetch, fetcher) do
+      fields = Parsers::IndeedParser.new(Nokolexbor::HTML(html)).to_h
+      assert_equal "Acme Corp", fields[:company]
+    end
+  end
+
+  test "falls back to the confidential label when the company page cannot be fetched" do
+    html = <<~HTML
+      <html><body>
+        <h1 class="jobsearch-JobInfoHeader-title">Engineer</h1>
+        <span data-testid="inlineHeader-companyName">
+          Confidential <a href="https://www.indeed.com/cmp/Acme-Corp">company</a>
+        </span>
+      </body></html>
+    HTML
+
+    PageFetcher.stub(:fetch, ->(*, **) { nil }) do
+      fields = Parsers::IndeedParser.new(Nokolexbor::HTML(html)).to_h
+      assert_equal "Confidential company", fields[:company]
+    end
   end
 end
