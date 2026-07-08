@@ -96,7 +96,7 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     html = file_fixture("linkedin/2026-05-08-junior-developer-collabera.html").read
 
     with_resolution("www.linkedin.com" => %w[151.101.1.1]) do
-      with_http_response(html, headers: { "content-length" => (JobLeadAutofillFromUrl::MAX_BODY_BYTES + 1).to_s }) do
+      with_http_response(html, headers: { "content-length" => (PageFetcher::MAX_BODY_BYTES + 1).to_s }) do
         result = JobLeadAutofillFromUrl.call("https://www.linkedin.com/jobs/view/4404473006")
 
         assert_not result.success?

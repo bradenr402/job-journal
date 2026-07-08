@@ -14,50 +14,43 @@ class JobLeadAutofillFromUrl
     www.indeed.com
   ].freeze
 
-  REQUEST_TIMEOUT = 8 # seconds, applied to both open and read
-  MAX_REDIRECTS   = 3
-  MAX_BODY_BYTES  = 2_000_000
-  USER_AGENT      = "JobJournalBot/1.0 (+https://job-journal.fly.dev)"
-  BodyTooLarge    = Class.new(StandardError)
-
   def self.call(url) = new(url).call
-  def self.safe_url?(url) = new(url).send(:safe?)
+  def self.safe_url?(url) = new(url).safe?
 
   def initialize(url)
     @url = url
   end
 
   def call
-    uri = nil
-    html = Timeout.timeout(REQUEST_TIMEOUT) do
-      uri = parse_uri @url
-      return failure "Please provide a valid https URL." unless uri
-      uri = canonical_uri uri
-      return failure "That host is not supported yet. Try a #{::Constants::SUPPORTED_AUTOFILL_SOURCES.to_disjunctive_sentence} job URL." unless allowed_host? uri
-      return failure "Refusing to fetch from a private network." unless public_host? uri
-
-      fetch_html uri
-    end
-    return failure "Could not fetch that page. Double-check the URL and try again." unless html
-
-    success parse(uri, html)
-  rescue BodyTooLarge
+    html = fetcher.fetch!
+    success parse(target_uri, html)
+  rescue PageFetcher::InvalidUrl
+    failure "Please provide a valid https URL."
+  rescue PageFetcher::UnsupportedHost
+    failure "That host is not supported yet. Try a #{::Constants::SUPPORTED_AUTOFILL_SOURCES.to_disjunctive_sentence} job URL."
+  rescue PageFetcher::PrivateHost
+    failure "Refusing to fetch from a private network."
+  rescue PageFetcher::BodyTooLarge
     failure "That page is too large to autofill."
-  rescue Timeout::Error
+  rescue PageFetcher::Error
     failure "Could not fetch that page. Double-check the URL and try again."
-  rescue StandardError => e
-    Rails.logger.warn "[JobLeadAutofillFromUrl] #{e.class}: #{e.message}"
-    failure "Something went wrong while reading that page."
+  end
+
+  def safe?
+    fetcher.safe?
   end
 
   private
 
   attr_reader :url
 
-  def safe?
+  def fetcher
+    PageFetcher.new(url, allowed_hosts: ALLOWED_HOSTS, canonicalize: method(:canonical_uri))
+  end
+
+  def target_uri
     uri = parse_uri url
-    uri = canonical_uri uri if uri
-    uri && allowed_host?(uri) && public_host?(uri)
+    uri && canonical_uri(uri)
   end
 
   def parse_uri(raw)
@@ -71,76 +64,11 @@ class JobLeadAutofillFromUrl
     nil
   end
 
-  def allowed_host?(uri)
-    ALLOWED_HOSTS.include? uri.host.to_s.downcase
-  end
-
   def canonical_uri(uri)
     parser = parser_for uri
     return uri unless parser.respond_to? :canonical_url
 
     parser.canonical_url uri
-  end
-
-  def public_host?(uri)
-    addresses = Resolv.getaddresses uri.host
-    return false if addresses.empty?
-
-    addresses.none? do |addr|
-      ip = IPAddr.new addr
-      ip.loopback? || ip.private? || ip.link_local?
-    end
-  rescue IPAddr::InvalidAddressError, Resolv::ResolvError
-    false
-  end
-
-  def fetch_html(uri, redirects_left: MAX_REDIRECTS)
-    html = nil
-
-    Net::HTTP.start(
-      uri.host,
-      uri.port,
-      use_ssl: true,
-      open_timeout: REQUEST_TIMEOUT,
-      read_timeout: REQUEST_TIMEOUT
-    ) do |http|
-      request = Net::HTTP::Get.new(uri.request_uri, "User-Agent" => USER_AGENT, "Accept" => "text/html")
-      http.request request do |response|
-        html =
-          case response
-          when Net::HTTPSuccess
-            read_limited_body response
-          when Net::HTTPRedirection
-            follow_redirect uri, response["location"], redirects_left
-          end
-      end
-    end
-
-    html
-  end
-
-  def read_limited_body(response)
-    content_length = response["content-length"].to_i if response["content-length"].present?
-    raise BodyTooLarge if content_length && content_length > MAX_BODY_BYTES
-
-    body = +""
-    response.read_body do |chunk|
-      body << chunk
-      raise BodyTooLarge if body.bytesize > MAX_BODY_BYTES
-    end
-    body
-  end
-
-  def follow_redirect(uri, location, redirects_left)
-    return if redirects_left.zero?
-
-    next_uri = URI.parse location
-    next_uri = uri + next_uri unless next_uri.absolute?
-    next_uri = canonical_uri next_uri
-    return unless next_uri.scheme == "https"
-    return unless allowed_host?(next_uri) && public_host?(next_uri)
-
-    fetch_html next_uri, redirects_left: redirects_left - 1
   end
 
   def parse(uri, html)

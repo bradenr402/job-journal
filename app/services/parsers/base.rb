@@ -1,5 +1,7 @@
 module Parsers
   class Base
+    ALLOWED_HOSTS = [].freeze
+
     IGNORED_TAGS = [
       /\Anot applicable\z/i,
       /\Anot specified\z/i,
