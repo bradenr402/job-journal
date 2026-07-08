@@ -26,11 +26,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="JobJournal">
 
-<%= favicon_link_tag 'icon.png', rel: 'icon', type: 'image/png' %>
-
-<link rel="icon" href="/assets/icon.png" type="image/png">
-<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/icon.png">
+<%= favicon_link_tag 'icon.png', type: 'image/png' %>
+<%= favicon_link_tag 'icon.svg', type: 'image/svg+xml' %>
+<%= favicon_link_tag "icon.png", rel: "apple-touch-icon" %>
 
 <%# Includes all stylesheet files in app/assets/stylesheets %>
 <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
