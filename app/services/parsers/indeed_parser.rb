@@ -43,6 +43,7 @@ module Parsers
     def tags
       text_list_at(
         "#benefits li, #jobDetailsSection li",
+        strip: [ "style", "script", "svg title" ],
         reject: IGNORED_TAGS
       )
     end
