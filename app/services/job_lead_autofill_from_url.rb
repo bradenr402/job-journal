@@ -7,13 +7,6 @@ class JobLeadAutofillFromUrl
     def to_h_for_json = { success: success?, fields: fields, error: error }
   end
 
-  ALLOWED_HOSTS = %w[
-    linkedin.com
-    www.linkedin.com
-    indeed.com
-    www.indeed.com
-  ].freeze
-
   def self.call(url) = new(url).call
   def self.safe_url?(url) = new(url).safe?
 
@@ -45,7 +38,7 @@ class JobLeadAutofillFromUrl
   attr_reader :url
 
   def fetcher
-    PageFetcher.new(url, allowed_hosts: ALLOWED_HOSTS, canonicalize: method(:canonical_uri))
+    PageFetcher.new(url, allowed_hosts: Parsers.hosts, canonicalize: method(:canonical_uri))
   end
 
   def target_uri
@@ -77,10 +70,7 @@ class JobLeadAutofillFromUrl
   end
 
   def parser_for(uri)
-    case uri.host.downcase
-    when "linkedin.com", "www.linkedin.com" then Parsers::LinkedInParser
-    when "indeed.com", "www.indeed.com" then Parsers::IndeedParser
-    end
+    Parsers.for_host(uri.host)
   end
 
   def success(fields) = Result.new(success?: true, fields: fields.compact_blank, error: nil)

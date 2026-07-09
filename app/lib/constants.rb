@@ -1,3 +1,3 @@
 module Constants
-  SUPPORTED_AUTOFILL_SOURCES = %w[LinkedIn Indeed].freeze
+  SUPPORTED_AUTOFILL_SOURCES = Parsers.source_names.freeze
 end

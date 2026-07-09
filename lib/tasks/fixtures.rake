@@ -2,13 +2,6 @@ require "net/http"
 require "active_support/number_helper"
 
 namespace :fixtures do
-  PARSER_SUBDIRS = {
-    "linkedin.com"     => "linkedin",
-    "www.linkedin.com" => "linkedin",
-    "indeed.com"       => "indeed",
-    "www.indeed.com"   => "indeed"
-  }.freeze
-
   desc "Create matching .html / .json fixtures from a job URL or a saved .html file (args: NAME, SOURCE; FORCE=1 to overwrite)"
   task :job, [ :name, :source ] => :environment do |_, args|
     name   = args[:name].presence   || ENV["NAME"].presence
@@ -27,13 +20,14 @@ namespace :fixtures do
 
     html, url = resolve_source(source)
 
-    subdir = parser_subdir_for(url)
-    unless subdir
+    parser = parser_for_url(url)
+    unless parser
       print_error "No parser configured for that host."
-      print_hint "Supported hosts: #{PARSER_SUBDIRS.keys.join(', ')}"
+      print_hint "Supported hosts: #{Parsers.hosts.join(', ')}"
       exit 1
     end
 
+    subdir       = parser::SOURCE_NAME.downcase
     slug         = "#{Date.current.iso8601}-#{name.tr('_', '-')}"
     fixtures_dir = Rails.root.join("test/fixtures/files", subdir)
     html_path    = fixtures_dir.join("#{slug}.html")
@@ -100,9 +94,9 @@ namespace :fixtures do
     ActiveSupport::NumberHelper.number_to_human_size(bytes)
   end
 
-  def parser_subdir_for(url)
+  def parser_for_url(url)
     uri = URI.parse(url.to_s)
-    PARSER_SUBDIRS[uri.host&.downcase]
+    Parsers.for_host(uri.host)
   rescue URI::InvalidURIError
     nil
   end
@@ -210,7 +204,7 @@ namespace :fixtures do
   # fetched it (e.g. a fetch inside #company -> "#{slug}_company.html"), so the
   # generated name always matches what the test helper looks for.
   def download_secondary_pages(primary_url, primary_html, slug:, dir:)
-    parser_class = parser_class_for(primary_url)
+    parser_class = parser_for_url(primary_url)
     return unless parser_class
 
     fetch   = method(:fetch_html)
@@ -257,12 +251,5 @@ namespace :fixtures do
     warn "  #{yellow('⚠')} #{yellow('Could not fetch a secondary page')} #{dim("(#{reason})")}"
     print_hint "Open #{page_url}"
     print_hint "then save it as #{path.relative_path_from(Rails.root)} and re-run."
-  end
-
-  def parser_class_for(url)
-    case parser_subdir_for(url)
-    when "indeed"   then Parsers::IndeedParser
-    when "linkedin" then Parsers::LinkedInParser
-    end
   end
 end
