@@ -40,9 +40,13 @@ class PageFetcher
       rescue BodyTooLarge
         raise
       rescue Timeout::Error
+        log_warn "Timed out after #{REQUEST_TIMEOUT}s while fetching #{uri}"
         raise FetchFailed
+      rescue FetchFailed => e
+        log_warn e.message
+        raise
       rescue StandardError => e
-        Rails.logger.warn "[PageFetcher] #{e.class}: #{e.message}"
+        log_warn "#{e.class}: #{e.message} while fetching #{uri}"
         raise FetchFailed
       end
 
@@ -121,6 +125,8 @@ class PageFetcher
             read_limited_body response
           when Net::HTTPRedirection
             follow_redirect uri, response["location"], redirects_left
+          else
+            raise FetchFailed, "Unexpected response #{response.code} #{response.message} for #{uri}"
           end
       end
     end
@@ -141,14 +147,29 @@ class PageFetcher
   end
 
   def follow_redirect(uri, location, redirects_left)
-    return if redirects_left.zero?
+    if redirects_left.zero?
+      log_warn "Exceeded #{MAX_REDIRECTS} redirects starting from #{uri}"
+      return
+    end
 
     next_uri = URI.parse location
     next_uri = uri + next_uri unless next_uri.absolute?
     next_uri = canonicalize_uri next_uri
-    return unless next_uri.scheme == "https"
-    return unless allowed_host?(next_uri) && public_host?(next_uri)
+
+    unless next_uri.scheme == "https"
+      log_warn "Refusing non-https redirect to #{next_uri} from #{uri}"
+      return
+    end
+
+    unless allowed_host?(next_uri) && public_host?(next_uri)
+      log_warn "Refusing redirect to disallowed host #{next_uri.host.inspect} from #{uri}"
+      return
+    end
 
     request_html next_uri, redirects_left: redirects_left - 1
+  end
+
+  def log_warn(message)
+    Rails.logger.warn "[PageFetcher] #{message}"
   end
 end

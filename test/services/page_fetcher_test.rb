@@ -48,7 +48,56 @@ class PageFetcherTest < ActiveSupport::TestCase
     assert_equal [ "/canonical" ], requested_paths
   end
 
+  test "logs the status code and raises FetchFailed when the host blocks the request" do
+    with_resolution("example.com" => %w[93.184.216.34]) do
+      with_http_status(Net::HTTPForbidden.new("1.1", "403", "Forbidden")) do
+        output = capture_log do
+          assert_raises(PageFetcher::FetchFailed) do
+            PageFetcher.fetch!("https://example.com/page", allowed_hosts: ALLOWED)
+          end
+        end
+
+        assert_match %r{\[PageFetcher\] Unexpected response 403 Forbidden for https://example.com/page}, output
+      end
+    end
+  end
+
+  test "fetch swallows a blocked response but still logs the status code" do
+    with_resolution("example.com" => %w[93.184.216.34]) do
+      with_http_status(Net::HTTPServiceUnavailable.new("1.1", "503", "Service Unavailable")) do
+        output = capture_log do
+          assert_nil PageFetcher.fetch("https://example.com/page", allowed_hosts: ALLOWED)
+        end
+
+        assert_match(/\[PageFetcher\] Unexpected response 503/, output)
+      end
+    end
+  end
+
   private
+
+  def capture_log
+    io = StringIO.new
+    original = Rails.logger
+    Rails.logger = ActiveSupport::Logger.new(io)
+    yield
+    io.string
+  ensure
+    Rails.logger = original
+  end
+
+  def with_http_status(response)
+    fake_start = lambda do |*_args, **_kwargs, &block|
+      http = Object.new
+      http.define_singleton_method(:request) do |_req, &response_block|
+        response_block&.call(response)
+        response
+      end
+      block ? block.call(http) : http
+    end
+
+    Net::HTTP.stub(:start, fake_start) { yield }
+  end
 
   def with_resolution(map)
     Resolv.stub(:getaddresses, ->(host) { map[host] || [] }) { yield }

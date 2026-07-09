@@ -92,6 +92,16 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     end
   end
 
+  test "call logs the failing URL and error class when a fetch fails" do
+    Net::HTTP.stub :start, ->(*) { raise "should not be called" } do
+      output = capture_log do
+        JobLeadAutofillFromUrl.call("https://example.com/jobs/1")
+      end
+
+      assert_match %r{\[JobLeadAutofillFromUrl\] UnsupportedHost for "https://example.com/jobs/1"}, output
+    end
+  end
+
   test "call refuses responses with oversized content length before parsing" do
     html = file_fixture("linkedin/2026-05-08-junior-developer-collabera.html").read
 
@@ -122,6 +132,16 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
   private
 
   # --- helpers --------------------------------------------------------------
+  def capture_log
+    io = StringIO.new
+    original = Rails.logger
+    Rails.logger = ActiveSupport::Logger.new(io)
+    yield
+    io.string
+  ensure
+    Rails.logger = original
+  end
+
   def with_resolution(map)
     Resolv.stub(:getaddresses, ->(host) { map[host] || [] }) { yield }
   end

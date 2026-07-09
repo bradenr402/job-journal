@@ -17,16 +17,9 @@ class JobLeadAutofillFromUrl
   def call
     html = fetcher.fetch!
     success parse(target_uri, html)
-  rescue PageFetcher::InvalidUrl
-    failure "Please provide a valid https URL."
-  rescue PageFetcher::UnsupportedHost
-    failure "That host is not supported yet. Try a #{::Constants::SUPPORTED_AUTOFILL_SOURCES.to_disjunctive_sentence} job URL."
-  rescue PageFetcher::PrivateHost
-    failure "Refusing to fetch from a private network."
-  rescue PageFetcher::BodyTooLarge
-    failure "That page is too large to autofill."
-  rescue PageFetcher::Error
-    failure "Could not fetch that page. Double-check the URL and try again."
+  rescue PageFetcher::Error => e
+    Rails.logger.warn "[JobLeadAutofillFromUrl] #{e.class.name.demodulize} for #{url.inspect}"
+    failure error_message_for(e)
   end
 
   def safe?
@@ -75,4 +68,19 @@ class JobLeadAutofillFromUrl
 
   def success(fields) = Result.new(success?: true, fields: fields.compact_blank, error: nil)
   def failure(message) = Result.new(success?: false, fields: {}, error: message)
+
+  def error_message_for(error)
+    case error
+    when PageFetcher::InvalidUrl
+      "Please provide a valid https URL."
+    when PageFetcher::UnsupportedHost
+      "That host is not supported yet. Try a #{Parsers.source_names.to_disjunctive_sentence} job URL."
+    when PageFetcher::PrivateHost
+      "Refusing to fetch from a private network."
+    when PageFetcher::BodyTooLarge
+      "That page is too large to autofill."
+    else
+      "Could not fetch that page. Double-check the URL and try again."
+    end
+  end
 end
