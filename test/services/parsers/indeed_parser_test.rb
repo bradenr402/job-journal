@@ -3,12 +3,15 @@ require "minitest/mock"
 
 class IndeedParserTest < ActiveSupport::TestCase
   FIXTURES_DIR = "indeed".freeze
-  fixture_names = Rails.root.glob("test/fixtures/files/#{FIXTURES_DIR}/*.html").map { |path| path.basename(".html").to_s }
+
+  fixture_names = Rails.root
+    .glob("test/fixtures/files/#{FIXTURES_DIR}/*.html")
+    .map { |path| path.basename(".html").to_s }
+    .reject { |name| name.include?("_") }
 
   fixture_names.each do |filename|
     test "extracts expected fields from #{filename}" do
-      doc = Nokolexbor::HTML file_fixture("#{FIXTURES_DIR}/#{filename}.html").read
-      fields = Parsers::IndeedParser.new(doc).to_h
+      fields = parse_page_fixture(Parsers::IndeedParser, FIXTURES_DIR, filename)
       expected = JSON.parse file_fixture("#{FIXTURES_DIR}/#{filename}.json").read, symbolize_names: true
 
       flunk "Expected fixture is empty.\nActual:\n#{fields.to_json}" if expected.empty?
