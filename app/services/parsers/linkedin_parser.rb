@@ -31,7 +31,7 @@ module Parsers
     end
 
     def application_url
-      attr_at('link[rel="canonical"]', attr: "href") ||
+      url_at('link[rel="canonical"]') ||
         attr_at('meta[property="og:url"]', attr: "content")
     end
 
@@ -53,7 +53,7 @@ module Parsers
       contact_name = text_at(".base-main-card__title", within: message_section)
       return unless contact_name
 
-      href = attr_at("a.message-the-recruiter__cta", within: message_section, attr: "href")
+      href = url_at("a.message-the-recruiter__cta", within: message_section)
 
       message_link =
         if href.present?

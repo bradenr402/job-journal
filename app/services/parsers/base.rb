@@ -196,6 +196,8 @@ module Parsers
       node.attr(attr).to_s.squish.presence
     end
 
+    def url_at(selector, within: doc) = attr_at(selector, within:, attr: "href")
+
     def fetch_document(url, allowed_hosts: self.class::ALLOWED_HOSTS)
       html = PageFetcher.fetch(url, allowed_hosts:)
       Nokolexbor::HTML(html) if html

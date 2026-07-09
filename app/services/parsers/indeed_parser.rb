@@ -16,7 +16,7 @@ module Parsers
       name = text_at '[data-testid="inlineHeader-companyName"]'
       return name unless name&.match?(/confidential/i)
 
-      href = attr_at '[data-testid="inlineHeader-companyName"] a', attr: "href"
+      href = url_at '[data-testid="inlineHeader-companyName"] a'
       company_page = fetch_document(href)
       return name unless company_page
 
@@ -24,8 +24,8 @@ module Parsers
     end
 
     def application_url
-      attr_at('link[rel="canonical"]', attr: "href") ||
-        attr_at("[data-indeed-apply-joburl]", attr: "data-indeed-apply-joburl")
+      url_at('link[rel="canonical"]') ||
+        url_at("[data-indeed-apply-joburl]")
     end
 
     def salary
