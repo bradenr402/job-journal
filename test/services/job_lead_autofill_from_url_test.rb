@@ -92,13 +92,20 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     end
   end
 
-  test "call logs the failing URL and error class when a fetch fails" do
-    Net::HTTP.stub :start, ->(*) { raise "should not be called" } do
-      output = capture_log do
-        JobLeadAutofillFromUrl.call("https://example.com/jobs/1")
-      end
+  test "call reports and logs when the site blocks the request" do
+    forbidden = Net::HTTPForbidden.new("1.1", "403", "Forbidden")
 
-      assert_match %r{\[JobLeadAutofillFromUrl\] UnsupportedHost for "https://example.com/jobs/1"}, output
+    with_resolution("www.indeed.com" => %w[151.101.1.1]) do
+      with_http_object(forbidden) do
+        output = capture_log do
+          result = JobLeadAutofillFromUrl.call("https://www.indeed.com/viewjob?jk=example_job_id")
+
+          assert_not result.success?
+          assert_match(/blocking automated requests/, result.error)
+        end
+
+        assert_match %r{\[PageFetcher\] HTTP 403 Forbidden for https:\/\/www\.indeed\.com\/viewjob\?jk=example_job_id}, output
+      end
     end
   end
 

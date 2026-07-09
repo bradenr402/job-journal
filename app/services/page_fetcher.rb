@@ -6,7 +6,28 @@ class PageFetcher
   REQUEST_TIMEOUT = 8 # seconds, applied to both open and read
   MAX_REDIRECTS   = 3
   MAX_BODY_BYTES  = 2_000_000
-  USER_AGENT      = "JobJournalBot/1.0 (+https://job-journal.fly.dev)"
+
+  CHROME_VERSION = "146"
+
+  USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " \
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/#{CHROME_VERSION}.0.0.0 Safari/537.36"
+
+  DEFAULT_HEADERS = {
+    "User-Agent"                => USER_AGENT,
+    "Accept"                    => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,application/signed-exchange;v=b3;q=0.7",
+    "Accept-Language"           => "en-US,en;q=0.9",
+    "Referer"                   => "https://www.google.com/",
+    "Sec-Ch-Ua"                 => %("Chromium";v="#{CHROME_VERSION}", "Google Chrome";v="#{CHROME_VERSION}", "Not.A/Brand";v="24"),
+    "Sec-Ch-Ua-Mobile"          => "?0",
+    "Sec-Ch-Ua-Platform"        => %("macOS"),
+    "Upgrade-Insecure-Requests" => "1",
+    "Sec-Fetch-Dest"            => "document",
+    "Sec-Fetch-Mode"            => "navigate",
+    "Sec-Fetch-Site"            => "cross-site",
+    "Sec-Fetch-User"            => "?1"
+  }.freeze
+
+  BLOCKING_STATUSES = [ 401, 403, 429 ].freeze
 
   Error           = Class.new(StandardError)
   InvalidUrl      = Class.new(Error)
@@ -14,6 +35,7 @@ class PageFetcher
   PrivateHost     = Class.new(Error)
   BodyTooLarge    = Class.new(Error)
   FetchFailed     = Class.new(Error)
+  AccessBlocked   = Class.new(FetchFailed)
 
   def self.fetch(...) = new(...).fetch
   def self.fetch!(...) = new(...).fetch!
@@ -34,25 +56,23 @@ class PageFetcher
   def fetch!
     uri = safe_uri!
 
-    html =
-      begin
-        Timeout.timeout(REQUEST_TIMEOUT) { request_html uri }
-      rescue BodyTooLarge
-        raise
-      rescue Timeout::Error
-        log_warn "Timed out after #{REQUEST_TIMEOUT}s while fetching #{uri}"
-        raise FetchFailed
-      rescue FetchFailed => e
-        log_warn e.message
-        raise
-      rescue StandardError => e
-        log_warn "#{e.class}: #{e.message} while fetching #{uri}"
-        raise FetchFailed
-      end
-
-    raise FetchFailed if html.nil?
+    html = Timeout.timeout(REQUEST_TIMEOUT) { request_html uri }
+    raise FetchFailed, "Empty response body for #{uri}" if html.nil?
 
     html
+  rescue InvalidUrl, UnsupportedHost, PrivateHost, BodyTooLarge
+    raise
+  rescue FetchFailed => e
+    log_warn e.message
+    raise
+  rescue Timeout::Error
+    message = "Timed out after #{REQUEST_TIMEOUT}s while fetching #{url}"
+    log_warn message
+    raise FetchFailed, message
+  rescue StandardError => e
+    message = "#{e.class}: #{e.message} while fetching #{url}"
+    log_warn message
+    raise FetchFailed, message
   end
 
   def safe?
@@ -117,7 +137,7 @@ class PageFetcher
       open_timeout: REQUEST_TIMEOUT,
       read_timeout: REQUEST_TIMEOUT
     ) do |http|
-      request = Net::HTTP::Get.new(uri.request_uri, "User-Agent" => USER_AGENT, "Accept" => "text/html")
+      request = Net::HTTP::Get.new(uri.request_uri, DEFAULT_HEADERS)
       http.request request do |response|
         html =
           case response
@@ -126,7 +146,7 @@ class PageFetcher
           when Net::HTTPRedirection
             follow_redirect uri, response["location"], redirects_left
           else
-            raise FetchFailed, "Unexpected response #{response.code} #{response.message} for #{uri}"
+            raise response_error(response, uri)
           end
       end
     end
@@ -146,24 +166,22 @@ class PageFetcher
     body
   end
 
+  def response_error(response, uri)
+    message = "HTTP #{response.code} #{response.message} for #{uri}"
+    klass   = BLOCKING_STATUSES.include?(response.code.to_i) ? AccessBlocked : FetchFailed
+
+    klass.new(message)
+  end
+
   def follow_redirect(uri, location, redirects_left)
-    if redirects_left.zero?
-      log_warn "Exceeded #{MAX_REDIRECTS} redirects starting from #{uri}"
-      return
-    end
+    raise FetchFailed, "Exceeded #{MAX_REDIRECTS} redirects starting from #{uri}" if redirects_left.zero?
 
     next_uri = URI.parse location
     next_uri = uri + next_uri unless next_uri.absolute?
     next_uri = canonicalize_uri next_uri
 
-    unless next_uri.scheme == "https"
-      log_warn "Refusing non-https redirect to #{next_uri} from #{uri}"
-      return
-    end
-
-    unless allowed_host?(next_uri) && public_host?(next_uri)
-      log_warn "Refusing redirect to disallowed host #{next_uri.host.inspect} from #{uri}"
-      return
+    unless next_uri.scheme == "https" && allowed_host?(next_uri) && public_host?(next_uri)
+      raise FetchFailed, "Refusing unsafe redirect to #{next_uri} from #{uri}"
     end
 
     request_html next_uri, redirects_left: redirects_left - 1

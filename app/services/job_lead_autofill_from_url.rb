@@ -18,7 +18,6 @@ class JobLeadAutofillFromUrl
     html = fetcher.fetch!
     success parse(target_uri, html)
   rescue PageFetcher::Error => e
-    Rails.logger.warn "[JobLeadAutofillFromUrl] #{e.class.name.demodulize} for #{url.inspect}"
     failure error_message_for(e)
   end
 
@@ -79,6 +78,8 @@ class JobLeadAutofillFromUrl
       "Refusing to fetch from a private network."
     when PageFetcher::BodyTooLarge
       "That page is too large to autofill."
+    when PageFetcher::AccessBlocked
+      "That site is blocking automated requests right now. Try again later, or enter the details manually."
     else
       "Could not fetch that page. Double-check the URL and try again."
     end

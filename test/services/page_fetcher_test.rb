@@ -48,16 +48,32 @@ class PageFetcherTest < ActiveSupport::TestCase
     assert_equal [ "/canonical" ], requested_paths
   end
 
-  test "logs the status code and raises FetchFailed when the host blocks the request" do
+  test "raises AccessBlocked when the host blocks the request" do
     with_resolution("example.com" => %w[93.184.216.34]) do
       with_http_status(Net::HTTPForbidden.new("1.1", "403", "Forbidden")) do
         output = capture_log do
-          assert_raises(PageFetcher::FetchFailed) do
+          assert_raises(PageFetcher::AccessBlocked) do
             PageFetcher.fetch!("https://example.com/page", allowed_hosts: ALLOWED)
           end
         end
 
-        assert_match %r{\[PageFetcher\] Unexpected response 403 Forbidden for https://example.com/page}, output
+        assert_match %r{\[PageFetcher\] HTTP 403 Forbidden for https://example.com/page}, output
+      end
+    end
+  end
+
+  test "raises FetchFailed for non-blocking error statuses and still logs" do
+    with_resolution("example.com" => %w[93.184.216.34]) do
+      with_http_status(Net::HTTPServiceUnavailable.new("1.1", "503", "Service Unavailable")) do
+        output = capture_log do
+          error = assert_raises(PageFetcher::FetchFailed) do
+            PageFetcher.fetch!("https://example.com/page", allowed_hosts: ALLOWED)
+          end
+
+          assert_not_kind_of PageFetcher::AccessBlocked, error
+        end
+
+        assert_match(/\[PageFetcher\] HTTP 503/, output)
       end
     end
   end
@@ -69,7 +85,35 @@ class PageFetcherTest < ActiveSupport::TestCase
           assert_nil PageFetcher.fetch("https://example.com/page", allowed_hosts: ALLOWED)
         end
 
-        assert_match(/\[PageFetcher\] Unexpected response 503/, output)
+        assert_match(/\[PageFetcher\] HTTP 503/, output)
+      end
+    end
+  end
+
+  test "raises FetchFailed and logs when the request times out" do
+    with_resolution("example.com" => %w[93.184.216.34]) do
+      Net::HTTP.stub(:start, ->(*, **) { raise Timeout::Error }) do
+        output = capture_log do
+          assert_raises(PageFetcher::FetchFailed) do
+            PageFetcher.fetch!("https://example.com/page", allowed_hosts: ALLOWED)
+          end
+        end
+
+        assert_match(/\[PageFetcher\] Timed out after \d+s/, output)
+      end
+    end
+  end
+
+  test "raises FetchFailed and logs on a network error" do
+    with_resolution("example.com" => %w[93.184.216.34]) do
+      Net::HTTP.stub(:start, ->(*, **) { raise SocketError, "getaddrinfo: nodename nor servname provided" }) do
+        output = capture_log do
+          assert_raises(PageFetcher::FetchFailed) do
+            PageFetcher.fetch!("https://example.com/page", allowed_hosts: ALLOWED)
+          end
+        end
+
+        assert_match(/\[PageFetcher\] SocketError/, output)
       end
     end
   end
@@ -97,6 +141,27 @@ class PageFetcherTest < ActiveSupport::TestCase
     end
 
     Net::HTTP.stub(:start, fake_start) { yield }
+  end
+
+  def with_captured_request(body)
+    response = Net::HTTPSuccess.new("1.1", "200", "OK")
+    response.instance_variable_set(:@read, true)
+    response.body = body
+    response.define_singleton_method(:read_body) { |&block| block&.call(body); body }
+
+    captured = nil
+    fake_start = lambda do |*_args, **_kwargs, &block|
+      http = Object.new
+      http.define_singleton_method(:request) do |req, &response_block|
+        captured = req
+        response_block&.call(response)
+        response
+      end
+      block ? block.call(http) : http
+    end
+
+    Net::HTTP.stub(:start, fake_start) { yield }
+    captured
   end
 
   def with_resolution(map)
