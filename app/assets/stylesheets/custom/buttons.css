@@ -78,7 +78,7 @@
 
 @utility btn-link {
   &:not(.btn-muted) {
-    @apply cursor-pointer text-sm text-light underline transition-colors duration-80 hover:text-soft;
+    @apply cursor-pointer text-sm text-light underline transition-colors duration-80 hover:text-soft focus-visible:ring-2 focus-visible:ring-primary-600 outline-none rounded-sm p-0.5 -m-0.5;
   }
 
   &.btn-muted {
@@ -87,5 +87,5 @@
 }
 
 @utility btn-link-primary {
-  @apply text-primary-600 focus:ring-primary-500 underline transition-colors duration-80 hover:text-primary-700;
+  @apply text-primary-600 focus:ring-primary-500 underline transition-colors duration-80 hover:text-primary-700 focus-visible:ring-2 focus-visible:ring-primary-600 outline-none rounded-sm p-0.5 -m-0.5;
 }
