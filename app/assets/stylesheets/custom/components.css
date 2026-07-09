@@ -19,7 +19,7 @@
 }
 
 @utility nav-link {
-  @apply flex items-center whitespace-nowrap text-light focus-visible:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none;
+  @apply flex items-center whitespace-nowrap text-light;
 
   @variant max-md {
     @apply flex-col gap-0.5 py-2.75 font-medium text-2xs rounded-full px-2;
@@ -37,8 +37,12 @@
     @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600;
   }
 
+  a:focus-visible & {
+    @apply bg-neutral-100 dark:bg-neutral-900 ring-2 ring-primary-600 not-[.nav-link-active]:text-normal;
+  }
+
   a:has(&) {
-    @apply transition-all duration-80;
+    @apply transition-all duration-80 outline-none;
   }
 
   a:active:has(&) {
