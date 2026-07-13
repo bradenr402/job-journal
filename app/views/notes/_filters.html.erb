@@ -4,45 +4,41 @@
 
 <div id="note-filters" class="my-4 space-y-1">
   <div class="flex flex-wrap items-center gap-1">
-    <%= link_to notes_path(note_type: "all"), class: 'inline-block', style: "view-transition-name: all-notes" do %>
-      <span class="tag tag-filter <%= 'tag-selected' unless @selected_note_type.in?(%w[active archived]) %>">
-        <%= icon "layers", class: "size-4 -ml-px shrink-0" %>
-        <span>All</span>
-      </span>
-    <% end %>
+    <% [
+      { type: "all", icon: "layers" },
+      { type: "active", icon: "check-circle" },
+      { type: "archived", icon: "archive" }
+    ].each do |filter| %>
+      <% type = filter[:type] %>
+      <% selected = @selected_note_type == type %>
 
-    <% ['active', 'archived'].each do |note_type| %>
-      <%= link_to notes_path(params.permit(:notable_type).merge(note_type: note_type == @selected_note_type ? 'all' : note_type)), class: 'inline-block', style: "view-transition-name: #{note_type}-notes" do %>
-        <span class="tag tag-filter <%= 'tag-selected' if note_type == @selected_note_type %>">
-          <%
-            note_type_icon =
-              case note_type
-              when "active" then "check-circle"
-              when "archived" then "archive"
-              end
-          %>
-          <%= icon note_type_icon, class: "size-4 -ml-px shrink-0" %>
-          <span><%= note_type.titlecase %></span>
-          <%= icon 'x-mini' if note_type == @selected_note_type && note_type != 'all' %>
-        </span>
-      <% end %>
+      <%= filter_link(
+        path: notes_path(params.permit(:notable_type).merge(note_type: selected ? 'all' : type)),
+        value: type,
+        icon_name: filter[:icon],
+        selected:,
+        context: "notes-filter"
+      ) %>
     <% end %>
   </div>
 
   <div class="flex flex-wrap items-center gap-1">
-    <%= link_to notes_path(notable_type: params[:notable_type] == 'JobLead' ? nil : 'JobLead', note_type: @selected_note_type), class: 'inline-block', style: "view-transition-name: job-lead-notes" do %>
-      <span class="tag tag-filter <%= 'tag-selected' if params[:notable_type] == 'JobLead' %>">
-        <%= icon "briefcase", class: "size-4 -ml-px shrink-0" %>
-        <span>Job Leads</span>
-        <%= icon 'x-mini' if params[:notable_type] == 'JobLead' %>
-      </span>
-    <% end %>
-    <%= link_to notes_path(notable_type: params[:notable_type] == 'Interview' ? nil : 'Interview', note_type: @selected_note_type), class: 'inline-block', style: "view-transition-name: interview-notes" do %>
-      <span class="tag tag-filter tag-interview <%= 'tag-selected' if params[:notable_type] == 'Interview' %>">
-        <%= icon "interview", class: "size-4 -ml-px shrink-0" %>
-        <span>Interviews</span>
-        <%= icon 'x-mini' if params[:notable_type] == 'Interview' %>
-      </span>
+    <% [
+      { type: "JobLead", icon: "briefcase" },
+      { type: "Interview", icon: "interview", tag_class: "tag-interview" }
+    ].each do |filter| %>
+      <% type = filter[:type] %>
+      <% selected = params[:notable_type] == type %>
+
+      <%= filter_link(
+        path: notes_path(params.permit(:note_type).merge(notable_type: params[:notable_type] == type ? nil : type)),
+        value: type,
+        label: human(type).pluralize.titleize,
+        icon_name: filter[:icon],
+        selected:,
+        context: "notes-notable-filter",
+        tag_class: filter[:tag_class]
+      ) %>
     <% end %>
   </div>
 </div>

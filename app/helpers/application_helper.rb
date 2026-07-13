@@ -85,19 +85,39 @@ module ApplicationHelper
     icon_tag
   end
 
-  def icon_for_status(status, **kwargs)
-    icon_name =
-      case status.to_s
-      when "lead" then "briefcase"
-      when "applied" then "application"
-      when "interview" then "interview"
-      when "offer" then "offer"
-      when "accepted" then "check-circle"
-      when "rejected" then "x-circle"
-      else "circle"
-      end
+  def icon_name_for_status(status)
+    case status.to_s
+    when "lead" then "briefcase"
+    when "applied" then "application"
+    when "interview" then "interview"
+    when "offer" then "offer"
+    when "accepted" then "check-circle"
+    when "rejected" then "x-circle"
+    else "circle"
+    end
+  end
 
-    icon icon_name, **kwargs
+  def icon_for_status(status, **kwargs)
+    icon icon_name_for_status(status), **kwargs
+  end
+
+  def filter_link(path:, value:, icon_name:, selected:, label: value.titlecase, tag_class: nil, context: nil)
+    contents = [
+      icon(icon_name, class: "size-4 -ml-px shrink-0"),
+      tag.span(label),
+      (icon("x-mini") if selected && value != "all")
+    ].compact
+
+    tag_classes = [
+      "tag",
+      "tag-filter",
+      tag_class,
+      ("tag-selected" if selected)
+    ]
+
+    link_to path, class: "inline-block", style: ("view-transition-name: #{context}-#{value}" if context) do
+      tag.span safe_join(contents), class: tag_classes
+    end
   end
 
   def human(string)

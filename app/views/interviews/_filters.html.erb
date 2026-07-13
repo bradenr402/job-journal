@@ -1,19 +1,21 @@
 <div id="interview-filters" class="my-4 space-y-1">
   <div class="flex flex-wrap items-center gap-1">
-    <%= link_to interviews_path(scheduled: params[:scheduled] == 'upcoming' ? nil : 'upcoming'), class: 'inline-block', style: "view-transition-name: upcoming-interviews" do %>
-      <span class="tag tag-filter tag-interview <%= 'tag-selected' if params[:scheduled] == 'upcoming' %>">
-        <%= icon "calendar", class: "size-4 -ml-px shrink-0" %>
-        <span>Upcoming</span>
-        <%= icon 'x-mini' if params[:scheduled] == 'upcoming' %>
-      </span>
-    <% end %>
+    <% [
+      { type: "all", icon: "layers" },
+      { type: "upcoming", icon: "calendar", tag_class: "tag-interview" },
+      { type: "completed", icon: "check-circle", tag_class: "tag-accepted" }
+    ].each do |filter| %>
+    <% type = filter[:type] %>
+    <% selected = @selected_interview_type == type %>
 
-    <%= link_to interviews_path(scheduled: params[:scheduled] == 'completed' ? nil : 'completed'), class: 'inline-block', style: "view-transition-name: completed-interviews" do %>
-      <span class="tag tag-filter tag-accepted <%= 'tag-selected' if params[:scheduled] == 'completed' %>">
-        <%= icon "check-circle", class: "size-4 -ml-px shrink-0" %>
-        <span>Completed</span>
-        <%= icon 'x-mini' if params[:scheduled] == 'completed' %>
-      </span>
-    <% end %>
+    <%= filter_link(
+      path: interviews_path(scheduled: selected ? "all" : type),
+      value: type,
+      icon_name: filter[:icon],
+      selected:,
+      tag_class: filter[:tag_class],
+      context: "interviews"
+    ) %>
+  <% end %>
   </div>
 </div>
