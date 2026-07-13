@@ -73,7 +73,8 @@ class JobLeadAutofillFromUrl
     when PageFetcher::InvalidUrl
       "Please provide a valid https URL."
     when PageFetcher::UnsupportedHost
-      "That host is not supported yet. Try a #{Parsers.source_names.to_disjunctive_sentence} job URL."
+      article = Parsers.source_names.first.chr.match?(/\A[aieou]/i) ? "an" : "a"
+      "That host is not supported yet. Try #{article} #{Parsers.source_names.to_disjunctive_sentence} job URL."
     when PageFetcher::PrivateHost
       "Refusing to fetch from a private network."
     when PageFetcher::BodyTooLarge

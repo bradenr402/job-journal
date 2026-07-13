@@ -88,7 +88,7 @@ class JobLeadAutofillFromUrlTest < ActiveSupport::TestCase
     Net::HTTP.stub :start, ->(*) { raise "should not be called" } do
       result = JobLeadAutofillFromUrl.call("https://example.com/jobs/1")
 
-      assert_equal "That host is not supported yet. Try a LinkedIn or Indeed job URL.", result.error
+      assert_equal "That host is not supported yet. Try an Indeed or LinkedIn job URL.", result.error
     end
   end
 
