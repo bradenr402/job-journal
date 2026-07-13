@@ -18,6 +18,13 @@ module ApplicationHelper
     "#{sign}#{formatted}"
   end
 
+  def option(value, text: value.titlecase, icon: value)
+    { text:, value:, icon: }
+  end
+
+  def options(*values)
+    values.map { option(it) }
+  end
   # Inserts zero-width spaces (ZWSP) after "/" and "-" in URLs or long strings,
   # allowing them to wrap only at these characters for clean, readable line breaks
   # while preventing overflow in containers. Use in views like:

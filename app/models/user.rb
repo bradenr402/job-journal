@@ -3,6 +3,10 @@ class User < ApplicationRecord
   DEFAULT_SETTINGS = {
     weekly_application_goal: 10,
 
+    job_leads_filter: "all",
+    interviews_filter: "all",
+    notes_filter: "all",
+
     job_leads_display: "grid",
     interviews_display: "grid",
     notes_display: "grid",

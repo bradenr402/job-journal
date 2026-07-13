@@ -42,6 +42,57 @@
 
       <div>
         <div class="mb-4">
+          <h2 class="subheading">Filters</h2>
+          <p class="text-sm text-muted mt-1">Choose which filter is selected when you first open each list.</p>
+        </div>
+
+        <div class="space-y-5">
+          <%=
+            render "settings/radio_group",
+            form: form,
+            field: :job_leads_filter,
+            label: "Job Leads Filter",
+            settings_value: @settings[:job_leads_filter],
+            help_text: "The default filter applied when you open <span class='font-semibold text-light'>Job Leads</span>.",
+            options: [
+              option("all", icon: "layers"),
+              option("active", icon: "check-circle"),
+              option("archived", icon: "archive")
+            ]
+          %>
+
+          <%=
+            render "settings/radio_group",
+            form: form,
+            field: :interviews_filter,
+            label: "Interviews Filter",
+            settings_value: @settings[:interviews_filter],
+            help_text: "The default filter applied when you open <span class='font-semibold text-light'>Interviews</span>.",
+            options: [
+              option("all", icon: "layers"),
+              option("upcoming", icon: "calendar"),
+              option("completed", icon: "check-circle"),
+            ]
+          %>
+
+          <%=
+            render "settings/radio_group",
+            form: form,
+            field: :notes_filter,
+            label: "Notes Filter",
+            settings_value: @settings[:notes_filter],
+            help_text: "The default filter applied when you open <span class='font-semibold text-light'>Notes</span>.",
+            options: [
+              option("all", icon: "layers"),
+              option("active", icon: "check-circle"),
+              option("archived", icon: "archive")
+            ]
+          %>
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-4">
           <h2 class="subheading">Appearance Preferences</h2>
           <p class="text-sm text-muted mt-1">Customize how JobJournal looks and feels.</p>
         </div>

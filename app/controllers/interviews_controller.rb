@@ -15,13 +15,13 @@ class InterviewsController < ApplicationController
         :location
       )
 
+    @selected_interview_type = params[:scheduled].presence || Current.user.get_setting(:interviews_filter)
+
     @interviews =
-      if params[:scheduled] == "upcoming"
-        scope.future.order(scheduled_at: :desc)
-      elsif params[:scheduled] == "completed"
-        scope.past.order(scheduled_at: :desc)
-      else
-        scope.order(scheduled_at: :desc)
+      case @selected_interview_type
+      when "upcoming" then scope.future.order(scheduled_at: :desc)
+      when "completed" then scope.past.order(scheduled_at: :desc)
+      else scope.order(scheduled_at: :desc)
       end
   end
 
