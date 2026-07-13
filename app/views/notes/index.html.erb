@@ -13,17 +13,7 @@
       Notes
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:note-count]">
-      <%
-        singular_note_text =
-          if params[:notable_type] == 'JobLead'
-            'job lead note'
-          elsif params[:notable_type] == 'Interview'
-            'interview note'
-          else
-            'total note'
-          end
-      %>
-      <%= pluralize(@notes.size, singular_note_text) %>
+      <%= note_count_text @notes.size, type: @selected_note_type, notable: params[:notable_type] %>
     </span>
   </div>
 

@@ -13,7 +13,7 @@
       Interviews
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:interview-count]">
-      <%= pluralize(@interviews.size, "#{params[:scheduled].presence || 'total'} interview") %>
+      <%= interview_count_text @interviews.size, type: @selected_interview_type %>
     </span>
   </div>
 

@@ -22,7 +22,7 @@
         Job Leads
       </h1>
       <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:job-lead-count]">
-        <%= pluralize(@job_leads.size, "#{@selected_job_lead_type == 'all' ? 'total' : @selected_job_lead_type} job lead") %>
+        <%= job_lead_count_text @job_leads.size, type: @selected_job_lead_type, tags: @selected_tags.map(&:name), status: @selected_status %>
       </span>
     </div>
 

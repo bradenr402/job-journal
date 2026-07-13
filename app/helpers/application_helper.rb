@@ -25,6 +25,44 @@ module ApplicationHelper
   def options(*values)
     values.map { option(it) }
   end
+
+  def job_lead_count_text(count, type: nil, tags: nil, status: nil)
+    capture do
+      label = "job lead"
+      label.prepend("#{type} ") if type.present? && type != "all"
+
+      concat pluralize(count, label)
+
+      filters = []
+
+      filters << "status: #{tag.span "“#{status.to_s.humanize}”", class: "font-semibold text-light"}" if status.present?
+
+      if tags.present?
+        tag_label = "tag".pluralize(tags.size)
+        tags_list = tags.map { |t| tag.span t, class: "font-semibold text-light" }.to_sentence(two_words_connector: ", ")
+
+        filters << [ tag_label, tags_list ].join(": ")
+      end
+
+      if filters.any?
+        concat " with #{filters.to_sentence}".html_safe
+      end
+    end
+  end
+
+  def interview_count_text(count, type: nil)
+    label = "interview"
+    label.prepend("#{type} ") if type.present? && type != "all"
+    pluralize(count, label)
+  end
+
+  def note_count_text(count, type: nil, notable: nil)
+    label = "#{human notable} note".downcase.squish
+    label = "#{type} #{label}" if type.present? && type != "all"
+
+    pluralize(count, label)
+  end
+
   # Inserts zero-width spaces (ZWSP) after "/" and "-" in URLs or long strings,
   # allowing them to wrap only at these characters for clean, readable line breaks
   # while preventing overflow in containers. Use in views like:
