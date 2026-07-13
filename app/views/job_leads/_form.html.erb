@@ -140,7 +140,7 @@
           <% @tags.each do |tag| %>
             <span
               class="tag-chip cursor-pointer <%= 'hidden' if tag.in? @job_lead.tags %>"
-              style="view-transition-name: <%= tag.name.parameterize %>"
+              style="view-transition-name: tag-<%= tag.name.parameterize %>"
               data-action="click->tags-input#addTagFromList"
               data-value="<%= tag.name %>"
             >
