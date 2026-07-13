@@ -15,7 +15,7 @@ module ActiveSupport
       Current.session = session
       request = ActionDispatch::Request.new(Rails.application.env_config)
       cookies = request.cookie_jar
-      cookies.signed[:session_id] = { value: session.id, httponly: true, same_site: :lax }
+      cookies.signed[Authentication::SESSION_COOKIE_NAME] = { value: session.id, httponly: true, same_site: :lax }
     end
 
     # Parses an HTML fixture, serving any secondary pages the parser fetches

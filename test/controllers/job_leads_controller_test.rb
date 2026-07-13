@@ -267,7 +267,7 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
 
   test "autofill requires authentication" do
     delete session_url if respond_to?(:session_url)
-    cookies.delete(:session_id)
+    cookies.delete(Authentication::SESSION_COOKIE_NAME)
     Current.session = nil
 
     post autofill_job_leads_url, params: { url: "https://www.linkedin.com/jobs/view/123" }, as: :json
