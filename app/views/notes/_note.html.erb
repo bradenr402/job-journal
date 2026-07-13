@@ -35,7 +35,7 @@
 
   <% if note_page %>
     <div class="text-xs text-muted text-right flex items-center justify-end gap-1">
-      <%= icon 'note', class: 'size-3.5 shrink-0' %>
+      <%= icon 'quill', class: 'size-3.5 shrink-0' %>
       <%== note.edited? ? "Updated: #{local_time_short note.updated_at}" : "Created: #{local_time_short note.created_at}" %>
     </div>
   <% end %>

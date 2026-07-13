@@ -184,7 +184,7 @@
   <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
     <% if job_lead.notes.any? && !job_lead_page %>
       <span class="inline-flex items-center gap-1">
-        <%= icon 'note', class: 'size-3.5 shrink-0' %>
+        <%= icon 'quill', class: 'size-3.5 shrink-0' %>
         <%= pluralize(job_lead.notes.size, 'note') %>
       </span>
     <% end %>
