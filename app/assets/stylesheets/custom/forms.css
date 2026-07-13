@@ -8,6 +8,10 @@
 
 @utility form-label {
   @apply text-light block mb-1 text-sm not-dark:font-medium select-none;
+
+  .form-checkbox ~ & {
+    @apply cursor-pointer;
+  }
 }
 
 @utility form-select {
@@ -70,7 +74,7 @@
 }
 
 @utility form-checkbox {
-  @apply appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white dark:bg-neutral-800 mt-0.25 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-80;
+  @apply cursor-pointer appearance-none size-4.5 border border-neutral-300 dark:border-neutral-700 rounded-sm bg-white dark:bg-neutral-800 mt-0.25 shrink-0 checked:bg-primary-600 checked:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 disabled:border-neutral-400 disabled:bg-neutral-200 transition duration-80;
 
   & + svg {
     @apply size-3.5 text-white absolute translate-y-[0.22rem] translate-x-0.5 pointer-events-none;
