@@ -1,0 +1,73 @@
+<%= form_with url: settings_path(tab: "auto_archiving"), method: :patch, data: { controller: "conditional-field" } do |form| %>
+  <div class="mb-4">
+    <h2 class="subheading">Automatic Archiving</h2>
+    <p class="text-sm text-muted mt-1">Keep your job leads organized automatically.</p>
+  </div>
+
+  <div class="space-y-5">
+    <div class="space-y-1">
+      <div class="flex items-start gap-1.5 relative">
+        <%= form.check_box :auto_archive_rejected_leads_enabled, { checked: settings[:auto_archive_rejected_leads_enabled], class: "form-checkbox" }, "true", "false" %>
+        <%= icon "check" %>
+        <%= form.label :auto_archive_rejected_leads_enabled, "Auto-Archive Rejected Leads", class: "form-label" %>
+      </div>
+      <p class="text-xs text-muted">Automatically archive leads marked as rejected.</p>
+    </div>
+
+    <div class="space-y-1">
+      <div class="flex items-start gap-1.5 relative">
+        <%= form.check_box :auto_archive_inactive_leads_enabled, { checked: settings[:auto_archive_inactive_leads_enabled], class: "form-checkbox", data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-inactive" } }, "true", "false" %>
+        <%= icon "check" %>
+        <%= form.label :auto_archive_inactive_leads_enabled, "Auto-Archive Inactive Leads", class: "form-label" %>
+      </div>
+
+      <p class="text-xs text-muted">Automatically archive inactive job leads that you haven&#8217;t updated for your specified number of days below.</p>
+    </div>
+
+    <div data-conditional-field-input="auto-archive-inactive" class="<%= "hidden" unless settings[:auto_archive_inactive_leads_enabled] %>">
+      <%= form.label :auto_archive_inactive_lead_days, "Days of Inactivity Before Archiving", class: "form-label" %>
+      <div class="form-number-frame" data-controller="number-field">
+        <button type="button" class="form-number-decrement">
+          <%= icon "minus", class: "size-4 shrink-0" %>
+        </button>
+
+        <%= form.number_field :auto_archive_inactive_lead_days, value: settings[:auto_archive_inactive_lead_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+
+        <button type="button" class="form-number-increment">
+          <%= icon "plus", class: "size-4 shrink-0" %>
+        </button>
+      </div>
+      <p class="text-xs text-muted mt-1">Days since you last updated the job lead.</p>
+    </div>
+
+    <div class="space-y-1">
+      <div class="flex items-start gap-1.5 relative">
+        <%= form.check_box :auto_archive_stale_leads_enabled, { checked: settings[:auto_archive_stale_leads_enabled], class: "form-checkbox", data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-stale" } }, "true", "false" %>
+        <%= icon "check" %>
+        <%= form.label :auto_archive_stale_leads_enabled, "Auto-Archive Stale Leads", class: "form-label" %>
+      </div>
+
+      <p class="text-xs text-muted">Automatically archive stale job leads that you haven&#8217;t applied to after your specified number of days below.</p>
+    </div>
+
+    <div data-conditional-field-input="auto-archive-stale" class="<%= "hidden" unless settings[:auto_archive_stale_leads_enabled] %>">
+      <%= form.label :auto_archive_stale_lead_days, "Days After Stale Before Archiving", class: "form-label" %>
+      <div class="form-number-frame" data-controller="number-field">
+        <button type="button" class="form-number-decrement">
+          <%= icon "minus", class: "size-4 shrink-0" %>
+        </button>
+
+        <%= form.number_field :auto_archive_stale_lead_days, value: settings[:auto_archive_stale_lead_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+
+        <button type="button" class="form-number-increment">
+          <%= icon "plus", class: "size-4 shrink-0" %>
+        </button>
+      </div>
+      <p class="text-xs text-muted mt-1">Days since you saved the job lead.</p>
+    </div>
+  </div>
+
+  <div class="mt-8 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+    <%= form.submit "Save Archiving", class: "btn btn-primary w-full sm:w-auto" %>
+  </div>
+<% end %>

@@ -1,0 +1,39 @@
+<%= form_with url: settings_path(tab: "appearance"), method: :patch do |form| %>
+  <div class="mb-4">
+    <h2 class="subheading">Appearance Preferences</h2>
+    <p class="text-sm text-muted mt-1">Customize how JobJournal looks and feels.</p>
+  </div>
+
+  <div class="space-y-5">
+    <%= render "settings/radio_group",
+      form: form,
+      field: :job_leads_display,
+      label: "Job Leads Display",
+      settings_value: settings[:job_leads_display],
+      help_text: "How job leads are displayed.",
+      options: options("grid", "list")
+    %>
+
+    <%= render "settings/radio_group",
+      form: form,
+      field: :interviews_display,
+      label: "Interviews Display",
+      settings_value: settings[:interviews_display],
+      help_text: "How interviews are displayed.",
+      options: options("grid", "list")
+    %>
+
+    <%= render "settings/radio_group",
+      form: form,
+      field: :notes_display,
+      label: "Notes Display",
+      settings_value: settings[:notes_display],
+      help_text: "How notes are displayed.",
+      options: options("grid", "list")
+    %>
+  </div>
+
+  <div class="mt-8 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+    <%= form.submit "Save Appearance", class: "btn btn-primary w-full sm:w-auto" %>
+  </div>
+<% end %>

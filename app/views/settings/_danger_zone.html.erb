@@ -1,0 +1,16 @@
+<div>
+  <div class="mb-4">
+    <h2 class="subheading">Danger Zone</h2>
+    <p class="text-sm text-muted mt-1">Reset all your settings or permanently delete your account.</p>
+  </div>
+  <div class="space-y-6">
+    <div>
+      <%= button_to "Reset All Settings", reset_settings_path(tab: "danger_zone"), method: :patch, data: { turbo_confirm: "Are you sure you want to reset all your settings to their defaults?" }, class: "btn btn-destructive btn-muted w-full sm:w-auto" %>
+      <p class="text-xs text-muted mt-1">This will reset all your JobJournal settings to their default values immediately.</p>
+    </div>
+    <div>
+      <%= button_to "Delete Account", registrations_path, method: :delete, data: { turbo_confirm: "Are you absolutely sure you want to delete your account? This action cannot be undone." }, class: "btn btn-destructive w-full sm:w-auto" %>
+      <p class="text-xs text-muted mt-1">This will permanently delete your JobJournal account and all associated data. This cannot be undone.</p>
+    </div>
+  </div>
+</div>
