@@ -1,12 +1,12 @@
 <%= form_with url: settings_path(tab: "follow_ups"), method: :patch do |form| %>
   <div class="mb-4">
     <h2 class="subheading">Follow-Up Suggestions</h2>
-    <p class="text-sm text-muted mt-1">Get timely suggestions to follow up on your applications and interviews.</p>
+    <p class="text-sm text-muted mt-1">Decide when JobJournal nudges you to follow up on leads, applications, and interviews.</p>
   </div>
 
   <div class="space-y-5">
     <div>
-      <%= form.label :job_lead_stale_after_days, "Days Until Lead Becomes Stale", class: "form-label" %>
+      <%= form.label :job_lead_stale_after_days, "Days Until a Lead Goes Stale", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
@@ -18,11 +18,11 @@
           <%= icon "plus", class: "size-4 shrink-0" %>
         </button>
       </div>
-      <p class="text-xs text-muted mt-1">A reminder will appear on your home page if you haven&#8217;t applied to a saved job after this many days.</p>
+      <p class="text-xs text-muted mt-1">If you haven&#8217;t applied to a saved lead within this many days, it&#8217;s considered stale and a reminder appears on your home page.</p>
     </div>
 
     <div>
-      <%= form.label :application_follow_up_days, "Days Until Application Follow-Up", class: "form-label" %>
+      <%= form.label :application_follow_up_days, "Days Before an Application Follow-Up", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
@@ -34,11 +34,11 @@
           <%= icon "plus", class: "size-4 shrink-0" %>
         </button>
       </div>
-      <p class="text-xs text-muted mt-1">A reminder to follow up on your applications will appear on your home page after this many days.</p>
+      <p class="text-xs text-muted mt-1">After you apply, you&#8217;ll be reminded to follow up once this many days have passed.</p>
     </div>
 
     <div>
-      <%= form.label :interview_follow_up_days, "Days Until Interview Follow-Up", class: "form-label" %>
+      <%= form.label :interview_follow_up_days, "Days Before an Interview Follow-Up", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
@@ -50,11 +50,11 @@
           <%= icon "plus", class: "size-4 shrink-0" %>
         </button>
       </div>
-      <p class="text-xs text-muted mt-1">A reminder to follow up on your interviews will appear on your home page after this many days.</p>
+      <p class="text-xs text-muted mt-1">After an interview, you&#8217;ll be reminded to send a thank-you or follow-up once this many days have passed.</p>
     </div>
 
     <div>
-      <%= form.label :suggest_follow_up_days, "Days to Suggest Follow-Ups", class: "form-label" %>
+      <%= form.label :suggest_follow_up_days, "Days to Keep Suggestions Visible", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
@@ -66,7 +66,7 @@
           <%= icon "plus", class: "size-4 shrink-0" %>
         </button>
       </div>
-      <p class="text-xs text-muted mt-1">Follow-up suggestions will remain on your home page for this many days, then automatically disappear.</p>
+      <p class="text-xs text-muted mt-1">Each suggestion stays on your home page for this many days, then disappears on its own.</p>
     </div>
   </div>
 

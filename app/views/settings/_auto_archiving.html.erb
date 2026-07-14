@@ -1,7 +1,7 @@
 <%= form_with url: settings_path(tab: "auto_archiving"), method: :patch, data: { controller: "conditional-field" } do |form| %>
   <div class="mb-4">
     <h2 class="subheading">Automatic Archiving</h2>
-    <p class="text-sm text-muted mt-1">Keep your job leads organized automatically.</p>
+    <p class="text-sm text-muted mt-1">Let JobJournal tidy up leads that are no longer going anywhere.</p>
   </div>
 
   <div class="space-y-5">
@@ -11,7 +11,7 @@
         <%= icon "check" %>
         <%= form.label :auto_archive_rejected_leads_enabled, "Auto-Archive Rejected Leads", class: "form-label" %>
       </div>
-      <p class="text-xs text-muted">Automatically archive leads marked as rejected.</p>
+      <p class="text-xs text-muted">Automatically archive leads when you mark them as rejected.</p>
     </div>
 
     <div class="space-y-1">
@@ -21,7 +21,7 @@
         <%= form.label :auto_archive_inactive_leads_enabled, "Auto-Archive Inactive Leads", class: "form-label" %>
       </div>
 
-      <p class="text-xs text-muted">Automatically archive inactive job leads that you haven&#8217;t updated for your specified number of days below.</p>
+      <p class="text-xs text-muted">Archive leads you haven&#8217;t touched in a while. Set how long to wait below.</p>
     </div>
 
     <div data-conditional-field-input="auto-archive-inactive" class="<%= "hidden" unless settings[:auto_archive_inactive_leads_enabled] %>">
@@ -37,7 +37,7 @@
           <%= icon "plus", class: "size-4 shrink-0" %>
         </button>
       </div>
-      <p class="text-xs text-muted mt-1">Days since you last updated the job lead.</p>
+      <p class="text-xs text-muted mt-1">A lead is archived when this many days pass without any updates.</p>
     </div>
 
     <div class="space-y-1">
@@ -47,11 +47,11 @@
         <%= form.label :auto_archive_stale_leads_enabled, "Auto-Archive Stale Leads", class: "form-label" %>
       </div>
 
-      <p class="text-xs text-muted">Automatically archive stale job leads that you haven&#8217;t applied to after your specified number of days below.</p>
+      <p class="text-xs text-muted">Archive stale leads you never applied to. Set how long to wait below.</p>
     </div>
 
     <div data-conditional-field-input="auto-archive-stale" class="<%= "hidden" unless settings[:auto_archive_stale_leads_enabled] %>">
-      <%= form.label :auto_archive_stale_lead_days, "Days After Stale Before Archiving", class: "form-label" %>
+      <%= form.label :auto_archive_stale_lead_days, "Days Stale Before Archiving", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
@@ -63,7 +63,7 @@
           <%= icon "plus", class: "size-4 shrink-0" %>
         </button>
       </div>
-      <p class="text-xs text-muted mt-1">Days since you saved the job lead.</p>
+      <p class="text-xs text-muted mt-1">A stale lead is archived when this many days pass since you saved it.</p>
     </div>
   </div>
 
