@@ -51,10 +51,12 @@ Unlike recruiter tools or job boards, JobJournal isn’t built for companies&mda
 ## Tech Stack
 
 - **Framework:** [Ruby on Rails](https://rubyonrails.org/)
+- **Database:** [SQLite](https://www.sqlite.org/)
 - **Front-End:**
-  - [Tailwind CSS](https://tailwindcss.com)
+  - [Tailwind CSS](https://tailwindcss.com) v4
   - [Turbo](https://turbo.hotwired.dev/)
   - [Stimulus](https://stimulus.hotwired.dev/)
+  - [Importmap](https://github.com/rails/importmap-rails)&mdash;no Node.js or build step required
 - **Deployment:**
   - **URL**: [job-journal.fly.dev](https://job-journal.fly.dev)
   - **Hosting Provider**: [Fly.io](https://fly.io)
