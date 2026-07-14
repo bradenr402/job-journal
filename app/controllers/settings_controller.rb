@@ -1,6 +1,14 @@
 class SettingsController < ApplicationController
   TABS = %w[goals filters appearance follow_ups auto_archiving danger_zone].freeze
 
+  SUCCESS_MESSAGES = {
+    "goals" => "Goal settings saved.",
+    "filters" => "Filter settings saved.",
+    "appearance" => "Appearance settings saved.",
+    "follow_ups" => "Follow-up settings saved.",
+    "auto_archiving" => "Auto-archiving settings saved."
+  }.freeze
+
   def edit
     @settings = Current.user.all_settings
     @active_tab = active_tab
@@ -22,7 +30,7 @@ class SettingsController < ApplicationController
     end
 
     if updated
-      redirect_to settings_path(tab: active_tab), success: "Settings updated successfully."
+      redirect_to settings_path(tab: active_tab), success: SUCCESS_MESSAGES.fetch(active_tab, "Settings updated successfully.")
     else
       @settings = @user.all_settings
       @active_tab = active_tab
@@ -32,7 +40,7 @@ class SettingsController < ApplicationController
 
   def reset
     if Current.user.reset_all_settings
-      flash[:success] = "Settings reset to defaults successfully."
+      flash[:success] = "Settings reset to defaults."
     else
       flash[:error] = "Failed to reset settings."
     end
