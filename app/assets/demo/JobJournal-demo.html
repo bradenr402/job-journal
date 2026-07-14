@@ -265,7 +265,7 @@
 
       <div class="@container">
         <div class="mb-4">
-          <h2 class="subheading">Follow Up Suggestions</h2>
+          <h2 class="subheading">Follow-Up Suggestions</h2>
           <p class="text-sm text-muted mt-1 text-pretty">
             Active job leads not updated in 7–10 days since applying or 2–5 days since interviewing.
           </p>
@@ -426,10 +426,9 @@
             
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Notes</p>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-5 shrink-0">
-  <path d="M10.5502 3C6.69782 3.00694 4.6805 3.10152 3.39128 4.39073C2 5.78202 2 8.02125 2 12.4997C2 16.9782 2 19.2174 3.39128 20.6087C4.78257 22 7.0218 22 11.5003 22C15.9787 22 18.218 22 19.6093 20.6087C20.8985 19.3195 20.9931 17.3022 21 13.4498" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-  <path d="M11.0556 13C10.3322 3.86635 16.8023 1.27554 21.9805 2.16439C22.1896 5.19136 20.7085 6.32482 17.8879 6.84825C18.4326 7.41736 19.395 8.13354 19.2912 9.02879C19.2173 9.66586 18.7846 9.97843 17.9194 10.6036C16.0231 11.9736 13.8264 12.8375 11.0556 13Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-  <path d="M9 17C11 11.5 12.9604 9.63636 15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-5 shrink-0">
+  <path d="M5.07579 17C4.08939 4.54502 12.9123 1.0121 19.9734 2.22417C20.2585 6.35185 18.2389 7.89748 14.3926 8.61125C15.1353 9.38731 16.4477 10.3639 16.3061 11.5847C16.2054 12.4534 15.6154 12.8797 14.4355 13.7322C11.8497 15.6004 8.85421 16.7785 5.07579 17Z"></path>
+  <path d="M4 22C4 15.5 7.84848 12.1818 10.5 10"></path>
 </svg>
             </div>
             <div class="mt-auto">
@@ -455,13 +454,49 @@
           </div>
 
             <div class="flex flex-wrap items-center gap-1 mb-4">
-                <a class="tag tag-filter" onclick="this.style.viewTransitionName = &#39;tag-remote&#39;">remote</a>
-                <a class="tag tag-filter" onclick="this.style.viewTransitionName = &#39;tag-hybrid&#39;">hybrid</a>
-                <a class="tag tag-filter" onclick="this.style.viewTransitionName = &#39;tag-priority&#39;">priority</a>
-                <a class="tag tag-filter" onclick="this.style.viewTransitionName = &#39;tag-startup&#39;">startup</a>
-                <a class="tag tag-filter" onclick="this.style.viewTransitionName = &#39;tag-enterprise&#39;">enterprise</a>
-                <a class="tag tag-filter" onclick="this.style.viewTransitionName = &#39;tag-referral&#39;">referral</a>
-            </div>
+                <span class="tag tag-filter" onclick="this.style.viewTransitionName = 'tag-remote'">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-4 -ml-px shrink-0">
+  <path d="M2.73552 11.6867C1.78253 12.7511 1.76203 14.3569 2.63665 15.4865C4.37226 17.7281 6.2719 19.6277 8.51351 21.3633C9.64313 22.238 11.2489 22.2175 12.3133 21.2645C15.203 18.6771 17.8494 15.9731 20.4033 13.0016C20.6558 12.7078 20.8137 12.3477 20.8492 11.9619C21.0059 10.2561 21.3279 5.34144 19.9932 4.00675C18.6586 2.67207 13.7439 2.99408 12.0381 3.15083C11.6523 3.18627 11.2922 3.34421 10.9984 3.59671C8.02692 6.15064 5.32291 8.797 2.73552 11.6867Z" stroke="currentColor" stroke-width="1.5"></path>
+  <path d="M7.5 14.5L9.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M18 6L22 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+                  remote
+</span>                <span class="tag tag-filter" onclick="this.style.viewTransitionName = 'tag-hybrid'">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-4 -ml-px shrink-0">
+  <path d="M2.73552 11.6867C1.78253 12.7511 1.76203 14.3569 2.63665 15.4865C4.37226 17.7281 6.2719 19.6277 8.51351 21.3633C9.64313 22.238 11.2489 22.2175 12.3133 21.2645C15.203 18.6771 17.8494 15.9731 20.4033 13.0016C20.6558 12.7078 20.8137 12.3477 20.8492 11.9619C21.0059 10.2561 21.3279 5.34144 19.9932 4.00675C18.6586 2.67207 13.7439 2.99408 12.0381 3.15083C11.6523 3.18627 11.2922 3.34421 10.9984 3.59671C8.02692 6.15064 5.32291 8.797 2.73552 11.6867Z" stroke="currentColor" stroke-width="1.5"></path>
+  <path d="M7.5 14.5L9.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M18 6L22 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+                  hybrid
+</span>                <span class="tag tag-filter" onclick="this.style.viewTransitionName = 'tag-priority'">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-4 -ml-px shrink-0">
+  <path d="M2.73552 11.6867C1.78253 12.7511 1.76203 14.3569 2.63665 15.4865C4.37226 17.7281 6.2719 19.6277 8.51351 21.3633C9.64313 22.238 11.2489 22.2175 12.3133 21.2645C15.203 18.6771 17.8494 15.9731 20.4033 13.0016C20.6558 12.7078 20.8137 12.3477 20.8492 11.9619C21.0059 10.2561 21.3279 5.34144 19.9932 4.00675C18.6586 2.67207 13.7439 2.99408 12.0381 3.15083C11.6523 3.18627 11.2922 3.34421 10.9984 3.59671C8.02692 6.15064 5.32291 8.797 2.73552 11.6867Z" stroke="currentColor" stroke-width="1.5"></path>
+  <path d="M7.5 14.5L9.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M18 6L22 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+                  priority
+</span>                <span class="tag tag-filter" onclick="this.style.viewTransitionName = 'tag-startup'">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-4 -ml-px shrink-0">
+  <path d="M2.73552 11.6867C1.78253 12.7511 1.76203 14.3569 2.63665 15.4865C4.37226 17.7281 6.2719 19.6277 8.51351 21.3633C9.64313 22.238 11.2489 22.2175 12.3133 21.2645C15.203 18.6771 17.8494 15.9731 20.4033 13.0016C20.6558 12.7078 20.8137 12.3477 20.8492 11.9619C21.0059 10.2561 21.3279 5.34144 19.9932 4.00675C18.6586 2.67207 13.7439 2.99408 12.0381 3.15083C11.6523 3.18627 11.2922 3.34421 10.9984 3.59671C8.02692 6.15064 5.32291 8.797 2.73552 11.6867Z" stroke="currentColor" stroke-width="1.5"></path>
+  <path d="M7.5 14.5L9.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M18 6L22 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+                  startup
+</span>                <span class="tag tag-filter" onclick="this.style.viewTransitionName = 'tag-enterprise'">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-4 -ml-px shrink-0">
+  <path d="M2.73552 11.6867C1.78253 12.7511 1.76203 14.3569 2.63665 15.4865C4.37226 17.7281 6.2719 19.6277 8.51351 21.3633C9.64313 22.238 11.2489 22.2175 12.3133 21.2645C15.203 18.6771 17.8494 15.9731 20.4033 13.0016C20.6558 12.7078 20.8137 12.3477 20.8492 11.9619C21.0059 10.2561 21.3279 5.34144 19.9932 4.00675C18.6586 2.67207 13.7439 2.99408 12.0381 3.15083C11.6523 3.18627 11.2922 3.34421 10.9984 3.59671C8.02692 6.15064 5.32291 8.797 2.73552 11.6867Z" stroke="currentColor" stroke-width="1.5"></path>
+  <path d="M7.5 14.5L9.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M18 6L22 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+                  enterprise
+</span>                <span class="tag tag-filter" onclick="this.style.viewTransitionName = 'tag-referral'">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="size-4 -ml-px shrink-0">
+  <path d="M2.73552 11.6867C1.78253 12.7511 1.76203 14.3569 2.63665 15.4865C4.37226 17.7281 6.2719 19.6277 8.51351 21.3633C9.64313 22.238 11.2489 22.2175 12.3133 21.2645C15.203 18.6771 17.8494 15.9731 20.4033 13.0016C20.6558 12.7078 20.8137 12.3477 20.8492 11.9619C21.0059 10.2561 21.3279 5.34144 19.9932 4.00675C18.6586 2.67207 13.7439 2.99408 12.0381 3.15083C11.6523 3.18627 11.2922 3.34421 10.9984 3.59671C8.02692 6.15064 5.32291 8.797 2.73552 11.6867Z" stroke="currentColor" stroke-width="1.5"></path>
+  <path d="M7.5 14.5L9.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M18 6L22 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+                  referral
+</span>            </div>
 
             <p class="text-xs text-muted">
               <span class="not-pointer-fine:hidden">Click</span>
@@ -485,72 +520,90 @@
             <p class="text-xs text-muted">See where your best job leads are coming from.</p>
           </div>
 
-            <div class="grid grid-cols-1 @xl:grid-cols-2  gap-1.5">
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #1
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug">LinkedIn</p>
-                      <p class="text-xs/snug text-muted">4 leads</p>
-                    </div>
-                  </div>
+            <!-- BEGIN app/views/shared/_sources.html.erb --><div class="grid grid-cols-1 @xl:grid-cols-2  gap-1.5">
+    <div class="flex flex-col justify-between gap-4 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md relative">
 
+      <div class="flex items-start gap-2.5">
+        <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center shrink-0 rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+          #1
+        </div>
+        <div class="flex flex-col">
+          <p class="font-bold text-lg/snug">Recruiter</p>
+          <p class="text-xs/snug text-muted">
+            1 of 1 lead
+            (<span class="text-soft font-semibold">100%</span>)
+            converted to an interview.
+          </p>
+        </div>
+      </div>
 
-                    <p class="text-sm/none text-soft">
-                      <span>1 interview</span>, <span>1 offer</span>
-                    </p>
-                </div>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #2
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug">Referral</p>
-                      <p class="text-xs/snug text-muted">3 leads</p>
-                    </div>
-                  </div>
+        <p class="text-sm/none text-soft">
+          <span>1 interview</span>
+        </p>
+    </div>
+    <div class="flex flex-col justify-between gap-4 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md relative">
 
+      <div class="flex items-start gap-2.5">
+        <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center shrink-0 rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+          #2
+        </div>
+        <div class="flex flex-col">
+          <p class="font-bold text-lg/snug">LinkedIn</p>
+          <p class="text-xs/snug text-muted">
+            2 of 4 leads
+            (<span class="text-soft font-semibold">50%</span>)
+            converted to interviews or offers.
+          </p>
+        </div>
+      </div>
 
-                    <p class="text-sm/none text-soft">
-                      <span>1 offer</span>
-                    </p>
-                </div>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #3
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug">Company Website</p>
-                      <p class="text-xs/snug text-muted">2 leads</p>
-                    </div>
-                  </div>
+        <p class="text-sm/none text-soft">
+          <span>1 interview</span>, <span>1 accepted offer</span>
+        </p>
+    </div>
+    <div class="flex flex-col justify-between gap-4 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md relative">
 
+      <div class="flex items-start gap-2.5">
+        <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center shrink-0 rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+          #3
+        </div>
+        <div class="flex flex-col">
+          <p class="font-bold text-lg/snug">Company Website</p>
+          <p class="text-xs/snug text-muted">
+            1 of 2 leads
+            (<span class="text-soft font-semibold">50%</span>)
+            converted to an interview.
+          </p>
+        </div>
+      </div>
 
-                    <p class="text-sm/none text-soft">
-                      <span>1 interview</span>
-                    </p>
-                </div>
-                <div class="flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md">
-                  <div class="flex items-center gap-2.5">
-                    <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
-                      #4
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="font-bold text-lg/snug">Recruiter</p>
-                      <p class="text-xs/snug text-muted">1 lead</p>
-                    </div>
-                  </div>
+        <p class="text-sm/none text-soft">
+          <span>1 interview</span>
+        </p>
+    </div>
+    <div class="flex flex-col justify-between gap-4 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md relative">
 
+      <div class="flex items-start gap-2.5">
+        <div class="text-sm tracking-widest text-soft font-semibold size-10 grid place-items-center shrink-0 rounded-full bg-neutral-200/70 dark:bg-neutral-700/40">
+          #4
+        </div>
+        <div class="flex flex-col">
+          <p class="font-bold text-lg/snug">Referral</p>
+          <p class="text-xs/snug text-muted">
+            1 of 3 leads
+            (<span class="text-soft font-semibold">33.3%</span>)
+            converted to an offer.
+          </p>
+        </div>
+      </div>
 
-                    <p class="text-sm/none text-soft">
-                      <span>1 interview</span>
-                    </p>
-                </div>
-            </div>
+        <p class="text-sm/none text-soft">
+          <span>1 offer</span>
+        </p>
+    </div>
+</div>
+
+<!-- END app/views/shared/_sources.html.erb -->
         </div>
       </div>
     </div>
