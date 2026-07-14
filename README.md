@@ -188,12 +188,11 @@ bin/rails test test/models/user_test.rb
 
 ## Privacy & Security
 
-Your job search data should be _yours alone_. That’s why JobJournal is **privacy-first** by design: all your data stays personal, with no third-party sharing, no data selling, and no analytics dashboards for recruiters.
+Your job search data should be _yours alone_. That’s why JobJournal is **privacy-first** by design: no third-party sharing, no data selling, no analytics, and no recruiter dashboards.
 
 - All your data is scoped to your user account.
-- No third-party sharing, no analytics, no data selling, and no recruiter dashboards&mdash;your data stays private.
 - Secure authentication via email & password.
-- Delete your account and all associated data at any time at the press of a button.
+- Delete your account and all associated data at any time.
 
 ---
 
