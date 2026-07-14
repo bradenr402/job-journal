@@ -22,8 +22,6 @@ A privacy-first job search tracker. Organize every lead, application, and interv
   - [Autofill From URL](#autofill-from-url)
 - [Privacy & Security](#privacy--security)
 - [Roadmap](#roadmap)
-  - [Coming Soon](#coming-soon)
-  - [Future Enhancements](#future-enhancements)
 - [Contributing](#contributing)
 - [License](#license)
 - [Support & Contact](#support--contact)
@@ -180,31 +178,17 @@ Your job search data should be _yours alone_. That’s why JobJournal is **priva
 
 ## Roadmap
 
-### _Coming Soon:_
-
-- **Keyboard shortcuts for Markdown formatting in Notes**
-- **Emails/Notifications**
-  - Weekly activity summaries
-  - Interview reminders
-  - Nudges after periods of inactivity
-  - Progress digests for an accountability partner
-- **Milestone Tracking**
-  - First interview scheduled
-  - First offer received
-  - Job offer accepted
-
-### _Future Enhancements:_
-
-- **[ActiveRecord Encryption](https://guides.rubyonrails.org/active_record_encryption.html)**  
-  Encrypt user data for improved security and privacy protections
-- **Context-Aware Auto-Tagging**  
-  Automatically suggest tags based on job lead title, company, location, etc.
 - **Note Templates**  
   Custom pre-filled notes when creating job leads or interviews
 - **“Did You Apply?” Prompt**  
   Friendly reminder when visiting a job lead’s application URL
-- **Autofill from Application URL**  
-  Automatically extract job details from the application page
+- **Keyboard Shortcuts for Markdown Formatting in Notes**
+- **Passkey Support**
+- **Emails & Notifications**
+  - Weekly activity summaries
+  - Interview reminders
+  - Nudges after periods of inactivity
+  - Progress digests for an accountability partner
 
 ---
 
