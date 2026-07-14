@@ -169,10 +169,10 @@ bin/rails test
 
 ## Privacy & Security
 
-Your job search data should be _yours alone_. That’s why JobJournal is **privacy-first** by design: all your data stays personal, with no sharing, no tracking, and no analytics dashboards for recruiters.
+Your job search data should be _yours alone_. That’s why JobJournal is **privacy-first** by design: all your data stays personal, with no third-party sharing, no data selling, and no analytics dashboards for recruiters.
 
 - All your data is scoped to your user account.
-- No third-party sharing, no analytics, no tracking, and no recruiter dashboards&mdash;your data stays private.
+- No third-party sharing, no analytics, no data selling, and no recruiter dashboards&mdash;your data stays private.
 - Secure authentication via email & password.
 - Delete your account and all associated data at any time at the press of a button.
 
