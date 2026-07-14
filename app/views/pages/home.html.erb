@@ -188,7 +188,6 @@
         </div>
 
         <div class="card">
-          <%= @follow_up_suggestions.count > 1 %>
           <div class="grid grid-cols-1 gap-1.5 <%= "@xl:grid-cols-2" if @follow_up_suggestions.count > 1 %>">
             <% @follow_up_suggestions.each do |suggestion| %>
               <div class="relative flex flex-col gap-5 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-80 hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98" style="view-transition-name: job_lead-<%= suggestion.id %>;">
