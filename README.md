@@ -220,6 +220,6 @@ Open an issue on GitHub, or contact me at [jobjournalapp@gmail.com](mailto:jobjo
 ---
 
 **JobJournal**  
-Your personal job search HQ.
+A privacy-first job search tracker. Organize every lead, application, and interview in one place.
 
 Created with ❤️ by [Braden Roth](https://bradenroth.com)
