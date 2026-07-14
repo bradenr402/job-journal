@@ -1,13 +1,24 @@
 class SettingsController < ApplicationController
+  TABS = %w[goals filters appearance follow_ups auto_archiving danger_zone].freeze
+
+  SUCCESS_MESSAGES = {
+    "goals" => "Goal settings saved.",
+    "filters" => "Filter settings saved.",
+    "appearance" => "Appearance settings saved.",
+    "follow_ups" => "Follow-up settings saved.",
+    "auto_archiving" => "Auto-archiving settings saved."
+  }.freeze
+
   def edit
     @settings = Current.user.all_settings
+    @active_tab = active_tab
   end
 
   def update
     @user = Current.user
     updated = true
 
-    User::DEFAULT_SETTINGS.keys.each do |key|
+    User::DEFAULT_SETTINGS.keys.select { |key| params.key?(key.to_s) }.each do |key|
       raw_value = params[key.to_s]
       default_value = User::DEFAULT_SETTINGS[key]
       value = parse_setting_value(raw_value, default_value)
@@ -19,23 +30,28 @@ class SettingsController < ApplicationController
     end
 
     if updated
-      redirect_to settings_path, success: "Settings updated successfully."
+      redirect_to settings_path(tab: active_tab), success: SUCCESS_MESSAGES.fetch(active_tab, "Settings updated successfully.")
     else
       @settings = @user.all_settings
+      @active_tab = active_tab
       render :edit, status: :unprocessable_entity, error: "Failed to update settings."
     end
   end
 
   def reset
     if Current.user.reset_all_settings
-      flash[:success] = "Settings reset to defaults successfully."
+      flash[:success] = "Settings reset to defaults."
     else
       flash[:error] = "Failed to reset settings."
     end
-    redirect_to settings_path
+    redirect_to settings_path(tab: active_tab)
   end
 
   private
+
+  def active_tab
+    TABS.include?(params[:tab]) ? params[:tab] : TABS.first
+  end
 
   def parse_setting_value(raw_value, default_value)
     case raw_value

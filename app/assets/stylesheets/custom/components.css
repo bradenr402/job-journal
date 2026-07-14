@@ -50,6 +50,52 @@
   }
 }
 
+@utility tab-link {
+  @apply flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-light transition-colors duration-80;
+
+  button[aria-selected="false"] & {
+    &:hover {
+      @apply bg-neutral-100 dark:bg-neutral-900;
+    }
+
+    .tab-link-icon-selected {
+      @apply hidden;
+    }
+  }
+
+  button[aria-selected="true"] & {
+    @apply bg-primary-100/80 dark:bg-primary-950/80 text-primary-600 dark:text-primary-500;
+
+    &.tab-link-destructive {
+      @apply bg-rose-100/80 dark:bg-rose-950/80 text-rose-600 dark:text-rose-500;
+    }
+
+    .tab-link-icon-unselected {
+      @apply hidden;
+    }
+  }
+
+  button:focus-visible & {
+    @apply bg-neutral-100 dark:bg-neutral-900 ring-2 ring-primary-600;
+
+    &.tab-link-destructive {
+      @apply ring-rose-500;
+    }
+  }
+
+  button[aria-selected="false"]:focus-visible & {
+    @apply text-normal;
+  }
+
+  button:has(&) {
+    @apply transition-all duration-80 outline-none cursor-pointer;
+
+    &:active {
+      @apply scale-97;
+    }
+  }
+}
+
 @utility tag-chip {
   @apply inline-flex items-center gap-1.25 max-w-full overflow-hidden px-2 has-[button]:pr-1 py-1 rounded-lg bg-white dark:bg-neutral-800/40 border border-neutral-300 dark:border-neutral-800 shadow-xs text-soft text-xs whitespace-nowrap cursor-default select-none transition-all duration-80 active:scale-94;
 

@@ -12,6 +12,8 @@
       </label>
     <% end %>
   </div>
-  <p class="text-muted text-xs mt-1"><%= raw help_text %></p>
+  <% if (help_text = local_assigns[:help_text]) %>
+    <p class="text-muted text-xs mt-1"><%= raw help_text %></p>
+  <% end %>
 </div>
 
