@@ -19,7 +19,7 @@ A privacy-first job search tracker. Organize every lead, application, and interv
   - [Interview Tracking](#interview-tracking)
   - [Smart Search & Filters](#smart-search--filters)
   - [Insights](#insights)
-  - [Autofill from URL](#autofill-from-url)
+  - [Autofill From URL](#autofill-from-url)
 - [Privacy & Security](#privacy--security)
 - [Roadmap](#roadmap)
   - [Coming Soon](#coming-soon)
@@ -157,7 +157,7 @@ bin/rails test
 - See how far each source gets you in the hiring process
 - See your most frequently used tags
 
-### Autofill from URL
+### Autofill From URL
 
 - Paste a job posting URL to auto-extract job details
 - Fills in company, job title, location, and more&mdash;no manual entry required
