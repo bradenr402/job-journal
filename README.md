@@ -80,17 +80,26 @@ Unlike recruiter tools or job boards, JobJournal isn’t built for companies&mda
    cd job-journal
    ```
 
-2. Install dependencies:
+2. Run the setup script, which installs dependencies and prepares the database:
+
+   ```shell
+   bin/setup
+   ```
+
+   Or set up manually:
 
    ```shell
    bundle install
+   bin/rails db:prepare
    ```
 
-3. Set up the database:
+3. (Optional) Seed the database with demo data:
 
    ```shell
-   bin/rails db:setup
+   bin/rails db:seed
    ```
+
+   This creates a demo account (email: `demo@jobjournal.app`, password: `password`) with sample job leads, interviews, notes, and tags.
 
 4. Run the development server:
 
@@ -98,12 +107,22 @@ Unlike recruiter tools or job boards, JobJournal isn’t built for companies&mda
    bin/dev
    ```
 
+   This starts the Rails server and the Tailwind CSS watcher.
+
 The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ### Running Tests
 
-```bash
+Run the full test suite:
+
+```shell
 bin/rails test
+```
+
+Run a single test file:
+
+```shell
+bin/rails test test/models/user_test.rb
 ```
 
 ---
