@@ -217,10 +217,12 @@ Your job search data should be _yours alone_. That’s why JobJournal is **priva
 Contributions are welcome! Here’s how you can help:
 
 1. Fork the repository.
-2. Create a new branch. (`git checkout -b feature/your-feature`)
-3. Commit your changes with clear commit messages.
-4. Push to your fork. (`git push origin feature/your-feature`)
-5. Open a pull request.
+2. Create a new branch: `git checkout -b feature/your-feature`
+3. Make your changes, adding tests where appropriate.
+4. Ensure the test suite passes (`bin/rails test`) and the code is lint-clean (`bin/rubocop`).
+5. Commit your changes with clear commit messages.
+6. Push to your fork: `git push origin feature/your-feature`
+7. Open a pull request.
 
 You can also report bugs or feature suggestions via [GitHub Issues](https://github.com/bradenr402/job-journal/issues).
 
@@ -235,7 +237,7 @@ This project is licensed under the [MIT License](LICENSE). Feel free to use, mod
 ## Support & Contact
 
 Have questions, feedback, or need help?  
-Open an issue on GitHub, or contact me at [jobjournalapp@gmail.com](mailto:jobjournalapp@gmail.com).
+[Open an issue](https://github.com/bradenr402/job-journal/issues/new), or contact me at [jobjournalapp@gmail.com](mailto:jobjournalapp@gmail.com).
 
 ---
 
