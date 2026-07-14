@@ -34,6 +34,6 @@ class NotesTest < ApplicationSystemTestCase
   #   visit note_url(@note)
   #   accept_confirm { click_on 'Destroy this note', match: :first }
 
-  #   assert_text 'Note was successfully destroyed'
+  #   assert_text 'Note was successfully deleted'
   # end
 end

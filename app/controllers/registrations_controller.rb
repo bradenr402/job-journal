@@ -16,7 +16,7 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       start_new_session_for @user
-      redirect_to dashboard_path, success: "You&#8217;ve successfully signed up to JobJournal. Welcome!"
+      redirect_to dashboard_path, success: "You&#8217;ve successfully signed up for JobJournal. Welcome!"
     else
       render :new, status: :unprocessable_entity, error: @user.errors.full_messages.join(", ")
     end

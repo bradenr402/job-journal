@@ -63,9 +63,9 @@ class InterviewsController < ApplicationController
   # DELETE /interviews/1
   def destroy
     if @interview.destroy
-      redirect_to @interview.job_lead, success: "Interview was successfully destroyed.", status: :see_other
+      redirect_to @interview.job_lead, success: "Interview was successfully deleted.", status: :see_other
     else
-      redirect_to @interview, error: "Failed to destroy the interview.", status: :unprocessable_entity
+      redirect_to @interview, error: "Failed to delete the interview.", status: :unprocessable_entity
     end
   end
 

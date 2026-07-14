@@ -24,7 +24,7 @@ class TagsController < ApplicationController
     if @tag.destroy
       redirect_to tags_path, success: "Tag was successfully deleted."
     else
-      redirect_to tags_path, error: "Failed to delete tag."
+      redirect_to tags_path, error: "Failed to delete the tag."
     end
   end
 

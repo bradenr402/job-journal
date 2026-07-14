@@ -105,9 +105,9 @@ class JobLeadsController < ApplicationController
   # DELETE /job_leads/1
   def destroy
     if @job_lead.destroy
-      redirect_to job_leads_path, status: :see_other, success: "Job lead was successfully destroyed."
+      redirect_to job_leads_path, status: :see_other, success: "Job lead was successfully deleted."
     else
-      redirect_to @job_lead, error: "Failed to destroy job lead."
+      redirect_to @job_lead, error: "Failed to delete the job lead."
     end
   end
 

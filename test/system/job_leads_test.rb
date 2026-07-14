@@ -34,6 +34,6 @@ class JobLeadsTest < ApplicationSystemTestCase
   #   visit job_lead_url(@job_lead)
   #   accept_confirm { click_on 'Destroy this job lead', match: :first }
 
-  #   assert_text 'Job lead was successfully destroyed'
+  #   assert_text 'Job lead was successfully deleted'
   # end
 end

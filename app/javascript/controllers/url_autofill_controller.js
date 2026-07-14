@@ -7,7 +7,7 @@ export default class extends Controller {
   static outlets = ["tags-input"];
   static values = {
     url: String,
-    submitText: { type: String, default: "Autofill from URL" },
+    submitText: { type: String, default: "Autofill From URL" },
     workingText: { type: String, default: "Working…" },
   };
 

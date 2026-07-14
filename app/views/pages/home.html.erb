@@ -171,7 +171,7 @@
     <% if @follow_up_suggestions.any? %>
       <div class="@container">
         <div class="mb-4">
-          <h2 class="subheading">Follow Up Suggestions</h2>
+          <h2 class="subheading">Follow-Up Suggestions</h2>
           <p class="text-sm text-muted mt-1 text-pretty">
             <%
               suggest_follow_up_days = Current.user.get_setting(:suggest_follow_up_days)
@@ -230,7 +230,8 @@
       <div>
         <div class="mb-4">
           <h2 class="subheading">Stale Job Leads</h2>
-          <p class="text-sm text-muted mt-1 text-pretty">Job leads saved over <%= pluralize(Current.user.get_setting(:job_lead_stale_after_days), 'day') %> ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
+          <% stale_days = Current.user.get_setting(:job_lead_stale_after_days) %>
+          <p class="text-sm text-muted mt-1 text-pretty">Job leads saved more than <%= pluralize stale_days, 'day' %> ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
         </div>
         <div id="job_leads" class="@container">
           <div class="<%= Current.user.get_setting(:job_leads_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @stale_leads.size >= 3 && @stale_leads.size != 4}" %> gap-3">
@@ -376,7 +377,7 @@
               a tag to see your job leads filtered by that tag.
             </p>
           <% else %>
-            <p class="text-sm text-muted">No tags created yet.</p>
+            <p class="text-sm text-muted">No tags yet.</p>
           <% end %>
         </div>
 
@@ -392,7 +393,7 @@
           <% if @top_sources.any? %>
             <%= render "shared/sources", sources: @top_sources %>
           <% else %>
-            <p class="text-sm text-muted">No sources recorded yet.</p>
+            <p class="text-sm text-muted">No sources yet.</p>
           <% end %>
         </div>
       </div>

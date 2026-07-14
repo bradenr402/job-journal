@@ -34,6 +34,6 @@ class InterviewsTest < ApplicationSystemTestCase
   #   visit interview_url(@interview)
   #   accept_confirm { click_on 'Destroy this interview', match: :first }
 
-  #   assert_text 'Interview was successfully destroyed'
+  #   assert_text 'Interview was successfully deleted'
   # end
 end
