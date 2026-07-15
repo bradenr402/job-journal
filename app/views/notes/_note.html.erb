@@ -30,9 +30,6 @@
     <% note_classes = note_page ? 'prose' : 'whitespace-break-spaces text-light line-clamp-4 select-none' %>
 
     <%= content_tag(:div, note_content, class: note_classes) %>
-    <% unless note_page %>
-      <div class="pointer-events-none absolute inset-x-0 top-12 h-12 bg-linear-to-t from-white/80 dark:from-neutral-900/80 group-hover:from-transparent to-transparent transition-colors duration-80 supports-[-webkit-touch-callout:none]:hidden"></div>
-    <% end %>
   </div>
 
   <% if note_page %>
