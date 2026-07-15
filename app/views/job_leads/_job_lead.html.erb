@@ -1,6 +1,6 @@
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
-<div id="<%= dom_id job_lead %>" class="relative <%= item_layout_class_names :job_leads_display, hoverable: !(job_lead_page || @demo) %> flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">
+<div id="<%= dom_id job_lead %>" class="relative <%= item_layout_class_names :job_leads_display, interactive: !(job_lead_page || @demo) %> flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">
   <div class="flex gap-x-4 gap-y-2 w-full mb-2">
     <div class="<%= job_lead_page ? 'subheading' : 'text-lg font-semibold leading-snug mb-1' %>">
       <span><%= job_lead.title %></span>

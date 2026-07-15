@@ -4,21 +4,21 @@ module ApplicationHelper
       collection: "card-grid",
       item: {
         default: "card",
-        hoverable: "card-hoverable"
+        interactive: "card-interactive"
       }
     },
     "list" => {
       collection: "card-list",
       item: {
         default: "card",
-        hoverable: "card-hoverable"
+        interactive: "card-interactive"
       }
     },
     "minimal" => {
       collection: "minimal-item-list",
       item: {
         default: "minimal-item",
-        hoverable: "minimal-item-hoverable"
+        interactive: "minimal-item-interactive"
       }
     }
   }
@@ -54,13 +54,13 @@ module ApplicationHelper
     ].compact.join(" ")
   end
 
-  def item_layout_class_names(layout, hoverable: false, extra_hoverable_classes: nil)
+  def item_layout_class_names(layout, interactive: false, extra_interactive_classes: nil)
     layout = resolve_layout(layout)
 
     layout_classes = [
       LAYOUT_CLASSES.dig(layout, :item, :default),
-      (LAYOUT_CLASSES.dig(layout, :item, :hoverable) if hoverable),
-      (extra_hoverable_classes if hoverable)
+      (LAYOUT_CLASSES.dig(layout, :item, :interactive) if interactive),
+      (extra_interactive_classes if interactive)
     ]
 
     layout_classes.compact_blank.join(" ")

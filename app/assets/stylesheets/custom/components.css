@@ -1,7 +1,7 @@
 @utility card {
   @apply bg-white dark:bg-neutral-900 p-3.75 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-xs has-[a.absolute.inset-0:focus-visible]:ring-2 has-[a.absolute.inset-0:focus-visible]:ring-primary-600 [&_a]:outline-none will-change-[transform,background-color,box-shadow];
 
-  &.card-hoverable {
+  &.card-interactive {
     @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98;
   }
 }
@@ -9,7 +9,7 @@
 @utility card-sm {
   @apply bg-white dark:bg-neutral-900 p-2.5 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-2xs has-[a.absolute.inset-0:focus-visible]:ring-2 has-[a.absolute.inset-0:focus-visible]:ring-primary-600 [&_a]:focus:outline-none will-change-[transform,background-color,box-shadow];
 
-  &.card-hoverable {
+  &.card-interactive {
     @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98;
   }
 }
@@ -40,7 +40,7 @@
 @utility minimal-item {
   @apply rounded-md py-4;
 
-  &.minimal-item-hoverable {
+  &.minimal-item-interactive {
     @apply px-4 -mx-4 hover:bg-neutral-100/70 dark:hover:bg-neutral-900/70 transition-[scale] duration-80 active:scale-99;
   }
 }
