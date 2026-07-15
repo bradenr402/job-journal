@@ -7,10 +7,9 @@
   <div class="space-y-5">
     <%=
       render "settings/radio_group",
-      form: form,
+      form:,
       field: :job_leads_filter,
       label: "Default Job Leads Filter",
-      settings_value: settings[:job_leads_filter],
       help_text: "Which leads you see first when you open <span class='font-semibold text-light'>Job Leads</span>.",
       options: [
         option("all", icon: "layers"),
@@ -21,10 +20,9 @@
 
     <%=
       render "settings/radio_group",
-      form: form,
+      form:,
       field: :interviews_filter,
       label: "Default Interviews Filter",
-      settings_value: settings[:interviews_filter],
       help_text: "Which interviews you see first when you open <span class='font-semibold text-light'>Interviews</span>.",
       options: [
         option("all", icon: "layers"),
@@ -35,10 +33,9 @@
 
     <%=
       render "settings/radio_group",
-      form: form,
+      form:,
       field: :notes_filter,
       label: "Default Notes Filter",
-      settings_value: settings[:notes_filter],
       help_text: "Which notes you see first when you open <span class='font-semibold text-light'>Notes</span>.",
       options: [
         option("all", icon: "layers"),
