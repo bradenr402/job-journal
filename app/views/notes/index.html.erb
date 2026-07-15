@@ -21,10 +21,8 @@
 
   <div id="notes" class="@container">
     <% if @notes.any? %>
-      <div class="<%= Current.user.get_setting(:notes_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@3xl:grid-cols-3' if @notes.size >= 3 && @notes.size != 4}" %> gap-3">
-        <% @notes.each do |note| %>
-          <%= render note %>
-        <% end %>
+      <div class="<%= collection_layout_class_names :notes_display, count: @notes.size, size: :medium %>">
+        <%= render @notes %>
       </div>
     <% else %>
       <div class="empty-state">

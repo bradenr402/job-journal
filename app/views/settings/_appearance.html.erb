@@ -1,12 +1,12 @@
 <%= form_with url: settings_path(tab: "appearance"), method: :patch do |form| %>
   <div class="mb-4">
     <h2 class="subheading">Appearance Preferences</h2>
-    <p class="text-sm text-muted mt-1">Arrange each section in a multi-column grid or a single-column list.</p>
+    <p class="text-sm text-muted">Arrange each section in a multi-column grid, single-column list, or minimal compact layout.</p>
     <p class="text-xs text-muted mt-1">On smaller screens, everything appears in a single column.</p>
   </div>
 
   <div class="space-y-5">
-    <% display_options = options("grid", "list") %>
+    <% display_options = options("grid", "list") + [ option("minimal", icon: "menu") ] %>
 
     <%= render "settings/radio_group", form:, field: :job_leads_display, options: display_options %>
     <%= render "settings/radio_group", form:, field: :interviews_display, options: display_options %>

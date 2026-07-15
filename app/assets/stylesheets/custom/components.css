@@ -14,6 +14,37 @@
   }
 }
 
+@utility card-grid {
+  @apply grid grid-cols-1 @xl:grid-cols-2 gap-3;
+
+  &.card-grid-md {
+    @apply @3xl:grid-cols-3;
+  }
+
+  &.card-grid-lg {
+    @apply @4xl:grid-cols-3;
+  }
+}
+
+@utility card-list {
+  @apply flex flex-col gap-3;
+}
+
+@utility minimal-item-list {
+  @apply flex flex-col;
+  &:has(.minimal-item):hover .minimal-item:not(:hover) {
+    @apply opacity-40;
+  }
+}
+
+@utility minimal-item {
+  @apply rounded-md py-4;
+
+  &.minimal-item-hoverable {
+    @apply px-4 -mx-4 hover:bg-neutral-100/70 dark:hover:bg-neutral-900/70 transition-[scale] duration-80 active:scale-99;
+  }
+}
+
 @utility empty-state {
   @apply flex flex-col items-center justify-center gap-5 text-center text-pretty my-12 text-muted;
 }

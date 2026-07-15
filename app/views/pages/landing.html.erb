@@ -133,7 +133,6 @@
         See where you stand&mdash;instantly.
       </h2>
 
-      <%# ── Hero screenshot ── %>
       <div
         class="
           [--demo-padding:calc(var(--spacing)*1)]
@@ -153,55 +152,53 @@
         </div>
       </div>
 
-      <div class="md:hidden @container max-w-5xl mx-auto mt-20">
-        <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
-          <div class="relative card flex flex-col">
-            <div class="flex items-start justify-between mb-5">
-              <p class="font-semibold">Job Leads This Week</p>
-              <%= icon 'briefcase', class: 'size-5 shrink-0' %>
-            </div>
-            <div class="mt-auto">
-              <p class="font-extrabold text-4xl mb-1"><%= @demo.job_lead_stats[:count] %></p>
-              <p class="text-xs text-muted"><%= @demo.job_lead_stats[:change] %></p>
-            </div>
+      <div class="card-list md:hidden max-w-5xl mx-auto mt-20">
+        <div class="relative card flex flex-col">
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Job Leads This Week</p>
+            <%= icon 'briefcase', class: 'size-5 shrink-0' %>
           </div>
-
-          <div class="relative card flex flex-col @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
-            <div class="flex items-start justify-between mb-5">
-              <p class="font-semibold">Applications This Week</p>
-              <%= icon 'application', class: 'size-5 shrink-0' %>
-            </div>
-            <div class="mt-auto flex items-end justify-between">
-              <div>
-                <p class="font-extrabold text-4xl mb-1">
-                  <%= applications_count = @demo.application_stats[:count] %>
-                  <span class="text-sm font-normal text-muted">/ <%= applications_goal = @demo.application_stats[:goal] %></span>
-                </p>
-                <p class="text-xs text-muted"><%= @demo.application_stats[:change] %></p>
-              </div>
-              <% percent = applications_count.to_f / applications_goal.to_f * 100  %>
-              <%= render 'shared/progress_dial', percent: percent %>
-            </div>
+          <div class="mt-auto">
+            <p class="font-extrabold text-4xl mb-1"><%= @demo.job_lead_stats[:count] %></p>
+            <p class="text-xs text-muted"><%= @demo.job_lead_stats[:change] %></p>
           </div>
+        </div>
 
-          <div class="relative card flex flex-col">
-            <div class="flex items-start justify-between mb-5">
-              <p class="font-semibold">Interviews This Week</p>
-              <%= icon 'interview', class: 'size-5 shrink-0' %>
+        <div class="relative card flex flex-col">
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Applications This Week</p>
+            <%= icon 'application', class: 'size-5 shrink-0' %>
+          </div>
+          <div class="mt-auto flex items-end justify-between">
+            <div>
+              <p class="font-extrabold text-4xl mb-1">
+                <%= applications_count = @demo.application_stats[:count] %>
+                <span class="text-sm font-normal text-muted">/ <%= applications_goal = @demo.application_stats[:goal] %></span>
+              </p>
+              <p class="text-xs text-muted"><%= @demo.application_stats[:change] %></p>
             </div>
-            <div class="mt-auto flex items-end justify-between">
-              <div>
-                <p class="font-extrabold text-4xl mb-1"><%= @demo.interview_stats[:count] %></p>
-                <p class="text-xs text-muted"><%= @demo.interview_stats[:change] %></p>
-              </div>
-              <% average_rating = @demo.interview_stats[:average_rating] %>
-              <div class="flex flex-col items-end">
-                <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
-                <div class="font-bold flex items-center gap-x-1">
-                  <% 1.upto(5) do |star| %>
-                    <%= icon 'star', class: "size-5 transition-all duration-120 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
-                  <% end %>
-                </div>
+            <% percent = applications_count.to_f / applications_goal.to_f * 100  %>
+            <%= render 'shared/progress_dial', percent: percent %>
+          </div>
+        </div>
+
+        <div class="relative card flex flex-col">
+          <div class="flex items-start justify-between mb-5">
+            <p class="font-semibold">Interviews This Week</p>
+            <%= icon 'interview', class: 'size-5 shrink-0' %>
+          </div>
+          <div class="mt-auto flex items-end justify-between">
+            <div>
+              <p class="font-extrabold text-4xl mb-1"><%= @demo.interview_stats[:count] %></p>
+              <p class="text-xs text-muted"><%= @demo.interview_stats[:change] %></p>
+            </div>
+            <% average_rating = @demo.interview_stats[:average_rating] %>
+            <div class="flex flex-col items-end">
+              <p class="text-muted text-xs flex items-center gap-1">Average Rating</p>
+              <div class="font-bold flex items-center gap-x-1">
+                <% 1.upto(5) do |star| %>
+                  <%= icon 'star', class: "size-5 transition-all duration-120 #{average_rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+                <% end %>
               </div>
             </div>
           </div>

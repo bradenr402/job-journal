@@ -36,7 +36,7 @@
       </div>
 
       <div class="@container">
-        <div class="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-3">
+        <div class="card-grid card-grid-lg">
           <div class="relative card card-hoverable flex flex-col">
             <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
               <span class="sr-only">View All Job Leads</span>
@@ -118,7 +118,7 @@
           <p class="text-sm text-muted mt-1 text-pretty">Interviews scheduled for today and the next 7 days.</p>
         </div>
         <div id="upcoming_interviews" class="@container">
-          <div class="<%= Current.user.get_setting(:interviews_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @upcoming_interviews.size >= 3 && @upcoming_interviews.size != 4}" %> gap-3">
+          <div class="<%= collection_layout_class_names :interviews_display, count: @upcoming_interviews.size, size: :large %>">
             <% @upcoming_interviews.each do |interview| %>
               <%= render interview %>
             <% end %>
@@ -234,7 +234,7 @@
           <p class="text-sm text-muted mt-1 text-pretty">Job leads saved more than <%= pluralize stale_days, 'day' %> ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
         </div>
         <div id="job_leads" class="@container">
-          <div class="<%= Current.user.get_setting(:job_leads_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @stale_leads.size >= 3 && @stale_leads.size != 4}" %> gap-3">
+          <div class="<%= collection_layout_class_names :job_leads_display, count: @stale_leads.size, size: :large %>">
             <% @stale_leads.each do |job_lead| %>
               <%= render job_lead %>
             <% end %>
@@ -250,7 +250,7 @@
           <p class="text-sm text-muted mt-1 text-pretty">Up to 15 recent notes that you created or updated in the last 7 days.</p>
         </div>
         <div id="notes" class="@container">
-          <div class="<%= Current.user.get_setting(:notes_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@3xl:grid-cols-3' if @recent_notes.size >= 3 && @recent_notes.size != 4}" %> gap-3">
+          <div class="<%= collection_layout_class_names :notes_display, count: @recent_notes.size, size: :medium %>">
             <% @recent_notes.each do |note| %>
               <%= render note %>
             <% end %>
@@ -266,7 +266,7 @@
       </div>
 
       <div class="@container space-y-3">
-        <div class="grid grid-cols-1 @xl:grid-cols-2 gap-3">
+        <div class="card-grid">
           <div class="relative card card-hoverable flex flex-col">
             <%= link_to job_leads_path(job_lead_type: 'all'), class: 'absolute inset-0 z-10' do %>
               <span class="sr-only">View All Job Leads</span>

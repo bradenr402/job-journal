@@ -21,10 +21,8 @@
 
   <div id="interviews" class="@container">
     <% if @interviews.any? %>
-      <div class="<%= Current.user.get_setting(:interviews_display) == 'list' ? 'flex flex-col' : "grid grid-cols-1 @xl:grid-cols-2 #{'@4xl:grid-cols-3' if @interviews.size >= 3 && @interviews.size != 4}" %> gap-3">
-        <% @interviews.each do |interview| %>
-          <%= render interview %>
-        <% end %>
+      <div class="<%= collection_layout_class_names :interviews_display, count: @interviews.size, size: :large %>">
+        <%= render @interviews %>
       </div>
     <% else %>
       <div class="empty-state">

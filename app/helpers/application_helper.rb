@@ -1,4 +1,71 @@
 module ApplicationHelper
+  LAYOUT_CLASSES = {
+    "grid" => {
+      collection: "card-grid",
+      item: {
+        default: "card",
+        hoverable: "card-hoverable"
+      }
+    },
+    "list" => {
+      collection: "card-list",
+      item: {
+        default: "card",
+        hoverable: "card-hoverable"
+      }
+    },
+    "minimal" => {
+      collection: "minimal-item-list",
+      item: {
+        default: "minimal-item",
+        hoverable: "minimal-item-hoverable"
+      }
+    }
+  }
+
+  def resolve_layout(layout)
+    unless layout.is_a?(String) || layout.is_a?(Symbol)
+      raise ArgumentError, "Expected layout to be a String or Symbol, got #{layout.class.name}"
+    end
+
+    layout = Current.user.get_setting(layout) if layout.is_a?(Symbol)
+
+    unless LAYOUT_CLASSES.key?(layout)
+      raise ArgumentError, "Unknown layout: #{layout.inspect}. Expected one of: #{LAYOUT_CLASSES.keys.join(", ")}"
+    end
+
+    layout
+  end
+
+  def collection_layout_class_names(layout, count:, size: :large)
+    layout = resolve_layout(layout)
+
+    layout_class = LAYOUT_CLASSES.dig(layout, :collection)
+    return layout_class unless layout == "grid"
+
+    third_col_class = {
+      medium: "card-grid-md",
+      large: "card-grid-lg"
+    }[size.to_sym]
+
+    [
+      layout_class,
+      (third_col_class if count >= 3 && count != 4)
+    ].compact.join(" ")
+  end
+
+  def item_layout_class_names(layout, hoverable: false, extra_hoverable_classes: nil)
+    layout = resolve_layout(layout)
+
+    layout_classes = [
+      LAYOUT_CLASSES.dig(layout, :item, :default),
+      (LAYOUT_CLASSES.dig(layout, :item, :hoverable) if hoverable),
+      (extra_hoverable_classes if hoverable)
+    ]
+
+    layout_classes.compact_blank.join(" ")
+  end
+
   def page_title
     title = content_for(:title).presence || "JobJournal"
     "JobJournal".in?(title) ? title : "#{title} • JobJournal"
