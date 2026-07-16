@@ -2,24 +2,15 @@ module ApplicationHelper
   LAYOUT_CLASSES = {
     "grid" => {
       collection: "card-grid",
-      item: {
-        default: "card",
-        interactive: "card-interactive"
-      }
+      item: "card"
     },
     "list" => {
       collection: "card-list",
-      item: {
-        default: "card",
-        interactive: "card-interactive"
-      }
+      item: "card"
     },
     "minimal" => {
       collection: "minimal-item-list",
-      item: {
-        default: "minimal-item",
-        interactive: "minimal-item-interactive"
-      }
+      item: "minimal-item"
     }
   }
 
@@ -58,8 +49,7 @@ module ApplicationHelper
     layout = resolve_layout(layout)
 
     layout_classes = [
-      LAYOUT_CLASSES.dig(layout, :item, :default),
-      (LAYOUT_CLASSES.dig(layout, :item, :interactive) if interactive),
+      LAYOUT_CLASSES.dig(layout, :item),
       (extra_interactive_classes if interactive)
     ]
 

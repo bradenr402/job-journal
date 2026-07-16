@@ -1,17 +1,5 @@
-@utility card {
-  @apply bg-white dark:bg-neutral-900 p-3.75 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-xs has-[a.absolute.inset-0:focus-visible]:ring-2 has-[a.absolute.inset-0:focus-visible]:ring-primary-600 [&_a]:outline-none will-change-[transform,background-color,box-shadow];
-
-  &.card-interactive {
-    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98;
-  }
-}
-
-@utility card-sm {
-  @apply bg-white dark:bg-neutral-900 p-2.5 border border-neutral-300 dark:border-neutral-800 rounded-2xl not-dark:shadow-2xs has-[a.absolute.inset-0:focus-visible]:ring-2 has-[a.absolute.inset-0:focus-visible]:ring-primary-600 [&_a]:focus:outline-none will-change-[transform,background-color,box-shadow];
-
-  &.card-interactive {
-    @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98;
-  }
+@utility card-list {
+  @apply flex flex-col gap-3;
 }
 
 @utility card-grid {
@@ -26,13 +14,34 @@
   }
 }
 
-@utility card-list {
-  @apply flex flex-col gap-3;
+@utility card {
+  @apply bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 rounded-2xl;
+
+  &:not(.card-sm) {
+    @apply p-3.75 not-dark:shadow-xs;
+  }
+
+  &.card-sm {
+    @apply p-2.5 not-dark:shadow-2xs;
+  }
+
+  &:has(.blanket-link) {
+    @apply card-interactive;
+  }
+
+  &:has(.blanket-link:focus-visible) {
+    @apply ring-2 ring-primary-600;
+  }
+}
+
+@utility card-interactive {
+  @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98 will-change-[transform,background-color,box-shadow];
 }
 
 @utility minimal-item-list {
-  @apply flex flex-col;
-  &:has(.minimal-item):hover .minimal-item:not(:hover) {
+  @apply anchor-highlight flex flex-col;
+
+  &:has(.minimal-item:hover) .minimal-item:not(:hover) {
     @apply opacity-40;
   }
 }
@@ -40,8 +49,49 @@
 @utility minimal-item {
   @apply rounded-md py-4;
 
-  &.minimal-item-interactive {
-    @apply px-4 -mx-4 hover:bg-neutral-100/70 dark:hover:bg-neutral-900/70 transition-[scale] duration-80 active:scale-99;
+  &:has(> .blanket-link) {
+    @apply minimal-item-interactive;
+  }
+
+  &:has(> .blanket-link:focus-visible) {
+    @apply ring-2 ring-primary-600;
+  }
+}
+
+@utility minimal-item-interactive {
+  @apply anchor px-4 -mx-4 transition-[scale] duration-80 active:scale-99 will-change-[background-color];
+}
+
+@utility anchor-highlight-base {
+  --anchor-name: --hovered-item;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    @apply inline-block absolute z-0 pointer-events-none rounded-lg transition-[inset,opacity] duration-80 will-change-[inset,opacity] origin-center;
+
+    inset: anchor(inside);
+    position-anchor: var(--anchor-name);
+  }
+}
+
+@utility anchor-highlight {
+  @apply anchor-highlight-base;
+  &::before {
+    @apply bg-neutral-100/70 dark:bg-neutral-900/70;
+  }
+}
+
+@utility anchor-highlight-alt {
+  @apply anchor-highlight-base;
+  &::before {
+    @apply bg-neutral-200/70 dark:bg-neutral-800/70;
+  }
+}
+
+@utility anchor {
+  @variant hover {
+    anchor-name: var(--anchor-name);
   }
 }
 
@@ -161,8 +211,7 @@
   /* Default (neutral) tag style */
   @apply bg-neutral-50 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800;
 
-  .card &,
-  .card-sm & {
+  .card & {
     @apply text-soft dark:bg-neutral-800/40 dark:border-neutral-700/40;
   }
 
@@ -356,8 +405,7 @@ Option variants:
 @utility dropdown-trigger {
   @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 
-  .card &,
-  .card-sm & {
+  .card & {
     @apply dark:bg-neutral-800 dark:hover:bg-neutral-700 text-normal dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-700 dark:active:bg-neutral-600;
   }
 }
