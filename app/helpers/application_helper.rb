@@ -19,7 +19,9 @@ module ApplicationHelper
       raise ArgumentError, "Expected layout to be a String or Symbol, got #{layout.class.name}"
     end
 
-    layout = Current.user.get_setting(layout) if layout.is_a?(Symbol)
+    if layout.is_a?(Symbol)
+      layout = user_setting(layout) || User::DEFAULT_SETTINGS[layout]
+    end
 
     unless LAYOUT_CLASSES.key?(layout)
       raise ArgumentError, "Unknown layout: #{layout.inspect}. Expected one of: #{LAYOUT_CLASSES.keys.join(", ")}"
