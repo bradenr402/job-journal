@@ -103,8 +103,16 @@
   @apply flex flex-col items-center justify-center gap-5 text-center text-pretty my-12 text-muted;
 }
 
+@utility nav-link-list {
+  @apply anchor-highlight;
+}
+
 @utility nav-link {
   @apply flex items-center whitespace-nowrap text-light;
+
+  a:has(&) {
+    @apply anchor;
+  }
 
   @variant max-md {
     @apply flex-col gap-0.5 py-2.75 font-medium text-2xs rounded-full px-2;
@@ -118,8 +126,8 @@
     @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600 font-semibold;
   }
 
-  a:hover & {
-    @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600;
+  a:hover &:not(.nav-link-active) {
+    @apply text-normal;
   }
 
   a:focus-visible & {
@@ -131,7 +139,7 @@
   }
 
   a:active:has(&) {
-    @apply scale-97;
+    @apply scale-99;
   }
 }
 

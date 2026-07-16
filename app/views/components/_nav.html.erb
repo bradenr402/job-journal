@@ -15,7 +15,7 @@
     ] %>
 
     <div class="md:grow md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80">
-      <ul class="grid max-md:grid-cols-5 md:flex md:flex-col">
+      <ul class="nav-link-list grid max-md:grid-cols-5 md:flex md:flex-col">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
           <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
