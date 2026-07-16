@@ -45,15 +45,10 @@ module ApplicationHelper
     ].compact.join(" ")
   end
 
-  def item_layout_class_names(layout, interactive: false, extra_interactive_classes: nil)
+  def item_layout_class_names(layout)
     layout = resolve_layout(layout)
 
-    layout_classes = [
-      LAYOUT_CLASSES.dig(layout, :item),
-      (extra_interactive_classes if interactive)
-    ]
-
-    layout_classes.compact_blank.join(" ")
+    LAYOUT_CLASSES.dig(layout, :item)
   end
 
   def page_title
