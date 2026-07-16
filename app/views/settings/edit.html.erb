@@ -33,13 +33,7 @@
       <div
         role="tablist"
         aria-label="Settings sections"
-        class="
-          flex md:flex-col
-          max-md:overflow-x-auto max-md:hide-scrollbar max-md:px-4
-          [--fade:4rem] [--left:0rem] [--right:var(--fade)]
-          max-md:mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
-          max-md:animate-[timeline-fade_linear_both] max-md:[animation-timeline:scroll(self_inline)]
-        "
+        class="tab-link-list anchor-highlight-alt md:anchor-highlight"
         data-action="keydown->tabs#navigate"
       >
         <% tabs.each do |tab| %>
@@ -54,7 +48,7 @@
             aria-controls="panel-<%= tab_id %>"
             aria-selected="<%= active %>"
             tabindex="<%= active ? 0 : -1 %>"
-            class="shrink-0 max-md:px-px md:py-px md:w-full md:text-left"
+            class="anchor shrink-0 max-md:px-px md:py-px md:w-full md:text-left"
             data-tabs-target="tab"
             data-tabs-id="<%= tab_id %>"
             data-action="tabs#select"

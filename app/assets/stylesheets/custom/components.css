@@ -143,17 +143,23 @@
   }
 }
 
+@utility tab-link-list {
+  @apply flex md:flex-col
+         max-md:overflow-x-auto max-md:hide-scrollbar max-md:px-4
+         [--fade:4rem] [--left:0rem] [--right:var(--fade)]
+         max-md:mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
+         max-md:animate-[timeline-fade_linear_both] max-md:[animation-timeline:scroll(self_inline)];
+
+  &:has(.tab-link-destructive:hover)::before {
+    /* make the highlight background color match the destructive tab link on hover */
+  }
+}
+
 @utility tab-link {
   @apply flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-light transition-colors duration-80;
 
-  button[aria-selected="false"] & {
-    &:hover {
-      @apply bg-neutral-100 dark:bg-neutral-900;
-    }
-
-    .tab-link-icon-selected {
-      @apply hidden;
-    }
+  button[aria-selected="false"] & .tab-link-icon-selected {
+    @apply hidden;
   }
 
   button[aria-selected="true"] & {
@@ -181,7 +187,7 @@
   }
 
   button:has(&) {
-    @apply transition-all duration-80 outline-none cursor-pointer;
+    @apply transition-all duration-80 outline-none cursor-pointer z-10;
 
     &:active {
       @apply scale-97;
