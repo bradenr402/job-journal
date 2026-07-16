@@ -2,6 +2,8 @@
 <% job_lead = interview.job_lead %>
 
 <div id="<%= dom_id interview %>" class="relative <%= item_layout_class_names :interviews_display, interactive: !(interview_page || @demo) %> flex flex-col" style="view-transition-name: interview-<%= interview.id %>;">
+  <%= link_to "", interview, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View interview" } unless @demo || interview_page %>
+
   <div class="flex items-start gap-x-4 gap-y-2 w-full mb-2">
     <div class="mb-2">
       <div class="<%= interview_page ? 'subheading' : 'text-lg font-semibold leading-snug' %>">
@@ -48,10 +50,6 @@
           <% end %>
         </div>
       </div>
-    <% elsif !@demo %>
-      <%= link_to interview, data: { turbo_frame: '_top' }, class: 'absolute inset-0 z-10' do %>
-        <span class="sr-only">View</span>
-      <% end %>
     <% end %>
   </div>
 

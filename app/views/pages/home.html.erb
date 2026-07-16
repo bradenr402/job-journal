@@ -38,9 +38,7 @@
       <div class="@container">
         <div class="card-grid card-grid-lg">
           <div class="relative card card-interactive flex flex-col">
-            <%= link_to job_leads_path, class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Job Leads</span>
-            <% end %>
+            <%= link_to "", job_leads_path, class: "blanket-link", aria: { label: "View all job leads" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Job Leads This Week</p>
@@ -53,9 +51,7 @@
           </div>
 
           <div class="relative card card-interactive flex flex-col @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
-            <%= link_to job_leads_path(status: 'applied'), class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Applications</span>
-            <% end %>
+            <%= link_to "", job_leads_path(status: "applied"), class: "blanket-link", aria: { label: "View all applications" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Applications This Week</p>
@@ -81,9 +77,7 @@
           </div>
 
           <div class="relative card card-interactive flex flex-col">
-            <%= link_to interviews_path, class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Interviews</span>
-            <% end %>
+            <%= link_to "", interviews_path, class: "blanket-link", aria: { label: "View all interviews" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Interviews This Week</p>
@@ -158,9 +152,7 @@
                   Rate your experience and jot down any reflection notes while it&#8217;s still fresh.
                 </p>
 
-                <%= link_to interview_path(interview), class: 'absolute inset-0 z-10' do %>
-                  <span class="sr-only">View</span>
-                <% end %>
+                <%= link_to "", interview_path(interview), class: "blanket-link", aria: { label: "View interview" } %>
               </div>
             <% end %>
           </div>
@@ -216,9 +208,7 @@
                   Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
                 </p>
 
-                <%= link_to job_lead_path(suggestion), class: 'absolute inset-0 z-10' do %>
-                  <span class="sr-only">View</span>
-                <% end %>
+                <%= link_to "", job_lead_path(suggestion), class: "blanket-link", aria: { label: "View job lead" } %>
               </div>
             <% end %>
           </div>
@@ -268,9 +258,7 @@
       <div class="@container space-y-3">
         <div class="card-grid">
           <div class="relative card card-interactive flex flex-col">
-            <%= link_to job_leads_path(job_lead_type: 'all'), class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Job Leads</span>
-            <% end %>
+            <%= link_to "", job_leads_path(job_lead_type: "all"), class: "blanket-link", aria: { label: "View all job leads" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Job Leads</p>
@@ -286,9 +274,7 @@
           </div>
 
           <div class="relative card card-interactive flex flex-col">
-            <%= link_to job_leads_path(status: 'applied'), class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Applications</span>
-            <% end %>
+            <%= link_to "", job_leads_path(status: "applied"), class: "blanket-link", aria: { label: "View all applications" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Applications</p>
@@ -304,9 +290,7 @@
           </div>
 
           <div class="relative card card-interactive flex flex-col">
-            <%= link_to interviews_path, class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Interviews</span>
-            <% end %>
+            <%= link_to "", interviews_path, class: "blanket-link", aria: { label: "View all interviews" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Interviews</p>
@@ -333,9 +317,7 @@
           </div>
 
           <div class="relative card card-interactive flex flex-col">
-            <%= link_to notes_path, class: 'absolute inset-0 z-10' do %>
-              <span class="sr-only">View All Notes</span>
-            <% end %>
+            <%= link_to "", notes_path, class: "blanket-link", aria: { label: "View all notes" } %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Notes</p>

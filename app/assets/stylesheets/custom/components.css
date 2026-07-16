@@ -45,6 +45,10 @@
   }
 }
 
+@utility blanket-link {
+  @apply absolute inset-0 z-10 outline-none;
+}
+
 @utility empty-state {
   @apply flex flex-col items-center justify-center gap-5 text-center text-pretty my-12 text-muted;
 }
