@@ -3,11 +3,9 @@
   display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path) || @demo
 
   note_title = note.title if display_title
-
-  layout = Current.user.get_setting(:notes_display)
 %>
 
-<div id="<%= dom_id note %>" class="relative <%= item_layout_class_names layout %> flex flex-col" style="view-transition-name: note-<%= note.id %>;">
+<div id="<%= dom_id note %>" class="relative <%= item_layout_class_names :notes_display %> flex flex-col" style="view-transition-name: note-<%= note.id %>;">
   <% unless note_page || @demo %>
     <%= link_to "", note, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View note" } %>
   <% end %>
