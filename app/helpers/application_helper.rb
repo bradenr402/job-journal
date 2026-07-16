@@ -82,8 +82,7 @@ module ApplicationHelper
 
   def job_lead_count_text(count, type: nil, tags: nil, status: nil)
     capture do
-      label = "job lead"
-      label.prepend("#{type} ") if type.present? && type != "all"
+      label = type.present? && type != "all" ? "#{type} job lead" : "job lead"
 
       concat pluralize(count, label)
 
@@ -105,8 +104,7 @@ module ApplicationHelper
   end
 
   def interview_count_text(count, type: nil)
-    label = "interview"
-    label.prepend("#{type} ") if type.present? && type != "all"
+    label = type.present? && type != "all" ? "#{type} interview" : "interview"
     pluralize(count, label)
   end
 
