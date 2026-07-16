@@ -144,7 +144,15 @@
 }
 
 @utility tag {
-  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-neutral-500 dark:text-neutral-400 text-xs whitespace-nowrap cursor-default select-none transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 outline-none;
+  @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-neutral-500 dark:text-neutral-400 text-xs whitespace-nowrap cursor-default select-none transition-all duration-80;
+
+  &, a:has(&) {
+    @apply outline-none;
+  }
+
+  &:focus-visible, a:focus-visible > & {
+    @apply ring-2 ring-primary-600;
+  }
 
   /* Default (neutral) tag style */
   @apply bg-neutral-50 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800;
