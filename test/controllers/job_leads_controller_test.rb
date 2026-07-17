@@ -63,6 +63,8 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should advance and revert status" do
+    freeze_time
+
     lead = @user.job_leads.create(title: "Example", company: "Example co.", application_url: "https://example.com/jobs")
 
     patch advance_status_job_lead_url(lead)
@@ -71,7 +73,6 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     lead.interviews.create(interviewer: "John Doe", scheduled_at: 1.day.from_now)
     assert_equal lead.reload.status, "interview"
 
-    travel_to 1.week.from_now
     lead.update(offer_amount: 100_000, offer_at: Time.current)
     assert_equal lead.reload.status, "offer"
 
