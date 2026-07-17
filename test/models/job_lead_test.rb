@@ -1,8 +1,13 @@
 require "test_helper"
 
 class JobLeadTest < ActiveSupport::TestCase
-  def setup
+  setup do
+    @user = users(:one)
     @lead = job_leads(:one)
+  end
+
+  teardown do
+    JobLead.destroy_all
   end
 
   test "should be valid with valid attributes" do
@@ -43,35 +48,274 @@ class JobLeadTest < ActiveSupport::TestCase
   end
 
   test "should enforce numericality of offer_amount" do
-    lead = JobLead.new(
-      user: @lead.user,
-      title: "Example",
-      company: "Example Co.",
-      application_url: "https://example.com/unique",
-      offer_amount: -100
-    )
+    lead = build_lead(offer_amount: -100)
 
     assert_not lead.valid?
     assert_includes lead.errors[:offer_amount], "must be greater than or equal to 0"
   end
 
-  test "should validate temporal logic on accepted_at" do
-    @lead.accepted_at = 1.day.from_now
-    assert_not @lead.valid?
-    assert @lead.errors[:accepted_at].any? { |msg| msg.include? "must be less than or equal to" }
+  test "should allow zero offer_amount without an offer timestamp" do
+    lead = build_lead(offer_amount: 0)
+
+    assert lead.valid?
   end
 
-  test "time travel sanity check" do
-    now = Time.current.to_i
+  test "should reject zero offer_amount when offer_at is present" do
+    lead = build_lead(offer_amount: 0, offer_at: Time.current)
 
-    travel 1.week
-    assert_in_delta now, 1.week.ago.to_i, 1
+    assert_not lead.valid?
+    assert_includes lead.errors[:base], "cannot advance to Offer without specifying an offer amount"
   end
 
-  test "should infer status correctly and return previous status" do
+  test "should validate temporal logic on status timestamps" do
+    %i[applied_at offer_at rejected_at accepted_at].each do |attribute|
+      lead = build_lead(attribute => 1.day.from_now)
+      lead.offer_amount = 100_000 if attribute == :offer_at # satisfy the offer validation
+
+      assert_not lead.valid?, "#{attribute} should not allow future timestamps"
+      assert lead.errors[attribute].any? { |msg| msg.include? "must be less than or equal to" }
+    end
+  end
+
+  test "should allow current time for status timestamps" do
+    freeze_time
+
+    %i[applied_at offer_at rejected_at accepted_at].each do |attribute|
+      lead = build_lead(attribute => Time.current)
+      lead.offer_amount = 100_000 if attribute == :offer_at
+
+      assert lead.valid?, "#{attribute} should allow Time.current"
+    end
+  end
+
+  test "should normalize squishable text attributes" do
+    lead = create_lead(
+      title: "  Junior   Programmer  ",
+      company: "  Example    Co  ",
+      salary: "  $100K   -   $120K  ",
+      contact: "  Jane   Doe  ",
+      location: "  Remote    US  ",
+      source: "  Company    Site  "
+    )
+
+    assert_equal "Junior Programmer", lead.title
+    assert_equal "Example Co", lead.company
+    assert_equal "$100K - $120K", lead.salary
+    assert_equal "Jane Doe", lead.contact
+    assert_equal "Remote US", lead.location
+    assert_equal "Company Site", lead.source
+  end
+
+  test "status scopes return leads matching their inferred statuses" do
+    freeze_time
+
+    JobLead.destroy_all
+
+    lead = create_lead(created_at: 6.days.ago)
+    applied = create_lead(applied_at: 5.days.ago)
+    interview = create_lead
+    create_interview(interview, scheduled_at: 4.days.ago)
+    create_interview(interview, scheduled_at: 3.days.ago)
+
+    offer = create_lead(offer_amount: 120_000, offer_at: 3.days.ago)
+    rejected = create_lead(rejected_at: 2.days.ago)
+    accepted = create_lead(accepted_at: 1.day.ago)
+
+    assert_includes JobLead.lead, lead
+    assert_includes JobLead.applied, applied
+    assert_includes JobLead.interview, interview
+    assert_includes JobLead.offer, offer
+    assert_includes JobLead.rejected, rejected
+    assert_includes JobLead.accepted, accepted
+  end
+
+  test "with_status returns a matching status scope" do
+    JobLead.destroy_all
+    applied = create_lead(applied_at: Time.current)
+    create_lead
+
+    assert_includes JobLead.with_status(:applied), applied
+  end
+
+  test "with_status rejects unknown statuses" do
+    assert_raises(ArgumentError) { JobLead.with_status(:missing) }
+  end
+
+  test "with_any_status returns leads matching any requested status" do
+    JobLead.destroy_all
+    applied = create_lead(applied_at: Time.current)
+    rejected = create_lead(rejected_at: Time.current)
+    create_lead
+
+    any_status = JobLead.with_any_status(%w[applied rejected])
+
+    assert_includes any_status, applied
+    assert_includes any_status, rejected
+  end
+
+  test "with_any_status raises on unknown statuses" do
+    error = assert_raises(ArgumentError) { JobLead.with_any_status(%i[ lead bogus ]) }
+
+    assert_equal "Invalid status: bogus", error.message
+  end
+
+  test "with_any_status raises when evaluated with no statuses" do
+    assert_raises(ActiveRecord::StatementInvalid) { JobLead.with_any_status([]).load }
+  end
+
+  test "active and archived scopes split by archived_at" do
+    JobLead.destroy_all
+    active = create_lead
+    archived = create_lead(archived_at: Time.current)
+
+    assert_includes JobLead.active, active
+    assert_includes JobLead.archived, archived
+  end
+
+  test "stale_for_user returns active lead-status records at or before the user cutoff" do
+    freeze_time
+
+    @user.set_setting(:job_lead_stale_after_days, 7)
+    JobLead.destroy_all
+
+    old = create_lead(created_at: 8.days.ago)
+    boundary = create_lead(created_at: 7.days.ago)
+    create_lead(created_at: 6.days.ago)
+    create_lead(created_at: 8.days.ago, archived_at: Time.current)
+    create_lead(applied_at: 8.days.ago, created_at: 8.days.ago)
+    interview = create_lead(created_at: 8.days.ago)
+    create_interview(interview, scheduled_at: 1.day.from_now)
+
+    stale = JobLead.stale_for_user(@user)
+
+    assert_includes stale, old
+    assert_includes stale, boundary
+  end
+
+  test "application_follow_up_for_user returns active applications inside the reminder window" do
+    freeze_time
+
+    @user.set_setting(:application_follow_up_days, 7)
+    @user.set_setting(:suggest_follow_up_days, 3)
+    JobLead.destroy_all
+
+    start_boundary = create_lead(applied_at: 10.days.ago)
+    end_boundary = create_lead(applied_at: 7.days.ago)
+    create_lead(applied_at: 11.days.ago)
+    create_lead(applied_at: 6.days.ago)
+    create_lead(applied_at: 8.days.ago, archived_at: Time.current)
+    create_lead(created_at: 8.days.ago)
+
+    follow_ups = JobLead.application_follow_up_for_user(@user)
+
+    assert_includes follow_ups, start_boundary
+    assert_includes follow_ups, end_boundary
+  end
+
+  test "interview_follow_up_for_user returns active interviews inside the reminder window" do
+    freeze_time
+
+    @user.set_setting(:interview_follow_up_days, 2)
+    @user.set_setting(:suggest_follow_up_days, 3)
+    JobLead.destroy_all
+
+    start_boundary = create_lead
+    create_interview(start_boundary, scheduled_at: 5.days.ago)
+    end_boundary = create_lead
+    create_interview(end_boundary, scheduled_at: 2.days.ago)
+
+    too_old = create_lead
+    create_interview(too_old, scheduled_at: 6.days.ago)
+    too_recent = create_lead
+    create_interview(too_recent, scheduled_at: 1.day.ago)
+    archived = create_lead(archived_at: Time.current)
+    create_interview(archived, scheduled_at: 3.days.ago)
+    offer = create_lead(offer_amount: 100_000, offer_at: 1.day.ago)
+    create_interview(offer, scheduled_at: 3.days.ago)
+
+    follow_ups = JobLead.interview_follow_up_for_user(@user)
+
+    assert_includes follow_ups, start_boundary
+    assert_includes follow_ups, end_boundary
+  end
+
+  test "tag scopes filter by one, all, or any tag names" do
+    JobLead.destroy_all
+    ruby = tag_named("ruby")
+    rails = tag_named("rails")
+    remote = tag_named("remote")
+
+    ruby_and_rails = create_lead
+    ruby_and_rails.tags = [ ruby, rails ]
+    ruby_only = create_lead
+    ruby_only.tags = [ ruby ]
+    remote_only = create_lead
+    remote_only.tags = [ remote ]
+
+    with_ruby = JobLead.with_tag("ruby")
+    assert_includes with_ruby, ruby_and_rails
+    assert_includes with_ruby, ruby_only
+
+    assert_includes JobLead.with_tags(%w[ruby rails]), ruby_and_rails
+
+    any_tags = JobLead.with_any_tags(%w[ruby remote])
+    assert_includes any_tags, ruby_and_rails
+    assert_includes any_tags, ruby_only
+    assert_includes any_tags, remote_only
+  end
+
+  test "tag scopes return none for empty tag collections" do
+    create_lead.tags = [ tag_named("empty-check") ]
+
+    assert_empty JobLead.with_tags([])
+    assert_empty JobLead.with_any_tags([])
+  end
+
+  test "order_by_latest_status sorts by each lead latest status timestamp" do
+    freeze_time
+
+    JobLead.destroy_all
+
+    lead = create_lead(created_at: 6.days.ago)
+    applied = create_lead(applied_at: 5.days.ago)
+    interview = create_lead
+    create_interview(interview, scheduled_at: 4.days.ago)
+    offer = create_lead(offer_amount: 120_000, offer_at: 3.days.ago)
+    rejected = create_lead(rejected_at: 2.days.ago)
+    accepted = create_lead(accepted_at: 1.day.ago)
+
+    expected = [ lead, applied, interview, offer, rejected, accepted ].map(&:id)
+
+    assert_equal expected, JobLead.order_by_latest_status(:asc).pluck(:id)
+    assert_equal expected.reverse, JobLead.order_by_latest_status(:desc).pluck(:id)
+  end
+
+  test "should infer status correctly and expose predicate methods" do
+    freeze_time
+
+    lead = create_lead
+    assert_status lead, "lead"
+
+    lead.applied!
+    assert_status lead.reload, "applied"
+
+    create_interview(lead, scheduled_at: 1.day.from_now)
+    assert_status lead.reload, "interview"
+
+    lead.update!(offer_amount: 100_000, offer_at: Time.current)
+    assert_status lead.reload, "offer"
+
+    lead.rejected!
+    assert_status lead.reload, "rejected"
+
+    lead.accepted_at = Time.current
+    assert_status lead, "accepted"
+  end
+
+  test "should return previous status from the chronological status timeline" do
     user = users(:one)
 
-    lead = user.job_leads.create(title: "Example", company: "Example co.", application_url: "https://example.com/careers")
+    lead = user.job_leads.create(title: "Example", company: "Example co.", application_url: unique_application_url)
     assert_equal "lead", lead.status
     assert_nil lead.previous_status
 
@@ -80,7 +324,7 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal "lead", lead.previous_status
 
     # travel 3 days so that `interview.scheduled_at` is in the future
-    travel 3.day
+    travel 3.days
 
     lead.interviews.create!(interviewer: "John Doe", scheduled_at: Time.current)
     assert_equal "interview", lead.status
@@ -103,9 +347,68 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal "offer", lead.previous_status
   end
 
+  test "status bang methods set timestamps and persist changes" do
+    freeze_time
+
+    @user.set_setting(:auto_archive_rejected_leads_enabled, false)
+    lead = create_lead
+
+    assert lead.applied!
+    assert_equal Time.current.to_i, lead.reload.applied_at.to_i
+
+    lead.offer_amount = 100_000
+    assert lead.offer!
+    assert_equal Time.current.to_i, lead.reload.offer_at.to_i
+
+    assert lead.accepted!
+    assert_equal Time.current.to_i, lead.reload.accepted_at.to_i
+
+    rejected_lead = create_lead
+    assert rejected_lead.rejected!
+    assert_equal Time.current.to_i, rejected_lead.reload.rejected_at.to_i
+  end
+
+  test "offer bang requires an offer amount" do
+    error = assert_raises(ActiveRecord::RecordInvalid) { create_lead.offer! }
+
+    assert_includes error.record.errors[:base], "cannot advance to Offer without specifying an offer amount"
+  end
+
+  test "updating offer amount advances lead to offer" do
+    freeze_time
+
+    lead = create_lead
+
+    assert lead.update!(offer_amount: 100_000)
+
+    assert_equal "offer", lead.reload.status
+    assert_equal Time.current.to_i, lead.offer_at.to_i
+  end
+
+  test "rejected! archives when auto_archive_rejected_leads_enabled is enabled" do
+    freeze_time
+
+    @user.set_setting(:auto_archive_rejected_leads_enabled, true)
+    lead = create_lead
+
+    assert lead.rejected!
+
+    assert lead.reload.archived?
+    assert_equal Time.current.to_i, lead.archived_at.to_i
+  end
+
+  test "rejected! leaves lead active when auto_archive_rejected_leads_enabled is disabled" do
+    @user.set_setting(:auto_archive_rejected_leads_enabled, false)
+    lead = create_lead
+
+    assert lead.rejected!
+    assert lead.reload.active?
+  end
+
   test "should enforce single terminal status" do
     @lead.accepted_at = Time.current
     @lead.rejected_at = Time.current
+
     assert_not @lead.valid?
     assert_includes @lead.errors[:base], "cannot be both rejected and accepted"
   end
@@ -113,16 +416,128 @@ class JobLeadTest < ActiveSupport::TestCase
   test "should require offer amount if offer_at is present" do
     @lead.offer_at = Time.current
     @lead.offer_amount = nil
+
     assert_not @lead.valid?
     assert_includes @lead.errors[:base], "cannot advance to Offer without specifying an offer amount"
   end
 
-  test "should assign tags after save" do
-    @lead.tag_list = "Fake, Tags, Right, Here"
-    assert_difference -> { @lead.user.tags.count }, 4 do
-      @lead.save!
+  test "last_interview_at and next_interview_at return nearest past and future interviews" do
+    freeze_time
+
+    lead = create_lead
+    assert_nil lead.last_interview_at
+    assert_nil lead.next_interview_at
+
+    oldest_past = create_interview(lead, scheduled_at: 3.days.ago)
+    newest_past = create_interview(lead, scheduled_at: 1.day.ago)
+    nearest_future = create_interview(lead, scheduled_at: 1.day.from_now)
+    create_interview(lead, scheduled_at: 3.days.from_now)
+
+    assert_equal newest_past.scheduled_at, lead.last_interview_at
+    assert_equal nearest_future.scheduled_at, lead.next_interview_at
+    assert_not_equal oldest_past.scheduled_at, lead.last_interview_at
+  end
+
+  test "latest_status_at returns the timestamp for the inferred status" do
+    freeze_time
+
+    lead = create_lead(created_at: 6.days.ago)
+    applied = create_lead(applied_at: 5.days.ago)
+    interview = create_lead
+    future_interview = create_interview(interview, scheduled_at: 1.day.from_now)
+    create_interview(interview, scheduled_at: 1.day.ago)
+    offer = create_lead(offer_amount: 120_000, offer_at: 3.days.ago)
+    rejected = create_lead(rejected_at: 2.days.ago)
+    accepted = create_lead(accepted_at: 1.day.ago)
+
+    {
+      lead =>      lead.created_at,
+      applied =>   applied.applied_at,
+      interview => future_interview.scheduled_at,
+      offer =>     offer.offer_at,
+      rejected =>  rejected.rejected_at,
+      accepted =>  accepted.accepted_at
+    }.each do |record, expected_status_at|
+      assert_equal expected_status_at, record.latest_status_at
     end
-    assert_equal %w[fake here right tags], @lead.tags.pluck(:name).sort
+  end
+
+  test "latest_status_at uses the last past interview when no future interview exists" do
+    freeze_time
+
+    lead = create_lead
+    create_interview(lead, scheduled_at: 3.days.ago)
+    latest_past = create_interview(lead, scheduled_at: 1.day.ago)
+
+    assert_equal latest_past.scheduled_at, lead.latest_status_at
+  end
+
+  test "source_quality returns the quality for the inferred status" do
+    assert_equal JobLead.status_quality(:accepted), build_lead(accepted_at: Time.current).source_quality
+  end
+
+  test "status_quality accepts strings and symbols and returns nil for unknown statuses" do
+    assert_equal 50, JobLead.status_quality(:interview)
+    assert_equal 50, JobLead.status_quality("interview")
+    assert_nil JobLead.status_quality("missing")
+  end
+
+  test "archive and unarchive update archived state and type" do
+    freeze_time
+
+    lead = create_lead
+
+    assert lead.active?
+    assert_not lead.archived?
+    assert_equal "active", lead.type
+
+    assert lead.archive!
+    assert lead.reload.archived?
+    assert_equal "archived", lead.type
+    assert_equal Time.current.to_i, lead.archived_at.to_i
+
+    assert lead.unarchive!
+    assert lead.reload.active?
+    assert_equal "active", lead.type
+    assert_nil lead.archived_at
+  end
+
+  test "stale? uses a strict user stale cutoff" do
+    freeze_time
+
+    @user.set_setting(:job_lead_stale_after_days, 7)
+    old = create_lead(created_at: 8.days.ago)
+    boundary = create_lead(created_at: 7.days.ago)
+    recent = create_lead(created_at: 6.days.ago)
+
+    assert old.stale?
+    assert_not boundary.stale?
+    assert_not recent.stale?
+  end
+
+  test "tag_list returns comma separated tag names" do
+    lead = create_lead
+    lead.tags = [ tag_named("alpha"), tag_named("beta") ]
+
+    assert_equal %w[alpha beta], lead.tag_list.split(", ").sort
+    assert_equal "", create_lead.tag_list
+  end
+
+  test "tag_list setter stores normalized pending tag names" do
+    lead = create_lead
+    lead.tag_list = " Fake, Tags, fake, , Right  Here "
+
+    assert_equal [ "fake", "tags", "right  here" ], lead.pending_tag_names
+  end
+
+  test "should assign tags after save" do
+    lead = create_lead
+    lead.tag_list = "Fake, Tags, Right, Here"
+
+    assert_difference -> { lead.user.tags.count }, 4 do
+      lead.save!
+    end
+    assert_equal %w[fake here right tags], lead.tags.pluck(:name).sort
   end
 
   test "status_history returns ordered timeline with interviews and excludes nil timestamps" do
@@ -131,7 +546,7 @@ class JobLeadTest < ActiveSupport::TestCase
     lead = user.job_leads.create!(
       title: "Example",
       company: "Example Co.",
-      application_url: "https://example.com/apply",
+      application_url: unique_application_url,
       created_at: 1.day.ago,
       applied_at: 23.hours.ago,
       offer_at: nil,
@@ -159,35 +574,34 @@ class JobLeadTest < ActiveSupport::TestCase
     user = users(:one)
     JobLead.destroy_all
 
-    # Create leads with varying statuses and sources
     user.job_leads.create!(
-      title: "Lead 1", company: "Co", application_url: "https://example.com/1", source: "LinkedIn",
+      title: "Lead 1", company: "Co", application_url: unique_application_url, source: "LinkedIn",
       applied_at: Time.current
     )
 
     user.job_leads.create!(
-      title: "Lead 2", company: "Co", application_url: "https://example.com/2", source: "LinkedIn",
+      title: "Lead 2", company: "Co", application_url: unique_application_url, source: "LinkedIn",
       applied_at: Time.current, offer_amount: 100_000, offer_at: Time.current
     )
 
     user.job_leads.create!(
-      title: "Lead 3", company: "Co", application_url: "https://example.com/3", source: "Indeed",
+      title: "Lead 3", company: "Co", application_url: unique_application_url, source: "Indeed",
       applied_at: Time.current
     )
 
     lead_with_interview = user.job_leads.create!(
-      title: "Lead 4", company: "Co", application_url: "https://example.com/4", source: "Indeed",
+      title: "Lead 4", company: "Co", application_url: unique_application_url, source: "Indeed",
       applied_at: Time.current
     )
     lead_with_interview.interviews.create!(interviewer: "John Doe", scheduled_at: 1.day.from_now)
 
     user.job_leads.create!(
-      title: "Lead 5", company: "Co", application_url: "https://example.com/5", source: "Indeed",
+      title: "Lead 5", company: "Co", application_url: unique_application_url, source: "Indeed",
       applied_at: Time.current, rejected_at: Time.current
     )
 
     user.job_leads.create!(
-      title: "Lead 6", company: "Co", application_url: "https://example.com/6", source: "Glassdoor",
+      title: "Lead 6", company: "Co", application_url: unique_application_url, source: "Glassdoor",
       applied_at: Time.current
     )
 
@@ -204,5 +618,139 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal 1, top_sources["Indeed"][:interview_count]
 
     assert_nil top_sources["Glassdoor"]
+  end
+
+  test "top_sources_by_quality ignores blank sources, normalizes casing, and respects limit" do
+    JobLead.destroy_all
+
+    create_lead(source: nil, applied_at: Time.current)
+    create_lead(source: "", applied_at: Time.current)
+    create_lead(source: "LinkedIn", accepted_at: Time.current)
+    create_lead(source: "LinkedIn", accepted_at: Time.current)
+    linked_in_offer = create_lead(source: "linkedin", applied_at: Time.current, offer_amount: 100_000, offer_at: Time.current)
+    create_lead(source: "Indeed", accepted_at: Time.current)
+    create_lead(source: "Referral", accepted_at: Time.current)
+
+    top_sources = JobLead.top_sources_by_quality(2)
+
+    assert_equal 2, top_sources.size
+    assert_includes top_sources.keys, "LinkedIn"
+    assert_not_includes top_sources.keys, nil
+    assert_not_includes top_sources.keys, ""
+    assert_equal 3, top_sources["LinkedIn"][:lead_count]
+    assert_equal 1, top_sources["LinkedIn"][:offer_count]
+    assert_equal 2, top_sources["LinkedIn"][:accepted_count]
+    assert linked_in_offer.offer?
+  end
+
+  test "cleanup_stale archives stale lead-status records at the cleanup cutoff" do
+    freeze_time
+
+    @user.set_setting(:job_lead_stale_after_days, 7)
+    JobLead.destroy_all
+    cutoff = 28.days.ago
+
+    stale = create_lead(created_at: 29.days.ago)
+    boundary = create_lead(created_at: cutoff)
+    active_recent = create_lead(created_at: 27.days.ago)
+    applied = create_lead(created_at: 29.days.ago, applied_at: 29.days.ago)
+
+    JobLead.cleanup_stale(@user, cutoff)
+
+    assert stale.reload.archived?
+    assert boundary.reload.archived?
+    assert active_recent.reload.active?
+    assert applied.reload.active?
+  end
+
+  test "cleanup_inactive archives user leads updated at or before the cleanup cutoff" do
+    freeze_time
+
+    JobLead.destroy_all
+    cutoff = 28.days.ago
+
+    inactive = create_lead(updated_at: 29.days.ago)
+    boundary = create_lead(updated_at: cutoff)
+    active_recent = create_lead(updated_at: 27.days.ago)
+    other_user_lead = create_lead(user: users(:two), updated_at: 29.days.ago)
+
+    JobLead.cleanup_inactive(@user, cutoff)
+
+    assert inactive.reload.archived?
+    assert boundary.reload.archived?
+    assert active_recent.reload.active?
+    assert other_user_lead.reload.active?
+  end
+
+  test "cleanup_for_user respects disabled auto archive settings" do
+    freeze_time
+
+    @user.set_setting(:auto_archive_stale_leads_enabled, false)
+    @user.set_setting(:auto_archive_inactive_leads_enabled, false)
+    JobLead.destroy_all
+    old = create_lead(created_at: 40.days.ago, updated_at: 40.days.ago)
+
+    JobLead.cleanup_for_user(@user)
+
+    assert old.reload.active?
+  end
+
+  test "cleanup_for_user archives enabled stale and inactive leads" do
+    freeze_time
+
+    @user.set_setting(:auto_archive_stale_leads_enabled, true)
+    @user.set_setting(:job_lead_stale_after_days, 7)
+    @user.set_setting(:auto_archive_stale_lead_days, 21)
+    @user.set_setting(:auto_archive_inactive_leads_enabled, true)
+    @user.set_setting(:auto_archive_inactive_lead_days, 28)
+    JobLead.destroy_all
+
+    stale = create_lead(created_at: 29.days.ago, updated_at: 1.day.ago)
+    inactive = create_lead(applied_at: 1.day.ago, created_at: 1.day.ago, updated_at: 29.days.ago)
+    recent = create_lead(created_at: 27.days.ago, updated_at: 27.days.ago)
+
+    JobLead.cleanup_for_user(@user)
+
+    assert stale.reload.archived?
+    assert inactive.reload.archived?
+    assert recent.reload.active?
+  end
+
+  private
+
+  def assert_status(lead, expected_status)
+    assert_equal expected_status, lead.inferred_status
+    assert_equal expected_status, lead.status
+
+    JobLead::STATUSES.each do |status|
+      assert_equal expected_status == status, lead.public_send("#{status}?"), "#{status}? predicate mismatch"
+    end
+  end
+
+  def build_lead(attributes = {})
+    defaults = {
+      user: @user,
+      title: "Example",
+      company: "Example Co.",
+      application_url: unique_application_url
+    }
+
+    JobLead.new(defaults.merge(attributes))
+  end
+
+  def create_lead(attributes = {})
+    build_lead(attributes).tap(&:save!)
+  end
+
+  def create_interview(lead, scheduled_at:)
+    lead.interviews.create!(interviewer: "Jane Doe", scheduled_at:)
+  end
+
+  def tag_named(name)
+    @user.tags.find_or_create_by!(name:)
+  end
+
+  def unique_application_url
+    "https://example.com/jobs/#{SecureRandom.hex(12)}"
   end
 end
