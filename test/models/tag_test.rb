@@ -81,14 +81,4 @@ class TagTest < ActiveSupport::TestCase
     assert Tag.exists?(user_used_tag.id)
     assert Tag.exists?(other_user_unused_tag.id)
   end
-
-  private
-
-  def create_job_lead(attributes = {})
-    users(:one).job_leads.create!({
-      title: "Example",
-      company: "Example Co.",
-      application_url: "https://example.com/jobs/tag-test-#{SecureRandom.hex(8)}"
-    }.merge(attributes))
-  end
 end

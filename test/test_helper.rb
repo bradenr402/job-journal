@@ -18,6 +18,35 @@ module ActiveSupport
       cookies.signed[Authentication::SESSION_COOKIE_NAME] = { value: session.id, httponly: true, same_site: :lax }
     end
 
+    def build_job_lead(attributes = {})
+      JobLead.new({
+        user: users(:one),
+        title: "Example",
+        company: "Example Co.",
+        application_url: unique_application_url
+      }.merge(attributes))
+    end
+
+    def create_job_lead(attributes = {})
+      build_job_lead(attributes).tap(&:save!)
+    end
+
+    def build_interview(attributes = {})
+      Interview.new({
+        job_lead: job_leads(:one),
+        interviewer: "Taylor Smith",
+        scheduled_at: Time.current
+      }.merge(attributes))
+    end
+
+    def create_interview(attributes = {})
+      build_interview(attributes).tap(&:save!)
+    end
+
+    def unique_application_url
+      "https://example.com/jobs/#{SecureRandom.hex(12)}"
+    end
+
     # Parses an HTML fixture, serving any secondary pages the parser fetches
     # via fetch_document from a sibling fixture instead of hitting the network.
     def parse_page_fixture(parser_class, dir, name)

@@ -279,18 +279,6 @@ class InterviewTest < ActiveSupport::TestCase
 
   private
 
-  def build_interview(attributes = {})
-    Interview.new({
-      job_lead: job_leads(:one),
-      interviewer: "Taylor Smith",
-      scheduled_at: Time.current
-    }.merge(attributes))
-  end
-
-  def create_interview(attributes = {})
-    build_interview(attributes).tap(&:save!)
-  end
-
   def calendar_request
     ActionDispatch::Request.new(Rack::MockRequest.env_for("http://www.example.com/interviews/#{@interview.id}/add_to_calendar"))
   end

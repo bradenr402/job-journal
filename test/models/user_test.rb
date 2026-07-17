@@ -176,12 +176,4 @@ class UserTest < ActiveSupport::TestCase
       password_confirmation: PASSWORD
     }.merge(attributes))
   end
-
-  def create_job_lead(attributes = {})
-    @user.job_leads.create!({
-      title: "Example",
-      company: "Example Co.",
-      application_url: "https://example.com/jobs/#{SecureRandom.hex(8)}"
-    }.merge(attributes))
-  end
 end

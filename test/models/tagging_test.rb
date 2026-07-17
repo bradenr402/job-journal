@@ -58,14 +58,4 @@ class TaggingTest < ActiveSupport::TestCase
       first_tagging.destroy
     end
   end
-
-  private
-
-  def create_job_lead(attributes = {})
-    users(:one).job_leads.create!({
-      title: "Example",
-      company: "Example Co.",
-      application_url: "https://example.com/jobs/tagging-test-#{SecureRandom.hex(8)}"
-    }.merge(attributes))
-  end
 end
