@@ -24,8 +24,8 @@ class Interview < ApplicationRecord
   delegate :user, to: :job_lead
 
   # Scopes
-  scope :upcoming, -> { where(scheduled_at: Time.current.beginning_of_day..7.days.from_now) }
-  scope :recent, -> { where(scheduled_at: 3.days.ago.beginning_of_day..Time.current) }
+  scope :upcoming, ->(timeframe = 7.days) { where(scheduled_at: Time.current.beginning_of_day..timeframe.from_now) }
+  scope :recent, ->(timeframe = 3.days) { where(scheduled_at: timeframe.ago.beginning_of_day..Time.current) }
   scope :future, -> { where(scheduled_at: Time.current..) }
   scope :past, -> { where(scheduled_at: ..Time.current) }
 
