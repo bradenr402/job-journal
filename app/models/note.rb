@@ -11,8 +11,9 @@ class Note < ApplicationRecord
 
   # Instance Methods
   def job_lead
-    notable if notable.is_a? JobLead
-    notable.job_lead if notable&.job_lead
+    return notable if notable.is_a? JobLead
+
+    notable&.job_lead
   end
 
   def title
