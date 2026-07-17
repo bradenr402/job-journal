@@ -151,14 +151,17 @@ module ApplicationHelper
   end
 
   def icon_name_for_status(status)
-    case status.to_s
-    when "lead" then "briefcase"
-    when "applied" then "application"
-    when "interview" then "interview"
-    when "offer" then "offer"
-    when "accepted" then "check-circle"
-    when "rejected" then "x-circle"
-    else "circle"
+    status_icon_map = {
+      lead: "briefcase",
+      applied: "application",
+      interview: "interview",
+      offer: "offer",
+      accepted: "check-circle",
+      rejected: "x-circle"
+    }
+
+    status_icon_map.fetch(status.to_sym) do
+      raise ArgumentError, "Unknown status: #{status.inspect}. Expected one of: #{status_icon_map.keys.join(", ")}"
     end
   end
 
