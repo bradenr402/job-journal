@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_231710) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_16_205000) do
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer", null: false

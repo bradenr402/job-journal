@@ -10,11 +10,11 @@ user = User.find_or_create_by!(email_address: "demo@jobjournal.app") do |u|
   u.name = "Demo User"
   u.password = "password"
   u.password_confirmation = "password"
-  u.settings = User::DEFAULT_SETTINGS.merge("weekly_application_goal" => 10)
+  u.settings = User::DEFAULT_SETTINGS.deep_merge(goals: { weekly_applications: 10 })
 end
 user.update!(
   name: "Demo User",
-  settings: User::DEFAULT_SETTINGS.merge("weekly_application_goal" => 10)
+  settings: User::DEFAULT_SETTINGS.deep_merge(goals: { weekly_applications: 10 })
 )
 
 puts "  Created user: #{user.email_address}"
