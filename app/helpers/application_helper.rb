@@ -123,10 +123,20 @@ module ApplicationHelper
   # while preventing overflow in containers. Use in views like:
   # <%= link_to line_wrap_url(url), url %>
   def line_wrap_url(text)
-    safe_join(
-      text.to_s.split(/([\/-])/).map { |part| part.match?(/[\/-]/) ? part + "\u200B" : part }
-    )
+    return unless text.present?
+
+    parts =
+      text.to_s
+        .split(/([\/-])/)
+        .map { |part| part.match?(%r{[/-]}) ? "#{part}\u200B" : part }
+
+    safe_join parts
   end
+
+  def url_without_scheme(url) = url&.sub(%r{\Ahttps?://}, "")
+  def url_without_query(url) = url&.sub(/\?.*\z/, "")
+  def url_without_scheme_or_query(url) = url_without_scheme(url_without_query(url))
+  def display_url(url) = line_wrap_url(url_without_scheme_or_query(url))
 
   def icon(icon, **kwargs)
     return unless icon.present?
