@@ -20,7 +20,7 @@ module ApplicationHelper
     end
 
     if layout.is_a?(Symbol)
-      layout = user_setting(layout) || User::DEFAULT_SETTINGS[layout]
+      layout = user_setting(:layouts, layout) || User::DEFAULT_SETTINGS.dig(:layouts, layout)
     end
 
     unless LAYOUT_CLASSES.key?(layout)
@@ -58,7 +58,7 @@ module ApplicationHelper
     "JobJournal".in?(title) ? title : "#{title} • JobJournal"
   end
 
-  def user_setting(key) = Current.user&.get_setting(key)
+  def user_setting(*path) = Current.user&.get_setting(*path)
 
   def number_with_sign(number, **options)
     zero_sign = options.delete :zero_sign

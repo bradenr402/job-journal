@@ -61,7 +61,7 @@
               <div>
                 <p class="font-extrabold text-4xl mb-1">
                   <%= @applications_this_week_count %>
-                  <% goal = user_setting(:weekly_application_goal) %>
+                  <% goal = user_setting(:goals, :weekly_applications) %>
                   <% display_goal = goal.present? && goal.to_i.positive? %>
                   <% if display_goal %>
                     <span class="text-sm font-normal text-muted">/ <%= goal %></span>
@@ -112,7 +112,7 @@
           <p class="text-sm text-muted mt-1 text-pretty">Interviews scheduled for today and the next 7 days.</p>
         </div>
         <div id="upcoming_interviews" class="@container">
-          <div class="<%= collection_layout_class_names :interviews_display, count: @upcoming_interviews.size, size: :large %>">
+          <div class="<%= collection_layout_class_names :interviews, count: @upcoming_interviews.size, size: :large %>">
             <% @upcoming_interviews.each do |interview| %>
               <%= render interview %>
             <% end %>
@@ -166,14 +166,14 @@
           <h2 class="subheading">Follow-Up Suggestions</h2>
           <p class="text-sm text-muted mt-1 text-pretty">
             <%
-              suggest_follow_up_days = user_setting(:suggest_follow_up_days)
+              suggestion_days = user_setting(:follow_ups, :suggestion_days)
 
               follow_up_days = {
-                application: user_setting(:application_follow_up_days),
-                interview:   user_setting(:interview_follow_up_days)
+                application: user_setting(:follow_ups, :application_days),
+                interview:   user_setting(:follow_ups, :interview_days)
               }
 
-              stop_follow_up = follow_up_days.transform_values { |days| days + suggest_follow_up_days }
+              stop_follow_up = follow_up_days.transform_values { |days| days + suggestion_days }
             %>
             Active job leads not updated in <%= follow_up_days[:application] %>&ndash;<%= stop_follow_up[:application] %> days since applying or <%= follow_up_days[:interview] %>&ndash;<%= stop_follow_up[:interview] %> days since interviewing.
           </p>
@@ -220,11 +220,11 @@
       <div>
         <div class="mb-4">
           <h2 class="subheading">Stale Job Leads</h2>
-          <% stale_days = user_setting(:job_lead_stale_after_days) %>
+          <% stale_days = user_setting(:archiving, :stale, :mark_after_days) %>
           <p class="text-sm text-muted mt-1 text-pretty">Job leads saved more than <%= pluralize stale_days, 'day' %> ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
         </div>
         <div id="job_leads" class="@container">
-          <div class="<%= collection_layout_class_names :job_leads_display, count: @stale_leads.size, size: :large %>">
+          <div class="<%= collection_layout_class_names :job_leads, count: @stale_leads.size, size: :large %>">
             <% @stale_leads.each do |job_lead| %>
               <%= render job_lead %>
             <% end %>
@@ -240,7 +240,7 @@
           <p class="text-sm text-muted mt-1 text-pretty">Up to 15 recent notes that you created or updated in the last 7 days.</p>
         </div>
         <div id="notes" class="@container">
-          <div class="<%= collection_layout_class_names :notes_display, count: @recent_notes.size, size: :medium %>">
+          <div class="<%= collection_layout_class_names :notes, count: @recent_notes.size, size: :medium %>">
             <% @recent_notes.each do |note| %>
               <%= render note %>
             <% end %>

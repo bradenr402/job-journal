@@ -36,7 +36,7 @@
 
   <div id="job_leads" class="@container">
     <% if @job_leads.any? %>
-      <div class="<%= collection_layout_class_names :job_leads_display, count: @job_leads.size, size: :large %>">
+      <div class="<%= collection_layout_class_names :job_leads, count: @job_leads.size, size: :large %>">
         <%= render @job_leads %>
       </div>
     <% else %>

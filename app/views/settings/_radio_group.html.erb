@@ -1,20 +1,23 @@
 <%
   raise ArgumentError, "Missing required local `form`." unless defined?(form)
-  raise ArgumentError, "Missing required local `field`." unless defined?(field)
+  raise ArgumentError, "Missing required local `setting_path`." unless defined?(setting_path)
   raise ArgumentError, "Missing required local `options`." unless defined?(options)
 
+  field = setting_path.last
+  field_id = setting_path.join("_")
+  field_name = "settings#{setting_path.map { |part| "[#{part}]" }.join}"
   label ||= field.to_s.titleize
-  current_value ||= @settings[field]
+  current_value ||= @settings.dig(*setting_path)
 %>
 
 <div>
-  <%= form.label field, label, class: "form-label" %>
+  <%= form.label field_id, label, class: "form-label" %>
   <div class="mt-2 flex gap-2">
     <% options.each do |option| %>
       <% text, value, icon_name = option.values_at :text, :value, :icon %>
 
       <label class="group relative cursor-pointer select-none">
-        <%= form.radio_button field, value, checked: current_value == value, class: "sr-only peer" %>
+        <%= form.radio_button field_id, value, name: field_name, checked: current_value == value, class: "sr-only peer" %>
         <div class="flex items-center justify-center gap-1 pl-2 pr-2.5 py-1.5 rounded-lg text-sm text-light border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 peer-checked:border-primary-200 peer-checked:dark:border-primary-900 peer-checked:bg-primary-100/80 peer-checked:dark:bg-primary-950/80 peer-checked:text-primary-600 transition-all duration-80 active:scale-97">
           <%= icon icon_name, class: "size-5 shrink-0 in-peer-checked:hidden" %>
           <%= icon "#{icon_name}-filled", class: "size-5 shrink-0 not-in-peer-checked:hidden" %>

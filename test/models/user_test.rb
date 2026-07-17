@@ -83,51 +83,158 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "settings should support indifferent access" do
-    @user.settings = { "notes_filter" => "archived" }
+    @user.settings = { "filters" => { "notes" => "archived" } }
 
-    assert_equal "archived", @user.settings[:notes_filter]
-    assert_equal "archived", @user.settings["notes_filter"]
+    assert_equal "archived", @user.settings[:filters][:notes]
+    assert_equal "archived", @user.settings["filters"]["notes"]
   end
 
-  test "get_setting should return custom value or default" do
-    @user.settings = { "notes_filter" => "archived" }
+  test "default settings should be derived from settings schema" do
+    assert_equal User::Settings.defaults(User::Settings::SCHEMA), User::DEFAULT_SETTINGS
+  end
 
-    assert_equal "archived", @user.get_setting(:notes_filter)
-    assert_equal User::DEFAULT_SETTINGS[:weekly_application_goal], @user.get_setting(:weekly_application_goal)
+  test "get_setting should return nested custom value or default" do
+    @user.settings = { "filters" => { "notes" => "archived" } }
+
+    assert_equal "archived", @user.get_setting(:filters, :notes)
+    assert_equal User::DEFAULT_SETTINGS[:goals][:weekly_applications], @user.get_setting(:goals, :weekly_applications)
   end
 
   test "get_setting should return nil for unknown settings" do
     assert_nil @user.get_setting(:unknown_setting)
+    assert_nil @user.get_setting(:job_leads_filter)
+    assert_nil @user.get_setting(:filters, :bogus)
   end
 
-  test "all_settings should merge custom settings over defaults" do
-    @user.settings = { weekly_application_goal: 3 }
+  test "all_settings should deep merge custom settings over defaults" do
+    @user.settings = { goals: { weekly_applications: 3 } }
 
     settings = @user.all_settings
 
-    assert_equal 3, settings[:weekly_application_goal]
-    assert_equal User::DEFAULT_SETTINGS[:job_leads_filter], settings[:job_leads_filter]
+    assert_equal 3, settings[:goals][:weekly_applications]
+    assert_equal User::DEFAULT_SETTINGS[:filters][:job_leads], settings[:filters][:job_leads]
+    assert_equal User::DEFAULT_SETTINGS[:archiving][:inactive][:after_days], settings[:archiving][:inactive][:after_days]
   end
 
-  test "set_setting should persist a single setting without removing others" do
-    @user.set_setting(:notes_filter, "archived")
-    @user.set_setting("notes_display", "list")
+  test "update_settings should persist valid nested values and preserve untouched siblings" do
+    assert @user.update_settings(
+      filters: { job_leads: "active", notes: "archived" },
+      layouts: { interviews: "minimal", notes: "list" },
+      goals: { weekly_applications: 1001 },
+      archiving: { rejected: { enabled: false }, stale: { archive_after_days: 366 } }
+    )
 
     @user.reload
-    assert_equal "archived", @user.get_setting(:notes_filter)
-    assert_equal "list", @user.get_setting(:notes_display)
+    assert_equal "active", @user.get_setting(:filters, :job_leads)
+    assert_equal "archived", @user.get_setting(:filters, :notes)
+    assert_equal "minimal", @user.get_setting(:layouts, :interviews)
+    assert_equal "list", @user.get_setting(:layouts, :notes)
+    assert_equal 1001, @user.get_setting(:goals, :weekly_applications)
+    assert_equal false, @user.get_setting(:archiving, :rejected, :enabled)
+    assert_equal 366, @user.get_setting(:archiving, :stale, :archive_after_days)
+    assert_equal "all", @user.get_setting(:filters, :interviews)
+  end
+
+  test "update_settings should ignore invalid payload values while persisting valid siblings" do
+    @user.update_settings(
+      filters: { job_leads: "active" },
+      layouts: { notes: "list" },
+      goals: { weekly_applications: 12 },
+      archiving: { rejected: { enabled: false } },
+      follow_ups: { application_days: 9 }
+    )
+
+    @user.update_settings(
+      filters: { job_leads: "missing", notes: "archived" },
+      layouts: { notes: "masonry" },
+      goals: { weekly_applications: "10" },
+      archiving: { rejected: { enabled: "false" } },
+      follow_ups: { application_days: 9.5 }
+    )
+
+    @user.reload
+    assert_equal "active", @user.get_setting(:filters, :job_leads)
+    assert_equal "archived", @user.get_setting(:filters, :notes)
+    assert_equal "list", @user.get_setting(:layouts, :notes)
+    assert_equal 12, @user.get_setting(:goals, :weekly_applications)
+    assert_equal false, @user.get_setting(:archiving, :rejected, :enabled)
+    assert_equal 9, @user.get_setting(:follow_ups, :application_days)
+  end
+
+  test "update_settings should drop flat legacy keys unknown keys and unknown nested paths" do
+    @user.update_settings(job_leads_filter: "archived", filters: { bogus: "x" }, unknown: { value: "x" })
+
+    @user.reload
+    assert_equal({}, @user.settings)
+    assert_equal "all", @user.get_setting(:filters, :job_leads)
+    assert_nil @user.get_setting(:filters, :bogus)
+  end
+
+  test "update_settings should ignore scalar garbage at branch positions without clobbering existing values" do
+    @user.update_settings(goals: { weekly_applications: 15 })
+
+    @user.update_settings(goals: "foo")
+
+    assert_equal 15, @user.reload.get_setting(:goals, :weekly_applications)
+  end
+
+  test "update_settings should ignore nil leaves" do
+    @user.update_settings(goals: { weekly_applications: 15 })
+
+    @user.update_settings(goals: { weekly_applications: nil })
+
+    assert_equal 15, @user.reload.get_setting(:goals, :weekly_applications)
+  end
+
+  test "invalid assigned settings should fall back to defaults and not persist" do
+    @user.settings = {
+      filters: { job_leads: "bogus" },
+      layouts: { notes: "masonry" },
+      goals: { weekly_applications: "1001" },
+      archiving: { stale: { enabled: "true", mark_after_days: 1.5 } }
+    }
+
+    @user.save!
+    @user.reload
+
+    assert_equal "all", @user.get_setting(:filters, :job_leads)
+    assert_equal "grid", @user.get_setting(:layouts, :notes)
+    assert_equal 10, @user.get_setting(:goals, :weekly_applications)
+    assert_equal true, @user.get_setting(:archiving, :stale, :enabled)
+    assert_equal 7, @user.get_setting(:archiving, :stale, :mark_after_days)
+    assert_equal({}, @user.settings)
+  end
+
+  test "assigned unknown nested settings should be stripped on save" do
+    @user.settings = { filters: { bogus: "x", notes: "archived" } }
+
+    @user.save!
+    @user.reload
+
+    assert_equal({ "filters" => { "notes" => "archived" } }, @user.settings)
+    assert_nil @user.get_setting(:filters, :bogus)
+  end
+
+  test "assigned scalar branches should be stripped on save" do
+    @user.settings = { goals: 5 }
+
+    @user.save!
+    @user.reload
+
+    assert_equal({}, @user.settings)
+    assert_equal 10, @user.get_setting(:goals, :weekly_applications)
   end
 
   test "reset_all_settings should clear custom settings" do
-    @user.set_setting(:weekly_application_goal, 42)
+    @user.update_settings(goals: { weekly_applications: 42 })
     @user.reset_all_settings
 
     assert_equal({}, @user.reload.settings)
-    assert_equal User::DEFAULT_SETTINGS[:weekly_application_goal], @user.get_setting(:weekly_application_goal)
+    assert_equal User::DEFAULT_SETTINGS[:goals][:weekly_applications], @user.get_setting(:goals, :weekly_applications)
   end
 
   test "weekly_application_goal_progress should return correct percentage" do
-    @user.set_setting(:weekly_application_goal, 5)
+    @user.update_settings(goals: { weekly_applications: 5 })
 
     # Clear any existing job leads
     @user.job_leads.destroy_all
@@ -142,21 +249,21 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "weekly_application_goal_progress should clamp to 0 if no leads" do
-    @user.set_setting(:weekly_application_goal, 5)
+    @user.update_settings(goals: { weekly_applications: 5 })
     @user.job_leads.destroy_all
 
     assert_equal 0, @user.weekly_application_goal_progress
   end
 
   test "weekly_application_goal_progress should handle goal of zero gracefully" do
-    @user.set_setting(:weekly_application_goal, 0)
+    @user.update_settings(goals: { weekly_applications: 0 })
     @user.job_leads.create!(title: "Example", company: "Example Co.", application_url: "https://example.com/jobs", applied_at: Time.current)
 
     assert_equal 0, @user.weekly_application_goal_progress
   end
 
   test "weekly_application_goal_progress should exceed 100 when goal is surpassed" do
-    @user.set_setting(:weekly_application_goal, 2)
+    @user.update_settings(goals: { weekly_applications: 2 })
     @user.job_leads.destroy_all
 
     3.times do |i|

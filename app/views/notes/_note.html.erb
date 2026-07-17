@@ -5,7 +5,7 @@
   note_title = note.title if display_title
 %>
 
-<div id="<%= dom_id note %>" class="relative <%= item_layout_class_names :notes_display %> flex flex-col" style="view-transition-name: note-<%= note.id %>;">
+<div id="<%= dom_id note %>" class="relative <%= item_layout_class_names :notes %> flex flex-col" style="view-transition-name: note-<%= note.id %>;">
   <% unless note_page || @demo %>
     <%= link_to "", note, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View note" } %>
   <% end %>

@@ -21,7 +21,7 @@
 
   <div id="notes" class="@container">
     <% if @notes.any? %>
-      <div class="<%= collection_layout_class_names :notes_display, count: @notes.size, size: :medium %>">
+      <div class="<%= collection_layout_class_names :notes, count: @notes.size, size: :medium %>">
         <%= render @notes %>
       </div>
     <% else %>

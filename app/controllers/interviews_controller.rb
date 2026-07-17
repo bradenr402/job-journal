@@ -15,7 +15,7 @@ class InterviewsController < ApplicationController
         :location
       )
 
-    @selected_interview_type = params[:scheduled].presence || Current.user.get_setting(:interviews_filter)
+    @selected_interview_type = params[:scheduled].presence || Current.user.get_setting(:filters, :interviews)
 
     @interviews =
       case @selected_interview_type

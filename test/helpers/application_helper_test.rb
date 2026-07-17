@@ -18,21 +18,21 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "resolve_layout looks up symbol layouts from current user settings" do
-    Current.user.settings = { job_leads_display: "minimal" }
+    Current.user.settings = { layouts: { job_leads: "minimal" } }
 
-    assert_equal "minimal", resolve_layout(:job_leads_display)
+    assert_equal "minimal", resolve_layout(:job_leads)
   end
 
   test "resolve_layout uses default user settings for missing symbol settings" do
     Current.user.settings = {}
 
-    assert_equal "grid", resolve_layout(:job_leads_display)
+    assert_equal "grid", resolve_layout(:job_leads)
   end
 
   test "resolve_layout uses default settings when no current user is present" do
     Current.reset
 
-    assert_equal "grid", resolve_layout(:job_leads_display)
+    assert_equal "grid", resolve_layout(:job_leads)
   end
 
   test "resolve_layout rejects non string and non symbol layouts" do
@@ -47,12 +47,10 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "Unknown layout: \"masonry\". Expected one of: grid, list, minimal", error.message
   end
 
-  test "resolve_layout rejects symbol settings that resolve to unknown layouts" do
-    Current.user.settings = { job_leads_display: "masonry" }
+  test "resolve_layout falls back to default for invalid symbol settings" do
+    Current.user.settings = { layouts: { job_leads: "masonry" } }
 
-    error = assert_raises(ArgumentError) { resolve_layout(:job_leads_display) }
-
-    assert_equal "Unknown layout: \"masonry\". Expected one of: grid, list, minimal", error.message
+    assert_equal "grid", resolve_layout(:job_leads)
   end
 
   test "collection_layout_class_names returns list collection class" do
@@ -103,9 +101,9 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "user_setting returns the current user's setting value" do
-    Current.user.settings = { job_leads_display: "list" }
+    Current.user.settings = { layouts: { job_leads: "list" } }
 
-    assert_equal "list", user_setting(:job_leads_display)
+    assert_equal "list", user_setting(:layouts, :job_leads)
   end
 
   test "number_with_sign prefixes positive and negative numbers" do

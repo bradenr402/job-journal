@@ -3,7 +3,7 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    @selected_note_type = params[:note_type].presence || Current.user.get_setting(:notes_filter)
+    @selected_note_type = params[:note_type].presence || Current.user.get_setting(:filters, :notes)
 
     scope =
       Current.user.notes

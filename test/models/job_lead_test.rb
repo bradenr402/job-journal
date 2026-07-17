@@ -175,7 +175,7 @@ class JobLeadTest < ActiveSupport::TestCase
   test "stale_for_user returns active lead-status records at or before the user cutoff" do
     freeze_time
 
-    @user.set_setting(:job_lead_stale_after_days, 7)
+    @user.update_settings(archiving: { stale: { mark_after_days: 7 } })
     JobLead.destroy_all
 
     old = create_job_lead(created_at: 8.days.ago)
@@ -195,8 +195,8 @@ class JobLeadTest < ActiveSupport::TestCase
   test "application_follow_up_for_user returns active applications inside the reminder window" do
     freeze_time
 
-    @user.set_setting(:application_follow_up_days, 7)
-    @user.set_setting(:suggest_follow_up_days, 3)
+    @user.update_settings(follow_ups: { application_days: 7 })
+    @user.update_settings(follow_ups: { suggestion_days: 3 })
     JobLead.destroy_all
 
     start_boundary = create_job_lead(applied_at: 10.days.ago)
@@ -215,8 +215,8 @@ class JobLeadTest < ActiveSupport::TestCase
   test "interview_follow_up_for_user returns active interviews inside the reminder window" do
     freeze_time
 
-    @user.set_setting(:interview_follow_up_days, 2)
-    @user.set_setting(:suggest_follow_up_days, 3)
+    @user.update_settings(follow_ups: { interview_days: 2 })
+    @user.update_settings(follow_ups: { suggestion_days: 3 })
     JobLead.destroy_all
 
     start_boundary = create_job_lead
@@ -350,7 +350,7 @@ class JobLeadTest < ActiveSupport::TestCase
   test "status bang methods set timestamps and persist changes" do
     freeze_time
 
-    @user.set_setting(:auto_archive_rejected_leads_enabled, false)
+    @user.update_settings(archiving: { rejected: { enabled: false } })
     lead = create_job_lead
 
     assert lead.applied!
@@ -385,10 +385,10 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal Time.current.to_i, lead.offer_at.to_i
   end
 
-  test "rejected! archives when auto_archive_rejected_leads_enabled is enabled" do
+  test "rejected! archives when rejected auto-archiving is enabled" do
     freeze_time
 
-    @user.set_setting(:auto_archive_rejected_leads_enabled, true)
+    @user.update_settings(archiving: { rejected: { enabled: true } })
     lead = create_job_lead
 
     assert lead.rejected!
@@ -397,8 +397,8 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal Time.current.to_i, lead.archived_at.to_i
   end
 
-  test "rejected! leaves lead active when auto_archive_rejected_leads_enabled is disabled" do
-    @user.set_setting(:auto_archive_rejected_leads_enabled, false)
+  test "rejected! leaves lead active when rejected auto-archiving is disabled" do
+    @user.update_settings(archiving: { rejected: { enabled: false } })
     lead = create_job_lead
 
     assert lead.rejected!
@@ -505,7 +505,7 @@ class JobLeadTest < ActiveSupport::TestCase
   test "stale? uses a strict user stale cutoff" do
     freeze_time
 
-    @user.set_setting(:job_lead_stale_after_days, 7)
+    @user.update_settings(archiving: { stale: { mark_after_days: 7 } })
     old = create_job_lead(created_at: 8.days.ago)
     boundary = create_job_lead(created_at: 7.days.ago)
     recent = create_job_lead(created_at: 6.days.ago)
@@ -646,7 +646,7 @@ class JobLeadTest < ActiveSupport::TestCase
   test "cleanup_stale archives stale lead-status records at the cleanup cutoff" do
     freeze_time
 
-    @user.set_setting(:job_lead_stale_after_days, 7)
+    @user.update_settings(archiving: { stale: { mark_after_days: 7 } })
     JobLead.destroy_all
     cutoff = 28.days.ago
 
@@ -685,8 +685,8 @@ class JobLeadTest < ActiveSupport::TestCase
   test "cleanup_for_user respects disabled auto archive settings" do
     freeze_time
 
-    @user.set_setting(:auto_archive_stale_leads_enabled, false)
-    @user.set_setting(:auto_archive_inactive_leads_enabled, false)
+    @user.update_settings(archiving: { stale: { enabled: false } })
+    @user.update_settings(archiving: { inactive: { enabled: false } })
     JobLead.destroy_all
     old = create_job_lead(created_at: 40.days.ago, updated_at: 40.days.ago)
 
@@ -698,11 +698,11 @@ class JobLeadTest < ActiveSupport::TestCase
   test "cleanup_for_user archives enabled stale and inactive leads" do
     freeze_time
 
-    @user.set_setting(:auto_archive_stale_leads_enabled, true)
-    @user.set_setting(:job_lead_stale_after_days, 7)
-    @user.set_setting(:auto_archive_stale_lead_days, 21)
-    @user.set_setting(:auto_archive_inactive_leads_enabled, true)
-    @user.set_setting(:auto_archive_inactive_lead_days, 28)
+    @user.update_settings(archiving: { stale: { enabled: true } })
+    @user.update_settings(archiving: { stale: { mark_after_days: 7 } })
+    @user.update_settings(archiving: { stale: { archive_after_days: 21 } })
+    @user.update_settings(archiving: { inactive: { enabled: true } })
+    @user.update_settings(archiving: { inactive: { after_days: 28 } })
     JobLead.destroy_all
 
     stale = create_job_lead(created_at: 29.days.ago, updated_at: 1.day.ago)

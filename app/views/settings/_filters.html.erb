@@ -8,7 +8,7 @@
     <%=
       render "settings/radio_group",
       form:,
-      field: :job_leads_filter,
+      setting_path: %i[filters job_leads],
       label: "Default Job Leads Filter",
       help_text: "Which leads you see first when you open <span class='font-semibold text-light'>Job Leads</span>.",
       options: [
@@ -21,7 +21,7 @@
     <%=
       render "settings/radio_group",
       form:,
-      field: :interviews_filter,
+      setting_path: %i[filters interviews],
       label: "Default Interviews Filter",
       help_text: "Which interviews you see first when you open <span class='font-semibold text-light'>Interviews</span>.",
       options: [
@@ -34,7 +34,7 @@
     <%=
       render "settings/radio_group",
       form:,
-      field: :notes_filter,
+      setting_path: %i[filters notes],
       label: "Default Notes Filter",
       help_text: "Which notes you see first when you open <span class='font-semibold text-light'>Notes</span>.",
       options: [

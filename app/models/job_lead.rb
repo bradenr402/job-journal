@@ -109,7 +109,7 @@ class JobLead < ApplicationRecord
   scope :archived, -> { where.not(archived_at: nil) }
 
   scope :stale_for_user, ->(user) do
-    cutoff_date = user.get_setting(:job_lead_stale_after_days).days.ago
+    cutoff_date = user.get_setting(:archiving, :stale, :mark_after_days).days.ago
 
     active
       .lead
@@ -117,8 +117,8 @@ class JobLead < ApplicationRecord
   end
 
   scope :application_follow_up_for_user, ->(user) do
-    end_date = user.get_setting(:application_follow_up_days).days.ago
-    start_date = end_date - user.get_setting(:suggest_follow_up_days).days
+    end_date = user.get_setting(:follow_ups, :application_days).days.ago
+    start_date = end_date - user.get_setting(:follow_ups, :suggestion_days).days
 
     active
       .applied
@@ -126,8 +126,8 @@ class JobLead < ApplicationRecord
   end
 
   scope :interview_follow_up_for_user, ->(user) do
-    end_date = user.get_setting(:interview_follow_up_days).days.ago
-    start_date = end_date - user.get_setting(:suggest_follow_up_days).days
+    end_date = user.get_setting(:follow_ups, :interview_days).days.ago
+    start_date = end_date - user.get_setting(:follow_ups, :suggestion_days).days
 
     joins(:interviews)
       .active
@@ -253,7 +253,7 @@ class JobLead < ApplicationRecord
   def archive! = update(archived_at: Time.current)
   def unarchive! = update(archived_at: nil)
 
-  def stale? = created_at.before?(user.get_setting(:job_lead_stale_after_days).days.ago)
+  def stale? = created_at.before?(user.get_setting(:archiving, :stale, :mark_after_days).days.ago)
 
   def tag_list = tags.pluck(:name).join(", ")
 
@@ -338,9 +338,9 @@ class JobLead < ApplicationRecord
   end
 
   def self.cleanup_for_user(user)
-    if user.get_setting(:auto_archive_stale_leads_enabled)
-      stale_days = user.get_setting(:job_lead_stale_after_days)
-      archive_days = user.get_setting(:auto_archive_stale_lead_days)
+    if user.get_setting(:archiving, :stale, :enabled)
+      stale_days = user.get_setting(:archiving, :stale, :mark_after_days)
+      archive_days = user.get_setting(:archiving, :stale, :archive_after_days)
 
       total_days = stale_days + archive_days
       cutoff_date = total_days.days.ago
@@ -348,8 +348,8 @@ class JobLead < ApplicationRecord
       cleanup_stale(user, cutoff_date)
     end
 
-    if user.get_setting(:auto_archive_inactive_leads_enabled)
-      archive_days = user.get_setting(:auto_archive_inactive_lead_days)
+    if user.get_setting(:archiving, :inactive, :enabled)
+      archive_days = user.get_setting(:archiving, :inactive, :after_days)
 
       cutoff_date = archive_days.days.ago
 
@@ -376,9 +376,9 @@ class JobLead < ApplicationRecord
       self.offer!
     end
 
-    auto_archive_rejected_leads_enabled = user.get_setting(:auto_archive_rejected_leads_enabled)
+    auto_archive_rejected = user.get_setting(:archiving, :rejected, :enabled)
 
-    if auto_archive_rejected_leads_enabled && rejected_at_changed? && rejected? && !archived?
+    if auto_archive_rejected && rejected_at_changed? && rejected? && !archived?
       self.archive!
     end
   end

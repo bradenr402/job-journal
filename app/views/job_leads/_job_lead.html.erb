@@ -1,6 +1,6 @@
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
-<div id="<%= dom_id job_lead %>" class="relative <%= item_layout_class_names :job_leads_display %> flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">
+<div id="<%= dom_id job_lead %>" class="relative <%= item_layout_class_names :job_leads %> flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">
   <%= link_to "", job_lead, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View job lead" } unless @demo || job_lead_page %>
 
   <div class="flex gap-x-4 gap-y-2 w-full mb-2">

@@ -16,20 +16,8 @@ class SettingsController < ApplicationController
 
   def update
     @user = Current.user
-    updated = true
 
-    User::DEFAULT_SETTINGS.keys.select { |key| params.key?(key.to_s) }.each do |key|
-      raw_value = params[key.to_s]
-      default_value = User::DEFAULT_SETTINGS[key]
-      value = parse_setting_value(raw_value, default_value)
-
-      current_setting = @user.get_setting(key)
-      next if current_setting == value && value == default_value
-
-      updated &&= @user.set_setting(key, value)
-    end
-
-    if updated
+    if @user.update_settings(coerced_settings_params)
       redirect_to settings_path(tab: active_tab), success: SUCCESS_MESSAGES.fetch(active_tab, "Settings updated successfully.")
     else
       @settings = @user.all_settings
@@ -53,18 +41,41 @@ class SettingsController < ApplicationController
     TABS.include?(params[:tab]) ? params[:tab] : TABS.first
   end
 
-  def parse_setting_value(raw_value, default_value)
-    case raw_value
-    when "true"
-      true
-    when "false"
-      false
+  def settings_params
+    return {}.with_indifferent_access unless params[:settings].respond_to?(:permit!)
+
+    # Safe because every submitted value is read by schema path, coerced, and validated before persistence.
+    params[:settings].permit!.to_h.with_indifferent_access
+  end
+
+  def coerced_settings_params
+    coerce_settings(settings_params, User::Settings::SCHEMA)
+  end
+
+  # Coercion is permissive: uncoercible values pass through so User::Settings.sanitize
+  # remains the source of truth and drops anything invalid before persistence.
+  def coerce_settings(input, schema)
+    input.each_with_object({}.with_indifferent_access) do |(key, raw_value), coerced|
+      schema_entry = schema[key]
+      next if schema_entry.nil?
+
+      coerced[key] =
+        if schema_entry.key?(:default)
+          coerce_setting_value(schema_entry[:default], raw_value)
+        elsif raw_value.is_a?(Hash)
+          coerce_settings(raw_value, schema_entry)
+        end
+    end
+  end
+
+  def coerce_setting_value(default, raw_value)
+    case default
+    when Integer
+      Integer(raw_value, exception: false) || raw_value
+    when true, false
+      { "true" => true, "false" => false }.fetch(raw_value, raw_value)
     else
-      if raw_value.to_s.match?(/\A\d+\z/) && default_value.is_a?(Integer)
-        raw_value.to_i
-      else
-        raw_value
-      end
+      raw_value
     end
   end
 end

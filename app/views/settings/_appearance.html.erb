@@ -8,9 +8,9 @@
   <div class="space-y-5">
     <% display_options = options("grid", "list") + [ option("minimal", icon: "menu") ] %>
 
-    <%= render "settings/radio_group", form:, field: :job_leads_display, options: display_options %>
-    <%= render "settings/radio_group", form:, field: :interviews_display, options: display_options %>
-    <%= render "settings/radio_group", form:, field: :notes_display, options: display_options %>
+    <%= render "settings/radio_group", form:, setting_path: %i[layouts job_leads], options: display_options %>
+    <%= render "settings/radio_group", form:, setting_path: %i[layouts interviews], options: display_options %>
+    <%= render "settings/radio_group", form:, setting_path: %i[layouts notes], options: display_options %>
   </div>
 
   <div class="mt-8 pt-4 border-t border-neutral-200 dark:border-neutral-800">

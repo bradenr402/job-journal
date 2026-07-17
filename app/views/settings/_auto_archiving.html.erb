@@ -7,31 +7,31 @@
   <div class="space-y-5">
     <div class="space-y-1">
       <div class="flex items-start gap-1.5 relative">
-        <%= form.check_box :auto_archive_rejected_leads_enabled, { checked: @settings[:auto_archive_rejected_leads_enabled], class: "form-checkbox", switch: true }, "true", "false" %>
+        <%= form.check_box :archiving_rejected_enabled, { name: "settings[archiving][rejected][enabled]", checked: @settings.dig(:archiving, :rejected, :enabled), class: "form-checkbox", switch: true }, "true", "false" %>
         <%= icon "check" %>
-        <%= form.label :auto_archive_rejected_leads_enabled, "Auto-Archive Rejected Leads", class: "form-label" %>
+        <%= form.label :archiving_rejected_enabled, "Auto-Archive Rejected Leads", class: "form-label" %>
       </div>
       <p class="text-xs text-muted">Automatically archive leads when you mark them as rejected.</p>
     </div>
 
     <div class="space-y-1">
       <div class="flex items-start gap-1.5 relative">
-        <%= form.check_box :auto_archive_inactive_leads_enabled, { checked: @settings[:auto_archive_inactive_leads_enabled], class: "form-checkbox", switch: true, data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-inactive" } }, "true", "false" %>
+        <%= form.check_box :archiving_inactive_enabled, { name: "settings[archiving][inactive][enabled]", checked: @settings.dig(:archiving, :inactive, :enabled), class: "form-checkbox", switch: true, data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-inactive" } }, "true", "false" %>
         <%= icon "check" %>
-        <%= form.label :auto_archive_inactive_leads_enabled, "Auto-Archive Inactive Leads", class: "form-label" %>
+        <%= form.label :archiving_inactive_enabled, "Auto-Archive Inactive Leads", class: "form-label" %>
       </div>
 
       <p class="text-xs text-muted">Archive leads you haven&#8217;t touched in a while. Set how long to wait below.</p>
     </div>
 
-    <div data-conditional-field-input="auto-archive-inactive" class="<%= "hidden" unless @settings[:auto_archive_inactive_leads_enabled] %>">
-      <%= form.label :auto_archive_inactive_lead_days, "Days of Inactivity Before Archiving", class: "form-label" %>
+    <div data-conditional-field-input="auto-archive-inactive" class="<%= "hidden" unless @settings.dig(:archiving, :inactive, :enabled) %>">
+      <%= form.label :archiving_inactive_after_days, "Days of Inactivity Before Archiving", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
         </button>
 
-        <%= form.number_field :auto_archive_inactive_lead_days, value: @settings[:auto_archive_inactive_lead_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+        <%= form.number_field :archiving_inactive_after_days, name: "settings[archiving][inactive][after_days]", value: @settings.dig(:archiving, :inactive, :after_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
           <%= icon "plus", class: "size-4 shrink-0" %>
@@ -42,22 +42,22 @@
 
     <div class="space-y-1">
       <div class="flex items-start gap-1.5 relative">
-        <%= form.check_box :auto_archive_stale_leads_enabled, { checked: @settings[:auto_archive_stale_leads_enabled], class: "form-checkbox", switch: true, data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-stale" } }, "true", "false" %>
+        <%= form.check_box :archiving_stale_enabled, { name: "settings[archiving][stale][enabled]", checked: @settings.dig(:archiving, :stale, :enabled), class: "form-checkbox", switch: true, data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-stale" } }, "true", "false" %>
         <%= icon "check" %>
-        <%= form.label :auto_archive_stale_leads_enabled, "Auto-Archive Stale Leads", class: "form-label" %>
+        <%= form.label :archiving_stale_enabled, "Auto-Archive Stale Leads", class: "form-label" %>
       </div>
 
       <p class="text-xs text-muted">Archive stale leads you never applied to. Set how long to wait below.</p>
     </div>
 
-    <div data-conditional-field-input="auto-archive-stale" class="<%= "hidden" unless @settings[:auto_archive_stale_leads_enabled] %>">
-      <%= form.label :auto_archive_stale_lead_days, "Days Stale Before Archiving", class: "form-label" %>
+    <div data-conditional-field-input="auto-archive-stale" class="<%= "hidden" unless @settings.dig(:archiving, :stale, :enabled) %>">
+      <%= form.label :archiving_stale_archive_after_days, "Days Stale Before Archiving", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
         </button>
 
-        <%= form.number_field :auto_archive_stale_lead_days, value: @settings[:auto_archive_stale_lead_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+        <%= form.number_field :archiving_stale_archive_after_days, name: "settings[archiving][stale][archive_after_days]", value: @settings.dig(:archiving, :stale, :archive_after_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
           <%= icon "plus", class: "size-4 shrink-0" %>

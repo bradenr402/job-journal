@@ -6,13 +6,13 @@
 
   <div class="space-y-5">
     <div>
-      <%= form.label :job_lead_stale_after_days, "Days Until a Lead Goes Stale", class: "form-label" %>
+      <%= form.label :archiving_stale_mark_after_days, "Days Until a Lead Goes Stale", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
         </button>
 
-        <%= form.number_field :job_lead_stale_after_days, value: @settings[:job_lead_stale_after_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+        <%= form.number_field :archiving_stale_mark_after_days, name: "settings[archiving][stale][mark_after_days]", value: @settings.dig(:archiving, :stale, :mark_after_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
           <%= icon "plus", class: "size-4 shrink-0" %>
@@ -22,13 +22,13 @@
     </div>
 
     <div>
-      <%= form.label :application_follow_up_days, "Days Before an Application Follow-Up", class: "form-label" %>
+      <%= form.label :follow_ups_application_days, "Days Before an Application Follow-Up", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
         </button>
 
-        <%= form.number_field :application_follow_up_days, value: @settings[:application_follow_up_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+        <%= form.number_field :follow_ups_application_days, name: "settings[follow_ups][application_days]", value: @settings.dig(:follow_ups, :application_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
           <%= icon "plus", class: "size-4 shrink-0" %>
@@ -38,13 +38,13 @@
     </div>
 
     <div>
-      <%= form.label :interview_follow_up_days, "Days Before an Interview Follow-Up", class: "form-label" %>
+      <%= form.label :follow_ups_interview_days, "Days Before an Interview Follow-Up", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
         </button>
 
-        <%= form.number_field :interview_follow_up_days, value: @settings[:interview_follow_up_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+        <%= form.number_field :follow_ups_interview_days, name: "settings[follow_ups][interview_days]", value: @settings.dig(:follow_ups, :interview_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
           <%= icon "plus", class: "size-4 shrink-0" %>
@@ -54,13 +54,13 @@
     </div>
 
     <div>
-      <%= form.label :suggest_follow_up_days, "Days to Keep Suggestions Visible", class: "form-label" %>
+      <%= form.label :follow_ups_suggestion_days, "Days to Keep Suggestions Visible", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
           <%= icon "minus", class: "size-4 shrink-0" %>
         </button>
 
-        <%= form.number_field :suggest_follow_up_days, value: @settings[:suggest_follow_up_days], min: 1, class: "form-number", data: { number_field_target: "input" } %>
+        <%= form.number_field :follow_ups_suggestion_days, name: "settings[follow_ups][suggestion_days]", value: @settings.dig(:follow_ups, :suggestion_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
           <%= icon "plus", class: "size-4 shrink-0" %>

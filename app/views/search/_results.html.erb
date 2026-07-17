@@ -14,7 +14,7 @@
           </p>
         <% end %>
 
-        <div class="<%= collection_layout_class_names :job_leads_display, count: @results[:job_leads].size, size: :large %> gap-3">
+        <div class="<%= collection_layout_class_names :job_leads, count: @results[:job_leads].size, size: :large %> gap-3">
           <% @results[:job_leads].each do |job_lead| %>
             <%= render job_lead %>
           <% end %>
@@ -28,7 +28,7 @@
           </p>
         <% end %>
 
-        <div class="<%= collection_layout_class_names :interviews_display, count: @results[:interviews].size, size: :large %> gap-3">
+        <div class="<%= collection_layout_class_names :interviews, count: @results[:interviews].size, size: :large %> gap-3">
           <% @results[:interviews].each do |interview| %>
             <%= render interview %>
           <% end %>
@@ -41,7 +41,7 @@
             <%= pluralize @results[:notes].count, "Note" %>
           </p>
         <% end %>
-        <div class="<%= collection_layout_class_names :notes_display, count: @results[:notes].size, size: :large %> gap-3">
+        <div class="<%= collection_layout_class_names :notes, count: @results[:notes].size, size: :large %> gap-3">
           <% @results[:notes].each do |note| %>
             <%= render note %>
           <% end %>
