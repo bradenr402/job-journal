@@ -56,7 +56,7 @@ class User < ApplicationRecord
   # Instance Methods
   def settings = super.with_indifferent_access
 
-  def get_setting(key) = settings.key?(key) ? settings[key] : DEFAULT_SETTINGS[key]
+  def get_setting(key) = settings.fetch(key, DEFAULT_SETTINGS[key])
 
   def all_settings = DEFAULT_SETTINGS.merge(settings)
 
