@@ -7,7 +7,7 @@ class Note < ApplicationRecord
   validates :content, presence: true
 
   # Scope
-  scope :recent, -> { where(updated_at: 7.days.ago..) }
+  scope :recent, ->(timeframe = 7.days) { where(updated_at: timeframe.ago..) }
 
   # Instance Methods
   def job_lead
