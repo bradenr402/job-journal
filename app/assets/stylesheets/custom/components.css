@@ -114,11 +114,7 @@
 }
 
 @utility nav-link {
-  @apply flex items-center whitespace-nowrap text-light;
-
-  a:has(&) {
-    @apply anchor;
-  }
+  @apply anchor-within flex items-center whitespace-nowrap text-light;
 
   @variant max-md {
     @apply flex-col gap-0.5 py-2.75 font-medium text-2xs rounded-full px-2;
