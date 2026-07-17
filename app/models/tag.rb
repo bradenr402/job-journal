@@ -21,6 +21,6 @@ class Tag < ApplicationRecord
 
   # Class Methods
   def self.cleanup_unused_for_user(user)
-    unused.destroy_all
+    user.tags.unused.destroy_all
   end
 end
