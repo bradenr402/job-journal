@@ -3,6 +3,40 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
+      "fingerprint": "1070f0f5b8bf14859e428b871ca50f4395d8fc24dc2ad4e2fc4c934db40e43fa",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/job_leads/show.html.erb",
+      "line": 30,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Current.user.job_leads.includes(:notes, :tags, :interviews => :notes).find(params.expect(:id)).interviews.order(:scheduled_at => :desc), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "JobLeadsController",
+          "method": "show",
+          "line": 53,
+          "file": "app/controllers/job_leads_controller.rb",
+          "rendered": {
+            "name": "job_leads/show",
+            "file": "app/views/job_leads/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "job_leads/show"
+      },
+      "user_input": "params.expect(:id)",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
       "fingerprint": "12b6d6b90bca97abd2f11c885d980ea4ab0559549b20f6621f7820cdda794ee3",
       "check_name": "Render",
       "message": "Render path contains parameter value",
@@ -28,6 +62,40 @@
         "template": "notes/show"
       },
       "user_input": "params.expect(:id)",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "14319928ba8b7420b3c4405da565bd054afdd3c0fcf3d6b308a1ddc46ef9061d",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/job_leads/index.html.erb",
+      "line": 40,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => ((Current.user.job_leads.includes(:notes, :tags).select(:id, :created_at, :updated_at, :applied_at, :offer_at, :rejected_at, :accepted_at, :archived_at, :title, :company, :application_url).order_by_latest_status(:desc).active or Current.user.job_leads.includes(:notes, :tags).select(:id, :created_at, :updated_at, :applied_at, :offer_at, :rejected_at, :accepted_at, :archived_at, :title, :company, :application_url).order_by_latest_status(:desc).archived) or scope).with_tags(params[:tags].to_s.split(\",\").map(&:strip).uniq).with_status(params[:status]), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "JobLeadsController",
+          "method": "index",
+          "line": 47,
+          "file": "app/controllers/job_leads_controller.rb",
+          "rendered": {
+            "name": "job_leads/index",
+            "file": "app/views/job_leads/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "job_leads/index"
+      },
+      "user_input": "params[:status]",
       "confidence": "Weak",
       "cwe_id": [
         22
