@@ -11,7 +11,7 @@
   ]
 %>
 
-<div class="sm:w-7/8 w-full mx-auto">
+<div class="sm:w-7/8 w-full mx-auto @container">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to dashboard_path, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
       <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
@@ -25,15 +25,15 @@
   </div>
 
   <div
-    class="md:flex md:gap-6"
+    class="@md:flex @md:gap-6"
     data-controller="tabs"
     data-tabs-active-value="<%= @active_tab %>"
   >
-    <div class="max-md:-mx-4 max-md:mb-6 max-md:py-1.5 max-md:bg-neutral-100/80 max-md:dark:bg-neutral-900/60 md:w-52 md:shrink-0 md:border-r md:border-neutral-200 md:dark:border-neutral-800 md:pr-4">
+    <div class="@max-md:-mx-4 @max-md:mb-6 @max-md:py-1.5 @max-md:bg-neutral-100/80 @max-md:dark:bg-neutral-900/60 @md:w-52 @md:shrink-0 @md:border-r @md:border-neutral-200 @md:dark:border-neutral-800 @md:pr-4">
       <div
         role="tablist"
         aria-label="Settings sections"
-        class="tab-link-list anchor-highlight-alt md:anchor-highlight"
+        class="tab-link-list"
         data-action="keydown->tabs#navigate"
       >
         <% tabs.each do |tab| %>
@@ -48,7 +48,7 @@
             aria-controls="panel-<%= tab_id %>"
             aria-selected="<%= active %>"
             tabindex="<%= active ? 0 : -1 %>"
-            class="anchor shrink-0 max-md:px-px md:py-px md:w-full md:text-left"
+            class="shrink-0 @max-md:px-px @md:py-px @md:w-full @md:text-left"
             data-tabs-target="tab"
             data-tabs-id="<%= tab_id %>"
             data-action="tabs#select"
