@@ -61,9 +61,10 @@ module ApplicationHelper
   def user_setting(key) = Current.user&.get_setting(key)
 
   def number_with_sign(number, **options)
+    zero_sign = options.delete :zero_sign
     sign =
       if number.zero?
-        options[:zero_sign].presence
+        zero_sign.presence
       elsif number.positive?
         "+"
       else
