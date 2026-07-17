@@ -43,7 +43,7 @@
             <% end %>
           <% end %>
 
-          <% unless job_lead.accepted? || job_lead.lead? %>
+          <% unless job_lead.accepted? || job_lead.lead? || job_lead.rejected? %>
             <%= button_to reject_job_lead_path(job_lead), method: :patch, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: 'Are you sure you want to mark this job lead as rejected?' } do %>
               <%= icon "x-circle", class: "size-5 shrink-0" %>
               <span>Rejected</span>
