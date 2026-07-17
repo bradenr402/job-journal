@@ -95,6 +95,12 @@
   }
 }
 
+@utility anchor-within {
+  :hover > & {
+    anchor-name: var(--anchor-name);
+  }
+}
+
 @utility blanket-link {
   @apply absolute inset-0 z-10 outline-none;
 }
@@ -416,6 +422,10 @@ Option variants:
 - .dropdown-option-secondary
 - .dropdown-option-destructive
 
+Options share a CSS Anchor Positioning hover highlight that glides between items
+and changes color per variant. Browsers without anchor positioning fall back to
+static hover backgrounds.
+
 */
 
 @utility dropdown-trigger {
@@ -427,10 +437,27 @@ Option variants:
 }
 
 @utility dropdown-menu {
-  @apply absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
+  @apply anchor-highlight-base absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
+  --anchor-name: --hovered-dropdown-option;
+
+  &::before {
+    @apply transition-[inset,opacity,background-color] bg-neutral-200/70 dark:bg-neutral-700/60;
+  }
 
   .card & {
     @apply dark:bg-neutral-800 dark:border-neutral-700;
+  }
+
+  &:has(.dropdown-option-primary:hover)::before {
+    @apply bg-primary-200/70 dark:bg-primary-600/60;
+  }
+
+  &:has(.dropdown-option-secondary:hover)::before {
+    @apply bg-neutral-200/70 dark:bg-neutral-700/60;
+  }
+
+  &:has(.dropdown-option-destructive:hover)::before {
+    @apply bg-rose-200/70 dark:bg-rose-900/60;
   }
 
   &.dropdown-hidden {
@@ -479,23 +506,49 @@ Option variants:
   }
 
   .dropdown-option {
-    @apply inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
+    @apply anchor relative z-10 inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
-      @apply text-primary-600 dark:text-primary-400 hover:bg-primary-200/70 focus:ring-primary-500 active:bg-primary-300/60 dark:hover:bg-primary-600/60 dark:active:bg-primary-600;
+      @apply text-primary-600 dark:text-primary-400 focus:ring-primary-500 active:bg-primary-300/60 dark:active:bg-primary-600;
     }
 
     &.dropdown-option-secondary {
-      @apply text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200/70 focus:ring-neutral-500 active:bg-neutral-300/70 dark:hover:bg-neutral-700/60 dark:active:bg-neutral-700;
+      @apply text-neutral-600 dark:text-neutral-400 focus:ring-neutral-500 active:bg-neutral-300/70 dark:active:bg-neutral-700;
     }
 
     &.dropdown-option-destructive {
-      @apply text-rose-600 dark:text-rose-400 hover:bg-rose-200/70 focus:ring-rose-500 active:bg-rose-300/60 dark:hover:bg-rose-900/60 dark:active:bg-rose-600;
+      @apply text-rose-600 dark:text-rose-400 focus:ring-rose-500 active:bg-rose-300/60 dark:active:bg-rose-600;
+    }
+
+    @supports not (anchor-name: --a) {
+      &.dropdown-option-primary {
+        @apply hover:bg-primary-200/70 dark:hover:bg-primary-600/60;
+      }
+
+      &.dropdown-option-secondary {
+        @apply hover:bg-neutral-200/70 dark:hover:bg-neutral-700/60;
+      }
+
+      &.dropdown-option-destructive {
+        @apply hover:bg-rose-200/70 dark:hover:bg-rose-900/60;
+      }
     }
 
     > svg {
       @apply first:-ml-0.75 last:-mr-0.75;
     }
+  }
+
+  .dropdown-option:has(+ .dropdown-divider)::after,
+  *:has(+ .dropdown-divider) > .dropdown-option::after {
+    content: '';
+    @apply absolute left-0 right-0 top-full h-[calc(0.25rem+0.5px)];
+  }
+
+  .dropdown-divider + .dropdown-option::before,
+  .dropdown-divider + * > .dropdown-option::before {
+    content: '';
+    @apply absolute left-0 right-0 bottom-full h-[calc(0.25rem+0.5px)];
   }
 
   .dropdown-divider {
