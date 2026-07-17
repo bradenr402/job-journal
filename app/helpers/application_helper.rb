@@ -58,6 +58,8 @@ module ApplicationHelper
     "JobJournal".in?(title) ? title : "#{title} • JobJournal"
   end
 
+  def user_setting(key) = Current.user&.get_setting(key)
+
   def number_with_sign(number, **options)
     sign =
       if number.zero?

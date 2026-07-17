@@ -61,7 +61,7 @@
               <div>
                 <p class="font-extrabold text-4xl mb-1">
                   <%= @applications_this_week_count %>
-                  <% goal = Current.user.get_setting(:weekly_application_goal) %>
+                  <% goal = user_setting(:weekly_application_goal) %>
                   <% display_goal = goal.present? && goal.to_i.positive? %>
                   <% if display_goal %>
                     <span class="text-sm font-normal text-muted">/ <%= goal %></span>
@@ -166,11 +166,11 @@
           <h2 class="subheading">Follow-Up Suggestions</h2>
           <p class="text-sm text-muted mt-1 text-pretty">
             <%
-              suggest_follow_up_days = Current.user.get_setting(:suggest_follow_up_days)
+              suggest_follow_up_days = user_setting(:suggest_follow_up_days)
 
               follow_up_days = {
-                application: Current.user.get_setting(:application_follow_up_days),
-                interview:   Current.user.get_setting(:interview_follow_up_days)
+                application: user_setting(:application_follow_up_days),
+                interview:   user_setting(:interview_follow_up_days)
               }
 
               stop_follow_up = follow_up_days.transform_values { |days| days + suggest_follow_up_days }
@@ -220,7 +220,7 @@
       <div>
         <div class="mb-4">
           <h2 class="subheading">Stale Job Leads</h2>
-          <% stale_days = Current.user.get_setting(:job_lead_stale_after_days) %>
+          <% stale_days = user_setting(:job_lead_stale_after_days) %>
           <p class="text-sm text-muted mt-1 text-pretty">Job leads saved more than <%= pluralize stale_days, 'day' %> ago that you haven&#8217;t applied to yet. Apply now, or archive if you&#8217;re no longer interested.</p>
         </div>
         <div id="job_leads" class="@container">
