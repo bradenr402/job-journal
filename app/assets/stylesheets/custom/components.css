@@ -25,11 +25,11 @@
     @apply p-2.5 not-dark:shadow-2xs;
   }
 
-  &:has(.blanket-link) {
+  &:has(> .blanket-link) {
     @apply card-interactive;
   }
 
-  &:has(.blanket-link:focus-visible) {
+  &:has(> .blanket-link:focus-visible) {
     @apply ring-2 ring-primary-600;
   }
 }
@@ -218,7 +218,9 @@
     @apply outline-none;
   }
 
-  &:focus-visible, a:focus-visible > & {
+  &:focus-visible,
+  a:focus-visible > &,
+  &:has(> .blanket-link:focus-visible) {
     @apply ring-2 ring-primary-600;
   }
 
