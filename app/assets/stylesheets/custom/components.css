@@ -71,7 +71,6 @@
     content: '';
     @apply inline-block absolute z-0 pointer-events-none rounded-lg [transition:scale_80ms,inset_80ms,opacity_80ms,background-color_80ms] will-change-[scale,inset,opacity,background-color] origin-center opacity-0 scale-90 bg-(--anchor-highlight-hover-color,var(--anchor-highlight-color));
 
-    background-color: var(--anchor-highlight-hover-color, var(--anchor-highlight-color));
     inset: anchor(inside);
     position-anchor: var(--anchor-name);
   }
