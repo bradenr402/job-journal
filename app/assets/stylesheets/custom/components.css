@@ -128,8 +128,9 @@
 @utility anchor-color-* {
   @media (hover: hover) {
     :has(&:hover) {
-      --anchor-highlight-hover-color: --value(--color-*);
-      --anchor-highlight-hover-color: --alpha(--value(--color-*) / calc(--modifier(integer) * 1%));
+      --anchor-highlight-hover-color: --alpha(
+        --value(--color- *) / calc(--modifier(integer, --default(100)) * 1%)
+      );
     }
   }
 }
