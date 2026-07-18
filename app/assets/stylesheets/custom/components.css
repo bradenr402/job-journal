@@ -65,6 +65,7 @@
 @utility anchor-highlight-base {
   --anchor-name: --hovered-item;
   isolation: isolate;
+  anchor-scope: var(--anchor-name);
 
   &::before {
     content: '';
