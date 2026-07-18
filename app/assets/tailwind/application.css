@@ -80,6 +80,10 @@
     interpolate-size: allow-keywords;
   }
 
+  html {
+    @apply scrollbar-thumb-neutral-400/70 dark:scrollbar-thumb-neutral-600/70;
+  }
+
   kbd {
     @apply text-[0.95em] mr-[0.05rem] font-mono text-soft bg-neutral-200 dark:bg-neutral-800 rounded-sm px-[0.3rem] py-[0.2rem] shadow-2xs;
   }
