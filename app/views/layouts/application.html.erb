@@ -8,7 +8,7 @@
     </script>
   </head>
 
-  <body class="antialiased bg-neutral-200/80 dark:bg-black text-normal md:p-(--body-padding)">
+  <body class="bg-neutral-200/80 dark:bg-black md:p-(--body-padding)">
     <%= render 'components/nav' if authenticated? %>
 
     <div class="bg-white dark:bg-neutral-925 md:rounded-2xl md:not-dark:shadow-2xs dark:border dark:border-neutral-900 px-(--main-padding) <%= 'max-md:pb-(--tab-bar-height) md:ml-(--sidebar-width)' if authenticated? %>">

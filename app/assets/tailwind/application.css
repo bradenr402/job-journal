@@ -81,7 +81,7 @@
   }
 
   html {
-    @apply scrollbar-thumb-neutral-400/70 dark:scrollbar-thumb-neutral-600/70;
+    @apply antialiased text-normal scrollbar-thumb-neutral-400/70 dark:scrollbar-thumb-neutral-600/70;
   }
 
   kbd {
