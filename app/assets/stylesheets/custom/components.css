@@ -181,7 +181,7 @@
 
 @utility tab-link-list {
   @apply anchor-highlight-alt @md:anchor-highlight flex @md:flex-col
-         @max-md:overflow-x-auto @max-md:hide-scrollbar max-md:px-4
+         @max-md:overflow-x-auto @max-md:scrollbar-none max-md:px-4
          [--fade:4rem] [--left:0rem] [--right:var(--fade)]
          @max-md:mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
          @max-md:animate-[timeline-fade_linear_both] @max-md:[animation-timeline:scroll(self_inline)];

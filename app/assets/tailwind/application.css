@@ -75,16 +75,6 @@
   navigation: auto;
 }
 
-@utility hide-scrollbar {
-  /* Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
 @layer base {
   :root {
     interpolate-size: allow-keywords;
