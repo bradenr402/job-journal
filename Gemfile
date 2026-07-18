@@ -66,6 +66,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # Minitest 6 extracted minitest/mock into a separate gem and is incompatible with Rails 8.0
+  gem "minitest", "~> 5.25"
 end
 
 gem "inline_svg", "~> 1.10"

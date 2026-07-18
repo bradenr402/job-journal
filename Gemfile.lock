@@ -179,9 +179,7 @@ GEM
     marcel (1.0.4)
     matrix (0.4.3)
     mini_mime (1.1.5)
-    minitest (6.0.6)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.8.0)
     net-imap (0.5.9)
       date
@@ -424,6 +422,7 @@ DEPENDENCIES
   kamal
   letter_opener
   local_time
+  minitest (~> 5.25)
   nokolexbor
   propshaft
   puma (>= 5.0)
