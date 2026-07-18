@@ -16,7 +16,7 @@ class TagsController < ApplicationController
     if @tag.update(tag_params)
       redirect_to tags_path, success: "Tag was successfully updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

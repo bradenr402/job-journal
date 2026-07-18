@@ -53,7 +53,7 @@ class NotesController < ApplicationController
     if @note.save
       redirect_to @note, success: "Note was successfully created."
     else
-      render :new, status: :unprocessable_entity, error: "Failed to create the note."
+      render :new, status: :unprocessable_content, error: "Failed to create the note."
     end
   end
 
@@ -62,7 +62,7 @@ class NotesController < ApplicationController
     if @note.update(note_params)
       redirect_to @note, success: "Note was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity, error: "Failed to update the note."
+      render :edit, status: :unprocessable_content, error: "Failed to update the note."
     end
   end
 
@@ -71,7 +71,7 @@ class NotesController < ApplicationController
     if @note.destroy
       redirect_to @note.notable, success: "Note was successfully deleted.", status: :see_other
     else
-      redirect_to @note, error: "Failed to delete the note.", status: :unprocessable_entity
+      redirect_to @note, error: "Failed to delete the note.", status: :unprocessable_content
     end
   end
 

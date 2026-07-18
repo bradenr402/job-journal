@@ -47,7 +47,7 @@ class InterviewsController < ApplicationController
     if @interview.save
       redirect_to @interview, success: "Interview was successfully created."
     else
-      render :new, status: :unprocessable_entity, error: "Failed to create the interview."
+      render :new, status: :unprocessable_content, error: "Failed to create the interview."
     end
   end
 
@@ -56,7 +56,7 @@ class InterviewsController < ApplicationController
     if @interview.update(interview_params)
       redirect_to @interview, success: "Interview was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity, error: "Failed to update the interview."
+      render :edit, status: :unprocessable_content, error: "Failed to update the interview."
     end
   end
 
@@ -65,7 +65,7 @@ class InterviewsController < ApplicationController
     if @interview.destroy
       redirect_to @interview.job_lead, success: "Interview was successfully deleted.", status: :see_other
     else
-      redirect_to @interview, error: "Failed to delete the interview.", status: :unprocessable_entity
+      redirect_to @interview, error: "Failed to delete the interview.", status: :unprocessable_content
     end
   end
 

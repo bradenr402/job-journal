@@ -22,7 +22,7 @@ class SettingsController < ApplicationController
     else
       @settings = @user.all_settings
       @active_tab = active_tab
-      render :edit, status: :unprocessable_entity, error: "Failed to update settings."
+      render :edit, status: :unprocessable_content, error: "Failed to update settings."
     end
   end
 

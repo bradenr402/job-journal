@@ -261,7 +261,7 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
       post autofill_job_leads_url, params: { url: "https://example.com" }, as: :json
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     body = JSON.parse response.body, symbolize_names: true
     assert_equal "That host is not supported yet.", body[:error]
   end

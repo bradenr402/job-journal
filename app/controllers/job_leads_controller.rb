@@ -75,7 +75,7 @@ class JobLeadsController < ApplicationController
       render json: { fields: }
     else
       error = result.error
-      render json: { error: }, status: :unprocessable_entity
+      render json: { error: }, status: :unprocessable_content
     end
   end
 
@@ -88,7 +88,7 @@ class JobLeadsController < ApplicationController
     else
       @tags = Current.user.tags.order(:name)
       set_recents
-      render :new, status: :unprocessable_entity, error: "Failed to create job lead."
+      render :new, status: :unprocessable_content, error: "Failed to create job lead."
     end
   end
 
@@ -98,7 +98,7 @@ class JobLeadsController < ApplicationController
       redirect_to @job_lead, success: "Job lead was successfully updated."
     else
       set_recents
-      render :edit, status: :unprocessable_entity, error: "Failed to update job lead."
+      render :edit, status: :unprocessable_content, error: "Failed to update job lead."
     end
   end
 
@@ -216,7 +216,7 @@ class JobLeadsController < ApplicationController
       flash.clear
       redirect_to @job_lead, success: "Offer amount set successfully."
     else
-      render :offer, status: :unprocessable_entity, error: "Failed to set offer amount."
+      render :offer, status: :unprocessable_content, error: "Failed to set offer amount."
     end
   end
 
@@ -229,7 +229,7 @@ class JobLeadsController < ApplicationController
       redirect_to @job_lead, success: "History updated successfully."
     else
       @interviews = @job_lead.interviews.order(:scheduled_at)
-      render :history, status: :unprocessable_entity, error: "Failed to update history."
+      render :history, status: :unprocessable_content, error: "Failed to update history."
     end
   end
 

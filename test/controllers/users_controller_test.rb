@@ -19,7 +19,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should prevent duplicate emails" do
     patch account_update_url(@user), params: { user: { email_address: "two@example.com", current_password: "password" } }
-    assert :unprocessable_entity
+    assert :unprocessable_content
   end
 
   test "should delete account" do

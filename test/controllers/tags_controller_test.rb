@@ -28,7 +28,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not update tag with invalid name" do
     patch tag_url(@tag), params: { tag: { name: "" } }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test "should destroy tag" do

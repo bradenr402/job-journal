@@ -18,7 +18,7 @@ class RegistrationsController < ApplicationController
       start_new_session_for @user
       redirect_to dashboard_path, success: "You&#8217;ve successfully signed up for JobJournal. Welcome!"
     else
-      render :new, status: :unprocessable_entity, error: @user.errors.full_messages.join(", ")
+      render :new, status: :unprocessable_content, error: @user.errors.full_messages.join(", ")
     end
   end
 
