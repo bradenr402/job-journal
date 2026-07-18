@@ -68,7 +68,7 @@
   anchor-scope: var(--anchor-name);
 
   &::before {
-    content: '';
+    content: "";
     @apply inline-block absolute z-0 pointer-events-none rounded-lg [transition:scale_80ms,inset_80ms,opacity_80ms,background-color_80ms] will-change-[scale,inset,opacity,background-color] origin-center opacity-0 scale-90 bg-(--anchor-highlight-hover-color,var(--anchor-highlight-color));
 
     inset: anchor(inside);
@@ -257,7 +257,8 @@
 @utility tag {
   @apply inline-flex items-center gap-1.25 px-2 has-[button]:pr-1 py-1 rounded-lg border text-neutral-500 dark:text-neutral-400 text-xs whitespace-nowrap cursor-default select-none transition-all duration-80;
 
-  &, a:has(&) {
+  &,
+  a:has(&) {
     @apply outline-none;
   }
 
@@ -281,16 +282,16 @@
 
   /* Selected state for non-status tags */
   &.tag-selected:not(
-    .tag-lead,
-    .tag-applied,
-    .tag-interview,
-    .tag-offer,
-    .tag-rejected,
-    .tag-accepted
-  ) {
+      .tag-lead,
+      .tag-applied,
+      .tag-interview,
+      .tag-offer,
+      .tag-rejected,
+      .tag-accepted
+    ) {
     @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-600;
 
-    > svg:not([class*=size-]) {
+    > svg:not([class*="size-"]) {
       @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
     }
   }
@@ -312,7 +313,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      > svg:not([class*=size-]) {
+      > svg:not([class*="size-"]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -334,7 +335,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      > svg:not([class*=size-]) {
+      > svg:not([class*="size-"]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -356,7 +357,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      > svg:not([class*=size-]) {
+      > svg:not([class*="size-"]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -378,7 +379,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      > svg:not([class*=size-]) {
+      > svg:not([class*="size-"]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -400,7 +401,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      > svg:not([class*=size-]) {
+      > svg:not([class*="size-"]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -422,7 +423,7 @@
 
     &.tag-selected,
     &:not(.tag-filter) {
-      > svg:not([class*=size-]) {
+      > svg:not([class*="size-"]) {
         @apply size-4 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
       }
     }
@@ -476,7 +477,7 @@ static hover backgrounds.
 @utility dropdown-menu {
   @apply anchor-highlight-base [--anchor-name:--hovered-dropdown-option] absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
 
---anchor-highlight-color: --alpha(var(--color-neutral-200) / 70%);
+  --anchor-highlight-color: --alpha(var(--color-neutral-200) / 70%);
   @variant dark {
     --anchor-highlight-color: --alpha(var(--color-neutral-700) / 60%);
   }
@@ -566,13 +567,13 @@ static hover backgrounds.
 
   .dropdown-option:has(+ .dropdown-divider)::after,
   *:has(+ .dropdown-divider) > .dropdown-option::after {
-    content: '';
+    content: "";
     @apply absolute left-0 right-0 top-full h-[calc(0.25rem+0.5px)];
   }
 
   .dropdown-divider + .dropdown-option::before,
   .dropdown-divider + * > .dropdown-option::before {
-    content: '';
+    content: "";
     @apply absolute left-0 right-0 bottom-full h-[calc(0.25rem+0.5px)];
   }
 

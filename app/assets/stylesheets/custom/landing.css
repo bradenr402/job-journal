@@ -36,7 +36,11 @@
     background-color: color-mix(in oklch, var(--color-white) 80%, transparent);
 
     @variant dark {
-      background-color: color-mix(in oklch, var(--color-neutral-950) 80%, transparent);
+      background-color: color-mix(
+        in oklch,
+        var(--color-neutral-950) 80%,
+        transparent
+      );
     }
   }
   to {
@@ -70,7 +74,9 @@
     animation-duration: var(--hero-stagger-duration);
     animation-timing-function: var(--hero-stagger-ease);
     animation-fill-mode: both;
-    animation-delay: calc(var(--hero-stagger-index, 0) * var(--hero-stagger-stagger));
+    animation-delay: calc(
+      var(--hero-stagger-index, 0) * var(--hero-stagger-stagger)
+    );
     will-change: transform, opacity, filter;
   }
 }
@@ -108,19 +114,57 @@
     animation-timing-function: linear;
     transform: translateY(calc(var(--nav-float-progress) * 10px));
     border-radius: calc(var(--nav-float-progress) * 1.25rem);
-    background-color: color-mix(in oklch, var(--color-white) calc(var(--nav-float-progress) * 80%), transparent);
+    background-color: color-mix(
+      in oklch,
+      var(--color-white) calc(var(--nav-float-progress) * 80%),
+      transparent
+    );
     box-shadow:
-      0 1px 2px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 4%), transparent),
-      0 10px 28px -14px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 14%), transparent),
-      0 0 0 1px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 5%), transparent);
+      0 1px 2px
+        color-mix(
+          in oklch,
+          var(--color-black) calc(var(--nav-float-progress) * 4%),
+          transparent
+        ),
+      0 10px 28px -14px
+        color-mix(
+          in oklch,
+          var(--color-black) calc(var(--nav-float-progress) * 14%),
+          transparent
+        ),
+      0 0 0 1px
+        color-mix(
+          in oklch,
+          var(--color-black) calc(var(--nav-float-progress) * 5%),
+          transparent
+        );
     will-change: transform, border-radius, background-color, box-shadow;
 
     @variant dark {
-      background-color: color-mix(in oklch, var(--color-neutral-900) calc(var(--nav-float-progress) * 80%), transparent);
+      background-color: color-mix(
+        in oklch,
+        var(--color-neutral-900) calc(var(--nav-float-progress) * 80%),
+        transparent
+      );
       box-shadow:
-        0 1px 2px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 40%), transparent),
-        0 10px 28px -14px color-mix(in oklch, var(--color-black) calc(var(--nav-float-progress) * 55%), transparent),
-        0 0 0 1px color-mix(in oklch, var(--color-white) calc(var(--nav-float-progress) * 6%), transparent);
+        0 1px 2px
+          color-mix(
+            in oklch,
+            var(--color-black) calc(var(--nav-float-progress) * 40%),
+            transparent
+          ),
+        0 10px 28px -14px
+          color-mix(
+            in oklch,
+            var(--color-black) calc(var(--nav-float-progress) * 55%),
+            transparent
+          ),
+        0 0 0 1px
+          color-mix(
+            in oklch,
+            var(--color-white) calc(var(--nav-float-progress) * 6%),
+            transparent
+          );
     }
   }
 }

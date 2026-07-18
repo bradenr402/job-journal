@@ -27,7 +27,7 @@
 }
 
 .form-textarea-wrap::after {
-  content: attr(data-replicated-value) ' ';
+  content: attr(data-replicated-value) " ";
   white-space: pre-wrap;
   visibility: hidden;
   /* Match textarea styling */
@@ -48,8 +48,8 @@
 .form-checkbox-tag {
   @apply rounded-md;
 
-  > input[type='radio'],
-  > input[type='checkbox'] {
+  > input[type="radio"],
+  > input[type="checkbox"] {
     @apply sr-only;
   }
 
@@ -67,7 +67,7 @@
     /* Selected state for non-status tags */
     @apply peer-checked:border-primary-200 dark:peer-checked:border-primary-900 peer-checked:bg-primary-100/80 dark:peer-checked:bg-primary-950/80 peer-checked:text-primary-600 has-[svg:not([class*=size-])]:peer-checked:pr-1.5 not-peer-checked:[&_svg:not([class*=size-])]:hidden peer-checked:hover:[&_svg:not([class*=size-])]:bg-rose-200/70 peer-checked:hover:[&_svg:not([class*=size-])]:text-rose-600;
 
-    > svg:not([class*=size-]) {
+    > svg:not([class*="size-"]) {
       @apply size-4 cursor-pointer rounded-full p-0.5 text-primary-600 transition-all duration-80;
     }
   }
@@ -136,22 +136,16 @@
   }
 
   /* Hover */
-  label:is(
-    :hover,
-    :has(~ label:hover)
-  ) > svg {
+  label:is(:hover, :has(~ label:hover)) > svg {
     @apply star-active;
   }
 
   /* Checked (when not hovering) */
-  label:not(
-    :hover,
-    :has(~ label:hover),
-    :hover ~ label
-  ):has(
-    input:checked,
-    ~ label > input:checked
-  ) > svg {
+  label:not(:hover, :has(~ label:hover), :hover ~ label):has(
+      input:checked,
+      ~ label > input:checked
+    )
+    > svg {
     @apply star-active;
   }
 }
