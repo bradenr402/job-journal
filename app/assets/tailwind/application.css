@@ -5,6 +5,10 @@
 @plugin '@tailwindcss/aspect-ratio';
 @source '../../javascript/controllers/';
 
+@custom-variant pwa (@media (display-mode: standalone));
+@custom-variant browser (@media (display-mode: browser));
+@custom-variant ios-pwa (&:where(html.ios-pwa *));
+
 @theme {
   /* Primary color scale */
   --color-primary-50: var(--color-emerald-50);
@@ -71,13 +75,22 @@
   }
 }
 
-@view-transition {
-  navigation: auto;
-}
-
 @layer base {
   :root {
+    color-scheme: light dark;
     interpolate-size: allow-keywords;
+
+    ::selection {
+      background: light-dark(
+        oklch(from var(--color-primary-500) l c h / 5%),
+        oklch(from var(--color-primary-500) l c h / 15%)
+      );
+      color: light-dark(var(--color-primary-500), var(--color-primary-400));
+      text-decoration: dotted underline
+        light-dark(var(--color-primary-500), var(--color-primary-400));
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
   }
 
   html {
@@ -89,37 +102,16 @@
   }
 }
 
+/* View transitions */
+@view-transition {
+  navigation: auto;
+}
+
 ::view-transition-old(*),
 ::view-transition-new(*) {
   height: 100%;
 }
 
 ::view-transition-group(root) {
-  background-color: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  ::view-transition-group(root) {
-    background-color: var(--color-neutral-925);
-  }
-}
-
-@custom-variant pwa (@media (display-mode: standalone));
-@custom-variant browser (@media (display-mode: browser));
-@custom-variant ios-pwa (&:where(html.ios-pwa *));
-
-:root {
-  color-scheme: light dark;
-
-  ::selection {
-    background: light-dark(
-      oklch(from var(--color-primary-500) l c h / 5%),
-      oklch(from var(--color-primary-500) l c h / 15%)
-    );
-    color: light-dark(var(--color-primary-500), var(--color-primary-400));
-    text-decoration: dotted underline
-      light-dark(var(--color-primary-500), var(--color-primary-400));
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-  }
+  background-color: light-dark(#ffffff, var(--color-neutral-925));
 }
