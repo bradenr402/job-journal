@@ -69,11 +69,21 @@
 
   &::before {
     content: '';
-    @apply inline-block absolute z-0 pointer-events-none rounded-lg transition-[inset,opacity,background-color] duration-80 will-change-[inset,opacity,background-color] origin-center;
+    @apply inline-block absolute z-0 pointer-events-none rounded-lg [transition:scale_80ms,inset_80ms,opacity_80ms,background-color_80ms] will-change-[scale,inset,opacity,background-color] origin-center opacity-0 scale-90 bg-(--anchor-highlight-hover-color,var(--anchor-highlight-color));
 
     background-color: var(--anchor-highlight-hover-color, var(--anchor-highlight-color));
     inset: anchor(inside);
     position-anchor: var(--anchor-name);
+  }
+
+  @media (hover: hover) {
+    &:has(:hover) {
+      --anchor-hold: 0s;
+
+      &::before {
+        @apply opacity-100 scale-100;
+      }
+    }
   }
 }
 
@@ -95,13 +105,22 @@
   }
 }
 
+@utility anchor-base {
+  /* Hold the anchor name briefly after un-hover so the highlight can scale out in place. */
+  transition: anchor-name 0s var(--anchor-hold, 80ms) allow-discrete;
+}
+
 @utility anchor {
+  @apply anchor-base;
+
   @variant hover {
     anchor-name: var(--anchor-name);
   }
 }
 
 @utility anchor-within {
+  @apply anchor-base;
+
   :hover > & {
     anchor-name: var(--anchor-name);
   }
