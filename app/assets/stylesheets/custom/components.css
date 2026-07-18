@@ -68,8 +68,9 @@
 
   &::before {
     content: '';
-    @apply inline-block absolute z-0 pointer-events-none rounded-lg transition-[inset,opacity] duration-80 will-change-[inset,opacity] origin-center;
+    @apply inline-block absolute z-0 pointer-events-none rounded-lg transition-[inset,opacity,background-color] duration-80 will-change-[inset,opacity,background-color] origin-center;
 
+    background-color: var(--anchor-highlight-hover-color, var(--anchor-highlight-color));
     inset: anchor(inside);
     position-anchor: var(--anchor-name);
   }
@@ -77,15 +78,19 @@
 
 @utility anchor-highlight {
   @apply anchor-highlight-base;
-  &::before {
-    @apply bg-neutral-100/70 dark:bg-neutral-900/70;
+
+  --anchor-highlight-color: --alpha(var(--color-neutral-100) / 70%);
+  @variant dark {
+    --anchor-highlight-color: --alpha(var(--color-neutral-900) / 70%);
   }
 }
 
 @utility anchor-highlight-alt {
   @apply anchor-highlight-base;
-  &::before {
-    @apply bg-neutral-200/70 dark:bg-neutral-800/70;
+
+  --anchor-highlight-color: --alpha(var(--color-neutral-200) / 70%);
+  @variant dark {
+    --anchor-highlight-color: --alpha(var(--color-neutral-800) / 70%);
   }
 }
 
@@ -98,6 +103,15 @@
 @utility anchor-within {
   :hover > & {
     anchor-name: var(--anchor-name);
+  }
+}
+
+@utility anchor-color-* {
+  @media (hover: hover) {
+    :has(&:hover) {
+      --anchor-highlight-hover-color: --value(--color-*);
+      --anchor-highlight-hover-color: --alpha(--value(--color-*) / calc(--modifier(integer) * 1%));
+    }
   }
 }
 
@@ -151,18 +165,14 @@
          [--fade:4rem] [--left:0rem] [--right:var(--fade)]
          @max-md:mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
          @max-md:animate-[timeline-fade_linear_both] @max-md:[animation-timeline:scroll(self_inline)];
-
-  &::before {
-    @apply transition-[inset,opacity,background-color];
-  }
-
-  &:has(.tab-link-destructive:hover)::before {
-    @apply bg-rose-100/80 dark:bg-rose-950/80;
-  }
 }
 
 @utility tab-link {
   @apply anchor-within flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-light transition-colors duration-80;
+
+  &.tab-link-destructive {
+    @apply anchor-color-rose-100/80 dark:anchor-color-rose-950/80;
+  }
 
   button[aria-selected="false"] & .tab-link-icon-selected {
     @apply hidden;
@@ -445,27 +455,15 @@ static hover backgrounds.
 }
 
 @utility dropdown-menu {
-  @apply anchor-highlight-base absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
-  --anchor-name: --hovered-dropdown-option;
+  @apply anchor-highlight-base [--anchor-name:--hovered-dropdown-option] absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 not-dark:shadow-sm border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
 
-  &::before {
-    @apply transition-[inset,opacity,background-color] bg-neutral-200/70 dark:bg-neutral-700/60;
+--anchor-highlight-color: --alpha(var(--color-neutral-200) / 70%);
+  @variant dark {
+    --anchor-highlight-color: --alpha(var(--color-neutral-700) / 60%);
   }
 
   .card & {
     @apply dark:bg-neutral-800 dark:border-neutral-700;
-  }
-
-  &:has(.dropdown-option-primary:hover)::before {
-    @apply bg-primary-200/70 dark:bg-primary-600/60;
-  }
-
-  &:has(.dropdown-option-secondary:hover)::before {
-    @apply bg-neutral-200/70 dark:bg-neutral-700/60;
-  }
-
-  &:has(.dropdown-option-destructive:hover)::before {
-    @apply bg-rose-200/70 dark:bg-rose-900/60;
   }
 
   &.dropdown-hidden {
@@ -517,15 +515,15 @@ static hover backgrounds.
     @apply anchor relative z-10 inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
-      @apply text-primary-600 dark:text-primary-400 focus:ring-primary-500 active:bg-primary-300/60 dark:active:bg-primary-600;
+      @apply anchor-color-primary-200/70 dark:anchor-color-primary-900/60 text-primary-600 dark:text-primary-400 focus:ring-primary-500 active:bg-primary-300/60 dark:active:bg-primary-600;
     }
 
     &.dropdown-option-secondary {
-      @apply text-neutral-600 dark:text-neutral-400 focus:ring-neutral-500 active:bg-neutral-300/70 dark:active:bg-neutral-700;
+      @apply anchor-color-neutral-200/70 dark:anchor-color-neutral-700/60 text-neutral-600 dark:text-neutral-400 focus:ring-neutral-500 active:bg-neutral-300/70 dark:active:bg-neutral-700;
     }
 
     &.dropdown-option-destructive {
-      @apply text-rose-600 dark:text-rose-400 focus:ring-rose-500 active:bg-rose-300/60 dark:active:bg-rose-600;
+      @apply anchor-color-rose-200/70 dark:anchor-color-rose-900/60 text-rose-600 dark:text-rose-400 focus:ring-rose-500 active:bg-rose-300/60 dark:active:bg-rose-600;
     }
 
     @supports not (anchor-name: --a) {
