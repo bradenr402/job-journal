@@ -1,5 +1,5 @@
-<% if params[:notable_type].present? %>
-  <%= link_to 'Clear Filters', notes_path, class: 'btn btn-sm btn-destructive btn-muted' %>
+<% if params[:notable_type].present? || (@selected_note_type.present? && @selected_note_type != "all") %>
+  <%= link_to "Clear Filters", notes_path, class: "btn btn-sm btn-destructive btn-muted" %>
 <% end %>
 
 <div id="note-filters" class="my-4 space-y-1">

@@ -1,5 +1,5 @@
-<% if @selected_tags.any? || @selected_status.present? || @selected_job_lead_type.present? %>
-  <%= link_to 'Clear Filters', job_leads_path, class: 'btn btn-sm btn-destructive btn-muted' %>
+<% if @selected_tags.any? || @selected_status.present? || (@selected_job_lead_type.present? && @selected_job_lead_type != "all") %>
+  <%= link_to "Clear Filters", job_leads_path(job_lead_type: "all"), class: "btn btn-sm btn-destructive btn-muted" %>
 <% end %>
 
 <div id="job-lead-filters" class="my-4 space-y-1">
