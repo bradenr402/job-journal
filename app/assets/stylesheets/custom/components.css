@@ -179,12 +179,49 @@
   }
 }
 
+/*
+  Fades the edges of a scrollable container to hint at overflowing content.
+  A scroll-driven animation (`timeline-fade-x`/`timeline-fade-y` in
+  application.css) moves the edge fade widths (`--left`/`--right` for the x
+  axis, `--top`/`--bottom` for the y axis) so a fade only appears on an edge
+  with more content to scroll toward.
+
+  When the container has no scrollable overflow, the scroll timeline is
+  inactive and the keyframes don't apply, so no fade shows. Browsers without
+  scroll-driven animation support fall back to a static end-edge fade.
+*/
+@utility overflow-fade-base {
+  /* Static fallback fade on the end edge; zeroed out when scroll-driven
+     animations are supported so the fade only appears via the timeline. */
+  @apply [--left:0rem] [--right:var(--fade)] [--top:0rem] [--bottom:var(--fade)];
+
+  @supports (animation-timeline: scroll()) {
+    --right: 0rem;
+    --bottom: 0rem;
+  }
+}
+
+/* Horizontal fade: `overflow-fade-x` (default 1.5rem), spacing scale (`overflow-fade-x-16`), or arbitrary (`overflow-fade-x-[3rem]`). */
+@utility overflow-fade-x-* {
+  --fade: --spacing(--value(number, --default(6)));
+  --fade: --value([length]);
+  @apply overflow-fade-base
+         mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
+         animate-[timeline-fade-x_linear_both] [animation-timeline:scroll(self_inline)];
+}
+
+/* Vertical fade: `overflow-fade-y` (default 1.5rem), spacing scale (`overflow-fade-y-16`), or arbitrary (`overflow-fade-y-[3rem]`). */
+@utility overflow-fade-y-* {
+  --fade: --spacing(--value(number, --default(6)));
+  --fade: --value([length]);
+  @apply overflow-fade-base
+         mask-[linear-gradient(to_bottom,transparent,black_var(--top),black_calc(100%-var(--bottom)),transparent)]
+         animate-[timeline-fade-y_linear_both] [animation-timeline:scroll(self_block)];
+}
+
 @utility tab-link-list {
-  @apply anchor-highlight-alt @md:anchor-highlight flex @md:flex-col
-         @max-md:overflow-x-auto @max-md:scrollbar-none max-md:px-4
-         [--fade:4rem] [--left:0rem] [--right:var(--fade)]
-         @max-md:mask-[linear-gradient(to_right,transparent,black_var(--left),black_calc(100%-var(--right)),transparent)]
-         @max-md:animate-[timeline-fade_linear_both] @max-md:[animation-timeline:scroll(self_inline)];
+  @apply anchor-highlight flex @md:flex-col
+         @max-md:anchor-highlight-alt @max-md:px-4 @max-md:overflow-x-auto @max-md:scrollbar-none @max-md:overflow-fade-x-16;
 }
 
 @utility tab-link {

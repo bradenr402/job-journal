@@ -37,7 +37,7 @@
 
   --container-8xl: calc(var(--spacing) * 88 * 4); /* 88rem */
 
-  @keyframes timeline-fade {
+  @keyframes timeline-fade-x {
     0% {
       --left: 0rem;
       --right: var(--fade);
@@ -51,6 +51,23 @@
     100% {
       --left: var(--fade);
       --right: 0rem;
+    }
+  }
+
+  @keyframes timeline-fade-y {
+    0% {
+      --top: 0rem;
+      --bottom: var(--fade);
+    }
+
+    1%, 99% {
+      --top: var(--fade);
+      --bottom: var(--fade);
+    }
+
+    100% {
+      --top: var(--fade);
+      --bottom: 0rem;
     }
   }
 
