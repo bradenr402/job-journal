@@ -7,6 +7,8 @@ A privacy-first job search tracker. Organize every lead, application, and interv
 ## Table of Contents
 
 - [Overview](#overview)
+  - [Spreadsheets weren’t built for this](#spreadsheets-werent-built-for-this)
+  - [JobJournal flips that script](#jobjournal-flips-that-script)
 - [Why JobJournal?](#why-jobjournal)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
@@ -30,21 +32,27 @@ A privacy-first job search tracker. Organize every lead, application, and interv
 
 ## Overview
 
-Searching for jobs is often overwhelming, chaotic, and emotionally draining&mdash;especially when juggling multiple applications, deadlines, and interview processes. Spreadsheets have long been the default tool for job hunters wanting to keep track of their job search. Every [career blog](https://www.jobscan.co/blog/job-search-spreadsheet-and-job-tracker/), [coaching platform](https://www.linkedin.com/advice/3/youre-struggling-keep-track-job-applications-hjlbc), and [Reddit advice thread](https://www.reddit.com/r/jobsearchhacks/comments/1jlmckp/the_tip_that_helped_me_secure_3_offers_in_two/) seems to preach this same gospel: “just open Excel or Google Sheets and log every lead.”
+Searching for jobs is often overwhelming, chaotic, and emotionally draining. So everyone reaches for a spreadsheet because, until now, there hasn’t been anything better.
 
-The Muse hands you a [downloadable tracker](https://www.themuse.com/advice/job-search-spreadsheet-track-application) and swears it will feel like magic once you start color-coding 30 columns. Indeed offers a [step-by-step tutorial](https://www.indeed.com/career-advice/finding-a-job/job-search-spreadsheet) that turns your already grueling job search into a manual data-entry chore, and SpreadsheetPoint’s [ready-made template](https://spreadsheetpoint.com/templates/job-tracker-spreadsheet/) still assumes you’ll happily maintain three separate sheets by hand.
+### Spreadsheets weren’t built for this.
 
-Even productivity tools like [Notion](https://www.notion.com/templates/category/job-application-tracking?srsltid=AfmBOopzNwEAXilhwqq0kwRUnsDPYSwLyuO24Im_6EUfgzsMFT5jvOcu) market spreadsheet-style templates as the ultimate fix, ignoring that real people forget to log details, misspell statuses, and drag cells out of alignment at 2 a.m. after their 47th application. And Reddit is full of well-meaning users sharing Google Sheets they cobbled together&mdash;[r/jobsearchhacks](https://www.reddit.com/r/jobsearchhacks/comments/1e9paqj/these_are_the_google_sheets_i_use_to_track_my_job/), [r/jobs](https://www.reddit.com/r/jobs/comments/emwcvs/protip_create_a_spreadsheet_of_jobs_youve_applied/), and [r/recruitinghell](https://www.reddit.com/r/recruitinghell/comments/1fxombf/sharing_an_application_tracker_google_sheets/) all celebrate spreadsheets because, until now, there hasn’t been anything better.
+When you’re juggling multiple applications, deadlines, and interviews, everyone seems to preach the same gospel: “just open Excel or Google Sheets and log every lead.” It works&mdash;until it doesn’t.
 
-But once your search scales, the limitations of a spreadsheet become obvious. A spreadsheet never reminds you to follow up on applications or interviews from several days ago; it can’t alert you if you forget to apply to a job lead you saved last week; and it can’t offer insights to help you easily see which sources are working. Spreadsheets silo context, scattering interview notes, thank-you drafts, meeting links, and follow-up reminders across different apps where they’re too easily forgotten. They’re error-prone and fragile: it’s easy to break formulas, delete or overwrite data, or mislabel rows&mdash;especially when your focus is already stretched thin. They lack consistency in how information is entered or categorized, aren’t mobile-friendly when you’re on the go, and offer search capabilities that are limited at best. There’s no sense of context tying leads, notes, and interviews together, and no built-in structure or encouragement to help you stay motivated. And as your search grows, spreadsheets simply don’t scale&mdash;they become harder to navigate, harder to maintain, easier to break, and less useful when you need them most.
+- Spreadsheets don’t remind you to follow up, flag stale leads, or tell you which sources are working.
+- Notes, meeting links, and interview prep end up scattered across apps where they’re too easily forgotten.
+- The more applications you add, the harder they are to maintain&mdash;and the less useful they become.
 
-JobJournal flips that script. Instead of forcing you to babysit cells, each opportunity is treated as a living record: timeline-aware suggestions appear automatically on your dashboard; notes are attached to the stage where they belong; insights visualize which sources convert; and universal searching with tags and filters helps you easily find whatever you’re looking for, whether it’s from yesterday or from 6 months ago. JobJournal features a bird’s-eye overview of your activity, along with a customizable weekly application goal, helping you keep track of your progress and stay motivated. And smart suggestions spare you from typing the same job title, company name, source, or location again and again. By focusing on workflows rather than rows, JobJournal replaces the brittle spreadsheet paradigm with a purpose-built system that scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
+### JobJournal flips that script.
+
+Instead of babysitting cells, every opportunity becomes a **living record**. Follow-up suggestions and stale job lead alerts surface on your dashboard automatically. Notes stay attached to the stage they belong to. Insights show which sources actually convert. And universal search finds anything instantly.
+
+**Focus on your workflow, not managing rows.** JobJournal scales from a single dream role to 100 concurrent applications&mdash;without breaking your flow or compromising your privacy.
 
 ---
 
 ## Why JobJournal?
 
-Unlike recruiter tools or job boards, JobJournal isn’t built for companies&mdash;it’s built **for you**. Whether you’re actively applying or passively looking, it keeps you in control of your journey, your story, and your data. Stay organized, stay motivated, and stay private with JobJournal.
+Recruiter tools serve companies. Job boards serve advertisers. JobJournal serves **you**—keeping you in control of your job search and your data.
 
 ---
 
@@ -56,7 +64,7 @@ Unlike recruiter tools or job boards, JobJournal isn’t built for companies&mda
   - [Tailwind CSS](https://tailwindcss.com) v4
   - [Turbo](https://turbo.hotwired.dev/)
   - [Stimulus](https://stimulus.hotwired.dev/)
-  - [Importmap](https://github.com/rails/importmap-rails)&mdash;no Node.js or build step required
+  - [Importmap](https://github.com/rails/importmap-rails)
 - **Deployment:**
   - **URL**: [job-journal.fly.dev](https://job-journal.fly.dev)
   - **Hosting Provider**: [Fly.io](https://fly.io)
@@ -131,68 +139,56 @@ bin/rails test test/models/user_test.rb
 
 ### Job Lead Management
 
-- Track key details:
-  - **Required:** Company, Job title, Application URL
-  - **Optional:** Source (e.g., LinkedIn, referral), Salary, Contact, Offer amount, Location
-- Timeline history:
-  - Automatically records a timeline of status changes, with manual overrides when needed.
-  - Statuses: `lead`, `applied`, `interview`, `offer`, `rejected`, `accepted`
-- Create and reuse custom tags (e.g., `remote`, `dream job`, `priority`)
-- Add unlimited notes for job details, application notes, and company research
+- Track key details: company, title, salary, contact, location, etc.
+- Automatically records a timeline of status changes, with manual overrides when needed.
+- Categorize job leads with unlimited tags for easy filtering and searching
+- Add unlimited notes for additional job details, company research, or anything else you want to remember
 
-### Alerts & Reminders
-
-- See upcoming interviews at a glance
-- Suggestions to follow up after applications and interviews
-- Reminders to rate and reflect on past interviews
-- Highlight stale job leads you forgot to apply to
-
-### Interview Tracking
-
-- Log interviews with:
-  - Name of interviewer
-  - Scheduled date and time
-  - Location
-  - Call URL
-- Rate how you felt about the interview
-- Add unlimited notes for prep, debrief, or feedback
-- Add interviews to your calendar in a single click
-
-### Smart Search & Filters
-
-- Universal search for job leads, interviews, and notes
-- Filter job leads by:
-  - Tags
-  - Status
-  - Active vs. archived
-- Filter interviews by date
-- Filter notes by parent type: Job Lead or Interview
-
-### Insights
+### Insights That Guide You
 
 - Track number of job leads, applications, and interviews per week
 - Set a weekly application goal to boost motivation
-- Analyze the effectiveness of job sources (referrals, job boards, etc.)
-- See how far each source gets you in the hiring process
-- See your most frequently used tags
+- See which sources actually convert to interviews and offers
+
+### Interview Tracking
+
+- Log interviewer, date, location, and call link
+- Add to your calendar in one click
+- Rate how you felt about the interview
+- Add unlimited notes for prep, debrief, or feedback
+
+### Dashboard Overview
+
+- Weekly stats and progress toward your application goal
+- Upcoming interviews at a glance
+- Smart follow-up suggestions after applications and interviews
+- Gentle reminders to rate and reflect on past interviews
+- Stale job leads you forgot to apply to
+- Your most recent notes to help you pick up where you left off
+
+### Smart Search & Filters
+
+- Search across job leads, interviews, and notes
+- Narrow resutls with filters:
+  - Job Leads by tag, status, and archive state
+  - Interviews by date
+  - Notes by parent type and archive state
 
 ### Autofill From URL
 
-- Paste a job posting URL to auto-extract job details
-- Fills in company, job title, location, and more&mdash;no manual entry required
+- Enter a job posting URL to auto-extract job details
+- Fills in company, title, location, and more&mdash;no manual input required
 - Review and edit any field before saving
-- Currently supports **LinkedIn** and **Indeed**, with more sources on the way
+- Currently supports **Indeed** and **LinkedIn**, with more sources on the way
   - Want autofill for another source? Feel free to [open an issue](https://github.com/bradenr402/job-journal/issues/new) or contribute a PR!
 
 ---
 
 ## Privacy & Security
 
-Your job search data should be _yours alone_. That’s why JobJournal is **privacy-first** by design: no third-party sharing, no data selling, no analytics, and no recruiter dashboards.
+Your job search data should be _yours alone_. JobJournal is **privacy-first** by design—no third-party sharing, no data selling, no recruiter analytics.
 
-- All your data is scoped to your user account.
-- Secure authentication via email & password.
-- Delete your account and all associated data at any time.
+Your data stays scoped to your account, and you can delete it all at any time.
 
 ---
 
