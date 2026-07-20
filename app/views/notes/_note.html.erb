@@ -19,9 +19,9 @@
     </p>
   <% end %>
 
-  <div class="<%= 'h-full grow max-h-24' unless note_page %> overflow-hidden relative">
+  <div class="<%= "h-full grow max-h-[4lh] overflow-hidden overflow-fade-y-[1.5lh]" unless note_page %>">
     <% note_content = note_page ? markdown_to_html(note.content) : note.content %>
-    <% note_classes = note_page ? 'prose' : 'whitespace-break-spaces text-light line-clamp-4 select-none' %>
+    <% note_classes = note_page ? "prose" : "whitespace-break-spaces text-light select-none" %>
 
     <%= content_tag(:div, note_content, class: note_classes) %>
   </div>
