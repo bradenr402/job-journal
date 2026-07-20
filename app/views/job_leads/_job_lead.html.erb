@@ -136,12 +136,30 @@
   <% end %>
 
   <% if job_lead.tags.any? %>
-    <div class="flex flex-wrap items-center gap-1 mb-4">
-      <% job_lead.tags.sort_by(&:name).each do |tag| %>
-        <span class="tag">
-          <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
-          <span><%= tag.name %></span>
-        </span>
+    <% tags = job_lead.tags.order(:name).pluck(:name) %>
+
+    <% visible_tags = tags.first(job_lead_page ? tags.size : 5) %>
+    <% has_more_tags = tags.size > visible_tags.size %>
+
+    <div class="mb-4 flex flex-wrap items-center gap-1">
+      <% visible_tags.each do |tag_name| %>
+        <% is_last_tag = tag_name == visible_tags.last %>
+
+        <% tag_html = capture do %>
+          <span class="tag">
+            <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
+            <%= tag.span tag_name %>
+          </span>
+        <% end %>
+
+        <% if has_more_tags && is_last_tag %>
+          <span class="inline-flex items-center gap-1.5 whitespace-nowrap">
+            <%= tag_html %>
+            <span class="text-xs text-muted"><%= pluralize(tags.size - visible_tags.size, "more tag") %> &hellip;</span>
+          </span>
+        <% else %>
+          <%= tag_html %>
+        <% end %>
       <% end %>
     </div>
   <% end %>
