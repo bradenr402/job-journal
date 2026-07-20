@@ -1,8 +1,6 @@
 <%
   note_page = current_page?(note_path(note))
   display_title = note_page || current_page?(notes_path) || current_page?(dashboard_path) || current_page?(search_path) || @demo
-
-  note_title = note.title if display_title
 %>
 
 <div id="<%= dom_id note %>" class="relative <%= item_layout_class_names @demo ? "grid" : :notes %> flex flex-col" style="view-transition-name: note-<%= note.id %>;">
@@ -17,7 +15,7 @@
       <% elsif note.notable.is_a?(JobLead) %>
         <%= icon 'briefcase-filled', class: 'size-3 shrink-0 mt-0.5' %>
       <% end %>
-      <%= note_title %>
+      <%= note.title %>
     </p>
   <% end %>
 
