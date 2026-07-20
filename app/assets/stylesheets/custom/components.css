@@ -144,18 +144,18 @@
 }
 
 @utility nav-link-list {
-  @apply anchor-highlight;
+  @apply md:anchor-highlight;
 }
 
 @utility nav-link {
-  @apply anchor-within flex items-center whitespace-nowrap text-light;
+  @apply flex items-center whitespace-nowrap text-light;
 
   @variant max-md {
     @apply flex-col gap-0.5 py-2.75 font-medium text-2xs rounded-full px-2;
   }
 
   @variant md {
-    @apply gap-2 py-2 px-3 rounded-lg text-sm;
+    @apply anchor-within gap-2 py-2 px-3 rounded-lg text-sm;
   }
 
   &.nav-link-active {
