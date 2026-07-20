@@ -74,6 +74,8 @@ Recruiter tools serve companies. Job boards serve advertisers. JobJournal serves
 
 ## Getting Started
 
+JobJournal is available for free at [job-journal.fly.dev](https://job-journal.fly.dev). If you’d like to run it locally, follow the instructions below.
+
 ### Prerequisites
 
 - Ruby 3.4.3
