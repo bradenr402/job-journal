@@ -7,7 +7,9 @@
 
 @custom-variant pwa (@media (display-mode: standalone));
 @custom-variant browser (@media (display-mode: browser));
+@custom-variant ios (&:where(html.ios *));
 @custom-variant ios-pwa (&:where(html.ios-pwa *));
+@custom-variant ios-browser (&:where(html.ios:not(.ios-pwa) *));
 
 @theme {
   /* Primary color scale */

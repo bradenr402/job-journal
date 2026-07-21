@@ -54,8 +54,7 @@ const isIOS =
   /iP(ad|hone|od)/.test(ua) ||
   // iPadOS 13+ presents a desktop-Mac UA; distinguish by touch support
   (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)
+document.documentElement.classList.toggle('ios', isIOS)
 
 const isIOSStandalone = isIOS && window.navigator.standalone === true
-
 document.documentElement.classList.toggle('ios-pwa', isIOSStandalone)
-
