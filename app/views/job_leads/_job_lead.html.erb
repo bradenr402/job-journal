@@ -203,7 +203,7 @@
     <% else %>
       <span class="inline-flex items-center gap-1">
         <%= icon 'clock', class: 'size-3.5 shrink-0' %>
-        Updated: <%= local_time_short job_lead.updated_at %>
+        <%== job_lead.edited? ? "Updated: #{local_time_short job_lead.updated_at}" : "Created: #{local_time_short job_lead.created_at}" %>
       </span>
     <% end %>
   </div>

@@ -98,7 +98,7 @@
     <% end %>
     <span class="inline-flex items-center gap-1">
       <%= icon 'clock', class: 'size-3.5 shrink-0' %>
-      Updated: <%= local_time_short interview.updated_at %>
+      <%== interview.edited? ? "Updated: #{local_time_short interview.updated_at}" : "Created: #{local_time_short interview.created_at}" %>
     </span>
   </div>
 </div>
