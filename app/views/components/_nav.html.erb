@@ -67,7 +67,7 @@
   </div>
 </nav>
 
-<% excluded_paths = [ new_job_lead_path, settings_path, "/edit" ] %>
+<% excluded_paths = [ new_job_lead_path, settings_path, "/edit", "/new", "/history" ] %>
 <% unless excluded_paths.any? { request.path.include? it } %>
   <div class="md:hidden fixed bottom-24 right-5.5 z-20">
     <%= link_to new_job_lead_path, class: 'btn btn-primary btn-lg btn-circle grid place-items-center aspect-square shadow-lg shadow-primary-500/15' do %>
