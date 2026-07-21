@@ -33,6 +33,7 @@ class NotesController < ApplicationController
   def new
     @note = Note.new
     if params[:notable_type].present? && params[:notable_id].present?
+      verify_notable_ownership!(params[:notable_type], params[:notable_id])
       @note.notable_type = params[:notable_type]
       @note.notable_id = params[:notable_id]
     end
@@ -48,6 +49,7 @@ class NotesController < ApplicationController
 
   # POST /notes
   def create
+    verify_notable_ownership!(note_params[:notable_type], note_params[:notable_id])
     @note = Current.user.notes.build(note_params)
 
     if @note.save
@@ -59,6 +61,8 @@ class NotesController < ApplicationController
 
   # PATCH/PUT /notes/1
   def update
+    verify_notable_ownership!(note_params[:notable_type], note_params[:notable_id])
+
     if @note.update(note_params)
       redirect_to @note, success: "Note was successfully updated.", status: :see_other
     else
@@ -85,5 +89,19 @@ class NotesController < ApplicationController
 
   def note_params
     params.expect(note: [ :content, :notable_type, :notable_id ])
+  end
+
+  # Ensures a note can only be attached to a notable owned by the current user.
+  def verify_notable_ownership!(notable_type, notable_id)
+    return if notable_type.blank? && notable_id.blank?
+
+    owned =
+      case notable_type
+      when "JobLead" then Current.user.job_leads.exists?(notable_id)
+      when "Interview" then Current.user.interviews.exists?(notable_id)
+      else false
+      end
+
+    raise ActiveRecord::RecordNotFound unless owned
   end
 end

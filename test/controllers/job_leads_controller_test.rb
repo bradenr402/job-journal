@@ -32,14 +32,38 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should not show job_lead for another user" do
+    sign_in_as users(:two)
+
+    get job_lead_url(@job_lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+  end
+
   test "should get edit" do
     get edit_job_lead_url(@job_lead)
     assert_response :success
   end
 
+  test "should not get edit for another user's job lead" do
+    sign_in_as users(:two)
+
+    get edit_job_lead_url(@job_lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+  end
+
   test "should update job_lead" do
     patch job_lead_url(@job_lead), params: { job_lead: { title: "Updated Title" } }
     assert_redirected_to job_lead_url(@job_lead)
+  end
+
+  test "should not update another user's job lead" do
+    sign_in_as users(:two)
+
+    patch job_lead_url(@job_lead), params: { job_lead: { title: "Updated Title" } }
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
   end
 
   test "should destroy job_lead" do
@@ -50,9 +74,28 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to job_leads_url
   end
 
+  test "should not destroy another user's job lead" do
+    sign_in_as users(:two)
+
+    assert_no_difference("JobLead.count") do
+      delete job_lead_url(@job_lead)
+    end
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+  end
+
   test "should archive job_lead" do
     patch archive_job_lead_url(@job_lead)
     assert @job_lead.reload.archived?
+  end
+
+  test "should not archive another user's job lead" do
+    sign_in_as users(:two)
+
+    patch archive_job_lead_url(@job_lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+    assert_not @job_lead.reload.archived?
   end
 
   test "should unarchive job_lead" do
@@ -60,6 +103,16 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
 
     patch unarchive_job_lead_url(@job_lead)
     assert @job_lead.reload.active?
+  end
+
+  test "should not unarchive another user's job lead" do
+    @job_lead.archive!
+    sign_in_as users(:two)
+
+    patch unarchive_job_lead_url(@job_lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+    assert_not @job_lead.reload.active?
   end
 
   test "should advance and revert status" do
@@ -93,6 +146,20 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal lead.reload.status, "lead"
   end
 
+  test "should not advance or revert status for another user's job lead" do
+    sign_in_as users(:two)
+
+    lead = @user.job_leads.create(title: "Example", company: "Example co.", application_url: "https://example.com/jobs", applied_at: Time.current)
+
+    patch advance_status_job_lead_url(lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+
+    patch revert_status_job_lead_url(lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+  end
+
   test "should reject job_lead and revert to previous status" do
     lead = @user.job_leads.create(title: "Example", company: "Example co.", application_url: "https://example.com/jobs", applied_at: Time.current)
     previous_status = lead.status
@@ -102,6 +169,17 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
 
     patch revert_status_job_lead_url(lead)
     assert_equal lead.reload.status, previous_status
+  end
+
+  test "should not reject another user's job lead" do
+    sign_in_as users(:two)
+
+    lead = @user.job_leads.create(title: "Example", company: "Example co.", application_url: "https://example.com/jobs", applied_at: Time.current)
+
+    patch reject_job_lead_url(lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+    assert_not_equal "rejected", lead.reload.status
   end
 
   test "should get offer" do
@@ -137,6 +215,14 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     get offer_job_lead_url(lead)
     assert_redirected_to job_lead_url(lead)
     assert_equal flash[:alert], "Cannot advance rejected lead to Offer."
+  end
+
+  test "should not get offer for another user's job lead" do
+    sign_in_as users(:two)
+
+    get offer_job_lead_url(@job_lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
   end
 
   test "should set offer on job_lead" do
@@ -175,9 +261,26 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal flash[:alert], "Cannot advance rejected lead to Offer."
   end
 
+  test "should not set offer on another user's job lead" do
+    sign_in_as users(:two)
+
+    patch set_offer_job_lead_url(@job_lead), params: { job_lead: { offer_amount: 120_000 } }
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+    assert_nil @job_lead.reload.offer_amount
+  end
+
   test "should get history" do
     get history_job_lead_url(@job_lead)
     assert_response :success
+  end
+
+  test "should not get history for another user's job lead" do
+    sign_in_as users(:two)
+
+    get history_job_lead_url(@job_lead)
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
   end
 
   test "should update history on job_lead" do
@@ -206,6 +309,31 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     lead.reload
     assert_equal 5.days.ago.to_date, lead.applied_at.to_date
     assert_equal 4.days.ago.to_date, lead.interviews.first.scheduled_at.to_date
+  end
+
+  test "should not update history on another user's job lead" do
+    sign_in_as users(:two)
+
+    patch update_history_job_lead_url(@job_lead), params: { job_lead: { applied_at: 5.days.ago } }
+    assert_response :not_found
+    assert_equal flash[:error], "Job lead not found."
+    assert_nil @job_lead.reload.applied_at
+  end
+
+  test "should not update history with another user's interview" do
+    other_interview = interviews(:two)
+    original_scheduled_at = other_interview.scheduled_at
+
+    patch update_history_job_lead_url(@job_lead), params: {
+      job_lead: {
+        interviews_attributes: [
+          { id: other_interview.id, scheduled_at: 4.days.ago }
+        ]
+      }
+    }
+
+    assert_response :not_found
+    assert_equal original_scheduled_at, other_interview.reload.scheduled_at
   end
 
   test "autofill returns parsed fields as JSON on success" do

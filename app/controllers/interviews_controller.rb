@@ -63,6 +63,10 @@ class InterviewsController < ApplicationController
 
   # PATCH/PUT /interviews/1
   def update
+    if interview_params[:job_lead_id].present? && !Current.user.job_leads.exists?(interview_params[:job_lead_id])
+      return redirect_to job_leads_path, error: "Job lead not found."
+    end
+
     if @interview.update(interview_params)
       redirect_to @interview, success: "Interview was successfully updated.", status: :see_other
     else

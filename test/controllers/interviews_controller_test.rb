@@ -88,6 +88,15 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Interview not found.", flash[:error]
   end
 
+  test "should not update interview to another user's job lead" do
+    original_job_lead_id = @interview.job_lead_id
+
+    patch interview_url(@interview), params: { interview: { interviewer: "DHH", job_lead_id: job_leads(:two).id } }
+    assert_redirected_to job_leads_url
+    assert_equal "Job lead not found.", flash[:error]
+    assert_equal original_job_lead_id, @interview.reload.job_lead_id
+  end
+
   test "should destroy interview" do
     job_lead = @interview.job_lead
     assert_difference("Interview.count", -1) do

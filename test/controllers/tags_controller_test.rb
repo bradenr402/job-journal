@@ -69,4 +69,24 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     get edit_tag_url(other_tag)
     assert_response :not_found
   end
+
+  test "should not update another user's tag" do
+    other_user = users(:two)
+    other_tag = Tag.create!(user: other_user, name: "other-tag")
+
+    patch tag_url(other_tag), params: { tag: { name: "hijacked" } }
+    assert_response :not_found
+    assert_equal "other-tag", other_tag.reload.name
+  end
+
+  test "should not destroy another user's tag" do
+    other_user = users(:two)
+    other_tag = Tag.create!(user: other_user, name: "other-tag")
+
+    assert_no_difference("Tag.count") do
+      delete tag_url(other_tag)
+    end
+
+    assert_response :not_found
+  end
 end
