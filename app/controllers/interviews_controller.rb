@@ -33,6 +33,13 @@ class InterviewsController < ApplicationController
 
   # GET /interviews/new
   def new
+    job_lead = Current.user.job_leads.find_by(id: params[:job_lead_id])
+    return redirect_to job_leads_path, error: "Job lead not found." unless job_lead
+
+    unless job_lead&.interviewable?
+      return redirect_to job_lead, alert: "Cannot create an interview for a job lead that is in the '#{job_lead.status.humanize}' status."
+    end
+
     @interview = Interview.new(job_lead_id: params[:job_lead_id].presence)
   end
 

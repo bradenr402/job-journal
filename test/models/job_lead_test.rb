@@ -472,6 +472,23 @@ class JobLeadTest < ActiveSupport::TestCase
     assert_equal latest_past.scheduled_at, lead.latest_status_at
   end
 
+  test "interviewable? returns true for applied and interview statuses, false otherwise" do
+    lead = create_job_lead(created_at: 6.days.ago)
+    applied = create_job_lead(applied_at: 5.days.ago)
+    interview = create_job_lead
+    create_interview(job_lead: interview, scheduled_at: 1.day.ago)
+    offer = create_job_lead(offer_amount: 120_000, offer_at: 3.days.ago)
+    rejected = create_job_lead(rejected_at: 2.days.ago)
+    accepted = create_job_lead(accepted_at: 1.day.ago)
+
+    assert_not lead.interviewable?
+    assert applied.interviewable?
+    assert interview.interviewable?
+    assert_not offer.interviewable?
+    assert_not rejected.interviewable?
+    assert_not accepted.interviewable?
+  end
+
   test "source_quality returns the quality for the inferred status" do
     assert_equal JobLead.status_quality(:accepted), build_job_lead(accepted_at: Time.current).source_quality
   end

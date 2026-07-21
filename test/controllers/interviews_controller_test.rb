@@ -18,6 +18,14 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should not get new for job lead not in interview status" do
+    job_lead = create_job_lead
+
+    get new_interview_url(job_lead_id: job_lead.id)
+    assert_redirected_to job_lead_url(job_lead)
+    assert_equal flash[:alert], "Cannot create an interview for a job lead that is in the 'Lead' status."
+  end
+
   test "should create interview" do
     assert_difference("Interview.count") do
       post interviews_url, params: { interview: { interviewer: "Jorge Manrubia", scheduled_at: Time.now, job_lead_id: @interview.job_lead_id } }

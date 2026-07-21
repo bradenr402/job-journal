@@ -241,6 +241,8 @@ class JobLead < ApplicationRecord
     end
   end
 
+  def interviewable? = status.in?(%w[ applied interview ])
+
   def source_quality
     self.class.status_quality(inferred_status)
   end
