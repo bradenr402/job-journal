@@ -49,7 +49,10 @@ class InterviewsController < ApplicationController
 
   # POST /interviews
   def create
-    @interview = Interview.new(interview_params)
+    job_lead = Current.user.job_leads.find_by(id: interview_params[:job_lead_id])
+    return redirect_to job_leads_path, error: "Job lead not found." unless job_lead
+
+    @interview = job_lead.interviews.new(interview_params)
 
     if @interview.save
       redirect_to @interview, success: "Interview was successfully created."
@@ -91,9 +94,11 @@ class InterviewsController < ApplicationController
   end
 
   private
+
   def set_interview
     @interview = Current.user.interviews.includes(:job_lead, :notes).find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
+    flash[:error] = "Interview not found."
     raise # Let config.exceptions_app handle the error
   end
 
