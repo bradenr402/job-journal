@@ -44,6 +44,16 @@
   /* Inherit all other styles from .form-textarea */
 }
 
+@utility form-footer {
+  --form-footer-vertical-padding: --spacing(4);
+  @apply bg-white dark:bg-neutral-925 border-t border-neutral-200 dark:border-neutral-800 py-(--form-footer-vertical-padding) max-md:-mx-(--main-padding) max-md:px-(--main-padding);
+}
+
+@utility sticky-form-footer {
+  --tab-bar-safe-area: calc(var(--tab-bar-height) + var(--form-footer-vertical-padding) * 2);
+  @apply form-footer sticky bottom-0 max-md:pb-(--tab-bar-safe-area);
+}
+
 .form-radio-tag,
 .form-checkbox-tag {
   @apply rounded-md;
