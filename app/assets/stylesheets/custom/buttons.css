@@ -32,7 +32,7 @@
 
 @utility btn-primary {
   &:not(.btn-muted) {
-    @apply bg-primary-600 dark:bg-primary-700 text-white hover:bg-primary-700 dark:hover:bg-primary-600;
+    @apply bg-primary-600 dark:bg-primary-700 text-white hover:bg-primary-700 dark:hover:bg-primary-600 focus-visible:ring-offset-2;
 
     &:not(.btn-sm, .btn-lg) {
       @apply not-dark:shadow-md;
