@@ -226,7 +226,7 @@
     @apply anchor-within gap-2 py-2 px-3 rounded-lg text-sm;
   }
 
-  &.nav-link-active {
+  a[aria-current="page"] > & {
     @apply text-normal font-semibold;
 
     @variant max-md {
@@ -238,7 +238,7 @@
     }
   }
 
-  a:hover &:not(.nav-link-active) {
+  a:not([aria-current="page"]):hover & {
     @apply text-normal;
   }
 

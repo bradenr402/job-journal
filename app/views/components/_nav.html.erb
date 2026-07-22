@@ -21,7 +21,7 @@
           <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
 
           <%= link_to link[:path], class: "md:py-px #{"max-md:hidden" if link[:desktop_only]}", style: "view-transition-name: nav-#{link[:label].parameterize}", aria: { label: link[:label], current: ("page" if active) } do %>
-            <span class="nav-link <%= "nav-link-active" if active %>">
+            <span class="nav-link">
               <%= icon icon_name, class: "nav-link-icon" %>
               <span class="max-md:sr-only"><%= link[:label] %></span>
             </span>
