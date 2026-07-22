@@ -143,15 +143,83 @@
   @apply flex flex-col items-center justify-center gap-5 text-center text-pretty my-12 text-muted;
 }
 
+/*
+  Defined on `:root` (rather than in `nav-container`) so that elements outside
+  the nav can also read `--tab-bar-height`.
+*/
+:root {
+  --tab-bar-icon-size: --spacing(8);
+  --tab-bar-link-padding: --spacing(3.25);
+  --tab-bar-link-overlap: --spacing(0.5);
+  --tab-bar-padding: --spacing(0.75);
+  --tab-bar-border-width: 1px;
+
+  --tab-bar-height: calc(
+    var(--tab-bar-icon-size) + var(--tab-bar-link-padding) * 2 +
+      var(--tab-bar-padding) * 2 + var(--tab-bar-border-width) * 2
+  );
+}
+
+@utility nav-container {
+  @apply fixed z-50;
+
+  @variant max-md {
+    @apply bottom-4
+           left-1/2 -translate-x-1/2 w-max flex items-center gap-2;
+  }
+
+  @variant md {
+    @apply top-0 left-0 h-full w-(--sidebar-width) pl-(--body-padding) py-(--body-padding);
+  }
+}
+
+@utility nav-panel {
+  @apply h-full overflow-y-auto flex flex-col bg-white;
+
+  @variant max-md {
+    @apply p-(--tab-bar-padding) rounded-full shadow-sm
+           bg-white dark:bg-neutral-900
+           border-(length:--tab-bar-border-width) dark:border-neutral-800 border-neutral-200;
+  }
+
+  @variant md {
+    @apply p-2 space-y-2 rounded-2xl
+           bg-white dark:bg-neutral-925
+           border border-neutral-200 dark:border-neutral-900;
+  }
+}
+
+@utility nav-section {
+  @variant md {
+    @apply pt-2 border-t border-neutral-100 dark:border-neutral-800/80;
+  }
+}
+
 @utility nav-link-list {
-  @apply md:anchor-highlight;
+  @apply flex;
+
+  @variant md {
+    @apply flex-col anchor-highlight;
+  }
+
+  @variant max-md {
+    @apply items-center;
+  }
 }
 
 @utility nav-link {
   @apply flex items-center whitespace-nowrap text-light;
 
   @variant max-md {
-    @apply flex-col gap-0.5 py-2.75 font-medium text-2xs rounded-full px-2;
+    @apply p-(--tab-bar-link-padding) rounded-full;
+
+    a:has(&):not(.max-md\:hidden) + a:has(&):not(.max-md\:hidden) {
+      @apply -ml-(--tab-bar-link-overlap);
+    }
+
+    a:has(&):not(.max-md\:hidden):has(+ a:has(&):not(.max-md\:hidden)) {
+      @apply -mr-(--tab-bar-link-overlap);
+    }
   }
 
   @variant md {
@@ -159,7 +227,15 @@
   }
 
   &.nav-link-active {
-    @apply md:bg-neutral-100 md:dark:bg-neutral-900 text-primary-600 font-semibold;
+    @apply text-normal font-semibold;
+
+    @variant max-md {
+      @apply bg-neutral-200/60 dark:bg-neutral-800/70;
+    }
+
+    @variant md {
+      @apply bg-neutral-100 dark:bg-neutral-900;
+    }
   }
 
   a:hover &:not(.nav-link-active) {
@@ -167,7 +243,7 @@
   }
 
   a:focus-visible & {
-    @apply bg-neutral-100 dark:bg-neutral-900 ring-2 ring-primary-600 not-[.nav-link-active]:text-normal;
+    @apply ring-2 ring-primary-600 text-normal;
   }
 
   a:has(&) {
@@ -176,6 +252,18 @@
 
   a:active:has(&) {
     @apply scale-99;
+  }
+}
+
+@utility nav-link-icon {
+  @apply shrink-0;
+
+  @variant max-md {
+    @apply size-(--tab-bar-icon-size);
+  }
+
+  @variant md {
+    @apply size-5;
   }
 }
 

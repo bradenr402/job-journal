@@ -1,78 +1,90 @@
-<nav class="fixed bottom-3 ios-pwa:bottom-5.5 inset-x-5.5 md:top-0 md:left-0 z-50 max-md:h-(--tab-bar-height) md:w-(--sidebar-width) md:h-full md:pl-(--body-padding) md:py-(--body-padding)">
-  <div class="[view-transition-name:nav] h-full overflow-y-auto max-md:px-3 md:p-2 md:space-y-2 bg-white/60 md:bg-white dark:bg-neutral-900/60 rounded-full md:rounded-2xl max-md:shadow-xs max-md:backdrop-blur-xs border border-neutral-200 dark:border-neutral-800/60 md:dark:border-neutral-900 flex flex-col">
-    <%= link_to root_path, class: 'focus-visible:ring-2 focus-visible:ring-primary-600 outline-none max-md:hidden p-3 rounded-lg flex items-center gap-1' do %>
-      <%= icon 'note-filled', class: 'size-6 shrink-0 text-primary-600' %>
+<nav class="nav-container">
+  <div class="nav-panel">
+    <%= link_to root_path, class: "max-md:hidden flex items-center gap-1 p-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary-600" do %>
+      <%= icon "note-filled", class: "size-6 shrink-0 text-primary-600" %>
       <span class="text-2xl font-extrabold tracking-tight text-normal">JobJournal</span>
     <% end %>
 
     <% nav_links = [
-      { key: :dashboard,  path: dashboard_path,  label: 'Home',       icon: 'home' },
-      { key: :job_leads,  path: job_leads_path,  label: 'Job Leads',  icon: 'briefcase' },
-      { key: :interviews, path: interviews_path, label: 'Interviews', icon: 'interview' },
-      { key: :notes,      path: notes_path,      label: 'Notes',      icon: 'quill' },
-      { key: :tags,       path: tags_path,       label: 'Tags',       icon: 'tag' },
-      { key: :search,     path: search_path,     label: 'Search',     icon: 'search', desktop_only: true },
+      { key: :dashboard,  path: dashboard_path,  label: "Home",       icon: "home" },
+      { key: :job_leads,  path: job_leads_path,  label: "Job Leads",  icon: "briefcase" },
+      { key: :interviews, path: interviews_path, label: "Interviews", icon: "interview" },
+      { key: :notes,      path: notes_path,      label: "Notes",      icon: "quill" },
+      { key: :tags,       path: tags_path,       label: "Tags",       icon: "tag", desktop_only: true },
+      { key: :search,     path: search_path,     label: "Search",     icon: "search" },
     ] %>
 
-    <div class="md:grow md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80">
-      <ul class="nav-link-list grid max-md:grid-cols-5 md:flex md:flex-col">
+    <div class="nav-section max-md:h-full max-md:flex max-md:items-center">
+      <ul class="nav-link-list">
         <% nav_links.each do |link| %>
           <% active = current_page?(link[:path]) %>
           <% icon_name = active ? "#{link[:icon]}-filled" : link[:icon] %>
 
-          <%= link_to link[:path], class: "md:py-px #{'max-md:hidden' if link[:desktop_only]}", style: "view-transition-name: nav-#{link[:label].parameterize}" do %>
-            <span class="nav-link <%= 'nav-link-active' if active %>">
-              <%= icon icon_name, class: 'size-5.75 md:size-4 shrink-0' %>
-              <span><%= link[:label] %></span>
+          <%= link_to link[:path], class: "md:py-px #{"max-md:hidden" if link[:desktop_only]}", style: "view-transition-name: nav-#{link[:label].parameterize}", aria: { label: link[:label], current: ("page" if active) } do %>
+            <span class="nav-link <%= "nav-link-active" if active %>">
+              <%= icon icon_name, class: "nav-link-icon" %>
+              <span class="max-md:sr-only"><%= link[:label] %></span>
             </span>
           <% end %>
         <% end %>
       </ul>
     </div>
 
-    <div class="max-md:hidden">
-      <%= link_to new_job_lead_path, class: 'btn btn-primary w-full' do %>
-        <%= icon 'plus', class: 'size-5 shrink-0' %>
+    <div class="max-md:hidden md:mt-auto">
+      <%= link_to new_job_lead_path, class: "btn btn-primary w-full" do %>
+        <%= icon "plus", class: "size-5 shrink-0" %>
         <span>New Job Lead</span>
       <% end %>
     </div>
 
-    <div class="relative max-md:hidden md:pt-2 md:border-t md:border-neutral-100 md:dark:border-neutral-800/80" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
-      <button class="w-full flex flex-col items-start px-3 py-2 rounded-lg text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 focus-visible:bg-neutral-100 dark:focus-visible:bg-neutral-800 active:bg-neutral-200 dark:active:bg-neutral-800 transition-all duration-80 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-600 outline-none active:scale-98" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
-        <span class="in-focus-visible:text-light block text-xs text-muted transition-colors duration-80"><%= Current.user.name.presence || 'Logged in as' %></span>
+    <div class="relative max-md:hidden nav-section" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+      <button
+        class="
+          w-full flex flex-col items-start px-3 py-2 rounded-lg text-sm
+          cursor-pointer outline-none transition-all duration-80
+          hover:bg-neutral-100 dark:hover:bg-neutral-900
+          focus-visible:bg-neutral-100 dark:focus-visible:bg-neutral-800
+          focus-visible:ring-2 focus-visible:ring-primary-600
+          active:bg-neutral-200 dark:active:bg-neutral-800 active:scale-98
+        "
+        data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
+      >
+        <span class="in-focus-visible:text-light block text-xs text-muted transition-colors duration-80"><%= Current.user.name.presence || "Logged in as" %></span>
         <span class="in-focus-visible:text-normal font-semibold text-light transition-colors duration-80"><%= Current.user.email_address %></span>
       </button>
-      <div class="translate-y-1 dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
+
+      <div class="translate-y-0.75 dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
         <% dropdown_links = [
-          { key: :account, path: account_path, label: 'Account', icon: 'profile' },
-          { key: :settings, path: settings_path, label: 'Settings', icon: 'settings' },
-          { key: :security, path: security_path, label: 'Security', icon: 'security' },
+          { key: :account, path: account_path, label: "Account", icon: "profile" },
+          { key: :settings, path: settings_path, label: "Settings", icon: "settings" },
+          { key: :security, path: security_path, label: "Security", icon: "security" },
+          { key: :tags, path: tags_path, label: "Manage Tags", icon: "tag" },
         ] %>
 
         <% dropdown_links.each do |link| %>
-          <%= link_to link[:path], class: 'dropdown-option dropdown-option-secondary' do %>
-            <%= icon link[:icon], class: 'size-5 shrink-0' %>
-            <span><%= link[:label] %></span>
-          <% end %>
+          <%= link_to(
+            icon(link[:icon], class: "size-5 shrink-0") + tag.span(link[:label]),
+            link[:path],
+            class: "dropdown-option dropdown-option-secondary"
+          ) %>
         <% end  %>
 
         <div class="dropdown-divider"></div>
 
-        <%= button_to session_path, method: :delete, form_class: 'w-full text-left', class: 'dropdown-option dropdown-option-destructive' do %>
-          <%= icon 'logout', class: 'size-5 shrink-0' %>
+        <%= button_to session_path, method: :delete, form_class: "w-full text-left", class: "dropdown-option dropdown-option-destructive" do %>
+          <%= icon "logout", class: "size-5 shrink-0" %>
           <span>Sign Out</span>
         <% end %>
       </div>
     </div>
   </div>
-</nav>
 
-<% excluded_paths = [ new_job_lead_path, settings_path, "/edit", "/new", "/history" ] %>
-<% unless excluded_paths.any? { request.path.include? it } %>
-  <div class="md:hidden fixed bottom-24 right-5.5 z-20">
-    <%= link_to new_job_lead_path, class: 'btn btn-primary btn-lg btn-circle grid place-items-center aspect-square shadow-lg shadow-primary-500/15' do %>
-      <%= icon 'plus', class: 'size-8 shrink-0 stroke-2' %>
-      <span class="sr-only">New Job Lead</span>
-    <% end %>
+  <div class="md:hidden shrink-0">
+    <%= link_to(
+      icon("plus", class: "size-8.5 shrink-0 stroke-2"),
+      new_job_lead_path,
+      aria: { label: "New Job Lead" },
+      class: "btn btn-primary btn-lg btn-circle size-(--tab-bar-height) shadow-sm shadow-primary-500/15"
+    ) %>
   </div>
-<% end %>
+</nav>
