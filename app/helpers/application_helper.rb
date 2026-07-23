@@ -95,7 +95,7 @@ module ApplicationHelper
 
       if tags.present?
         tag_label = "tag".pluralize(tags.size)
-        tags_list = tags.map { |t| tag.span t, class: "font-semibold text-light" }.to_sentence(two_words_connector: ", ")
+        tags_list = tags.map { |t| tag.span t, class: "font-semibold text-light" }.join(", ")
 
         filters << [ tag_label, tags_list ].join(": ")
       end
