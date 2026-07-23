@@ -17,6 +17,59 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should filter index by upcoming date range" do
+    completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
+    upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
+    get interviews_url(date_range: "upcoming")
+
+    assert_response :success
+    assert_select "#interview_#{upcoming.id}"
+    assert_select "#interview_#{completed.id}", false
+  end
+
+  test "should filter index by completed date range" do
+    completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
+    upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
+    get interviews_url(date_range: "completed")
+
+    assert_response :success
+    assert_select "#interview_#{completed.id}"
+    assert_select "#interview_#{upcoming.id}", false
+  end
+
+  test "should fall back to user setting when date range param is missing" do
+    @user.update_settings(filters: { interviews: "upcoming" })
+    completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
+    upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
+    get interviews_url
+
+    assert_response :success
+    assert_select "#interview_#{upcoming.id}"
+    assert_select "#interview_#{completed.id}", false
+  end
+
+  test "should fall back to user setting when date range param is invalid" do
+    @user.update_settings(filters: { interviews: "completed" })
+    completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
+    upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
+    get interviews_url(date_range: "bogus")
+
+    assert_response :success
+    assert_select "#interview_#{completed.id}"
+    assert_select "#interview_#{upcoming.id}", false
+  end
+
+  test "should override user setting with a valid date range param" do
+    @user.update_settings(filters: { interviews: "upcoming" })
+    completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
+    upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
+    get interviews_url(date_range: "all")
+
+    assert_response :success
+    assert_select "#interview_#{completed.id}"
+    assert_select "#interview_#{upcoming.id}"
+  end
+
   test "should get new" do
     get new_interview_url(job_lead_id: @interview.job_lead.id)
     assert_response :success

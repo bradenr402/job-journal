@@ -1,21 +1,18 @@
 class SearchController < ApplicationController
-  def index
-    @selected_filter = params[:filter].presence || "all"
+  FILTERS = %w[ all job_leads interviews notes ].freeze
 
-    selected_status_name = params[:status].presence
+  def index
+    @all_filters = FILTERS
+    @selected_filter = valid_filter
 
     @all_status_names = JobLead::STATUSES
-    @selected_status = selected_status_name if @all_status_names.include?(selected_status_name)
+    @selected_status = valid_status
 
-    @selected_date_range_param = params[:date_range].presence
+    @all_date_ranges = User::Settings::SCHEMA.dig(:filters, :interviews, :allowed).without("all")
+    @selected_date_range = valid_date_range.presence_in(@all_date_ranges)
 
-    @all_date_ranges = [ "upcoming", "completed" ]
-    @selected_date_range = @selected_date_range_param if @all_date_ranges.include?(@selected_date_range_param)
-
-    @selected_notable_type_param = params[:notable_type].presence
-
-    @all_notable_types = [ "JobLead", "Interview" ]
-    @selected_notable_type = @selected_notable_type_param if @all_notable_types.include?(@selected_notable_type_param)
+    @all_notable_types = %w[ JobLead Interview ]
+    @selected_notable_type = valid_notable_type
 
     @query = params[:q]
     @results = SearchQuery.new(
@@ -31,5 +28,12 @@ class SearchController < ApplicationController
       format.html
       format.turbo_stream
     end
+  end
+
+  private
+
+  def valid_filter
+    filter = params[:filter]
+    filter.in?(FILTERS) ? filter : "all"
   end
 end

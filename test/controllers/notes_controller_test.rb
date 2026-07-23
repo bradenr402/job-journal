@@ -21,6 +21,85 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should filter index by notable type" do
+    job_lead_note = create_note(notable: job_leads(:one), content: "Note about a job lead")
+    interview_note = create_note(notable: interviews(:one), content: "Note about an interview")
+    get notes_url(notable_type: "Interview")
+
+    assert_response :success
+    assert_select "#note_#{interview_note.id}"
+    assert_select "#note_#{job_lead_note.id}", false
+
+    get notes_url(notable_type: "JobLead")
+
+    assert_response :success
+    assert_select "#note_#{job_lead_note.id}"
+    assert_select "#note_#{interview_note.id}", false
+  end
+
+  test "should ignore an invalid notable type param" do
+    job_lead_note = create_note(notable: job_leads(:one), content: "Note about a job lead")
+    interview_note = create_note(notable: interviews(:one), content: "Note about an interview")
+    get notes_url(notable_type: "Bogus")
+
+    assert_response :success
+    assert_select "#note_#{job_lead_note.id}"
+    assert_select "#note_#{interview_note.id}"
+  end
+
+  test "should filter index by note type" do
+    archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
+    archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
+    active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
+    get notes_url(note_type: "archived")
+
+    assert_response :success
+    assert_select "#note_#{archived_note.id}"
+    assert_select "#note_#{active_note.id}", false
+
+    get notes_url(note_type: "active")
+
+    assert_response :success
+    assert_select "#note_#{active_note.id}"
+    assert_select "#note_#{archived_note.id}", false
+  end
+
+  test "should fall back to user setting when note type param is missing" do
+    @user.update_settings(filters: { notes: "archived" })
+    archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
+    archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
+    active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
+    get notes_url
+
+    assert_response :success
+    assert_select "#note_#{archived_note.id}"
+    assert_select "#note_#{active_note.id}", false
+  end
+
+  test "should fall back to user setting when note type param is invalid" do
+    @user.update_settings(filters: { notes: "archived" })
+    archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
+    archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
+    active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
+    get notes_url(note_type: "bogus")
+
+    assert_response :success
+    assert_select "#note_#{archived_note.id}"
+    assert_select "#note_#{active_note.id}", false
+  end
+
+  test "should override user setting with a valid note type param" do
+    @user.update_settings(filters: { notes: "archived" })
+    archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
+    archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
+    active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
+    get notes_url(note_type: "all")
+
+    assert_response :success
+    assert_select "#note_#{archived_note.id}"
+    assert_select "#note_#{active_note.id}"
+  end
+
   test "should get new" do
     get new_note_url(notable_type: @note.notable.model_name, notable_id: @note.notable.id)
     assert_response :success

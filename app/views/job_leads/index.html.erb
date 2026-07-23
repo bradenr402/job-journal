@@ -39,6 +39,19 @@
       <div class="<%= collection_layout_class_names :job_leads, count: @job_leads.size, size: :large %>">
         <%= render @job_leads %>
       </div>
+    <% elsif !Current.user.job_leads.exists? %>
+      <div class="empty-state my-24">
+        <div class=" rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
+          <%= icon 'briefcase', class: 'size-16 text-muted dark:text-soft' %>
+        </div>
+
+        <h2 class="subheading">No Job Leads Yet</h2>
+        <p class="max-w-md text-pretty leading-normal">Start tracking your job search by adding your first lead.</p>
+        <%= link_to new_job_lead_path, class: 'btn btn-sm btn-primary' do %>
+          <%= icon 'plus', class: 'size-4 shrink-0' %>
+          <span>New Job Lead</span>
+        <% end %>
+      </div>
     <% else %>
       <div class="empty-state">
         No job leads found.

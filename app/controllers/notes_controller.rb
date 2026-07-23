@@ -3,13 +3,14 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    @selected_note_type = params[:note_type].presence || Current.user.get_setting(:filters, :notes)
+    @selected_note_type = valid_note_type(use_user_setting: true)
+    @selected_notable_type = valid_notable_type
 
     scope =
       Current.user.notes
         .includes(notable: :job_lead)
         .order(updated_at: :desc)
-        .yield_self { |scope| params[:notable_type].present? ? scope.where(notable_type: params[:notable_type]) : scope }
+        .yield_self { |scope| @selected_notable_type.present? ? scope.where(notable_type: @selected_notable_type) : scope }
 
     @notes =
       case @selected_note_type

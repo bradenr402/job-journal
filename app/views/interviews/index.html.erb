@@ -13,7 +13,7 @@
       Interviews
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:interview-count]">
-      <%= interview_count_text @interviews.size, type: @selected_interview_type %>
+      <%= interview_count_text @interviews.size, date_range: @selected_date_range %>
     </span>
   </div>
 
@@ -23,6 +23,15 @@
     <% if @interviews.any? %>
       <div class="<%= collection_layout_class_names :interviews, count: @interviews.size, size: :large %>">
         <%= render @interviews %>
+      </div>
+    <% elsif !Current.user.interviews.exists? %>
+      <div class="empty-state my-24">
+        <div class=" rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
+          <%= icon 'interview', class: 'size-16 text-muted dark:text-soft' %>
+        </div>
+
+        <h2 class="subheading">No Interviews Yet</h2>
+        <p class="max-w-md text-pretty leading-normal">Create interviews by adding them to your job leads.</p>
       </div>
     <% else %>
       <div class="empty-state">

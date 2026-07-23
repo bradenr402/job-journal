@@ -1,5 +1,5 @@
-<% if params[:notable_type].present? || (@selected_note_type.present? && @selected_note_type != "all") %>
-  <%= link_to "Clear Filters", notes_path, class: "btn btn-sm btn-destructive btn-muted" %>
+<% if @selected_notable_type.present? || (@selected_note_type.present? && @selected_note_type != "all") %>
+  <%= link_to "Clear Filters", notes_path(note_type: "all"), class: "btn btn-sm btn-destructive btn-muted" %>
 <% end %>
 
 <div id="note-filters" class="my-4 space-y-1">
@@ -28,10 +28,10 @@
       { type: "Interview", icon: "interview", tag_class: "tag-interview" }
     ].each do |filter| %>
       <% type = filter[:type] %>
-      <% selected = params[:notable_type] == type %>
+      <% selected = @selected_notable_type == type %>
 
       <%= filter_link(
-        path: notes_path(params.permit(:note_type).merge(notable_type: params[:notable_type] == type ? nil : type)),
+        path: notes_path(params.permit(:note_type).merge(notable_type: @selected_notable_type == type ? nil : type)),
         value: type,
         label: human(type).pluralize.titleize,
         icon_name: filter[:icon],

@@ -6,10 +6,10 @@
       { type: "completed", icon: "check-circle", tag_class: "tag-accepted" }
     ].each do |filter| %>
     <% type = filter[:type] %>
-    <% selected = @selected_interview_type == type %>
+    <% selected = @selected_date_range == type %>
 
     <%= filter_link(
-      path: interviews_path(scheduled: selected ? "all" : type),
+      path: interviews_path(date_range: selected ? "all" : type),
       value: type,
       icon_name: filter[:icon],
       selected:,

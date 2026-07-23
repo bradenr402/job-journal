@@ -43,6 +43,18 @@ module ActiveSupport
       build_interview(attributes).tap(&:save!)
     end
 
+    def build_note(attributes = {})
+      Note.new({
+        user: users(:one),
+        notable: job_leads(:one),
+        content: "Example note content"
+      }.merge(attributes))
+    end
+
+    def create_note(attributes = {})
+      build_note(attributes).tap(&:save!)
+    end
+
     def unique_application_url
       "https://example.com/jobs/#{SecureRandom.hex(12)}"
     end

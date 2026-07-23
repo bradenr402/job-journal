@@ -8,9 +8,9 @@ class JobLeadsController < ApplicationController
   def index
     @tags = Current.user.tags.order(:name)
 
-    @selected_tag_names = params[:tags].to_s.split(",").map(&:strip).uniq
-    @selected_status_name = params[:status].presence
-    @selected_job_lead_type = params[:job_lead_type].presence || Current.user.get_setting(:filters, :job_leads)
+    @selected_tag_names = selected_tag_names
+    @selected_status = valid_status
+    @selected_job_lead_type = valid_job_lead_type(use_user_setting: true)
 
     scope = Current.user.job_leads
       .includes(:notes, :tags)
@@ -37,13 +37,12 @@ class JobLeadsController < ApplicationController
       end
 
     @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
-    @job_leads = @job_leads.with_status(@selected_status_name) if @selected_status_name.present?
+    @job_leads = @job_leads.with_status(@selected_status) if @selected_status.present?
 
     @selected_tags = @tags.where(name: @selected_tag_names)
     @unselected_tags = @tags.where.not(name: @selected_tag_names)
 
     @all_status_names = JobLead::STATUSES
-    @selected_status = @selected_status_name if @all_status_names.include?(@selected_status_name)
   end
 
   # GET /job_leads/1
@@ -272,5 +271,9 @@ class JobLeadsController < ApplicationController
     @recent_companies = scope.distinct.pluck(:company).sort
     @recent_locations = scope.where.not(location: [ nil, "" ]).distinct.pluck(:location).sort
     @recent_sources = scope.where.not(source: [ nil, "" ]).distinct.pluck(:source).sort
+  end
+
+  def selected_tag_names
+    params[:tags].to_s.split(",").map(&:strip).uniq
   end
 end

@@ -14,7 +14,7 @@
           </p>
         <% end %>
 
-        <div class="<%= collection_layout_class_names :job_leads, count: @results[:job_leads].size, size: :large %> gap-3">
+        <div class="<%= collection_layout_class_names :job_leads, count: @results[:job_leads].size, size: :large %>">
           <% @results[:job_leads].each do |job_lead| %>
             <%= render job_lead %>
           <% end %>
@@ -28,7 +28,7 @@
           </p>
         <% end %>
 
-        <div class="<%= collection_layout_class_names :interviews, count: @results[:interviews].size, size: :large %> gap-3">
+        <div class="<%= collection_layout_class_names :interviews, count: @results[:interviews].size, size: :large %>">
           <% @results[:interviews].each do |interview| %>
             <%= render interview %>
           <% end %>
@@ -41,7 +41,7 @@
             <%= pluralize @results[:notes].count, "Note" %>
           </p>
         <% end %>
-        <div class="<%= collection_layout_class_names :notes, count: @results[:notes].size, size: :large %> gap-3">
+        <div class="<%= collection_layout_class_names :notes, count: @results[:notes].size, size: :large %>">
           <% @results[:notes].each do |note| %>
             <%= render note %>
           <% end %>
@@ -49,7 +49,9 @@
       <% end %>
     <% else %>
       <div class="empty-state [view-transition-name:search-empty]">
-        No <%= @selected_filter.presence.humanize.downcase.singularize unless @selected_filter == 'all' %> results for &#8220;<%= @query %>&#8221;.
+        <span>
+          <%= search_empty_results_text @selected_filter, query: @query, status: @selected_status, date_range: @selected_date_range, notable: @selected_notable_type %>
+        </span>
       </div>
     <% end %>
   </div>

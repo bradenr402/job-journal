@@ -14,6 +14,79 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should filter index by status" do
+    applied = create_job_lead(title: "Applied Position", applied_at: 1.day.ago)
+    new_lead = create_job_lead(title: "New Lead Position")
+    get job_leads_url(status: "applied")
+
+    assert_response :success
+    assert_select "#job_lead_#{applied.id}"
+    assert_select "#job_lead_#{new_lead.id}", false
+  end
+
+  test "should ignore an invalid status param" do
+    applied = create_job_lead(title: "Applied Position", applied_at: 1.day.ago)
+    new_lead = create_job_lead(title: "New Lead Position")
+    get job_leads_url(status: "bogus")
+
+    assert_response :success
+    assert_select "#job_lead_#{applied.id}"
+    assert_select "#job_lead_#{new_lead.id}"
+  end
+
+  test "should filter index by archived job lead type" do
+    active = create_job_lead(title: "Active Position")
+    archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
+    get job_leads_url(job_lead_type: "archived")
+
+    assert_response :success
+    assert_select "#job_lead_#{archived.id}"
+    assert_select "#job_lead_#{active.id}", false
+  end
+
+  test "should filter index by active job lead type" do
+    active = create_job_lead(title: "Active Position")
+    archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
+    get job_leads_url(job_lead_type: "active")
+
+    assert_response :success
+    assert_select "#job_lead_#{active.id}"
+    assert_select "#job_lead_#{archived.id}", false
+  end
+
+  test "should fall back to user setting when job lead type param is missing" do
+    @user.update_settings(filters: { job_leads: "archived" })
+    active = create_job_lead(title: "Active Position")
+    archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
+    get job_leads_url
+
+    assert_response :success
+    assert_select "#job_lead_#{archived.id}"
+    assert_select "#job_lead_#{active.id}", false
+  end
+
+  test "should fall back to user setting when job lead type param is invalid" do
+    @user.update_settings(filters: { job_leads: "archived" })
+    active = create_job_lead(title: "Active Position")
+    archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
+    get job_leads_url(job_lead_type: "bogus")
+
+    assert_response :success
+    assert_select "#job_lead_#{archived.id}"
+    assert_select "#job_lead_#{active.id}", false
+  end
+
+  test "should override user setting with a valid job lead type param" do
+    @user.update_settings(filters: { job_leads: "archived" })
+    active = create_job_lead(title: "Active Position")
+    archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
+    get job_leads_url(job_lead_type: "all")
+
+    assert_response :success
+    assert_select "#job_lead_#{active.id}"
+    assert_select "#job_lead_#{archived.id}"
+  end
+
   test "should get new" do
     get new_job_lead_url
     assert_response :success

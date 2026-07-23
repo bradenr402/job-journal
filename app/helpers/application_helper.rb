@@ -87,7 +87,7 @@ module ApplicationHelper
     capture do
       label = type.present? && type != "all" ? "#{type} job lead" : "job lead"
 
-      concat pluralize(count, label)
+      concat pluralize(count, label).gsub(/\A0/, "No")
 
       filters = []
 
@@ -106,16 +106,31 @@ module ApplicationHelper
     end
   end
 
-  def interview_count_text(count, type: nil)
-    label = type.present? && type != "all" ? "#{type} interview" : "interview"
-    pluralize(count, label)
+  def interview_count_text(count, date_range: nil)
+    label = date_range.present? && date_range != "all" ? "#{date_range} interview" : "interview"
+    pluralize(count, label).gsub(/\A0/, "No")
   end
 
   def note_count_text(count, type: nil, notable: nil)
     label = "#{human notable} note".downcase.squish
     label = "#{type} #{label}" if type.present? && type != "all"
 
-    pluralize(count, label)
+    pluralize(count, label).gsub(/\A0/, "No")
+  end
+
+  def search_empty_results_text(filter, query: nil, status: nil, date_range: nil, notable: nil)
+    return "No search query provided" if query.blank?
+
+    base =
+      case filter
+      when "job_leads" then job_lead_count_text(0, status:)
+      when "interviews" then interview_count_text(0, date_range:)
+      when "notes" then note_count_text(0, notable:)
+      when "all" then "No results"
+      else "No results"
+      end.html_safe
+
+    safe_join([ base, " found for “", query, "”." ])
   end
 
   # Inserts zero-width spaces (ZWSP) after "/" and "-" in URLs or long strings,

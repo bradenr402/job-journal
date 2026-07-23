@@ -13,7 +13,7 @@
       Notes
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:note-count]">
-      <%= note_count_text @notes.size, type: @selected_note_type, notable: params[:notable_type] %>
+      <%= note_count_text @notes.size, type: @selected_note_type, notable: @selected_notable_type %>
     </span>
   </div>
 
@@ -23,6 +23,15 @@
     <% if @notes.any? %>
       <div class="<%= collection_layout_class_names :notes, count: @notes.size, size: :medium %>">
         <%= render @notes %>
+      </div>
+    <% elsif !Current.user.notes.exists? %>
+      <div class="empty-state my-24">
+        <div class=" rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
+          <%= icon 'quill', class: 'size-16 text-muted dark:text-soft' %>
+        </div>
+
+        <h2 class="subheading">No Notes Yet</h2>
+        <p class="max-w-md text-pretty leading-normal">Create notes by adding them to your job leads or interviews.</p>
       </div>
     <% else %>
       <div class="empty-state">

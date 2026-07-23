@@ -174,9 +174,9 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "2 interviews", interview_count_text(2)
   end
 
-  test "interview_count_text prefixes non all type" do
-    assert_equal "2 scheduled interviews", interview_count_text(2, type: "scheduled")
-    assert_equal "2 interviews", interview_count_text(2, type: "all")
+  test "interview_count_text prefixes non all date range" do
+    assert_equal "2 upcoming interviews", interview_count_text(2, date_range: "upcoming")
+    assert_equal "2 interviews", interview_count_text(2, date_range: "all")
   end
 
   test "note_count_text pluralizes generic notes" do

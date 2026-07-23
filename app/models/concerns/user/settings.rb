@@ -53,7 +53,9 @@ module User::Settings
     before_save :normalize_settings_payload
   end
 
-  def self.valid_value?(value, path)
+  def self.valid_value?(value, path:)
+    return false if path.blank?
+
     allowed = SCHEMA.dig(*path, :allowed)
     return false if allowed.nil?
 
@@ -73,7 +75,7 @@ module User::Settings
       next if entry.nil?
 
       if entry.key?(:default)
-        result[key] = value if valid_value?(value, path + [ key ])
+        result[key] = value if valid_value?(value, path: path + [ key ])
       else
         nested = sanitize(value, entry, path + [ key ])
         result[key] = nested if nested.any?
