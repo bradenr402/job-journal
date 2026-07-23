@@ -16,20 +16,13 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap justify-between items-start gap-2 mb-4">
-    <div>
-      <h1 class="heading">
-        Job Leads
-      </h1>
-      <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:job-lead-count]">
-        <%= job_lead_count_text @job_leads.size, type: @selected_job_lead_type, tags: @selected_tags.map(&:name), status: @selected_status %>
-      </span>
-    </div>
-
-    <%= link_to new_job_lead_path, class: 'btn btn-primary mt-1' do %>
-      <%= icon 'plus', class: 'size-5 shrink-0' %>
-      <span>New Job Lead</span>
-    <% end %>
+  <div class="mb-4">
+    <h1 class="heading">
+      Job Leads
+    </h1>
+    <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:interview-count]">
+      <%= job_lead_count_text @job_leads.size, type: @selected_job_lead_type, tags: @selected_tags.map(&:name), status: @selected_status %>
+    </span>
   </div>
 
   <%= render 'filters' %>
