@@ -11,6 +11,8 @@
 @custom-variant ios-pwa (&:where(html.ios-pwa *));
 @custom-variant ios-browser (&:where(html.ios:not(.ios-pwa) *));
 
+@custom-variant toggle-has-open-dropdown (&:where(:has(+ .dropdown-menu.dropdown-show)));
+
 @theme {
   /* Primary color scale */
   --color-primary-50: var(--color-emerald-50);
