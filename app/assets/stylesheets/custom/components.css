@@ -613,10 +613,14 @@ static hover backgrounds.
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 has-[+.dropdown-menu.dropdown-show]:bg-neutral-200 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-800 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+
+  .nav-panel & {
+    @apply bg-transparent hover:bg-neutral-100 has-[+.dropdown-menu.dropdown-show]:bg-neutral-100 dark:bg-transparent dark:hover:bg-neutral-900 dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-900;
+  }
 
   .card & {
-    @apply dark:bg-neutral-800 dark:hover:bg-neutral-700 text-normal dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-700 dark:active:bg-neutral-600;
+    @apply dark:bg-neutral-800 dark:hover:bg-neutral-700 text-normal dark:has-[+.dropdown-menu.dropdown-show]:bg-neutral-700;
   }
 }
 
