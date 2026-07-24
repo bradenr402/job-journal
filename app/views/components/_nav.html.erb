@@ -44,8 +44,11 @@
         data-dropdown-target="trigger"
         data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
       >
-        <span class="in-focus-visible:text-light block text-xs text-muted transition-colors duration-80"><%= Current.user.name.presence || "Logged in as" %></span>
-        <span class="in-focus-visible:text-normal font-semibold text-light transition-colors duration-80"><%= Current.user.email_address %></span>
+        <div>
+          <span class="in-focus-visible:text-light block text-xs text-muted transition-colors duration-80"><%= Current.user.name.presence || "Logged in as" %></span>
+          <span class="in-focus-visible:text-normal font-semibold text-light transition-colors duration-80"><%= Current.user.email_address %></span>
+        </div>
+        <%= icon "chevron-down", class: "opacity-0 group-hover/account-dropdown:opacity-100 group-focus/account-dropdown:opacity-100 in-toggle-has-open-dropdown:opacity-100 size-4.5 shrink-0 in-toggle-has-open-dropdown:rotate-180 [transition:opacity_80ms,rotate_120ms]" %>
       </button>
 
       <div class="translate-y-0.75 dropdown-menu dropdown-menu-top-right dropdown-hidden" data-dropdown-target="menu">
