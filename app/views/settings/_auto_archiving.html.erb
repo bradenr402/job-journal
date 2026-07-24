@@ -8,7 +8,7 @@
     <div class="space-y-1">
       <div class="flex items-start gap-1.5 relative">
         <%= form.check_box :archiving_rejected_enabled, { name: "settings[archiving][rejected][enabled]", checked: @settings.dig(:archiving, :rejected, :enabled), class: "form-checkbox", switch: true }, "true", "false" %>
-        <%= icon "check" %>
+        <%= icon "check-mini" %>
         <%= form.label :archiving_rejected_enabled, "Auto-Archive Rejected Leads", class: "form-label" %>
       </div>
       <p class="text-xs text-muted">Automatically archive leads when you mark them as rejected.</p>
@@ -17,7 +17,7 @@
     <div class="space-y-1">
       <div class="flex items-start gap-1.5 relative">
         <%= form.check_box :archiving_inactive_enabled, { name: "settings[archiving][inactive][enabled]", checked: @settings.dig(:archiving, :inactive, :enabled), class: "form-checkbox", switch: true, data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-inactive" } }, "true", "false" %>
-        <%= icon "check" %>
+        <%= icon "check-mini" %>
         <%= form.label :archiving_inactive_enabled, "Auto-Archive Inactive Leads", class: "form-label" %>
       </div>
 
@@ -43,7 +43,7 @@
     <div class="space-y-1">
       <div class="flex items-start gap-1.5 relative">
         <%= form.check_box :archiving_stale_enabled, { name: "settings[archiving][stale][enabled]", checked: @settings.dig(:archiving, :stale, :enabled), class: "form-checkbox", switch: true, data: { action: "conditional-field#toggleField", conditional_field_checkbox: "auto-archive-stale" } }, "true", "false" %>
-        <%= icon "check" %>
+        <%= icon "check-mini" %>
         <%= form.label :archiving_stale_enabled, "Auto-Archive Stale Leads", class: "form-label" %>
       </div>
 
