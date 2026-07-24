@@ -171,7 +171,7 @@
         <dt>History</dt>
       </div>
 
-      <div class="-my-0.5 py-0.5 flex items-center gap-1.5 overflow-x-auto overflow-fade-x scrollbar-none">
+      <div class="flex items-center gap-1.5 -m-0.5 p-0.5 overflow-x-auto overflow-fade-x scrollbar-none">
         <% job_lead.status_history.each_with_index do |status_entry, index| %>
           <div class="flex shrink-0 items-center gap-1.5">
             <%= icon 'arrow-right', class: 'size-3.5 shrink-0 text-light' if index.positive? %>
