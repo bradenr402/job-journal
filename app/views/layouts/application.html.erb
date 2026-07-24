@@ -20,7 +20,7 @@
 
     <% if authenticated? %>
       <div class="absolute [body:has(#success,#error,#notice,#alert)_&]:top-15 top-3 left-3 md:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
-        <button class="dropdown-trigger" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+        <button data-dropdown-target="trigger" class="dropdown-trigger" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
           <span class="sr-only">Menu</span>
           <%= icon 'menu', class: 'size-6' %>
         </button>
