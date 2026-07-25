@@ -1,3 +1,5 @@
+<%# locals: () %>
+
 <% any_results = @results[:job_leads].any? || @results[:interviews].any? || @results[:notes].any? %>
 
 <%= turbo_frame_tag 'search-results' do %>

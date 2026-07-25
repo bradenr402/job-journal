@@ -1,3 +1,5 @@
+<%# locals: (job_lead:) %>
+
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
 <div id="<%= dom_id job_lead %>" class="relative <%= item_layout_class_names @demo ? "grid" : :job_leads %> flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">

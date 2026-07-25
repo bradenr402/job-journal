@@ -1,3 +1,5 @@
+<%# locals: (resource:) %>
+
 <% if resource.errors.any? %>
   <div id="error_explanation" class="bg-rose-50 text-rose-500 p-6 border border-rose-300 rounded-2xl mb-4">
     <h2 class="text-lg font-bold mb-2"><%= pluralize(resource.errors.count, 'error') %> prohibited this <%= resource.model_name.human.downcase %> from being saved:</h2>

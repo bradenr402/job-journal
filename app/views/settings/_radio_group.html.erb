@@ -1,13 +1,8 @@
-<%
-  raise ArgumentError, "Missing required local `form`." unless defined?(form)
-  raise ArgumentError, "Missing required local `setting_path`." unless defined?(setting_path)
-  raise ArgumentError, "Missing required local `options`." unless defined?(options)
+<%# locals: (form:, setting_path:, options:, label: setting_path.last.to_s.titleize, current_value: @settings.dig(*setting_path), help_text: nil) %>
 
-  field = setting_path.last
-  field_id = setting_path.join("_")
+<%
+  field_id   = setting_path.join("_")
   field_name = "settings#{setting_path.map { |part| "[#{part}]" }.join}"
-  label ||= field.to_s.titleize
-  current_value ||= @settings.dig(*setting_path)
 %>
 
 <div>
@@ -27,5 +22,5 @@
     <% end %>
   </div>
 
-  <%= tag.p help_text.html_safe, class: "text-muted text-xs mt-1" if local_assigns[:help_text] %>
+  <%= tag.p help_text.html_safe, class: "text-muted text-xs mt-1" if help_text %>
 </div>

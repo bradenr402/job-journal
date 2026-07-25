@@ -1,3 +1,5 @@
+<%# locals: (sources:) %>
+
 <div class="grid grid-cols-1 <%= '@xl:grid-cols-2' if sources.size >= 2 %> <%= '@3xl:grid-cols-3' if sources.size >= 3 && sources.size != 4 %> gap-1.5">
   <% sources.each.with_index(1) do |(source, data), index| %>
     <div class="flex flex-col justify-between gap-4 bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md relative">
