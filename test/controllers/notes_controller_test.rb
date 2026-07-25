@@ -52,15 +52,32 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
     active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
 
-    get notes_url(job_lead_state: "archived")
+    get notes_url(state: "archived")
     assert_response :success
     assert_select "#note_#{archived_note.id}"
     assert_select "#note_#{active_note.id}", false
 
-    get notes_url(job_lead_state: "active")
+    get notes_url(state: "active")
     assert_response :success
     assert_select "#note_#{active_note.id}"
     assert_select "#note_#{archived_note.id}", false
+  end
+
+  test "should filter interview notes by their interview's job lead state" do
+    archived_lead = create_job_lead(title: "Archived Lead", applied_at: 2.days.ago, archived_at: 1.day.ago)
+    archived_interview = create_interview(job_lead: archived_lead)
+    archived_interview_note = create_note(notable: archived_interview, content: "Note about an archived lead's interview")
+    active_interview_note = create_note(notable: interviews(:one), content: "Note about an active lead's interview")
+
+    get notes_url(state: "archived")
+    assert_response :success
+    assert_select "#note_#{archived_interview_note.id}"
+    assert_select "#note_#{active_interview_note.id}", false
+
+    get notes_url(state: "active")
+    assert_response :success
+    assert_select "#note_#{active_interview_note.id}"
+    assert_select "#note_#{archived_interview_note.id}", false
   end
 
   test "should fall back to user setting when job lead state param is missing" do
@@ -80,7 +97,7 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
     active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
-    get notes_url(job_lead_state: "bogus")
+    get notes_url(state: "bogus")
 
     assert_response :success
     assert_select "#note_#{archived_note.id}"
@@ -92,7 +109,7 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
     active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
-    get notes_url(job_lead_state: "all")
+    get notes_url(state: "all")
 
     assert_response :success
     assert_select "#note_#{archived_note.id}"

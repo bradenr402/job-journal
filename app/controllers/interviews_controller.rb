@@ -4,8 +4,6 @@ class InterviewsController < ApplicationController
   # GET /interviews
   def index
     @filters = InterviewFilters.new(params, user: Current.user, use_settings: true)
-    @timeframe = @filters.timeframe
-    @rating = @filters.rating
 
     @interviews = @filters.apply(
       Current.user.interviews

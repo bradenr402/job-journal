@@ -15,14 +15,15 @@
 #   allowed: list of valid values (anything else is ignored); nil accepts any
 #   default: value used when the param is absent or invalid
 #   setting: user settings path used as the fallback when `use_settings` is on
-#   parse:   callable turning the raw param into a value (bypasses `allowed`)
+#   parse:   callable turning the raw param into a final value; skips `allowed`,
+#            setting fallback, and default fallback
 #
 # The block receives the current scope and the value, and runs against the
 # filters instance (so it can reference `user`). It is only invoked when the
 # value is present and differs from the default.
 #
 # `sort_option` accepts:
-#   column:    the column to order by (defaults to sort_option name)
+#   column:    the column to order by (defaults to the sort_option name)
 #   direction: the default direction (defaults to :asc)
 #   text:      set to `true` for case-insensitive ordering.
 #
@@ -51,7 +52,13 @@ class ApplicationFilters
 
     def sort_option(name, column: name, direction: :asc, text: false)
       sort_name = name.to_s
-      sort_options[sort_name] = SortOption.new(name: sort_name, column:, direction: direction.to_s, text:)
+      direction = direction.to_s
+      validate_sort_direction! direction
+      sort_options[sort_name] = SortOption.new(name: sort_name, column:, direction:, text:)
+    end
+
+    def validate_sort_direction!(direction)
+      raise ArgumentError, "Invalid sort direction: #{direction.inspect}" unless direction.in?(DIRECTIONS)
     end
   end
 
@@ -148,10 +155,7 @@ class ApplicationFilters
   end
 
   def value_of(name)
-    @values.fetch(name) do
-      value = parse_value self.class.filters.fetch(name)
-      @values[name] = value
-    end
+    @values.fetch(name) { @values[name] = parse_value(self.class.filters.fetch(name)) }
   end
 
   def parse_value(filter)
@@ -166,13 +170,7 @@ class ApplicationFilters
   end
 
   def allowed?(filter, value)
-    allowed_list = filter.allowed
-
-    if allowed_list.nil?
-      value.present?
-    else
-      value.in? allowed_list
-    end
+    filter.allowed.nil? ? value.present? : value.in?(filter.allowed)
   end
 
   def setting_value(filter)

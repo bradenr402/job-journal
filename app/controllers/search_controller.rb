@@ -1,7 +1,7 @@
 class SearchController < ApplicationController
   def index
     @search_scopes = SearchQuery::SCOPES
-    @search_scope = params[:scope].to_s.presence_in(SearchQuery::SCOPES) || "all"
+    @query = params[:q]
 
     @job_lead_filters = JobLeadFilters.new(params, user: Current.user)
     @interview_filters = InterviewFilters.new(params, user: Current.user)
@@ -11,17 +11,15 @@ class SearchController < ApplicationController
     @timeframes = InterviewFilters.options_for(:timeframe).without("all")
     @notable_types = NoteFilters.options_for(:notable_type)
 
-    @query = params[:q]
-    @results = SearchQuery.new(
-      Current.user,
-      @query,
-      scope: @search_scope,
-      filters: {
-        job_leads: @job_lead_filters,
-        interviews: @interview_filters,
-        notes: @note_filters
-      }
-    ).results
+    search_filters = {
+      job_leads: @job_lead_filters,
+      interviews: @interview_filters,
+      notes: @note_filters
+    }
+
+    search_query = SearchQuery.new(Current.user, @query, scope: params[:scope], filters: search_filters)
+    @search_scope = search_query.scope
+    @results = search_query.results
 
     respond_to do |format|
       format.html

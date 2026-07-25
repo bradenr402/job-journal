@@ -7,13 +7,8 @@ class JobLeadsController < ApplicationController
   # GET /job_leads
   def index
     @filters = JobLeadFilters.new(params, user: Current.user, use_settings: true)
-    @job_lead_state = @filters.state
-    @status = @filters.status
-    @source = @filters.source
-    @tag_names = @filters.tag_names
 
     @tags = Current.user.tags.order(:name)
-    @statuses = JobLeadFilters.options_for(:status)
     @sources = job_lead_sources
 
     @job_leads = @filters.apply(

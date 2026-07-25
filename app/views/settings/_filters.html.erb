@@ -3,7 +3,7 @@
 <%= form_with url: settings_path(tab: "filters"), method: :patch do |form| %>
   <div class="mb-4">
     <h2 class="subheading">Filters</h2>
-    <p class="text-sm text-muted mt-1">Choose which filter is applied first whenever you open a list.</p>
+    <p class="text-sm text-muted mt-1">Choose the State and Timeframe filters pre-selected whenever you open a list. You can change or clear them anytime from the list’s filter sidebar.</p>
   </div>
 
   <div class="space-y-5">
@@ -11,8 +11,8 @@
       render "settings/radio_group",
       form:,
       setting_path: %i[filters job_leads],
-      label: "Default Job Leads Filter",
-      help_text: "Which leads you see first when you open <span class='font-semibold text-light'>Job Leads</span>.",
+      label: "Default Job Lead State",
+      help_text: "Pre-selects the <span class='font-semibold text-light'>State</span> filter on <span class='font-semibold text-light'>Job Leads</span>, so only leads in this state are listed by default.",
       options: [
         option("all", icon: "layers"),
         option("active", icon: "check-circle"),
@@ -24,8 +24,8 @@
       render "settings/radio_group",
       form:,
       setting_path: %i[filters interviews],
-      label: "Default Interviews Filter",
-      help_text: "Which interviews you see first when you open <span class='font-semibold text-light'>Interviews</span>.",
+      label: "Default Interview Timeframe",
+      help_text: "Pre-selects the <span class='font-semibold text-light'>Timeframe</span> filter on <span class='font-semibold text-light'>Interviews</span>, so only interviews in this timeframe are listed by default.",
       options: [
         option("all", icon: "layers"),
         option("upcoming", icon: "time-schedule"),
@@ -37,8 +37,8 @@
       render "settings/radio_group",
       form:,
       setting_path: %i[filters notes],
-      label: "Default Notes Filter",
-      help_text: "Which notes you see first when you open <span class='font-semibold text-light'>Notes</span>.",
+      label: "Default Note State",
+      help_text: "Pre-selects the <span class='font-semibold text-light'>State</span> filter on <span class='font-semibold text-light'>Notes</span>, so only notes whose job lead is in this state are listed by default. Interview notes follow their interview's job lead.",
       options: [
         option("all", icon: "layers"),
         option("active", icon: "check-circle"),

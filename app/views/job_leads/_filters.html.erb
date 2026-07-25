@@ -3,14 +3,7 @@
 <%# Two-column label/options grid on small screens; a vertical sidebar from @3xl up. %>
 <aside id="job-lead-filters" class="filter-panel">
   <div class="filter-panel-content">
-    <% if @filters.any_active? %>
-      <div class="col-span-2">
-        <%= link_to job_leads_path(job_lead_state: "all"), class: "@3xl:w-full btn btn-sm btn-destructive btn-muted [view-transition-name:clear-filters-button]" do %>
-          <%= icon "eraser-filled", class: "size-4 shrink-0" %>
-          <span>Clear Filters</span>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render "shared/clear_filters", filters: @filters, path: job_leads_path(job_lead_state: "all") %>
 
     <%= render "shared/sort_options", filters: @filters %>
 
@@ -18,18 +11,20 @@
       <%= filter_row_label "State", icon_name: "status" %>
 
       <div class="filter-options">
-        <% [
-          { state: "all", icon: "layers" },
-          { state: "active", icon: "check-circle" },
-          { state: "archived", icon: "archive" }
-        ].each do |option| %>
-          <% state = option[:state] %>
+        <%
+          state_icons = {
+            all: "layers",
+            active: "check-circle",
+            archived: "archive"
+          }.stringify_keys
+        %>
 
+        <% @filters.class.options_for(:state).each do |state| %>
           <%= filter_link(
             path: job_leads_path(@filters.toggle_params(:state, state, off: "all")),
             value: state,
-            icon_name: option[:icon],
-            selected: @job_lead_state == state,
+            icon_name: state_icons[state],
+            selected: @filters.state == state,
             context: "job-leads-filter"
           ) %>
         <% end %>
@@ -40,12 +35,12 @@
       <%= filter_row_label "Status", icon_name: "timeline" %>
 
       <div class="filter-options">
-        <% @statuses.each do |status| %>
+        <% @filters.class.options_for(:status).each do |status| %>
           <%= filter_link(
             path: job_leads_path(@filters.toggle_params(:status, status)),
             value: status,
             icon_name: icon_name_for_status(status),
-            selected: @status == status,
+            selected: @filters.status == status,
             context: "job-leads-status-filter",
             tag_class: "tag-#{status}"
           ) %>
@@ -64,7 +59,7 @@
               value: source,
               label: source,
               icon_name: "globe",
-              selected: @source.to_s.casecmp?(source),
+              selected: @filters.source.to_s.casecmp?(source),
               context: "job-leads-source-filter"
             ) %>
           <% end %>
@@ -77,7 +72,7 @@
         <%= filter_row_label "Tags", icon_name: "tag" %>
 
         <div class="filter-options">
-          <% selected_tags, unselected_tags = @tags.partition { |tag| tag.name.in?(@tag_names) } %>
+          <% selected_tags, unselected_tags = @tags.partition { it.name.in? @filters.tag_names } %>
 
           <% (selected_tags + unselected_tags).each do |tag| %>
             <%= filter_link(
@@ -85,7 +80,7 @@
               value: tag.name,
               label: tag.name,
               icon_name: "tag",
-              selected: tag.name.in?(@tag_names),
+              selected: tag.name.in?(@filters.tag_names),
               context: "job-leads-tag-filter"
             ) %>
           <% end %>

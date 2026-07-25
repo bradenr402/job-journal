@@ -124,9 +124,9 @@ module ApplicationHelper
     end
   end
 
-  def note_count_text(count, job_lead_state: nil, notable: nil)
+  def note_count_text(count, state: nil, notable: nil)
     label = "#{human notable} note".downcase.squish
-    label = "#{job_lead_state} #{label}" if job_lead_state.present? && job_lead_state != "all"
+    label = "#{state} #{label}" if state.present? && state != "all"
 
     pluralize(count, label).gsub(/\A0/, "No")
   end

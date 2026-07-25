@@ -1,17 +1,16 @@
 <%
-  content_for :title,
+  content_for :title do
     [
-      "#{@job_lead_state.presence&.titlecase} ",
-      'Job Leads',
-      (@status.presence&.titlecase&.prepend(' - ')),
-      (@tag_names.any? ? " - #{@tag_names.join(', ')}" : nil)
-    ].compact.join
+      "#{@filters.state.presence&.titlecase} Job Leads".squish,
+      @filters.status.presence&.titlecase
+    ].compact.join(" - ")
+  end
 %>
 
 <div class="sm:w-7/8 w-full mx-auto @container">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
-    <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
+    <%= link_to dashboard_path, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
+      <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
       <span>Back Home</span>
     <% end %>
   </div>
@@ -21,12 +20,12 @@
       Job Leads
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:job-lead-count]">
-      <%= job_lead_count_text @job_leads.size, state: @job_lead_state, tags: @tag_names, status: @status, source: @source %>
+      <%= job_lead_count_text @job_leads.size, state: @filters.state, tags: @filters.tag_names, status: @filters.status, source: @filters.source %>
     </span>
   </div>
 
   <div class="@3xl:flex @3xl:items-start @3xl:gap-6">
-    <%= render 'filters' %>
+    <%= render "filters" %>
 
     <div id="job_leads" class="@container min-w-0 @3xl:flex-1">
       <% if @job_leads.any? %>
@@ -36,13 +35,13 @@
       <% elsif !Current.user.job_leads.exists? %>
         <div class="empty-state my-24">
           <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-            <%= icon 'briefcase', class: 'size-16 text-muted dark:text-soft' %>
+            <%= icon "briefcase", class: "size-16 text-muted dark:text-soft" %>
           </div>
 
           <h2 class="subheading">No Job Leads Yet</h2>
           <p class="max-w-md text-pretty leading-normal">Start tracking your job search by adding your first lead.</p>
-          <%= link_to new_job_lead_path, class: 'btn btn-sm btn-primary' do %>
-            <%= icon 'plus', class: 'size-4 shrink-0' %>
+          <%= link_to new_job_lead_path, class: "btn btn-sm btn-primary" do %>
+            <%= icon "plus", class: "size-4 shrink-0" %>
             <span>New Job Lead</span>
           <% end %>
         </div>

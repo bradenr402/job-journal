@@ -1,9 +1,17 @@
 class SearchQuery
-  SCOPES = %w[ all job_leads interviews notes ].freeze
-  EMPTY_RESULTS = { job_leads: [], interviews: [], notes: [] }.freeze
+  RESULT_KEYS = %i[ job_leads interviews notes ].freeze
+  SCOPES = [ "all", *RESULT_KEYS.map(&:to_s) ].freeze
+  EMPTY_RESULTS = RESULT_KEYS.index_with { [].freeze }.freeze
+
+  COMBINED_LIMIT = 10
+  SCOPED_LIMIT = COMBINED_LIMIT * RESULT_KEYS.size
 
   # Matches double-quoted phrases, single-quoted phrases, or bare words.
   TERM_PATTERN = /"([^"]+)"|'([^']+)'|(\S+)/
+
+  attr_reader :scope
+
+  def self.resolve_scope(scope) = scope.to_s.presence_in(SCOPES) || "all"
 
   # `scope` narrows the search to a single resource type ("all" searches
   # everything). `filters` maps resource keys (:job_leads, :interviews,
@@ -11,7 +19,7 @@ class SearchQuery
   def initialize(user, query, scope: "all", filters: {})
     @user = user
     @query = query.to_s.strip
-    @scope = scope.to_s.presence_in(SCOPES) || "all"
+    @scope = self.class.resolve_scope(scope)
     @filters = filters
   end
 
@@ -19,28 +27,22 @@ class SearchQuery
   def results
     return EMPTY_RESULTS if @query.blank?
 
-    case @scope
-    when "job_leads"
-      single_result(:job_leads, search_job_leads.limit(30))
-    when "interviews"
-      single_result(:interviews, search_interviews.limit(30))
-    when "notes"
-      single_result(:notes, search_notes.limit(30))
-    else
-      all_results
-    end
+    EMPTY_RESULTS.merge(result_keys.index_with { limited_search it })
   end
 
   private
 
-  def single_result(key, value) = EMPTY_RESULTS.merge(key => value)
+  def result_keys = scope == "all" ? RESULT_KEYS : [ scope.to_sym ]
 
-  def all_results
-    {
-      job_leads: search_job_leads.limit(10),
-      interviews: search_interviews.limit(10),
-      notes: search_notes.limit(10)
-    }
+  def result_limit = scope == "all" ? COMBINED_LIMIT : SCOPED_LIMIT
+
+  def limited_search(key)
+    case key
+    when :job_leads then search_job_leads
+    when :interviews then search_interviews
+    when :notes then search_notes
+    else raise ArgumentError, "Unknown result key: #{key.inspect}"
+    end.limit(result_limit)
   end
 
   def filtered(key, scope)
@@ -53,10 +55,7 @@ class SearchQuery
 
   def search_job_leads
     scope = filtered(:job_leads, @user.job_leads.includes(:tags))
-
-    terms.reduce(scope) do |current_scope, term|
-      current_scope.where(job_lead_conditions, term: "%#{term}%")
-    end
+    where_terms(scope, job_lead_conditions)
   end
 
   def job_lead_conditions
@@ -80,10 +79,7 @@ class SearchQuery
 
   def search_interviews
     scope = filtered(:interviews, @user.interviews.includes(:job_lead).order(scheduled_at: :desc))
-
-    terms.reduce(scope) do |current_scope, term|
-      current_scope.where(interview_conditions, term: "%#{term}%")
-    end
+    where_terms(scope, interview_conditions)
   end
 
   def interview_conditions
@@ -106,8 +102,12 @@ class SearchQuery
   def search_notes
     scope = filtered(:notes, @user.notes)
 
+    where_terms(scope, "LOWER(content) LIKE :term")
+  end
+
+  def where_terms(scope, conditions)
     terms.reduce(scope) do |current_scope, term|
-      current_scope.where("LOWER(content) LIKE ?", "%#{term}%")
+      current_scope.where(conditions, term: "%#{term}%")
     end
   end
 end

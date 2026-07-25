@@ -19,11 +19,14 @@ class JobLeadFilters < ApplicationFilters
 
   sort_option :title, text: true
   sort_option :company, text: true
-  sort_option :created, column: :created_at, direction: :desc
-  sort_option :updated, column: :updated_at, direction: :desc
-  sort_option :applied, column: :applied_at, direction: :desc
-  sort_option :offer, column: :offer_at, direction: :desc
-  sort_option :rejected, column: :rejected_at, direction: :desc
-  sort_option :accepted, column: :accepted_at, direction: :desc
-  sort_option :archived, column: :archived_at, direction: :desc
+
+  with_options direction: :desc do
+    sort_option :created,  column: :created_at
+    sort_option :updated,  column: :updated_at
+    sort_option :applied,  column: :applied_at
+    sort_option :offer,    column: :offer_at
+    sort_option :rejected, column: :rejected_at
+    sort_option :accepted, column: :accepted_at
+    sort_option :archived, column: :archived_at
+  end
 end

@@ -140,7 +140,7 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "2 job leads", job_lead_count_text(2)
   end
 
-  test "job_lead_count_text prefixes non all type" do
+  test "job_lead_count_text prefixes non-\"all\" type" do
     assert_equal "3 active job leads", job_lead_count_text(3, state: "active")
     assert_equal "3 job leads", job_lead_count_text(3, state: "all")
   end
@@ -214,9 +214,9 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "2 interview notes", note_count_text(2, notable: :interview)
   end
 
-  test "note_count_text prefixes non all type" do
-    assert_equal "2 archived job lead notes", note_count_text(2, job_lead_state: "archived", notable: "JobLead")
-    assert_equal "2 job lead notes", note_count_text(2, job_lead_state: "all", notable: "JobLead")
+  test "note_count_text prefixes non-\"all\" type" do
+    assert_equal "2 archived job lead notes", note_count_text(2, state: "archived", notable: "JobLead")
+    assert_equal "2 job lead notes", note_count_text(2, state: "all", notable: "JobLead")
   end
 
   test "line_wrap_url inserts zero width spaces after slashes and hyphens" do

@@ -19,7 +19,7 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
   test "should render nested radio setting names and stable ids" do
     get settings_url(tab: "filters")
 
-    assert_select "label[for='filters_job_leads']", text: "Default Job Leads Filter"
+    assert_select "label[for='filters_job_leads']", text: "Default Job Lead State"
     assert_select "input[name='settings[filters][job_leads]']", 3
     assert_select "input#filters_job_leads_all[name='settings[filters][job_leads]']"
   end

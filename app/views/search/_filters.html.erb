@@ -1,30 +1,43 @@
 <%# locals: () %>
 
+<%
+  scope_icons = {
+    all: "layers",
+    job_leads: "briefcase",
+    interviews: "interview",
+    notes: "quill"
+  }.stringify_keys
+
+  timeframe_icons = {
+    upcoming: "time-schedule",
+    completed: "check-circle"
+  }.stringify_keys
+
+  notable_type_icons = {
+    JobLead: "briefcase",
+    Interview: "interview"
+  }.stringify_keys
+%>
+
 <%# Two-column label/options grid: right-aligned labels, wrapping options. %>
 <div id="search-filters" class="mt-3 filter-grid">
   <div class="filter-group">
     <%= filter_row_label "Search In", icon_name: "search" %>
 
     <div class="filter-options">
-      <% scope_icons = { all: "layers", job_leads: "briefcase", interviews: "interview", notes: "quill" }.stringify_keys %>
-
       <% @search_scopes.each do |scope| %>
         <%= render "filter_radio", name: :scope, value: scope, checked: @search_scope == scope, icon_name: scope_icons[scope], context: "search-scope" %>
       <% end %>
     </div>
   </div>
 
-  <% if @search_scope == 'job_leads' %>
+  <% if @search_scope == "job_leads" %>
     <div class="filter-group">
       <%= filter_row_label "Status", icon_name: "timeline" %>
 
       <div class="filter-options">
         <% if @job_lead_filters.filtered?(:status) %>
-          <%= link_to(
-            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
-            search_path(@job_lead_filters.params_with(q: @query, scope: @search_scope, status: nil)),
-            class: "btn btn-xs btn-destructive btn-muted"
-          ) %>
+          <%= clear_search_filter_button(@job_lead_filters, :status, query: @query, scope: @search_scope) %>
         <% end %>
 
         <% @statuses.each do |status| %>
@@ -32,20 +45,15 @@
         <% end %>
       </div>
     </div>
-  <% elsif @search_scope == 'interviews' %>
+  <% elsif @search_scope == "interviews" %>
     <div class="filter-group">
       <%= filter_row_label "Timeframe", icon_name: "date-time" %>
 
       <div class="filter-options">
         <% if @interview_filters.filtered?(:timeframe) %>
-          <%= link_to(
-            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
-            search_path(@interview_filters.params_with(q: @query, scope: @search_scope, timeframe: nil)),
-            class: "btn btn-xs btn-destructive btn-muted"
-          ) %>
+          <%= clear_search_filter_button(@interview_filters, :timeframe, query: @query, scope: @search_scope) %>
         <% end %>
 
-        <% timeframe_icons = { upcoming: "time-schedule", completed: "check-circle" }.stringify_keys %>
         <% @timeframes.each do |timeframe| %>
           <%= render "filter_radio", name: :timeframe, value: timeframe, checked: @interview_filters.timeframe == timeframe, icon_name: timeframe_icons[timeframe], context: "interviews-filter-timeframe" %>
         <% end %>
@@ -57,11 +65,7 @@
 
       <div class="filter-options">
         <% if @interview_filters.filtered?(:rating) %>
-          <%= link_to(
-            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
-            search_path(@interview_filters.params_with(q: @query, scope: @search_scope, rating: nil)),
-            class: "btn btn-xs btn-destructive btn-muted"
-          ) %>
+          <%= clear_search_filter_button(@interview_filters, :rating, query: @query, scope: @search_scope) %>
         <% end %>
 
         <label class="star-none-toggle [view-transition-name:interviews-filter-no-rating]" title="No rating">
@@ -73,28 +77,25 @@
 
         <div class="stars-filter-group [view-transition-name:interviews-filter-stars-rating]" role="radiogroup" aria-label="Filter by star rating">
           <% 1.upto(5) do |stars| %>
+            <% rating = stars.to_s %>
+
             <label>
-              <%= radio_button_tag :rating, stars, @interview_filters.rating == stars.to_s, data: { action: 'change->auto-submit#submit' }, aria: { label: "Filter by #{pluralize(stars, 'star')}" } %>
+              <%= radio_button_tag :rating, stars, @interview_filters.rating == rating, data: { action: "change->auto-submit#submit" }, aria: { label: "Filter by #{pluralize(stars, "star")}" } %>
               <%= icon "star" %>
             </label>
           <% end %>
         </div>
       </div>
     </div>
-  <% elsif @search_scope == 'notes' %>
+  <% elsif @search_scope == "notes" %>
     <div class="filter-group">
       <%= filter_row_label "Type", icon_name: "question-circle" %>
 
       <div class="filter-options">
         <% if @note_filters.filtered?(:notable_type) %>
-          <%= link_to(
-            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
-            search_path(@note_filters.params_with(q: @query, scope: @search_scope, notable_type: nil)),
-            class: "btn btn-xs btn-destructive btn-muted"
-          ) %>
+          <%= clear_search_filter_button(@note_filters, :notable_type, query: @query, scope: @search_scope) %>
         <% end %>
 
-        <% notable_type_icons = { JobLead: "briefcase", Interview: "interview" }.stringify_keys %>
         <% @notable_types.each do |notable_type| %>
           <%= render "filter_radio", name: :notable_type, value: notable_type, checked: @note_filters.notable_type == notable_type, icon_name: notable_type_icons[notable_type], label: human(notable_type).pluralize.titleize, context: "notes-filter-notable-type" %>
         <% end %>

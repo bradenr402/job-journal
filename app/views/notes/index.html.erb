@@ -1,9 +1,21 @@
-<% content_for :title, 'Notes' %>
+<%
+  title =
+    if @filters.notable_type.present?
+      [
+        "#{@filters.notable_type.presence&.titlecase} Notes".squish,
+        @filters.state.presence&.titlecase
+      ].compact.join(" - ")
+    else
+      "#{@filters.state.presence&.titlecase} Notes".squish
+    end
+
+  content_for :title, title
+%>
 
 <div class="sm:w-7/8 w-full mx-auto @container">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
-    <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
+    <%= link_to dashboard_path, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
+      <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
       <span>Back Home</span>
     <% end %>
   </div>
@@ -13,12 +25,12 @@
       Notes
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:note-count]">
-      <%= note_count_text @notes.size, job_lead_state: @job_lead_state, notable: @notable_type %>
+      <%= note_count_text @notes.size, state: @filters.state, notable: @filters.notable_type %>
     </span>
   </div>
 
   <div class="@3xl:flex @3xl:items-start @3xl:gap-6">
-    <%= render 'filters' %>
+    <%= render "filters" %>
 
     <div id="notes" class="@container min-w-0 @3xl:flex-1">
       <% if @notes.any? %>
@@ -28,7 +40,7 @@
       <% elsif !Current.user.notes.exists? %>
         <div class="empty-state my-24">
           <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-            <%= icon 'quill', class: 'size-16 text-muted dark:text-soft' %>
+            <%= icon "quill", class: "size-16 text-muted dark:text-soft" %>
           </div>
 
           <h2 class="subheading">No Notes Yet</h2>

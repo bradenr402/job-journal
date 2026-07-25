@@ -3,14 +3,7 @@
 <%# Two-column label/options grid on small screens; a vertical sidebar from @3xl up. %>
 <aside id="interview-filters" class="filter-panel">
   <div class="filter-panel-content">
-    <% if @filters.any_active? %>
-      <div class="col-span-2">
-        <%= link_to interviews_path(timeframe: "all"), class: "@3xl:w-full btn btn-sm btn-destructive btn-muted [view-transition-name:clear-filters-button]" do %>
-          <%= icon "eraser-filled", class: "size-4 shrink-0" %>
-          <span>Clear Filters</span>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render "shared/clear_filters", filters: @filters, path: interviews_path(timeframe: "all") %>
 
     <%= render "shared/sort_options", filters: @filters %>
 
@@ -18,19 +11,27 @@
       <%= filter_row_label "Timeframe", icon_name: "date-time" %>
 
       <div class="filter-options">
-        <% [
-          { timeframe: "all", icon: "layers" },
-          { timeframe: "upcoming", icon: "time-schedule", tag_class: "tag-interview" },
-          { timeframe: "completed", icon: "check-circle", tag_class: "tag-accepted" }
-        ].each do |option| %>
-          <% timeframe = option[:timeframe] %>
+        <%
+          timeframe_icons = {
+            all: "layers",
+            upcoming: "time-schedule",
+            completed: "check-circle"
+          }.stringify_keys
 
+          timeframe_tag_classes = {
+            all: nil,
+            upcoming: "tag-interview",
+            completed: "tag-accepted"
+          }.stringify_keys
+        %>
+
+        <% @filters.class.options_for(:timeframe).each do |timeframe| %>
           <%= filter_link(
             path: interviews_path(@filters.toggle_params(:timeframe, timeframe, off: "all")),
             value: timeframe,
-            icon_name: option[:icon],
-            selected: @timeframe == timeframe,
-            tag_class: option[:tag_class],
+            icon_name: timeframe_icons[timeframe],
+            selected: @filters.timeframe == timeframe,
+            tag_class: timeframe_tag_classes[timeframe],
             context: "interviews"
           ) %>
         <% end %>
@@ -40,24 +41,30 @@
     <div class="filter-group">
       <%= filter_row_label "Rating", icon_name: "thumbs-up-down" %>
 
+      <% rating = @filters.rating %>
+      <% unrated = rating == "unrated" %>
+
       <div class="[view-transition-name:filter-interviews-rating] filter-options gap-0.5">
         <%= link_to(
-          icon(@rating == "unrated" ? "star-slash-filled" : "star-slash"),
+          icon(unrated ? "star-slash-filled" : "star-slash"),
           interviews_path(@filters.toggle_params(:rating, "unrated")),
-          class: [ "star-none-toggle", ("star-selected" if @rating == "unrated") ],
+          class: [ "star-none-toggle", ("star-selected" if unrated) ],
           title: "No rating",
-          aria: { label: "Filter by no rating", current: @rating == "unrated" }
+          aria: { label: "Filter by no rating", current: unrated }
         ) %>
 
         <span class="mx-1 w-px h-6 translate-y-px rounded-full shrink-0 bg-neutral-200 dark:bg-neutral-800" aria-hidden="true"></span>
 
         <div class="stars-filter-group" role="group" aria-label="Filter by star rating">
           <% 1.upto(5) do |stars| %>
+            <% selected = rating == stars.to_s %>
+            <% star_label = pluralize(stars, "star") %>
+
             <%= link_to(
               icon("star"),
               interviews_path(@filters.toggle_params(:rating, stars.to_s)),
-              class: ("star-selected" if @rating == stars.to_s),
-              aria: { label: "Filter by #{pluralize(stars, 'star')}", current: @rating == stars.to_s }
+              class: ("star-selected" if selected),
+              aria: { label: "Filter by #{star_label}", current: selected }
             ) %>
           <% end %>
         </div>

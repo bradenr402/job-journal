@@ -1,12 +1,14 @@
 <%# locals: (name:, value:, checked:, icon_name:, context: nil, label: value.to_s.titlecase) %>
 
+<% value_name = value.to_s %>
+
 <%= tag.div(
   class: "form-radio-tag",
-  style: ("view-transition-name: #{context}-#{value.to_s.parameterize}" if context)
+  style: ("view-transition-name: #{context}-#{value_name.parameterize}" if context)
 ) do %>
   <%= radio_button_tag name, value, checked, data: { action: "change->auto-submit#submit" }, class: "peer" %>
   <%= label_tag(
-    "#{name}_#{value}",
+    "#{name}_#{value_name}",
     icon(icon_name, class: "size-4 -ml-px shrink-0") + label
   ) %>
 <% end %>

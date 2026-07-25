@@ -11,7 +11,10 @@ class InterviewFilters < ApplicationFilters
   end
 
   sort_option :interviewer, text: true
-  sort_option :scheduled, column: :scheduled_at, direction: :desc
-  sort_option :created, column: :created_at, direction: :desc
-  sort_option :updated, column: :updated_at, direction: :desc
+
+  with_options direction: :desc do
+    sort_option :scheduled, column: :scheduled_at
+    sort_option :created,   column: :created_at
+    sort_option :updated,   column: :updated_at
+  end
 end

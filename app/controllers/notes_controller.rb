@@ -4,10 +4,6 @@ class NotesController < ApplicationController
   # GET /notes
   def index
     @filters = NoteFilters.new(params, user: Current.user, use_settings: true)
-    @job_lead_state = @filters.job_lead_state
-    @notable_type = @filters.notable_type
-
-    @notable_types = NoteFilters.options_for(:notable_type)
 
     @notes = @filters.apply(
       Current.user.notes
