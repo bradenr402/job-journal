@@ -135,7 +135,7 @@
 
       <div
         class="
-          [--demo-padding:calc(var(--spacing)*1)]
+          [--demo-padding:--spacing(1)]
           [--demo-inner-radius:var(--radius-2xl)]
           [--demo-outer-radius:calc(var(--demo-inner-radius)+var(--demo-padding))]
           p-(--demo-padding)! rounded-(--demo-outer-radius)
@@ -537,8 +537,8 @@
     class="
       footer-reveal group/footer max-w-8xl md:mx-auto
       rounded-4xl ring-1 ring-neutral-200/60 dark:ring-neutral-800/60
-      [--footer-padding:calc(var(--spacing)*8)] md:[--footer-padding:calc(var(--spacing)*12)] p-(--footer-padding)
-      [--footer-gap:calc(var(--spacing)*8)] md:[--footer-gap:calc(var(--spacing)*16)]
+      [--footer-padding:--spacing(8)] md:[--footer-padding:--spacing(12)] p-(--footer-padding)
+      [--footer-gap:--spacing(8)] md:[--footer-gap:--spacing(16)]
 
       not-[main:has(>_:nth-last-child(2n):first-child)+footer>&]:bg-neutral-50 not-[main:has(>_:nth-last-child(2n):first-child)+footer>&]:dark:bg-neutral-900/40
       [main:has(>_:nth-last-child(2n):first-child)+footer>&]:bg-white [main:has(>_:nth-last-child(2n):first-child)+footer>&]:dark:bg-neutral-950
