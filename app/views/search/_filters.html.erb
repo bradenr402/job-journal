@@ -19,7 +19,13 @@
       <%= filter_row_label "Status", icon_name: "timeline" %>
 
       <div class="filter-options">
-        <%= link_to 'Clear', search_path(@job_lead_filters.params_with(q: @query, scope: @search_scope, status: nil)), class: 'btn btn-sm btn-destructive btn-muted' if @job_lead_filters.filtered?(:status) %>
+        <% if @job_lead_filters.filtered?(:status) %>
+          <%= link_to(
+            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
+            search_path(@job_lead_filters.params_with(q: @query, scope: @search_scope, status: nil)),
+            class: "btn btn-xs btn-destructive btn-muted"
+          ) %>
+        <% end %>
 
         <% @statuses.each do |status| %>
           <%= render "filter_radio", name: :status, value: status, checked: @job_lead_filters.status == status, icon_name: icon_name_for_status(status), context: "job-leads-filter-status" %>
@@ -31,7 +37,13 @@
       <%= filter_row_label "Timeframe", icon_name: "date-time" %>
 
       <div class="filter-options">
-        <%= link_to 'Clear', search_path(@interview_filters.params_with(q: @query, scope: @search_scope, timeframe: nil)), class: 'btn btn-sm btn-destructive btn-muted' if @interview_filters.filtered?(:timeframe) %>
+        <% if @interview_filters.filtered?(:timeframe) %>
+          <%= link_to(
+            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
+            search_path(@interview_filters.params_with(q: @query, scope: @search_scope, timeframe: nil)),
+            class: "btn btn-xs btn-destructive btn-muted"
+          ) %>
+        <% end %>
 
         <% timeframe_icons = { upcoming: "time-schedule", completed: "check-circle" }.stringify_keys %>
         <% @timeframes.each do |timeframe| %>
@@ -44,7 +56,13 @@
       <%= filter_row_label "Rating", icon_name: "thumbs-up-down" %>
 
       <div class="filter-options">
-        <%= link_to 'Clear', search_path(@interview_filters.params_with(q: @query, scope: @search_scope, rating: nil)), class: 'btn btn-sm btn-destructive btn-muted' if @interview_filters.filtered?(:rating) %>
+        <% if @interview_filters.filtered?(:rating) %>
+          <%= link_to(
+            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
+            search_path(@interview_filters.params_with(q: @query, scope: @search_scope, rating: nil)),
+            class: "btn btn-xs btn-destructive btn-muted"
+          ) %>
+        <% end %>
 
         <label class="star-none-toggle [view-transition-name:interviews-filter-no-rating]" title="No rating">
           <%= radio_button_tag :rating, "unrated", @interview_filters.rating == "unrated", class: "peer", data: { action: "change->auto-submit#submit" }, aria: { label: "Filter by no rating" } %>
@@ -68,7 +86,13 @@
       <%= filter_row_label "Type", icon_name: "question-circle" %>
 
       <div class="filter-options">
-        <%= link_to 'Clear', search_path(@note_filters.params_with(q: @query, scope: @search_scope, notable_type: nil)), class: 'btn btn-sm btn-destructive btn-muted' if @note_filters.filtered?(:notable_type) %>
+        <% if @note_filters.filtered?(:notable_type) %>
+          <%= link_to(
+            icon("eraser-filled", class: "size-4 shrink-0") + "Clear",
+            search_path(@note_filters.params_with(q: @query, scope: @search_scope, notable_type: nil)),
+            class: "btn btn-xs btn-destructive btn-muted"
+          ) %>
+        <% end %>
 
         <% notable_type_icons = { JobLead: "briefcase", Interview: "interview" }.stringify_keys %>
         <% @notable_types.each do |notable_type| %>
