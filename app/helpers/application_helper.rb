@@ -83,6 +83,8 @@ module ApplicationHelper
     values.map { option(it) }
   end
 
+  def quote(text) = safe_join([ "“", text, "”" ])
+
   def job_lead_count_text(count, state: nil, tags: nil, status: nil, source: nil)
     capture do
       label = state.present? && state != "all" ? "#{state} job lead" : "job lead"
@@ -91,8 +93,8 @@ module ApplicationHelper
 
       filters = []
 
-      filters << "status: #{tag.span "“#{status.to_s.humanize}”", class: "font-semibold text-light"}" if status.present?
-      filters << "source: #{tag.span "“#{source}”", class: "font-semibold text-light"}" if source.present?
+      filters << "status: #{tag.span quote(status.to_s.humanize), class: "font-semibold text-light"}" if status.present?
+      filters << "source: #{tag.span quote(source), class: "font-semibold text-light"}" if source.present?
 
       if tags.present?
         tag_label = "tag".pluralize(tags.size)
@@ -117,7 +119,7 @@ module ApplicationHelper
         rating_text = rating == "unrated" ? "No rating" : pluralize(rating, "star")
 
         concat " with rating: "
-        concat tag.span("“#{rating_text}”", class: "font-semibold text-light")
+        concat tag.span(quote(rating_text), class: "font-semibold text-light")
       end
     end
   end
@@ -140,7 +142,7 @@ module ApplicationHelper
       else "No results"
       end.html_safe
 
-    safe_join([ base, " found for “", query, "”." ])
+    safe_join([ base, " found for ", quote(query), "." ])
   end
 
   # Inserts zero-width spaces (ZWSP) after "/" and "-" in URLs or long strings,
