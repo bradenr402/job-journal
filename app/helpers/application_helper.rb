@@ -83,15 +83,16 @@ module ApplicationHelper
     values.map { option(it) }
   end
 
-  def job_lead_count_text(count, type: nil, tags: nil, status: nil)
+  def job_lead_count_text(count, state: nil, tags: nil, status: nil, source: nil)
     capture do
-      label = type.present? && type != "all" ? "#{type} job lead" : "job lead"
+      label = state.present? && state != "all" ? "#{state} job lead" : "job lead"
 
       concat pluralize(count, label).gsub(/\A0/, "No")
 
       filters = []
 
       filters << "status: #{tag.span "“#{status.to_s.humanize}”", class: "font-semibold text-light"}" if status.present?
+      filters << "source: #{tag.span "“#{source}”", class: "font-semibold text-light"}" if source.present?
 
       if tags.present?
         tag_label = "tag".pluralize(tags.size)
@@ -106,27 +107,36 @@ module ApplicationHelper
     end
   end
 
-  def interview_count_text(count, date_range: nil)
-    label = date_range.present? && date_range != "all" ? "#{date_range} interview" : "interview"
-    pluralize(count, label).gsub(/\A0/, "No")
+  def interview_count_text(count, timeframe: nil, rating: nil)
+    capture do
+      label = timeframe.present? && timeframe != "all" ? "#{timeframe} interview" : "interview"
+
+      concat pluralize(count, label).gsub(/\A0/, "No")
+
+      if rating.present?
+        rating_text = rating == "unrated" ? "No rating" : pluralize(rating, "star")
+
+        concat " with rating: "
+        concat tag.span("“#{rating_text}”", class: "font-semibold text-light")
+      end
+    end
   end
 
-  def note_count_text(count, type: nil, notable: nil)
+  def note_count_text(count, job_lead_state: nil, notable: nil)
     label = "#{human notable} note".downcase.squish
-    label = "#{type} #{label}" if type.present? && type != "all"
+    label = "#{job_lead_state} #{label}" if job_lead_state.present? && job_lead_state != "all"
 
     pluralize(count, label).gsub(/\A0/, "No")
   end
 
-  def search_empty_results_text(filter, query: nil, status: nil, date_range: nil, notable: nil)
+  def search_empty_results_text(scope, query: nil, status: nil, timeframe: nil, rating: nil, notable: nil)
     return "No search query provided" if query.blank?
 
     base =
-      case filter
+      case scope
       when "job_leads" then job_lead_count_text(0, status:)
-      when "interviews" then interview_count_text(0, date_range:)
+      when "interviews" then interview_count_text(0, timeframe:, rating:)
       when "notes" then note_count_text(0, notable:)
-      when "all" then "No results"
       else "No results"
       end.html_safe
 
@@ -184,13 +194,17 @@ module ApplicationHelper
     icon icon_name_for_status(status), **kwargs
   end
 
-  def filter_link(path:, value:, icon_name:, selected:, label: value.titlecase, tag_class: nil, context: nil)
-    contents = [
-      icon(icon_name, class: "size-4 -ml-px shrink-0"),
-      tag.span(label),
-      (icon("x-mini") if selected && value != "all")
-    ].compact
+  def filter_row_label(text, icon_name: nil)
+    tag.span(
+      class: "filter-label",
+      style: "view-transition-name: filter-row-label-#{text.parameterize}"
+    ) do
+      concat icon(icon_name, class: "size-4 shrink-0") if icon_name.present?
+      concat text
+    end
+  end
 
+  def filter_link(path:, value:, icon_name:, selected:, label: value.titlecase, tag_class: nil, context: nil)
     tag_classes = [
       "tag",
       "tag-filter",
@@ -198,8 +212,14 @@ module ApplicationHelper
       ("tag-selected" if selected)
     ]
 
-    link_to path, class: "inline-block", style: ("view-transition-name: #{context}-#{value}" if context) do
-      tag.span safe_join(contents), class: tag_classes
+    link_to(
+      path,
+      class: tag_classes,
+      style: ("view-transition-name: #{context}-#{value.to_s.parameterize}" if context)
+    ) do
+      concat icon(icon_name, class: "size-4 -ml-px shrink-0")
+      concat tag.span(label)
+      concat icon("x-mini") if selected && value != "all"
     end
   end
 

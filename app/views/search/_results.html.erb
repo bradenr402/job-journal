@@ -3,14 +3,14 @@
 <% any_results = @results[:job_leads].any? || @results[:interviews].any? || @results[:notes].any? %>
 
 <%= turbo_frame_tag 'search-results' do %>
-  <div class="@container <%= 'mt-6' if @selected_filter.present? && @selected_filter != 'all' %>">
+  <div class="@container <%= 'mt-6' if @search_scope.present? && @search_scope != 'all' %>">
     <% if @query.blank? %>
       <div class="empty-state [view-transition-name:search-empty]">
         Start typing to find your job leads, interviews, or notes.
       </div>
     <% elsif any_results %>
       <% if @results[:job_leads].any? %>
-        <% unless @selected_filter == 'job_leads' %>
+        <% unless @search_scope == 'job_leads' %>
           <p class="ml-1 font-semibold mt-10 mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-1">
             <%= pluralize @results[:job_leads].count, "Job Lead" %>
           </p>
@@ -24,7 +24,7 @@
       <% end %>
 
       <% if @results[:interviews].any? %>
-        <% unless @selected_filter == 'interviews' %>
+        <% unless @search_scope == 'interviews' %>
           <p class="ml-1 font-semibold mt-10 mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-1">
             <%= pluralize @results[:interviews].count, "Interview" %>
           </p>
@@ -38,7 +38,7 @@
       <% end %>
 
       <% if @results[:notes].any? %>
-        <% unless @selected_filter == 'notes' %>
+        <% unless @search_scope == 'notes' %>
           <p class="ml-1 font-semibold mt-10 mb-2 border-b border-neutral-200 dark:border-neutral-800 pb-1">
             <%= pluralize @results[:notes].count, "Note" %>
           </p>
@@ -52,7 +52,7 @@
     <% else %>
       <div class="empty-state [view-transition-name:search-empty]">
         <span>
-          <%= search_empty_results_text @selected_filter, query: @query, status: @selected_status, date_range: @selected_date_range, notable: @selected_notable_type %>
+          <%= search_empty_results_text @search_scope, query: @query, status: @job_lead_filters.status, timeframe: @interview_filters.timeframe, rating: @interview_filters.rating, notable: @note_filters.notable_type %>
         </span>
       </div>
     <% end %>

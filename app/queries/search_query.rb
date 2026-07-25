@@ -1,20 +1,22 @@
 class SearchQuery
+  SCOPES = %w[ all job_leads interviews notes ].freeze
   EMPTY_RESULTS = { job_leads: [], interviews: [], notes: [] }.freeze
 
-  def initialize(user, query, filter: nil, status: nil, date_range: nil, notable_type: nil)
+  # `scope` narrows the search to a single resource type ("all" searches
+  # everything). `filters` maps resource keys (:job_leads, :interviews,
+  # :notes) to ApplicationFilters instances applied to each result set.
+  def initialize(user, query, scope: "all", filters: {})
     @user = user
     @query = query.to_s.strip
-    @filter = filter&.downcase
-    @status = status
-    @date_range = date_range
-    @notable_type = notable_type
+    @scope = scope.to_s.presence_in(SCOPES) || "all"
+    @filters = filters
   end
 
   # Returns a hash of search results for job_leads, interviews, and notes.
   def results
     return EMPTY_RESULTS if @query.blank?
 
-    case @filter
+    case @scope
     when "job_leads"
       single_result(:job_leads, search_job_leads.limit(30))
     when "interviews"
@@ -38,13 +40,16 @@ class SearchQuery
     }
   end
 
+  def filtered(key, scope)
+    @filters[key]&.apply(scope) || scope
+  end
+
   def terms
     @terms ||= @query.scan(/"([^"]+)"|'([^']+)'|(\S+)/).map { it.compact.first.downcase }
   end
 
   def search_job_leads
-    scope = @user.job_leads.includes(:tags)
-    scope = scope.with_status(@status) if @status.present?
+    scope = filtered(:job_leads, @user.job_leads.includes(:tags))
 
     terms.reduce(scope) do |current_scope, term|
       current_scope.where(job_lead_conditions, term: "%#{term}%")
@@ -71,17 +76,7 @@ class SearchQuery
   end
 
   def search_interviews
-    scope = @user.interviews.includes(:job_lead).order(scheduled_at: :desc)
-
-    scope =
-      case @date_range
-      when "upcoming"
-        scope.future
-      when "completed"
-        scope.past
-      else
-        scope
-      end
+    scope = filtered(:interviews, @user.interviews.includes(:job_lead).order(scheduled_at: :desc))
 
     terms.reduce(scope) do |current_scope, term|
       current_scope.where(interview_conditions, term: "%#{term}%")
@@ -106,8 +101,7 @@ class SearchQuery
   end
 
   def search_notes
-    scope = @user.notes
-    scope = scope.where(notable_type: @notable_type) if @notable_type.present?
+    scope = filtered(:notes, @user.notes)
 
     terms.reduce(scope) do |current_scope, term|
       current_scope.where("LOWER(content) LIKE ?", "%#{term}%")

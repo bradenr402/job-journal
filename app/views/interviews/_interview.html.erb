@@ -17,7 +17,7 @@
           </span>
         <% else %>
           <span class="align-middle whitespace-nowrap font-normal tag tag-interview">
-            <%= icon "calendar", class: "size-4 -ml-px shrink-0" %>
+            <%= icon "time-schedule", class: "size-4 -ml-px shrink-0" %>
             <span>Scheduled: <span class="text-xs opacity-65"><%= local_date_short interview.scheduled_at %></span></span>
           </span>
         <% end %>
@@ -57,7 +57,7 @@
 
   <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-4">
     <div class="flex items-center gap-1 text-sm text-soft">
-      <%= icon 'calendar', class: 'size-3.75 shrink-0' %>
+      <%= icon "time-schedule", class: "size-3.75 shrink-0" %>
       <%= interview.scheduled_at ? local_time_short(interview.scheduled_at) : "Not scheduled" %>
     </div>
     <% if interview.location.present? %>

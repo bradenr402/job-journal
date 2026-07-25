@@ -1,66 +1,96 @@
-<% if @selected_tags.any? || @selected_status.present? || (@selected_job_lead_type.present? && @selected_job_lead_type != "all") %>
-  <%= link_to "Clear Filters", job_leads_path(job_lead_type: "all"), class: "btn btn-sm btn-destructive btn-muted" %>
-<% end %>
+<%# locals: () %>
 
-<div id="job-lead-filters" class="my-4 space-y-1">
-  <div class="flex flex-wrap items-center gap-1">
-    <% [
-      { type: "all", icon: "layers" },
-      { type: "active", icon: "check-circle" },
-      { type: "archived", icon: "archive" }
-    ].each do |filter| %>
-      <% type = filter[:type] %>
-      <% selected = @selected_job_lead_type == type %>
+<%# Two-column label/options grid on small screens; a vertical sidebar from @3xl up. %>
+<aside id="job-lead-filters" class="filter-panel">
+  <div class="filter-panel-content">
+    <% if @filters.any_active? %>
+      <div class="col-span-2">
+        <%= link_to job_leads_path(job_lead_state: "all"), class: "@3xl:w-full btn btn-sm btn-destructive btn-muted [view-transition-name:clear-filters-button]" do %>
+          <%= icon "eraser-filled", class: "size-4 shrink-0" %>
+          <span>Clear Filters</span>
+        <% end %>
+      </div>
+    <% end %>
 
-      <%= filter_link(
-        path: job_leads_path(params.permit(:tags, :status).merge(job_lead_type: selected ? "all" : type)),
-        value: type,
-        icon_name: filter[:icon],
-        selected:,
-        context: "job-leads-filter"
-      ) %>
+    <%= render "shared/sort_options", filters: @filters %>
+
+    <div class="filter-group">
+      <%= filter_row_label "State", icon_name: "status" %>
+
+      <div class="filter-options">
+        <% [
+          { state: "all", icon: "layers" },
+          { state: "active", icon: "check-circle" },
+          { state: "archived", icon: "archive" }
+        ].each do |option| %>
+          <% state = option[:state] %>
+
+          <%= filter_link(
+            path: job_leads_path(@filters.toggle_params(:state, state, off: "all")),
+            value: state,
+            icon_name: option[:icon],
+            selected: @job_lead_state == state,
+            context: "job-leads-filter"
+          ) %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <%= filter_row_label "Status", icon_name: "timeline" %>
+
+      <div class="filter-options">
+        <% @statuses.each do |status| %>
+          <%= filter_link(
+            path: job_leads_path(@filters.toggle_params(:status, status)),
+            value: status,
+            icon_name: icon_name_for_status(status),
+            selected: @status == status,
+            context: "job-leads-status-filter",
+            tag_class: "tag-#{status}"
+          ) %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @sources.any? %>
+      <div class="filter-group">
+        <%= filter_row_label "Source", icon_name: "globe" %>
+
+        <div class="filter-options">
+          <% @sources.each do |source| %>
+            <%= filter_link(
+              path: job_leads_path(@filters.toggle_params(:source, source)),
+              value: source,
+              label: source,
+              icon_name: "globe",
+              selected: @source.to_s.casecmp?(source),
+              context: "job-leads-source-filter"
+            ) %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @tags.any? %>
+      <div class="filter-group">
+        <%= filter_row_label "Tags", icon_name: "tag" %>
+
+        <div class="filter-options">
+          <% selected_tags, unselected_tags = @tags.partition { |tag| tag.name.in?(@tag_names) } %>
+
+          <% (selected_tags + unselected_tags).each do |tag| %>
+            <%= filter_link(
+              path: job_leads_path(@filters.toggle_params(:tag_names, tag.name)),
+              value: tag.name,
+              label: tag.name,
+              icon_name: "tag",
+              selected: tag.name.in?(@tag_names),
+              context: "job-leads-tag-filter"
+            ) %>
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
-
-  <div class="flex flex-wrap items-center gap-1">
-    <% @all_status_names.each do |status| %>
-      <% selected = @selected_status == status %>
-
-      <%= filter_link(
-        path: job_leads_path(params.permit(:tags, :job_lead_type).merge(status: selected ? nil : status)),
-        value: status,
-        icon_name: icon_name_for_status(status),
-        selected:,
-        context: "job-leads-status-filter"
-      ) %>
-    <% end %>
-  </div>
-
-  <div class="flex flex-wrap items-center gap-1">
-    <% @selected_tags.each do |tag| %>
-      <% remaining_tags = @selected_tag_names - [tag.name] %>
-
-      <%= filter_link(
-        path: job_leads_path(params.permit(:job_lead_type, :status).merge(tags: remaining_tags.join(','))),
-        value: tag.name,
-        label: tag.name,
-        icon_name: "tag",
-        selected: true,
-        context: "job-leads-tag-filter"
-      ) %>
-    <% end %>
-
-    <% @unselected_tags.each do |tag| %>
-      <% new_tags = (@selected_tag_names + [tag.name]).uniq %>
-
-      <%= filter_link(
-        path: job_leads_path(params.permit(:job_lead_type, :status).merge(tags: new_tags.join(','))),
-        value: tag.name,
-        label: tag.name,
-        icon_name: "tag",
-        selected: false,
-        context: "job-leads-tag-filter"
-      ) %>
-    <% end %>
-  </div>
-</div>
+</aside>

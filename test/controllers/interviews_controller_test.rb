@@ -17,27 +17,27 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should filter index by upcoming date range" do
+  test "should filter index by upcoming timeframe" do
     completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
     upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
-    get interviews_url(date_range: "upcoming")
+    get interviews_url(timeframe: "upcoming")
 
     assert_response :success
     assert_select "#interview_#{upcoming.id}"
     assert_select "#interview_#{completed.id}", false
   end
 
-  test "should filter index by completed date range" do
+  test "should filter index by completed timeframe" do
     completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
     upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
-    get interviews_url(date_range: "completed")
+    get interviews_url(timeframe: "completed")
 
     assert_response :success
     assert_select "#interview_#{completed.id}"
     assert_select "#interview_#{upcoming.id}", false
   end
 
-  test "should fall back to user setting when date range param is missing" do
+  test "should fall back to user setting when timeframe param is missing" do
     @user.update_settings(filters: { interviews: "upcoming" })
     completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
     upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
@@ -48,26 +48,78 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert_select "#interview_#{completed.id}", false
   end
 
-  test "should fall back to user setting when date range param is invalid" do
+  test "should fall back to user setting when timeframe param is invalid" do
     @user.update_settings(filters: { interviews: "completed" })
     completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
     upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
-    get interviews_url(date_range: "bogus")
+    get interviews_url(timeframe: "bogus")
 
     assert_response :success
     assert_select "#interview_#{completed.id}"
     assert_select "#interview_#{upcoming.id}", false
   end
 
-  test "should override user setting with a valid date range param" do
+  test "should override user setting with a valid timeframe param" do
     @user.update_settings(filters: { interviews: "upcoming" })
     completed = create_interview(interviewer: "Wendy Bygone", scheduled_at: 1.day.ago)
     upcoming = create_interview(interviewer: "Wendy Hence", scheduled_at: 1.day.from_now)
-    get interviews_url(date_range: "all")
+    get interviews_url(timeframe: "all")
 
     assert_response :success
     assert_select "#interview_#{completed.id}"
     assert_select "#interview_#{upcoming.id}"
+  end
+
+  test "should preserve an explicit timeframe override in filter and sort links" do
+    @user.update_settings(filters: { interviews: "upcoming" })
+    get interviews_url(timeframe: "all")
+
+    assert_response :success
+    assert_select "a[href*='timeframe=all'][href*='rating=5']"
+    assert_select "a[href*='timeframe=all'][href*='sort=interviewer']"
+  end
+
+  test "should filter index by rating" do
+    rated = create_interview(interviewer: "Rated Rita", rating: 5, scheduled_at: 1.day.ago)
+    unrated = create_interview(interviewer: "Unrated Uri", scheduled_at: 1.day.ago)
+    get interviews_url(rating: "5")
+
+    assert_response :success
+    assert_select "#interview_#{rated.id}"
+    assert_select "#interview_#{unrated.id}", false
+  end
+
+  test "should filter index by unrated" do
+    rated = create_interview(interviewer: "Rated Rita", rating: 5, scheduled_at: 1.day.ago)
+    unrated = create_interview(interviewer: "Unrated Uri", scheduled_at: 1.day.ago)
+    get interviews_url(rating: "unrated")
+
+    assert_response :success
+    assert_select "#interview_#{unrated.id}"
+    assert_select "#interview_#{rated.id}", false
+  end
+
+  test "should ignore an invalid rating param" do
+    rated = create_interview(interviewer: "Rated Rita", rating: 5, scheduled_at: 1.day.ago)
+    unrated = create_interview(interviewer: "Unrated Uri", scheduled_at: 1.day.ago)
+    get interviews_url(rating: "bogus")
+
+    assert_response :success
+    assert_select "#interview_#{rated.id}"
+    assert_select "#interview_#{unrated.id}"
+  end
+
+  test "should sort index by interviewer" do
+    create_interview(interviewer: "Zzz Last Interviewer")
+    create_interview(interviewer: "Aaa First Interviewer")
+
+    get interviews_url(sort: "interviewer", direction: "asc")
+    assert_response :success
+    assert_match(/Aaa First Interviewer.*Zzz Last Interviewer/m, response.body)
+
+    get interviews_url(sort: "interviewer", direction: "desc")
+    assert_response :success
+    assert_match(/Zzz Last Interviewer.*Aaa First Interviewer/m, response.body)
   end
 
   test "should get new" do

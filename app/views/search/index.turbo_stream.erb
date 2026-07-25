@@ -1,7 +1,7 @@
 <%= turbo_stream.replace 'search-results' do %>
-  <%= render 'results', query: @query, results: @results %>
+  <%= render 'results' %>
 <% end %>
 
 <%= turbo_stream.replace 'search-filters' do %>
-  <%= render 'filters', query: @query %>
+  <%= render 'filters' %>
 <% end %>

@@ -3,31 +3,17 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    @selected_note_type = valid_note_type(use_user_setting: true)
-    @selected_notable_type = valid_notable_type
+    @filters = NoteFilters.new(params, user: Current.user, use_settings: true)
+    @job_lead_state = @filters.job_lead_state
+    @notable_type = @filters.notable_type
 
-    scope =
+    @notable_types = NoteFilters.options_for(:notable_type)
+
+    @notes = @filters.apply(
       Current.user.notes
         .includes(notable: :job_lead)
         .order(updated_at: :desc)
-        .yield_self { |scope| @selected_notable_type.present? ? scope.where(notable_type: @selected_notable_type) : scope }
-
-    @notes =
-      case @selected_note_type
-      when "active"
-        scope
-          .where.not(
-            notable_type: "JobLead",
-            notable_id: Current.user.job_leads.archived.select(:id)
-          )
-      when "archived"
-        scope.where(
-          notable_type: "JobLead",
-          notable_id: Current.user.job_leads.archived.select(:id)
-        )
-      else
-        scope
-      end
+    )
   end
 
   # GET /notes/new

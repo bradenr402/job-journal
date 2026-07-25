@@ -6,43 +6,34 @@ class JobLeadsController < ApplicationController
 
   # GET /job_leads
   def index
+    @filters = JobLeadFilters.new(params, user: Current.user, use_settings: true)
+    @job_lead_state = @filters.state
+    @status = @filters.status
+    @source = @filters.source
+    @tag_names = @filters.tag_names
+
     @tags = Current.user.tags.order(:name)
+    @statuses = JobLeadFilters.options_for(:status)
+    @sources = job_lead_sources
 
-    @selected_tag_names = selected_tag_names
-    @selected_status = valid_status
-    @selected_job_lead_type = valid_job_lead_type(use_user_setting: true)
-
-    scope = Current.user.job_leads
-      .includes(:notes, :tags)
-      .select(
-        :id,
-        :created_at,
-        :updated_at,
-        :applied_at,
-        :offer_at,
-        :rejected_at,
-        :accepted_at,
-        :archived_at,
-        :title,
-        :company,
-        :application_url
-      )
-      .order_by_latest_status(:desc)
-
-    @job_leads =
-      case @selected_job_lead_type
-      when "active" then scope.active
-      when "archived" then scope.archived
-      else scope
-      end
-
-    @job_leads = @job_leads.with_tags(@selected_tag_names) if @selected_tag_names.present?
-    @job_leads = @job_leads.with_status(@selected_status) if @selected_status.present?
-
-    @selected_tags = @tags.where(name: @selected_tag_names)
-    @unselected_tags = @tags.where.not(name: @selected_tag_names)
-
-    @all_status_names = JobLead::STATUSES
+    @job_leads = @filters.apply(
+      Current.user.job_leads
+        .includes(:notes, :tags)
+        .select(
+          :id,
+          :created_at,
+          :updated_at,
+          :applied_at,
+          :offer_at,
+          :rejected_at,
+          :accepted_at,
+          :archived_at,
+          :title,
+          :company,
+          :application_url
+        )
+        .order_by_latest_status(:desc)
+    )
   end
 
   # GET /job_leads/1
@@ -273,7 +264,12 @@ class JobLeadsController < ApplicationController
     @recent_sources = scope.where.not(source: [ nil, "" ]).distinct.pluck(:source).sort
   end
 
-  def selected_tag_names
-    params[:tags].to_s.split(",").map(&:strip).uniq
+  def job_lead_sources
+    Current.user.job_leads
+      .where.not(source: [ nil, "" ])
+      .distinct
+      .pluck(:source)
+      .uniq(&:downcase)
+      .sort_by(&:downcase)
   end
 end

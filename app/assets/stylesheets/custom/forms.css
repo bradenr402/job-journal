@@ -159,3 +159,65 @@
     @apply star-active;
   }
 }
+
+/*
+  Compact variant of stars-radio-group for filter rows. Works with plain
+  links (mark the chosen star with .star-selected) or labels wrapping radios.
+*/
+@utility stars-filter-group {
+  @apply flex items-center select-none;
+
+  > * {
+    @apply relative inline-flex cursor-pointer items-center justify-center rounded-lg transition-transform duration-80 hover:scale-115 active:scale-96 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 has-[input:focus-visible]:outline-none has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary-600;
+
+    > input[type="radio"] {
+      @apply sr-only;
+    }
+
+    > svg {
+      @apply size-6 text-muted fill-transparent transition-colors duration-80;
+    }
+  }
+
+  /* Hover */
+  > *:is(:hover, :has(~ :hover)) > svg {
+    @apply star-active;
+  }
+
+  /* Selected (when not hovering) */
+  > *:not(:hover, :has(~ :hover), :hover ~ *):is(
+      .star-selected,
+      :has(~ .star-selected),
+      :has(input:checked),
+      :has(~ * input:checked)
+    )
+    > svg {
+    @apply star-active;
+  }
+}
+
+/*
+  Icon-only toggle for the "no rating" option, designed to sit beside a
+  `stars-filter-group`. Wraps either a link (mark selection with
+  `star-selected`) or a label with a hidden radio.
+*/
+@utility star-none-toggle {
+  @apply relative inline-flex cursor-pointer items-center justify-center rounded-lg transition-transform duration-80 select-none hover:scale-115 active:scale-96 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 has-[input:focus-visible]:outline-none has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary-600;
+
+  > input[type="radio"] {
+    @apply sr-only;
+  }
+
+  > svg {
+    @apply size-6 text-muted transition-colors duration-80;
+  }
+
+  &:hover > svg {
+    @apply text-rose-500;
+  }
+
+  &.star-selected > svg,
+  &:has(input:checked) > svg {
+    @apply text-rose-500!;
+  }
+}

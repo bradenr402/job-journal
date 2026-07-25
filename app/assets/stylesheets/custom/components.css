@@ -731,3 +731,66 @@ static hover backgrounds.
     @apply h-px w-[calc(100%)-0.25rem] mx-0.5 my-1 bg-neutral-200 dark:bg-neutral-700;
   }
 }
+
+/*
+  Filter layouts
+  * `filter-grid` lays out label/options pairs in a two-column grid.
+  * `filter-panel` extends it, becoming a vertical sidebar from @3xl up.
+*/
+@utility filter-grid {
+  @apply grid grid-cols-[auto_1fr] items-start gap-x-1.5 gap-y-1;
+}
+
+@utility filter-panel {
+  @apply filter-grid my-4 @3xl:my-0 @3xl:block @3xl:w-74 @3xl:shrink-0 @3xl:self-stretch @3xl:border-r @3xl:border-neutral-200 @3xl:dark:border-neutral-800 @3xl:pr-5;
+
+  .filter-group {
+    @apply @3xl:block;
+  }
+
+  .filter-label {
+    @apply @3xl:mt-0 @3xl:mb-1;
+  }
+
+  .filter-options {
+    @apply @3xl:my-0 @3xl:py-0 @3xl:flex-wrap @3xl:overflow-x-visible @3xl:mask-none @3xl:animate-none;
+  }
+}
+
+@utility filter-panel-content {
+  @apply contents @3xl:block @3xl:sticky @3xl:top-6 @3xl:space-y-5;
+}
+
+@utility filter-group {
+  @apply contents;
+}
+
+@utility filter-label {
+  @apply inline-flex items-center gap-1 text-sm text-muted justify-self-end mt-0.5;
+}
+
+@utility filter-options {
+  @apply flex items-center gap-1 -m-0.5 p-0.5 overflow-x-auto overflow-fade-x scrollbar-none;
+
+  > * {
+    @apply shrink-0;
+  }
+}
+
+@utility sort-direction-toggle {
+  @apply inline-flex items-center rounded-lg bg-neutral-100 dark:bg-neutral-900 p-0.5 text-xs font-medium text-muted select-none outline-none focus-visible:ring-2 focus-visible:ring-primary-600;
+
+  > .sort-direction-option {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-1;
+  }
+
+  > .sort-direction-selected {
+    @apply transition-transform duration-80 bg-white dark:bg-neutral-800 text-normal not-dark:shadow-sm [view-transition-name:sort-direction-selected];
+  }
+
+  @variant active {
+    > .sort-direction-selected {
+      @apply scale-96;
+    }
+  }
+}

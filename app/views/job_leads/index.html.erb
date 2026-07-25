@@ -1,14 +1,14 @@
 <%
   content_for :title,
     [
-      "#{@selected_job_lead_type.presence&.titlecase} ",
+      "#{@job_lead_state.presence&.titlecase} ",
       'Job Leads',
-      (@selected_status.presence&.titlecase&.prepend(' - ')),
-      (@selected_tag_names.any? ? " - #{@selected_tag_names.join(', ')}" : nil)
+      (@status.presence&.titlecase&.prepend(' - ')),
+      (@tag_names.any? ? " - #{@tag_names.join(', ')}" : nil)
     ].compact.join
 %>
 
-<div class="sm:w-7/8 w-full mx-auto">
+<div class="sm:w-7/8 w-full mx-auto @container">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
       <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
@@ -20,35 +20,37 @@
     <h1 class="heading">
       Job Leads
     </h1>
-    <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:interview-count]">
-      <%= job_lead_count_text @job_leads.size, type: @selected_job_lead_type, tags: @selected_tags.map(&:name), status: @selected_status %>
+    <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:job-lead-count]">
+      <%= job_lead_count_text @job_leads.size, state: @job_lead_state, tags: @tag_names, status: @status, source: @source %>
     </span>
   </div>
 
-  <%= render 'filters' %>
+  <div class="@3xl:flex @3xl:items-start @3xl:gap-6">
+    <%= render 'filters' %>
 
-  <div id="job_leads" class="@container">
-    <% if @job_leads.any? %>
-      <div class="<%= collection_layout_class_names :job_leads, count: @job_leads.size, size: :large %>">
-        <%= render @job_leads %>
-      </div>
-    <% elsif !Current.user.job_leads.exists? %>
-      <div class="empty-state my-24">
-        <div class=" rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-          <%= icon 'briefcase', class: 'size-16 text-muted dark:text-soft' %>
+    <div id="job_leads" class="@container min-w-0 @3xl:flex-1">
+      <% if @job_leads.any? %>
+        <div class="<%= collection_layout_class_names :job_leads, count: @job_leads.size, size: :large %>">
+          <%= render @job_leads %>
         </div>
+      <% elsif !Current.user.job_leads.exists? %>
+        <div class="empty-state my-24">
+          <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
+            <%= icon 'briefcase', class: 'size-16 text-muted dark:text-soft' %>
+          </div>
 
-        <h2 class="subheading">No Job Leads Yet</h2>
-        <p class="max-w-md text-pretty leading-normal">Start tracking your job search by adding your first lead.</p>
-        <%= link_to new_job_lead_path, class: 'btn btn-sm btn-primary' do %>
-          <%= icon 'plus', class: 'size-4 shrink-0' %>
-          <span>New Job Lead</span>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="empty-state">
-        No job leads found.
-      </div>
-    <% end %>
+          <h2 class="subheading">No Job Leads Yet</h2>
+          <p class="max-w-md text-pretty leading-normal">Start tracking your job search by adding your first lead.</p>
+          <%= link_to new_job_lead_path, class: 'btn btn-sm btn-primary' do %>
+            <%= icon 'plus', class: 'size-4 shrink-0' %>
+            <span>New Job Lead</span>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          No job leads found.
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

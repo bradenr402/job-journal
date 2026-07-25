@@ -1,0 +1,61 @@
+<%# locals: (filters:) %>
+
+<div class="filter-group">
+  <%= filter_row_label "Sort", icon_name: "arrow-up-down" %>
+
+  <%# Plain flex row (not `filter-options`): a scroll container would clip the dropdown menu. %>
+  <div class="flex items-center gap-1">
+    <div class="relative" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+      <button
+        type="button"
+        class="[view-transition-name:sort-dropdown-trigger] dropdown-trigger px-2 py-1 text-xs whitespace-nowrap border border-neutral-200 dark:border-neutral-800 toggle-has-open-dropdown:border-neutral-300 dark:toggle-has-open-dropdown:border-neutral-700"
+        data-dropdown-target="trigger"
+        data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
+        aria-label="Sort by"
+      >
+        <span><%= filters.sort&.titlecase || "Default" %></span>
+        <%= icon "chevron-down", class: "size-4 shrink-0 -mr-0.75 in-toggle-has-open-dropdown:rotate-180 transition-all duration-120" %>
+      </button>
+
+      <div class="[view-transition-name:sort-dropdown-menu] dropdown-menu dropdown-menu-bottom-right dropdown-hidden translate-y-0.75" data-dropdown-target="menu">
+        <%= link_to url_for(filters.sort_params), class: "dropdown-option dropdown-option-secondary" do %>
+          <%= icon "check", class: "size-5 shrink-0 #{"invisible" if filters.sort}" %>
+          <span>Default</span>
+        <% end %>
+
+        <div class="dropdown-divider"></div>
+
+        <% filters.class.sort_options.each_key do |name| %>
+          <%= link_to url_for(filters.sort_params(name:)), class: "dropdown-option dropdown-option-secondary" do %>
+            <%= icon "check", class: "size-5 shrink-0 #{"invisible" unless filters.sort == name}" %>
+            <span><%= name.titlecase %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if filters.sort %>
+      <% is_descending = filters.sort_direction == "desc" %>
+
+      <%
+        direction       = is_descending ? "descending" : "ascending"
+        other_direction = is_descending ? "ascending" : "descending"
+      %>
+
+      <%= link_to(
+        url_for(filters.direction_toggle_params),
+        class: "sort-direction-toggle",
+        aria: { label: "Sorted #{direction}. Switch to #{other_direction}." }
+      ) do %>
+        <%= tag.span(
+          icon("arrow-up", class: "size-3.5 shrink-0") + "Asc",
+          class: [ "sort-direction-option", "sort-direction-selected": !is_descending ]
+        ) %>
+        <%= tag.span(
+          icon("arrow-down", class: "size-3.5 shrink-0") + "Desc",
+          class: [ "sort-direction-option", "sort-direction-selected": is_descending ]
+        ) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

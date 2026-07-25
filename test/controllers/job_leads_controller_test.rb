@@ -34,27 +34,27 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_select "#job_lead_#{new_lead.id}"
   end
 
-  test "should filter index by archived job lead type" do
+  test "should filter index by archived job lead state" do
     active = create_job_lead(title: "Active Position")
     archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
-    get job_leads_url(job_lead_type: "archived")
+    get job_leads_url(job_lead_state: "archived")
 
     assert_response :success
     assert_select "#job_lead_#{archived.id}"
     assert_select "#job_lead_#{active.id}", false
   end
 
-  test "should filter index by active job lead type" do
+  test "should filter index by active job lead state" do
     active = create_job_lead(title: "Active Position")
     archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
-    get job_leads_url(job_lead_type: "active")
+    get job_leads_url(job_lead_state: "active")
 
     assert_response :success
     assert_select "#job_lead_#{active.id}"
     assert_select "#job_lead_#{archived.id}", false
   end
 
-  test "should fall back to user setting when job lead type param is missing" do
+  test "should fall back to user setting when job lead state param is missing" do
     @user.update_settings(filters: { job_leads: "archived" })
     active = create_job_lead(title: "Active Position")
     archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
@@ -65,26 +65,69 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_select "#job_lead_#{active.id}", false
   end
 
-  test "should fall back to user setting when job lead type param is invalid" do
+  test "should fall back to user setting when job lead state param is invalid" do
     @user.update_settings(filters: { job_leads: "archived" })
     active = create_job_lead(title: "Active Position")
     archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
-    get job_leads_url(job_lead_type: "bogus")
+    get job_leads_url(job_lead_state: "bogus")
 
     assert_response :success
     assert_select "#job_lead_#{archived.id}"
     assert_select "#job_lead_#{active.id}", false
   end
 
-  test "should override user setting with a valid job lead type param" do
+  test "should override user setting with a valid job lead state param" do
     @user.update_settings(filters: { job_leads: "archived" })
     active = create_job_lead(title: "Active Position")
     archived = create_job_lead(title: "Archived Position", archived_at: 1.day.ago)
-    get job_leads_url(job_lead_type: "all")
+    get job_leads_url(job_lead_state: "all")
 
     assert_response :success
     assert_select "#job_lead_#{active.id}"
     assert_select "#job_lead_#{archived.id}"
+  end
+
+  test "should filter index by source" do
+    linkedin = create_job_lead(title: "LinkedIn Position", source: "LinkedIn")
+    indeed = create_job_lead(title: "Indeed Position", source: "Indeed")
+    get job_leads_url(source: "linkedin")
+
+    assert_response :success
+    assert_select "#job_lead_#{linkedin.id}"
+    assert_select "#job_lead_#{indeed.id}", false
+  end
+
+  test "should sort index by title" do
+    create_job_lead(title: "Zzz Last Role")
+    create_job_lead(title: "Aaa First Role")
+    get job_leads_url(sort: "title", direction: "asc")
+
+    assert_response :success
+    assert_match(/Aaa First Role.*Zzz Last Role/m, response.body)
+
+    get job_leads_url(sort: "title", direction: "desc")
+
+    assert_response :success
+    assert_match(/Zzz Last Role.*Aaa First Role/m, response.body)
+  end
+
+  test "should sort index by applied timestamp" do
+    create_job_lead(title: "Ancient Applied Role", applied_at: 3.days.ago)
+    create_job_lead(title: "Recent Applied Role", applied_at: 1.day.ago)
+    get job_leads_url(sort: "applied", direction: "asc")
+
+    assert_response :success
+    assert_match(/Ancient Applied Role.*Recent Applied Role/m, response.body)
+
+    get job_leads_url(sort: "applied")
+
+    assert_response :success
+    assert_match(/Recent Applied Role.*Ancient Applied Role/m, response.body)
+  end
+
+  test "should ignore invalid sort and direction params" do
+    get job_leads_url(sort: "bogus", direction: "bogus")
+    assert_response :success
   end
 
   test "should get new" do

@@ -141,8 +141,8 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "job_lead_count_text prefixes non all type" do
-    assert_equal "3 active job leads", job_lead_count_text(3, type: "active")
-    assert_equal "3 job leads", job_lead_count_text(3, type: "all")
+    assert_equal "3 active job leads", job_lead_count_text(3, state: "active")
+    assert_equal "3 job leads", job_lead_count_text(3, state: "all")
   end
 
   test "job_lead_count_text includes status filter" do
@@ -161,7 +161,7 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "job_lead_count_text includes status and plural tag filters" do
-    html = job_lead_count_text(2, type: "active", status: "interview", tags: [ "rails", "remote" ])
+    html = job_lead_count_text(2, state: "active", status: "interview", tags: [ "rails", "remote" ])
 
     assert_includes html, "2 active job leads with status:"
     assert_includes html, "<span class=\"font-semibold text-light\">“Interview”</span>"
@@ -169,14 +169,39 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_includes html, "<span class=\"font-semibold text-light\">rails</span>, <span class=\"font-semibold text-light\">remote</span>"
   end
 
+  test "job_lead_count_text includes source filter" do
+    html = job_lead_count_text(2, source: "LinkedIn")
+
+    assert html.html_safe?
+    assert_includes html, "2 job leads with source:"
+    assert_includes html, "<span class=\"font-semibold text-light\">“LinkedIn”</span>"
+  end
+
   test "interview_count_text pluralizes interviews" do
     assert_equal "1 interview", interview_count_text(1)
     assert_equal "2 interviews", interview_count_text(2)
   end
 
-  test "interview_count_text prefixes non all date range" do
-    assert_equal "2 upcoming interviews", interview_count_text(2, date_range: "upcoming")
-    assert_equal "2 interviews", interview_count_text(2, date_range: "all")
+  test "interview_count_text prefixes non-\"all\" timeframe" do
+    assert_equal "2 upcoming interviews", interview_count_text(2, timeframe: "upcoming")
+    assert_equal "2 interviews", interview_count_text(2, timeframe: "all")
+  end
+
+  test "interview_count_text includes rating filter" do
+    html = interview_count_text(2, timeframe: "completed", rating: "5")
+
+    assert html.html_safe?
+    assert_includes html, "2 completed interviews with rating:"
+    assert_includes html, "<span class=\"font-semibold text-light\">“5 stars”</span>"
+
+    assert_includes interview_count_text(1, rating: "1"), "<span class=\"font-semibold text-light\">“1 star”</span>"
+  end
+
+  test "interview_count_text includes unrated filter" do
+    html = interview_count_text(3, rating: "unrated")
+
+    assert_includes html, "3 interviews with rating:"
+    assert_includes html, "<span class=\"font-semibold text-light\">“No rating”</span>"
   end
 
   test "note_count_text pluralizes generic notes" do
@@ -190,8 +215,8 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "note_count_text prefixes non all type" do
-    assert_equal "2 archived job lead notes", note_count_text(2, type: "archived", notable: "JobLead")
-    assert_equal "2 job lead notes", note_count_text(2, type: "all", notable: "JobLead")
+    assert_equal "2 archived job lead notes", note_count_text(2, job_lead_state: "archived", notable: "JobLead")
+    assert_equal "2 job lead notes", note_count_text(2, job_lead_state: "all", notable: "JobLead")
   end
 
   test "line_wrap_url inserts zero width spaces after slashes and hyphens" do

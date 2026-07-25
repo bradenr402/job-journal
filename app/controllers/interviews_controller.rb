@@ -3,26 +3,25 @@ class InterviewsController < ApplicationController
 
   # GET /interviews
   def index
-    scope = Current.user.interviews
-      .includes(:job_lead, :notes)
-      .select(
-        :id,
-        :created_at,
-        :updated_at,
-        :job_lead_id,
-        :interviewer,
-        :scheduled_at,
-        :location
-      )
+    @filters = InterviewFilters.new(params, user: Current.user, use_settings: true)
+    @timeframe = @filters.timeframe
+    @rating = @filters.rating
 
-    @selected_date_range = valid_date_range(use_user_setting: true)
-
-    @interviews =
-      case @selected_date_range
-      when "upcoming" then scope.future.order(scheduled_at: :desc)
-      when "completed" then scope.past.order(scheduled_at: :desc)
-      else scope.order(scheduled_at: :desc)
-      end
+    @interviews = @filters.apply(
+      Current.user.interviews
+        .includes(:job_lead, :notes)
+        .select(
+          :id,
+          :created_at,
+          :updated_at,
+          :job_lead_id,
+          :interviewer,
+          :scheduled_at,
+          :location,
+          :rating
+        )
+        .order(scheduled_at: :desc)
+    )
   end
 
   # GET /interviews/1

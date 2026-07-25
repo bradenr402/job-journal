@@ -1,6 +1,6 @@
 <% content_for :title, 'Interviews' %>
 
-<div class="sm:w-7/8 w-full mx-auto">
+<div class="sm:w-7/8 w-full mx-auto @container">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
       <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
@@ -13,30 +13,32 @@
       Interviews
     </h1>
     <span class="ml-1 text-sm text-muted font-normal align-middle [view-transition-name:interview-count]">
-      <%= interview_count_text @interviews.size, date_range: @selected_date_range %>
+      <%= interview_count_text @interviews.size, timeframe: @timeframe, rating: @rating %>
     </span>
   </div>
 
-  <%= render 'filters' %>
+  <div class="@3xl:flex @3xl:items-start @3xl:gap-6">
+    <%= render 'filters' %>
 
-  <div id="interviews" class="@container">
-    <% if @interviews.any? %>
-      <div class="<%= collection_layout_class_names :interviews, count: @interviews.size, size: :large %>">
-        <%= render @interviews %>
-      </div>
-    <% elsif !Current.user.interviews.exists? %>
-      <div class="empty-state my-24">
-        <div class=" rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-          <%= icon 'interview', class: 'size-16 text-muted dark:text-soft' %>
+    <div id="interviews" class="@container min-w-0 @3xl:flex-1">
+      <% if @interviews.any? %>
+        <div class="<%= collection_layout_class_names :interviews, count: @interviews.size, size: :large %>">
+          <%= render @interviews %>
         </div>
+      <% elsif !Current.user.interviews.exists? %>
+        <div class="empty-state my-24">
+          <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
+            <%= icon 'interview', class: 'size-16 text-muted dark:text-soft' %>
+          </div>
 
-        <h2 class="subheading">No Interviews Yet</h2>
-        <p class="max-w-md text-pretty leading-normal">Create interviews by adding them to your job leads.</p>
-      </div>
-    <% else %>
-      <div class="empty-state">
-        No interviews found.
-      </div>
-    <% end %>
+          <h2 class="subheading">No Interviews Yet</h2>
+          <p class="max-w-md text-pretty leading-normal">Create interviews by adding them to your job leads.</p>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          No interviews found.
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -47,24 +47,23 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     assert_select "#note_#{interview_note.id}"
   end
 
-  test "should filter index by note type" do
+  test "should filter index by job lead state" do
     archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
     active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
-    get notes_url(note_type: "archived")
 
+    get notes_url(job_lead_state: "archived")
     assert_response :success
     assert_select "#note_#{archived_note.id}"
     assert_select "#note_#{active_note.id}", false
 
-    get notes_url(note_type: "active")
-
+    get notes_url(job_lead_state: "active")
     assert_response :success
     assert_select "#note_#{active_note.id}"
     assert_select "#note_#{archived_note.id}", false
   end
 
-  test "should fall back to user setting when note type param is missing" do
+  test "should fall back to user setting when job lead state param is missing" do
     @user.update_settings(filters: { notes: "archived" })
     archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
@@ -76,28 +75,41 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     assert_select "#note_#{active_note.id}", false
   end
 
-  test "should fall back to user setting when note type param is invalid" do
+  test "should fall back to user setting when job lead state param is invalid" do
     @user.update_settings(filters: { notes: "archived" })
     archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
     active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
-    get notes_url(note_type: "bogus")
+    get notes_url(job_lead_state: "bogus")
 
     assert_response :success
     assert_select "#note_#{archived_note.id}"
     assert_select "#note_#{active_note.id}", false
   end
 
-  test "should override user setting with a valid note type param" do
+  test "should override user setting with a valid job lead state param" do
     @user.update_settings(filters: { notes: "archived" })
     archived_lead = create_job_lead(title: "Archived Lead", archived_at: 1.day.ago)
     archived_note = create_note(notable: archived_lead, content: "Note about an archived job lead")
     active_note = create_note(notable: job_leads(:one), content: "Note about an active job lead")
-    get notes_url(note_type: "all")
+    get notes_url(job_lead_state: "all")
 
     assert_response :success
     assert_select "#note_#{archived_note.id}"
     assert_select "#note_#{active_note.id}"
+  end
+
+  test "should sort index by created timestamp" do
+    create_note(content: "Chronologically ancient note", created_at: 3.days.ago)
+    create_note(content: "Chronologically recent note")
+
+    get notes_url(sort: "created", direction: "asc")
+    assert_response :success
+    assert_match(/Chronologically ancient note.*Chronologically recent note/m, response.body)
+
+    get notes_url(sort: "created", direction: "desc")
+    assert_response :success
+    assert_match(/Chronologically recent note.*Chronologically ancient note/m, response.body)
   end
 
   test "should get new" do
