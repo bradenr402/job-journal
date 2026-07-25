@@ -2,6 +2,9 @@ class SearchQuery
   SCOPES = %w[ all job_leads interviews notes ].freeze
   EMPTY_RESULTS = { job_leads: [], interviews: [], notes: [] }.freeze
 
+  # Matches double-quoted phrases, single-quoted phrases, or bare words.
+  TERM_PATTERN = /"([^"]+)"|'([^']+)'|(\S+)/
+
   # `scope` narrows the search to a single resource type ("all" searches
   # everything). `filters` maps resource keys (:job_leads, :interviews,
   # :notes) to ApplicationFilters instances applied to each result set.
@@ -45,7 +48,7 @@ class SearchQuery
   end
 
   def terms
-    @terms ||= @query.scan(/"([^"]+)"|'([^']+)'|(\S+)/).map { it.compact.first.downcase }
+    @terms ||= @query.scan(TERM_PATTERN).map { it.compact.first.downcase }
   end
 
   def search_job_leads
