@@ -1,8 +1,12 @@
 @utility btn {
   @apply inline-flex cursor-pointer items-center justify-center font-medium no-underline transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
 
-  &:not(.btn-sm, .btn-lg) {
+  &:not(.btn-xs, .btn-sm, .btn-lg) {
     @apply gap-2 px-4 py-2 text-sm rounded-lg;
+  }
+
+  &.btn-xs {
+    @apply gap-1.25 px-2 py-1 text-xs rounded-[calc((var(--radius-sm)+var(--radius-md))/2)];
   }
 
   &.btn-sm {
@@ -18,7 +22,13 @@
   }
 
   &.btn-circle {
-    @apply p-2.5 rounded-full;
+    &:not(.btn-xs, .btn-sm, .btn-lg) {
+      @apply p-2.5 rounded-full;
+    }
+
+    &.btn-xs {
+      @apply p-1.5 rounded-full;
+    }
 
     &.btn-sm {
       @apply p-2 rounded-full;
