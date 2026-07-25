@@ -190,22 +190,26 @@
     </div>
   <% end %>
 
-  <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
-    <% if job_lead.notes.any? && !job_lead_page %>
-      <span class="inline-flex items-center gap-1">
-        <%= icon 'quill', class: 'size-3.5 shrink-0' %>
-        <%= pluralize(job_lead.notes.size, 'note') %>
-      </span>
-    <% end %>
+  <div class="
+    flex items-center text-xs text-muted mt-auto
+    divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-icon-gap-1 divide-dot-neutral-400 dark:divide-dot-neutral-600
+  ">
     <% if job_lead.archived_at.present? %>
-      <span class="inline-flex items-center gap-1">
-        <%= icon 'archive', class: 'size-3.5 shrink-0' %>
+      <span class="inline-flex items-center gap-(--divide-dot-icon-gap)">
+        <%= icon "archive", class: "size-3.5 shrink-0" %>
         Archived: <%= local_time_short job_lead.archived_at %>
       </span>
     <% else %>
-      <span class="inline-flex items-center gap-1">
-        <%= icon 'clock', class: 'size-3.5 shrink-0' %>
+      <span class="inline-flex items-center gap-(--divide-dot-icon-gap)">
+        <%= icon "clock", class: "size-3.5 shrink-0" %>
         <%== job_lead.edited? ? "Updated: #{local_time_short job_lead.updated_at}" : "Created: #{local_time_short job_lead.created_at}" %>
+      </span>
+    <% end %>
+
+    <% if job_lead.notes.any? && !job_lead_page %>
+      <span class="inline-flex items-center gap-(--divide-dot-icon-gap)">
+        <%= icon "quill", class: "size-3.5 shrink-0" %>
+        <%= pluralize(job_lead.notes.size, "note") %>
       </span>
     <% end %>
   </div>

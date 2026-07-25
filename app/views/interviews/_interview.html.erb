@@ -98,16 +98,20 @@
     </div>
   <% end %>
 
-  <div class="flex flex-wrap items-end justify-between gap-1 text-xs text-muted mt-auto">
-    <% if interview.notes.any? && !interview_page %>
-      <span class="inline-flex items-center gap-1">
-        <%= icon 'quill', class: 'size-3.5 shrink-0' %>
-        <%= pluralize(interview.notes.size, 'note') %>
-      </span>
-    <% end %>
-    <span class="inline-flex items-center gap-1">
-      <%= icon 'clock', class: 'size-3.5 shrink-0' %>
+  <div class="
+    flex items-center text-xs text-muted mt-auto
+    divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-icon-gap-1 divide-dot-neutral-400 dark:divide-dot-neutral-600
+  ">
+    <span class="inline-flex items-center gap-(--divide-dot-icon-gap)">
+      <%= icon "clock", class: "size-3.5 shrink-0" %>
       <%== interview.edited? ? "Updated: #{local_time_short interview.updated_at}" : "Created: #{local_time_short interview.created_at}" %>
     </span>
+
+    <% if interview.notes.any? && !interview_page %>
+      <span class="inline-flex items-center gap-(--divide-dot-icon-gap)">
+        <%= icon "quill", class: "size-3.5 shrink-0" %>
+        <%= pluralize(interview.notes.size, "note") %>
+      </span>
+    <% end %>
   </div>
 </div>
