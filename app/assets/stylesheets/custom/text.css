@@ -73,7 +73,7 @@
   }
 
   a {
-    @apply btn-link-primary;
+    @apply btn-link btn-link-primary;
   }
 
   /* Lists */
