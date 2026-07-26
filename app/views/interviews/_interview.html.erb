@@ -85,7 +85,10 @@
 
   <% if interview_page %>
     <div class="mb-4">
-      <dt class="text-muted text-sm flex items-center gap-1">Rating</dt>
+      <div class="text-muted text-sm flex items-center gap-1">
+        <%= icon 'thumbs-up-down', class: 'size-3.75 shrink-0' %>
+        <dt>Rating</dt>
+      </div>
       <dd class="text-xl text-normal font-bold flex items-center">
         <% if interview.rating? %>
           <% 1.upto(5) do |star| %>
