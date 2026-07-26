@@ -1,6 +1,6 @@
 <%# locals: () %>
 
-<%# Two-column label/options grid on small screens; a vertical sidebar from @3xl up. %>
+<%# A vertical list of filter dropdowns: above the items on small screens, a sticky sidebar from @3xl up. %>
 <aside id="interview-filters" class="filter-panel">
   <div class="filter-panel-content">
     <%= render "shared/clear_filters", filters: @filters, path: interviews_path(timeframe: "all") %>
@@ -8,67 +8,27 @@
     <%= render "shared/sort_options", filters: @filters %>
 
     <div class="filter-group">
-      <%= filter_row_label "Timeframe", icon_name: "date-time" %>
+      <%
+        timeframe_icons = {
+          all: "layers",
+          upcoming: "time-schedule",
+          completed: "check-circle"
+        }.stringify_keys
+      %>
 
-      <div class="filter-options">
-        <%
-          timeframe_icons = {
-            all: "layers",
-            upcoming: "time-schedule",
-            completed: "check-circle"
-          }.stringify_keys
-
-          timeframe_tag_classes = {
-            all: nil,
-            upcoming: "tag-interview",
-            completed: "tag-accepted"
-          }.stringify_keys
-        %>
-
-        <% @filters.class.options_for(:timeframe).each do |timeframe| %>
-          <%= filter_link(
-            path: interviews_path(@filters.toggle_params(:timeframe, timeframe, off: "all")),
-            value: timeframe,
-            icon_name: timeframe_icons[timeframe],
-            selected: @filters.timeframe == timeframe,
-            tag_class: timeframe_tag_classes[timeframe],
-            context: "interviews"
-          ) %>
-        <% end %>
-      </div>
+      <%= render "shared/filter_dropdown",
+        filters: @filters,
+        name: :timeframe,
+        icon_name: "date-time",
+        off: "all",
+        context: "interviews-timeframe",
+        options: @filters.class.options_for(:timeframe).without("all").map { |timeframe|
+          { value: timeframe, icon: timeframe_icons.fetch(timeframe) }
+        } %>
     </div>
 
     <div class="filter-group">
-      <%= filter_row_label "Rating", icon_name: "thumbs-up-down" %>
-
-      <% rating = @filters.rating %>
-      <% unrated = rating == "unrated" %>
-
-      <div class="[view-transition-name:filter-interviews-rating] filter-options gap-0.5">
-        <%= link_to(
-          icon(unrated ? "star-slash-filled" : "star-slash"),
-          interviews_path(@filters.toggle_params(:rating, "unrated")),
-          class: [ "star-none-toggle", ("star-selected" if unrated) ],
-          title: "No rating",
-          aria: { label: "Filter by no rating", current: unrated }
-        ) %>
-
-        <span class="mx-1 w-px h-6 translate-y-px rounded-full shrink-0 bg-neutral-200 dark:bg-neutral-800" aria-hidden="true"></span>
-
-        <div class="stars-filter-group" role="group" aria-label="Filter by star rating">
-          <% 1.upto(5) do |stars| %>
-            <% selected = rating == stars.to_s %>
-            <% star_label = pluralize(stars, "star") %>
-
-            <%= link_to(
-              icon("star"),
-              interviews_path(@filters.toggle_params(:rating, stars.to_s)),
-              class: ("star-selected" if selected),
-              aria: { label: "Filter by #{star_label}", current: selected }
-            ) %>
-          <% end %>
-        </div>
-      </div>
+      <%= render "shared/rating_dropdown", filters: @filters, context: "interviews-rating" %>
     </div>
   </div>
 </aside>

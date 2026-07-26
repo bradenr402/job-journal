@@ -1,11 +1,12 @@
 <%# locals: (filters:, path:) %>
 
 <% if filters.any_active? %>
-  <div class="col-span-2">
-    <%= link_to(
-      icon("eraser-filled", class: "size-4 shrink-0") + "Clear Filters",
-      path,
-      class: "@3xl:w-full btn btn-sm btn-destructive btn-muted [view-transition-name:clear-filters-button]",
-    ) %>
+  <div class="w-full">
+    <%= link_to path, class: "w-full btn btn-sm btn-destructive btn-muted [view-transition-name:clear-filters-button]" do %>
+      <%= icon "eraser-filled", class: "size-4 shrink-0" %>
+      <span>Clear All Filters</span>
+    <% end %>
+
+    <div class="my-4 h-px rounded-full bg-neutral-200 dark:bg-neutral-800" aria-hidden="true"></div>
   </div>
 <% end %>

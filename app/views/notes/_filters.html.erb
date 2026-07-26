@@ -1,6 +1,6 @@
 <%# locals: () %>
 
-<%# Two-column label/options grid on small screens; a vertical sidebar from @3xl up. %>
+<%# A vertical list of filter dropdowns: above the items on small screens, a sticky sidebar from @3xl up. %>
 <aside id="note-filters" class="filter-panel">
   <div class="filter-panel-content">
     <%= render "shared/clear_filters", filters: @filters, path: notes_path(state: "all") %>
@@ -8,57 +8,42 @@
     <%= render "shared/sort_options", filters: @filters %>
 
     <div class="filter-group">
-      <%= filter_row_label "State", icon_name: "status" %>
+      <%
+        state_icons = {
+          all: "layers",
+          active: "check-circle",
+          archived: "archive"
+        }.stringify_keys
+      %>
 
-      <div class="filter-options">
-        <%
-          state_icons = {
-            all: "layers",
-            active: "check-circle",
-            archived: "archive"
-          }.stringify_keys
-        %>
-
-        <% @filters.class.options_for(:state).each do |state| %>
-          <%= filter_link(
-            path: notes_path(@filters.toggle_params(:state, state, off: "all")),
-            value: state,
-            icon_name: state_icons[state],
-            selected: @filters.state == state,
-            context: "notes-filter"
-          ) %>
-        <% end %>
-      </div>
+      <%= render "shared/filter_dropdown",
+        filters: @filters,
+        name: :state,
+        icon_name: "status",
+        off: "all",
+        context: "notes-state",
+        options: @filters.class.options_for(:state).without("all").map { |state|
+          { value: state, icon: state_icons.fetch(state) }
+        } %>
     </div>
 
     <div class="filter-group">
-      <%= filter_row_label "Type", icon_name: "question-circle" %>
+      <%
+        type_icons = {
+          JobLead: "briefcase",
+          Interview: "interview"
+        }.stringify_keys
+      %>
 
-      <div class="filter-options">
-        <%
-          type_icons = {
-            JobLead: "briefcase",
-            Interview: "interview"
-          }.stringify_keys
-
-          type_tag_classes = {
-            JobLead: nil,
-            Interview: "tag-interview"
-          }.stringify_keys
-        %>
-
-        <% @filters.class.options_for(:notable_type).each do |type| %>
-          <%= filter_link(
-            path: notes_path(@filters.toggle_params(:notable_type, type)),
-            value: type,
-            label: human(type).pluralize.titleize,
-            icon_name: type_icons[type],
-            selected: @filters.notable_type == type,
-            context: "notes-notable-filter",
-            tag_class: type_tag_classes[type]
-          ) %>
-        <% end %>
-      </div>
+      <%= render "shared/filter_dropdown",
+        filters: @filters,
+        name: :notable_type,
+        label: "Type",
+        icon_name: "question-circle",
+        context: "notes-type",
+        options: @filters.class.options_for(:notable_type).map { |type|
+          { value: type, label: human(type).pluralize.titleize, icon: type_icons.fetch(type) }
+        } %>
     </div>
   </div>
 </aside>

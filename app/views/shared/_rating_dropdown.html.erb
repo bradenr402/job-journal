@@ -1,0 +1,84 @@
+<%# locals: (filters:, context: nil, inline: false, clearable: true, extra_params: {}) %>
+
+<%
+  rating = filters.rating
+  unrated = rating == "unrated"
+  stars = unrated ? 0 : rating.to_i
+  active = rating.present?
+
+  trigger_aria_label =
+    if unrated then "Filter by rating: no rating"
+    elsif active then "Filter by rating: #{pluralize(stars, "star")}"
+    else "Filter by rating"
+    end
+%>
+
+<div class="flex flex-wrap items-center gap-1.5">
+  <div class="<%= class_names("relative", "flex-1 min-w-0": !inline) %>" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+    <button
+      type="button"
+      class="<%= class_names("dropdown-trigger-outline", "w-full": !inline) %>"
+      style="<%= "view-transition-name: #{context}-dropdown-trigger;" if context %>"
+      data-dropdown-target="trigger"
+      data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
+      aria-label="<%= trigger_aria_label %>"
+    >
+      <% if unrated %>
+        <%= icon "star-slash-filled", class: "size-4.5 shrink-0 -ml-0.75" %>
+        <%= tag.span "No Rating", class: [ "truncate", inline ? "max-w-40" : "flex-1 min-w-0 text-left" ] %>
+      <% elsif active %>
+        <span class="<%= class_names("flex items-center gap-1.5", "flex-1 min-w-0": !inline) %>" aria-hidden="true">
+          <span class="flex items-center">
+            <% stars.times do %>
+              <%= icon "star-filled", class: "size-4.5 shrink-0 text-yellow-400 first:-ml-0.75" %>
+            <% end %>
+          </span>
+          <%= tag.span pluralize(stars, "star") %>
+        </span>
+      <% else %>
+        <%= icon "star", class: "size-4.5 shrink-0 -ml-0.75" %>
+        <%= tag.span "Rating", class: [ "truncate", inline ? "max-w-40" : "flex-1 min-w-0 text-left" ] %>
+      <% end %>
+      <%= icon "chevron-down", class: "size-4 @3xl:size-4.5 shrink-0 -mr-0.75 in-toggle-has-open-dropdown:rotate-180 transition-all duration-120" %>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden translate-y-0.75" data-dropdown-target="menu">
+      <%= link_to url_for(filters.toggle_params(:rating, "unrated").merge(extra_params)), class: [ "dropdown-option", "dropdown-option-secondary", "dropdown-option-selected": unrated ] do %>
+        <%= icon unrated ? "star-slash-filled" : "star-slash", class: "size-4 shrink-0" %>
+        <span>No Rating</span>
+        <%= icon "x-mini", class: "x-icon ml-auto" if unrated %>
+      <% end %>
+
+      <div class="dropdown-divider"></div>
+
+      <% 1.upto(5) do |value| %>
+        <% option_selected = rating == value.to_s %>
+
+        <%= link_to(
+          url_for(filters.toggle_params(:rating, value.to_s).merge(extra_params)),
+          class: [ "dropdown-option", "dropdown-option-secondary", "dropdown-option-selected": option_selected ],
+          aria: { label: "Filter by #{pluralize(value, "star")}" }
+        ) do %>
+          <span class="flex items-center gap-1.5" aria-hidden="true">
+            <span class="flex items-center">
+              <% value.times do %>
+                <%= icon "star", class: "size-4 shrink-0 in-[.dropdown-option-selected]:text-yellow-400 in-[.dropdown-option-selected]:fill-yellow-400" %>
+              <% end %>
+            </span>
+            <%= tag.span pluralize(value, "star") %>
+          </span>
+          <%= icon "x-mini", class: "x-icon ml-auto" if option_selected %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if clearable && active %>
+    <%= link_to(
+      icon("eraser-filled", class: "size-3.75 shrink-0") + "Clear",
+      url_for(filters.params_with(rating: nil).merge(extra_params)),
+      class: "btn btn-sm btn-destructive btn-muted",
+      aria: { label: "Clear rating filter" }
+    ) %>
+  <% end %>
+</div>

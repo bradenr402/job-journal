@@ -336,7 +336,7 @@
   @apply anchor-within flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-light transition-colors duration-80;
 
   &.tab-link-destructive {
-    @apply anchor-color-rose-100/80 dark:anchor-color-rose-950/80;
+    @apply anchor-color-rose-200/40 dark:anchor-color-rose-950/40;
   }
 
   button[aria-selected="false"] & .tab-link-icon-selected {
@@ -344,10 +344,10 @@
   }
 
   button[aria-selected="true"] & {
-    @apply bg-primary-100/80 dark:bg-primary-950/80 text-primary-600 dark:text-primary-500;
+    @apply text-primary-600 dark:text-primary-500 bg-primary-200/40 dark:bg-primary-950/40;
 
     &.tab-link-destructive {
-      @apply bg-rose-100/80 dark:bg-rose-950/80 text-rose-600 dark:text-rose-500;
+      @apply bg-rose-200/40 dark:bg-rose-950/40 text-rose-600 dark:text-rose-500;
     }
 
     .tab-link-icon-unselected {
@@ -356,7 +356,7 @@
   }
 
   button:focus-visible & {
-    @apply bg-neutral-100 dark:bg-neutral-900 ring-2 ring-primary-600;
+    @apply bg-transparent ring-2 ring-primary-600;
 
     &.tab-link-destructive {
       @apply ring-rose-500;
@@ -624,6 +624,15 @@ static hover backgrounds.
   }
 }
 
+@utility dropdown-trigger-outline {
+  @apply dropdown-trigger px-2 py-1 text-sm whitespace-nowrap text-normal
+         bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800
+         toggle-has-open-dropdown:bg-neutral-50 dark:toggle-has-open-dropdown:bg-neutral-800
+         border border-neutral-200 dark:border-neutral-800
+         toggle-has-open-dropdown:border-neutral-300 dark:toggle-has-open-dropdown:border-neutral-700
+         not-dark:shadow-xs active:scale-98;
+}
+
 @utility dropdown-menu {
   @apply anchor-highlight-base [--anchor-name:--hovered-dropdown-option] absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 shadow-lg border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
 
@@ -682,31 +691,39 @@ static hover backgrounds.
   }
 
   .dropdown-option {
-    @apply anchor relative z-10 inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg pl-3 pr-6 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
+    @apply anchor relative z-10 inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg px-3 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
-      @apply anchor-color-primary-200/70 dark:anchor-color-primary-900/60 text-primary-600 dark:text-primary-400 focus:ring-primary-500 active:bg-primary-300/60 dark:active:bg-primary-600;
+      @apply text-primary-600 dark:text-primary-500 focus:ring-primary-500 anchor-color-primary-200/40 dark:anchor-color-primary-900/40 active:bg-primary-200/60 dark:active:bg-primary-900/60;
     }
 
     &.dropdown-option-secondary {
-      @apply anchor-color-neutral-200/70 dark:anchor-color-neutral-700/60 text-neutral-600 dark:text-neutral-400 focus:ring-neutral-500 active:bg-neutral-300/70 dark:active:bg-neutral-700;
+      @apply text-light focus:ring-neutral-500 anchor-color-neutral-200/40 active:bg-neutral-200/60 dark:anchor-color-neutral-700/40 dark:active:bg-neutral-700/60;
     }
 
     &.dropdown-option-destructive {
-      @apply anchor-color-rose-200/70 dark:anchor-color-rose-900/60 text-rose-600 dark:text-rose-400 focus:ring-rose-500 active:bg-rose-300/60 dark:active:bg-rose-600;
+      @apply text-rose-600 dark:text-rose-400 focus:ring-rose-500 anchor-color-rose-200/40 active:bg-rose-200/60 dark:anchor-color-rose-900/40 dark:active:bg-rose-900/60;
     }
 
     @supports not (anchor-name: --a) {
       &.dropdown-option-primary {
-        @apply hover:bg-primary-200/70 dark:hover:bg-primary-600/60;
+        @apply hover:bg-primary-200/40 dark:hover:bg-primary-700/40;
       }
 
       &.dropdown-option-secondary {
-        @apply hover:bg-neutral-200/70 dark:hover:bg-neutral-700/60;
+        @apply hover:bg-neutral-200/40 dark:hover:bg-neutral-700/40;
       }
 
       &.dropdown-option-destructive {
-        @apply hover:bg-rose-200/70 dark:hover:bg-rose-900/60;
+        @apply hover:bg-rose-200/40 dark:hover:bg-rose-900/40;
+      }
+    }
+
+    &.dropdown-option-selected {
+      @apply font-semibold text-normal;
+
+      svg.x-icon {
+        @apply not-in-[.dropdown-option:hover]:opacity-0 size-4 p-0.5 rounded-full text-rose-600 dark:text-rose-400 bg-rose-200/80 dark:bg-rose-900/80 transition-all duration-80;
       }
     }
 
@@ -734,47 +751,24 @@ static hover backgrounds.
 
 /*
   Filter layouts
-  * `filter-grid` lays out label/options pairs in a two-column grid.
-  * `filter-panel` extends it, becoming a vertical sidebar from @3xl up.
+  * `filter-panel` is a vertical list of filter dropdowns: full width above
+    the items on small screens, a sticky sidebar from @3xl up.
 */
-@utility filter-grid {
-  @apply grid grid-cols-[auto_1fr] items-start gap-x-1.5 gap-y-1;
-}
-
 @utility filter-panel {
-  @apply filter-grid my-4 @3xl:my-0 @3xl:block @3xl:w-74 @3xl:shrink-0 @3xl:self-stretch @3xl:border-r @3xl:border-neutral-200 @3xl:dark:border-neutral-800 @3xl:pr-5;
+  @apply block my-4 pb-4 border-b border-neutral-200 dark:border-neutral-800
+         @3xl:my-0 @3xl:w-72 @3xl:shrink-0 @3xl:self-stretch @3xl:pb-0 @3xl:border-b-0 @3xl:border-r @3xl:pr-5;
 
   .filter-group {
-    @apply @3xl:block;
-  }
-
-  .filter-label {
-    @apply @3xl:mt-0 @3xl:mb-1;
-  }
-
-  .filter-options {
-    @apply @3xl:my-0 @3xl:py-0 @3xl:flex-wrap @3xl:overflow-x-visible @3xl:mask-none @3xl:animate-none;
+    @apply block;
   }
 }
 
 @utility filter-panel-content {
-  @apply contents @3xl:block @3xl:sticky @3xl:top-6 @3xl:space-y-5;
+  @apply block space-y-2 @3xl:sticky @3xl:top-6;
 }
 
 @utility filter-group {
   @apply contents;
-}
-
-@utility filter-label {
-  @apply inline-flex items-center gap-1 text-sm text-muted justify-self-end mt-0.5;
-}
-
-@utility filter-options {
-  @apply flex items-center gap-1 -m-0.5 p-0.5 overflow-x-auto overflow-fade-x scrollbar-none;
-
-  > * {
-    @apply shrink-0;
-  }
 }
 
 @utility sort-direction-toggle {

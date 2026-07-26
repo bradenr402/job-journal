@@ -15,7 +15,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     get search_url(q: "anything", scope: "bogus")
 
     assert_response :success
-    assert_select "input#scope_all[checked]"
+    assert_select "#search-filters a.dropdown-option-selected", text: "All"
   end
 
   test "should filter search results by status" do

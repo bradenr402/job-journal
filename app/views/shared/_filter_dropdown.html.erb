@@ -1,0 +1,52 @@
+<%# locals: (filters:, name:, label: name.to_s.titlecase, icon_name:, options:, off: nil, selected: nil, context: nil, inline: false, clearable: true, extra_params: {}) %>
+
+<%
+  selected = filters.public_send(name) if selected.nil?
+  selected_values = Array(selected)
+  selected_options = options.select { it[:value].in?(selected_values) }
+  option_label = ->(option) { option[:label] || option[:value].titlecase }
+
+  trigger_icon  = selected_options.any? ? "#{selected_options.first[:icon]}-filled" : icon_name
+  trigger_label = selected_options.any? ? selected_options.map(&option_label).join(", ") : label
+
+  filter_param = filters.class.filters.fetch(name).param
+  active = selected_values.any? && selected_values.exclude?(off)
+%>
+
+<div class="flex flex-wrap items-center gap-1.5">
+  <div class="<%= class_names("relative", "flex-1 min-w-0": !inline) %>" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+    <button
+      type="button"
+      class="<%= class_names("dropdown-trigger-outline", "w-full": !inline) %>"
+      style="<%= "view-transition-name: #{context}-dropdown-trigger;" if context %>"
+      data-dropdown-target="trigger"
+      data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
+      aria-label="Filter by <%= label.downcase %>"
+    >
+      <%= icon trigger_icon, class: "size-4.5 shrink-0 -ml-0.75" %>
+      <%= tag.span trigger_label, class: [ "truncate", inline ? "max-w-40" : "flex-1 min-w-0 text-left" ] %>
+      <%= icon "chevron-down", class: "size-4 @3xl:size-4.5 shrink-0 -mr-0.75 in-toggle-has-open-dropdown:rotate-180 transition-all duration-120" %>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden translate-y-0.75" data-dropdown-target="menu">
+      <% options.each do |option| %>
+        <% option_selected = option[:value].in? selected_values %>
+
+        <%= link_to url_for(filters.toggle_params(name, option[:value], off:).merge(extra_params)), class: [ "dropdown-option", "dropdown-option-secondary", "dropdown-option-selected": option_selected ] do %>
+          <%= icon option_selected ? "#{option[:icon]}-filled" : option[:icon], class: "size-4 shrink-0" if option[:icon] %>
+          <span><%= option_label.call(option) %></span>
+          <%= icon "x-mini", class: "x-icon ml-auto" if option_selected && option[:value] != "all" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if clearable && active %>
+    <%= link_to(
+      icon("eraser-filled", class: "size-3.75 shrink-0") + "Clear",
+      url_for(filters.params_with(filter_param => off).merge(extra_params)),
+      class: "btn btn-sm btn-destructive btn-muted",
+      aria: { label: "Clear #{label.downcase} filter" }
+    ) %>
+  <% end %>
+</div>

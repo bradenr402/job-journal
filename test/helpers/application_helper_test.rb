@@ -345,33 +345,6 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal icon("application", class: "size-4"), icon_for_status(:applied, class: "size-4")
   end
 
-  test "filter_link renders an unselected filter link" do
-    html = filter_link(path: "/job_leads?status=applied", value: "applied", icon_name: "briefcase", selected: false)
-
-    assert_includes html, "href=\"/job_leads?status=applied\""
-    assert_includes html, "<span>Applied</span>"
-    assert_includes html, "class=\"tag tag-filter\""
-    assert_equal 1, html.scan("<svg").count
-    assert_not_includes html, "tag-selected"
-    assert_not_includes html, "view-transition-name"
-  end
-
-  test "filter_link renders a selected removable filter link with view transition name for context" do
-    html = filter_link(path: "/job_leads", value: "applied", icon_name: "briefcase", selected: true, label: "Applied", tag_class: "status-tag", context: "lead-status")
-
-    assert_includes html, "style=\"view-transition-name: lead-status-applied\""
-    assert_includes html, "class=\"tag tag-filter status-tag tag-selected\""
-    assert_includes html, "<span>Applied</span>"
-    assert_equal 2, html.scan("<svg").count
-  end
-
-  test "filter_link does not render remove icon for selected all filter" do
-    html = filter_link(path: "/job_leads", value: "all", icon_name: "filter", selected: true)
-
-    assert_includes html, "class=\"tag tag-filter tag-selected\""
-    assert_equal 1, html.scan("<svg").count
-  end
-
   test "human converts values to human readable text" do
     assert_equal "", human(nil)
     assert_equal "", human("")

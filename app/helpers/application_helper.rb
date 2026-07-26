@@ -197,35 +197,6 @@ module ApplicationHelper
     icon icon_name_for_status(status), **kwargs
   end
 
-  def filter_row_label(text, icon_name: nil)
-    tag.span(
-      class: "filter-label",
-      style: "view-transition-name: filter-row-label-#{text.parameterize}"
-    ) do
-      concat icon(icon_name, class: "size-4 shrink-0") if icon_name.present?
-      concat text
-    end
-  end
-
-  def filter_link(path:, value:, icon_name:, selected:, label: value.titlecase, tag_class: nil, context: nil)
-    tag_classes = [
-      "tag",
-      "tag-filter",
-      tag_class,
-      ("tag-selected" if selected)
-    ]
-
-    link_to(
-      path,
-      class: tag_classes,
-      style: ("view-transition-name: #{context}-#{value.to_s.parameterize}" if context)
-    ) do
-      concat icon(icon_name, class: "size-4 -ml-px shrink-0")
-      concat tag.span(label)
-      concat icon("x-mini") if selected && value != "all"
-    end
-  end
-
   def human(string)
     string.presence.to_s.underscore.humanize
   end

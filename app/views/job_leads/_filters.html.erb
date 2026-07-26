@@ -1,6 +1,6 @@
 <%# locals: () %>
 
-<%# Two-column label/options grid on small screens; a vertical sidebar from @3xl up. %>
+<%# A vertical list of filter dropdowns: above the items on small screens, a sticky sidebar from @3xl up. %>
 <aside id="job-lead-filters" class="filter-panel">
   <div class="filter-panel-content">
     <%= render "shared/clear_filters", filters: @filters, path: job_leads_path(job_lead_state: "all") %>
@@ -8,83 +8,61 @@
     <%= render "shared/sort_options", filters: @filters %>
 
     <div class="filter-group">
-      <%= filter_row_label "State", icon_name: "status" %>
+      <%
+        state_icons = {
+          all: "layers",
+          active: "check-circle",
+          archived: "archive"
+        }.stringify_keys
+      %>
 
-      <div class="filter-options">
-        <%
-          state_icons = {
-            all: "layers",
-            active: "check-circle",
-            archived: "archive"
-          }.stringify_keys
-        %>
-
-        <% @filters.class.options_for(:state).each do |state| %>
-          <%= filter_link(
-            path: job_leads_path(@filters.toggle_params(:state, state, off: "all")),
-            value: state,
-            icon_name: state_icons[state],
-            selected: @filters.state == state,
-            context: "job-leads-filter"
-          ) %>
-        <% end %>
-      </div>
+      <%= render "shared/filter_dropdown",
+        filters: @filters,
+        name: :state,
+        icon_name: "status",
+        off: "all",
+        context: "job-leads-state",
+        options: @filters.class.options_for(:state).without("all").map { |state|
+          { value: state, icon: state_icons.fetch(state) }
+        } %>
     </div>
 
     <div class="filter-group">
-      <%= filter_row_label "Status", icon_name: "timeline" %>
-
-      <div class="filter-options">
-        <% @filters.class.options_for(:status).each do |status| %>
-          <%= filter_link(
-            path: job_leads_path(@filters.toggle_params(:status, status)),
-            value: status,
-            icon_name: icon_name_for_status(status),
-            selected: @filters.status == status,
-            context: "job-leads-status-filter",
-            tag_class: "tag-#{status}"
-          ) %>
-        <% end %>
-      </div>
+      <%= render "shared/filter_dropdown",
+        filters: @filters,
+        name: :status,
+        icon_name: "timeline",
+        context: "job-leads-status",
+        options: @filters.class.options_for(:status).map { |status|
+          { value: status, icon: icon_name_for_status(status) }
+        } %>
     </div>
 
     <% if @sources.any? %>
       <div class="filter-group">
-        <%= filter_row_label "Source", icon_name: "globe" %>
-
-        <div class="filter-options">
-          <% @sources.each do |source| %>
-            <%= filter_link(
-              path: job_leads_path(@filters.toggle_params(:source, source)),
-              value: source,
-              label: source,
-              icon_name: "globe",
-              selected: @filters.source.to_s.casecmp?(source),
-              context: "job-leads-source-filter"
-            ) %>
-          <% end %>
-        </div>
+        <%= render "shared/filter_dropdown",
+          filters: @filters,
+          name: :source,
+          icon_name: "globe",
+          context: "job-leads-source",
+          selected: @sources.find { it.casecmp? @filters.source.to_s },
+          options: @sources.map { |source|
+            { value: source, label: source, icon: "globe" }
+          } %>
       </div>
     <% end %>
 
     <% if @tags.any? %>
       <div class="filter-group">
-        <%= filter_row_label "Tags", icon_name: "tag" %>
-
-        <div class="filter-options">
-          <% selected_tags, unselected_tags = @tags.partition { it.name.in? @filters.tag_names } %>
-
-          <% (selected_tags + unselected_tags).each do |tag| %>
-            <%= filter_link(
-              path: job_leads_path(@filters.toggle_params(:tag_names, tag.name)),
-              value: tag.name,
-              label: tag.name,
-              icon_name: "tag",
-              selected: tag.name.in?(@filters.tag_names),
-              context: "job-leads-tag-filter"
-            ) %>
-          <% end %>
-        </div>
+        <%= render "shared/filter_dropdown",
+          filters: @filters,
+          name: :tag_names,
+          label: "Tags",
+          icon_name: "tag",
+          context: "job-leads-tags",
+          options: @tags.map { |tag|
+            { value: tag.name, label: tag.name, icon: "tag" }
+          } %>
       </div>
     <% end %>
   </div>
