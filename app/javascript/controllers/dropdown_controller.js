@@ -28,8 +28,7 @@ export default class extends Controller {
     document.addEventListener('keydown', this.menuKeydownListener);
 
     this.options = [...this.menuTarget.querySelectorAll('.dropdown-option')];
-    this.selectedIndex = 0;
-    this.focusOption();
+    this.selectedIndex = -1;
   }
 
   close() {
