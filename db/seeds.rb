@@ -8,8 +8,8 @@ puts "Seeding demo data..."
 # ── User ──
 user = User.find_or_create_by!(email_address: "demo@jobjournal.app") do |u|
   u.name = "Demo User"
-  u.password = "password"
-  u.password_confirmation = "password"
+  u.password = "42424242"
+  u.password_confirmation = "42424242"
   u.settings = User::DEFAULT_SETTINGS.deep_merge(goals: { weekly_applications: 10 })
 end
 user.update!(
