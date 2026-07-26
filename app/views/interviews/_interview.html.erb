@@ -24,7 +24,11 @@
         <% if interview.rating? && !interview_page %>
           <dd class="align-middle inline-flex items-center">
             <% 1.upto(5) do |star| %>
-              <%= icon 'star', class: "size-6 transition-all duration-120 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+              <% if interview.rating >= star %>
+                <%= icon "star-filled", class: "size-6 text-yellow-400" %>
+              <% else %>
+                <%= icon "star", class: "size-6 text-muted" %>
+              <% end %>
             <% end %>
           </dd>
         <% end %>
@@ -92,7 +96,11 @@
       <dd class="text-xl text-normal font-bold flex items-center">
         <% if interview.rating? %>
           <% 1.upto(5) do |star| %>
-            <%= icon 'star', class: "size-6 transition-all duration-120 #{interview.rating >= star ? 'text-yellow-400 fill-yellow-400' : 'fill-transparent text-muted'}" %>
+            <% if interview.rating >= star %>
+              <%= icon "star-filled", class: "size-6 text-yellow-400" %>
+            <% else %>
+              <%= icon "star", class: "size-6 text-muted" %>
+            <% end %>
           <% end %>
         <% else %>
           <span class="text-sm text-muted">No rating</span>
