@@ -165,16 +165,17 @@ module ApplicationHelper
   def url_without_scheme_or_query(url) = url_without_scheme(url_without_query(url))
   def display_url(url) = line_wrap_url(url_without_scheme_or_query(url))
 
-  def icon(icon, **kwargs)
-    return unless icon.present?
+  def icon(name, **kwargs)
+    return unless name.present?
 
-    icon_tag = inline_svg_tag("icons/#{icon}.svg", **kwargs)
+    path = Rails.root/"app/assets/images/icons/#{name}.svg"
 
-    if icon_tag.include?("SVG file not found")
-      raise ArgumentError, "Unknown icon: #{icon.inspect} (expected app/assets/images/icons/#{icon}.svg)"
+    unless path.exist?
+      raise ArgumentError, "Unknown icon: #{name.inspect} (expected #{path.relative_path_from(Rails.root)})"
     end
 
-    icon_tag
+    klass = kwargs.delete(:class)
+    inline_svg_tag("icons/#{name}.svg", class: class_names(klass), **kwargs)
   end
 
   def icon_name_for_status(status)
