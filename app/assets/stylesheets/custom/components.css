@@ -67,23 +67,37 @@
   isolation: isolate;
   anchor-scope: var(--anchor-name);
 
-  &::before {
-    content: "";
-    @apply inline-block absolute z-0 pointer-events-none rounded-lg [transition:scale_80ms,inset_80ms,opacity_80ms,background-color_80ms] will-change-[scale,inset,opacity,background-color] origin-center opacity-0 scale-90 bg-(--anchor-highlight-hover-color,var(--anchor-highlight-color));
-
-    inset: anchor(inside);
-    position-anchor: var(--anchor-name);
-  }
-
   @media (hover: hover) {
     &:has(:hover) {
       --anchor-hold: 0s;
 
-      &::before {
-        @apply opacity-100 scale-100;
+      > .anchor-overlay {
+        @apply block opacity-100 scale-100;
+
+        @starting-style {
+          opacity: 0;
+          scale: 0.9;
+        }
       }
     }
   }
+}
+
+/*
+  The hover highlight, injected by `app/javascript/anchor_overlay.js` on first hover.
+
+  Due to some WebKit quirks:
+  * it must be a real element
+    (exit transitions never run on anchor-positioned pseudo-elements)
+  * it must be `display: none` while unhovered
+    (a rendered box with unresolvable `anchor()` insets restarts in-flight transitions on the container, playing the dropdown open/close animation twice)
+
+  `@starting-style` makes it scale in at the hovered item rather than sweeping in from the container's edges.
+*/
+@utility anchor-overlay {
+  @apply hidden absolute z-0 pointer-events-none rounded-lg [transition:display_80ms_allow-discrete,scale_80ms,inset_80ms,opacity_80ms,background-color_80ms] will-change-[scale,inset,opacity,background-color] origin-center opacity-0 scale-90 bg-(--anchor-highlight-hover-color,var(--anchor-highlight-color));
+  inset: anchor(inside);
+  position-anchor: var(--anchor-name);
 }
 
 @utility anchor-highlight {
@@ -613,7 +627,7 @@ static hover backgrounds.
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 toggle-has-open-dropdown:bg-neutral-200 dark:toggle-has-open-dropdown:bg-neutral-800 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96 will-change-[transform,background-color];
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 toggle-has-open-dropdown:bg-neutral-200 dark:toggle-has-open-dropdown:bg-neutral-800 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96 will-change-[scale,background-color];
 
   .nav-panel & {
     @apply bg-transparent hover:bg-neutral-100 toggle-has-open-dropdown:bg-neutral-100 dark:bg-transparent dark:hover:bg-neutral-900 dark:toggle-has-open-dropdown:bg-neutral-900;
@@ -634,7 +648,10 @@ static hover backgrounds.
 }
 
 @utility dropdown-menu {
-  @apply anchor-highlight-base [--anchor-name:--hovered-dropdown-option] absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 shadow-lg border border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-80;
+  /* Transition only scale/opacity, on a composited layer (will-change +
+     backface-hidden): Safari flickers when transform + opacity transitions
+     repaint a shadowed, absolutely positioned element mid-flight. */
+  @apply anchor-highlight-base [--anchor-name:--hovered-dropdown-option] absolute w-fit min-w-44 whitespace-nowrap p-1 flex flex-col rounded-xl bg-white dark:bg-neutral-900 shadow-lg border border-neutral-200 dark:border-neutral-800 z-50 transition-[scale,opacity] duration-80 will-change-[scale,opacity] backface-hidden;
 
   --anchor-highlight-color: --alpha(var(--color-neutral-200) / 70%);
   @variant dark {
