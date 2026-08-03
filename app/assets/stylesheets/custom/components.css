@@ -704,7 +704,8 @@ static hover backgrounds.
     @apply top-full left-0 origin-top-left;
   }
 
-  .dropdown-option {
+  /* `:where(&)` so utilities on individual options can still override these base styles */
+  :where(&) .dropdown-option {
     @apply anchor relative z-10 inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg px-3 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
