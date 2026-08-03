@@ -80,9 +80,8 @@
       inline: true,
       clearable: false,
       extra_params: search_params,
-      options: @statuses.map { |status|
-        { value: status, icon: icon_name_for_status(status) }
-      } %>
+      options: @statuses.map { |status| { value: status, icon: icon_name_for_status(status) } }
+    %>
   <% elsif @search_scope == "interviews" %>
     <%= render "shared/filter_dropdown",
       filters: @interview_filters,
@@ -92,9 +91,8 @@
       inline: true,
       clearable: false,
       extra_params: search_params,
-      options: @timeframes.map { |timeframe|
-        { value: timeframe, icon: timeframe_icons.fetch(timeframe) }
-      } %>
+      options: @timeframes.map { |timeframe| { value: timeframe, icon: timeframe_icons[timeframe] } }
+    %>
 
     <%= render "shared/rating_dropdown",
       filters: @interview_filters,
@@ -112,8 +110,7 @@
       inline: true,
       clearable: false,
       extra_params: search_params,
-      options: @notable_types.map { |type|
-        { value: type, label: human(type).pluralize.titleize, icon: notable_type_icons.fetch(type) }
-      } %>
+      options: @notable_types.map { |type| { value: type, label: human(type).pluralize.titleize, icon: notable_type_icons[type] } }
+    %>
   <% end %>
 </div>

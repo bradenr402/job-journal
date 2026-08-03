@@ -22,9 +22,8 @@
         icon_name: "date-time",
         off: "all",
         context: "interviews-timeframe",
-        options: @filters.class.options_for(:timeframe).without("all").map { |timeframe|
-          { value: timeframe, icon: timeframe_icons.fetch(timeframe) }
-        } %>
+        options: @filters.class.options_for(:timeframe).without("all").map { |timeframe| { value: timeframe, icon: timeframe_icons[timeframe] } }
+      %>
     </div>
 
     <div class="filter-group">

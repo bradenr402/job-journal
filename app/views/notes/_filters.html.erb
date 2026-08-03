@@ -22,9 +22,8 @@
         icon_name: "status",
         off: "all",
         context: "notes-state",
-        options: @filters.class.options_for(:state).without("all").map { |state|
-          { value: state, icon: state_icons.fetch(state) }
-        } %>
+        options: @filters.class.options_for(:state).without("all").map { |state| { value: state, icon: state_icons[state] } }
+      %>
     </div>
 
     <div class="filter-group">
@@ -41,9 +40,8 @@
         label: "Type",
         icon_name: "question-circle",
         context: "notes-type",
-        options: @filters.class.options_for(:notable_type).map { |type|
-          { value: type, label: human(type).pluralize.titleize, icon: type_icons.fetch(type) }
-        } %>
+        options: @filters.class.options_for(:notable_type).map { |type| { value: type, label: human(type).pluralize.titleize, icon: type_icons[type] } }
+      %>
     </div>
   </div>
 </aside>

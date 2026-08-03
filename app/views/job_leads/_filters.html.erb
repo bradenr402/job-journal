@@ -22,9 +22,8 @@
         icon_name: "status",
         off: "all",
         context: "job-leads-state",
-        options: @filters.class.options_for(:state).without("all").map { |state|
-          { value: state, icon: state_icons.fetch(state) }
-        } %>
+        options: @filters.class.options_for(:state).without("all").map { |state| { value: state, icon: state_icons[state] } }
+      %>
     </div>
 
     <div class="filter-group">
@@ -33,9 +32,8 @@
         name: :status,
         icon_name: "timeline",
         context: "job-leads-status",
-        options: @filters.class.options_for(:status).map { |status|
-          { value: status, icon: icon_name_for_status(status) }
-        } %>
+        options: @filters.class.options_for(:status).map { |status| { value: status, icon: icon_name_for_status(status) } }
+      %>
     </div>
 
     <% if @sources.any? %>
@@ -46,9 +44,8 @@
           icon_name: "globe",
           context: "job-leads-source",
           selected: @sources.find { it.casecmp? @filters.source.to_s },
-          options: @sources.map { |source|
-            { value: source, label: source, icon: "globe" }
-          } %>
+          options: @sources.map { |source| { value: source, label: source, icon: "globe" } }
+        %>
       </div>
     <% end %>
 
@@ -60,9 +57,8 @@
           label: "Tags",
           icon_name: "tag",
           context: "job-leads-tags",
-          options: @tags.map { |tag|
-            { value: tag.name, label: tag.name, icon: "tag" }
-          } %>
+          options: @tags.map { |tag| { value: tag.name, label: tag.name, icon: "tag" } }
+        %>
       </div>
     <% end %>
   </div>
