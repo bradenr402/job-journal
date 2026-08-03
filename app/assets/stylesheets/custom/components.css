@@ -760,7 +760,7 @@ static hover backgrounds.
   }
 
   .dropdown-divider {
-    @apply h-px w-[calc(100%)-0.25rem] mx-0.5 my-1 bg-neutral-200 dark:bg-neutral-700;
+    @apply h-px shrink-0 w-[calc(100%-0.25rem)] mx-0.5 my-1 bg-neutral-200 dark:bg-neutral-700;
   }
 }
 
