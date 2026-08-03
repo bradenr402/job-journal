@@ -805,10 +805,10 @@ static hover backgrounds.
 }
 
 @utility divide-dot {
-  --divide-dot-gap: --default(--spacing(1));
-  --divide-dot-size: --default(--spacing(1));
-  --divide-dot-color: --default(currentColor);
-  --divide-dot-icon-gap: --default(0px);
+  --divide-dot-gap: --spacing(1);
+  --divide-dot-size: --spacing(1);
+  --divide-dot-color: currentColor;
+  --divide-dot-icon-gap: 0px;
 
   > *:not(:last-child)::after {
     @apply content-[""] inline-block w-(--divide-dot-size) h-(--divide-dot-size) flex-shrink-0 rounded-full mr-[calc(var(--divide-dot-gap)+var(--divide-dot-icon-gap))] ml-(--divide-dot-gap) bg-(--divide-dot-color);
