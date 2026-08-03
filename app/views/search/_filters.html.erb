@@ -67,6 +67,8 @@
           <%= icon scope_selected ? "#{scope_icons[scope]}-filled" : scope_icons[scope], class: "size-4 shrink-0" %>
           <span><%= scope.titlecase %></span>
         <% end %>
+
+        <%= tag.div class: "dropdown-divider" if scope == "all" %>
       <% end %>
     </div>
   </div>
