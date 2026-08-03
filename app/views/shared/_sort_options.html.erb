@@ -47,11 +47,11 @@
         aria: { label: "Sorted #{direction}. Switch to #{other_direction}." }
       ) do %>
         <%= tag.span(
-          icon("arrow-up", class: "size-3.5 shrink-0") + "Asc",
+          icon("sort-az", class: "size-3.5 shrink-0") + "Asc",
           class: [ "sort-direction-option", "sort-direction-selected": !is_descending ]
         ) %>
         <%= tag.span(
-          icon("arrow-down", class: "size-3.5 shrink-0") + "Desc",
+          icon("sort-za", class: "size-3.5 shrink-0") + "Desc",
           class: [ "sort-direction-option", "sort-direction-selected": is_descending ]
         ) %>
       <% end %>
