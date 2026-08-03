@@ -749,14 +749,12 @@ static hover backgrounds.
 
   .dropdown-option:has(+ .dropdown-divider)::after,
   *:has(+ .dropdown-divider) > .dropdown-option::after {
-    content: "";
-    @apply absolute left-0 right-0 top-full h-[calc(0.25rem+0.5px)];
+    @apply content-[""] absolute inset-x-0 top-full h-[calc(0.25rem+0.5px)];
   }
 
   .dropdown-divider + .dropdown-option::before,
   .dropdown-divider + * > .dropdown-option::before {
-    content: "";
-    @apply absolute left-0 right-0 bottom-full h-[calc(0.25rem+0.5px)];
+    @apply content-[""] absolute inset-x-0 bottom-full h-[calc(0.25rem+0.5px)];
   }
 
   .dropdown-divider {
