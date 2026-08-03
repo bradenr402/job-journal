@@ -54,7 +54,7 @@
       data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
       aria-label="Search in"
     >
-      <%= icon "#{scope_icons.fetch(@search_scope)}-filled", class: "size-3.75 @3xl:size-4.5 shrink-0 -ml-0.75" %>
+      <%= icon "#{scope_icons[@search_scope]}-filled", class: "size-3.75 @3xl:size-4.5 shrink-0 -ml-0.75" %>
       <span class="max-w-40 truncate"><%= @search_scope.titlecase %></span>
       <%= icon "chevron-down", class: "size-4 @3xl:size-4.5 shrink-0 -mr-0.75 in-toggle-has-open-dropdown:rotate-180 transition-all duration-120" %>
     </button>
@@ -64,7 +64,7 @@
         <% scope_selected = scope == @search_scope %>
 
         <%= link_to search_path({ q: @query, scope: }.compact_blank), class: [ "dropdown-option", "dropdown-option-secondary", "dropdown-option-selected": scope_selected ] do %>
-          <%= icon scope_selected ? "#{scope_icons.fetch(scope)}-filled" : scope_icons.fetch(scope), class: "size-4 shrink-0" %>
+          <%= icon scope_selected ? "#{scope_icons[scope]}-filled" : scope_icons[scope], class: "size-4 shrink-0" %>
           <span><%= scope.titlecase %></span>
         <% end %>
       <% end %>

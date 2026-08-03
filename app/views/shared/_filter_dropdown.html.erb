@@ -9,7 +9,7 @@
   trigger_icon  = selected_options.any? ? "#{selected_options.first[:icon]}-filled" : icon_name
   trigger_label = selected_options.any? ? selected_options.map(&option_label).join(", ") : label
 
-  filter_param = filters.class.filters.fetch(name).param
+  filter_param = filters.class.filters[name].param
   active = selected_values.any? && selected_values.exclude?(off)
 %>
 
