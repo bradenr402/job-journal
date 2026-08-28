@@ -8,7 +8,7 @@ export default class extends Controller {
     // Initialize tags from the hidden field value
     this.tags = this.hiddenFieldTarget.value
       .split(',')
-      .map((tag) => tag.trim())
+      .map((tag) => this._normalize(tag))
       .filter((tag) => tag.length > 0);
     this.renderTags();
   }
@@ -21,7 +21,7 @@ export default class extends Controller {
   handleKeydown(event) {
     if (event.key === 'Enter' || event.key === ',' || event.key === 'Tab') {
       event.preventDefault();
-      const value = this.inputTarget.value.trim().toLowerCase();
+      const value = this._normalize(this.inputTarget.value);
       if (value && !this.tags.includes(value)) {
         this.tags.push(value);
         this.renderTags();
@@ -89,7 +89,7 @@ export default class extends Controller {
   }
 
   addTagFromList(event) {
-    const value = event.currentTarget.dataset.value.toLowerCase();
+    const value = this._normalize(event.currentTarget.dataset.value);
     if (value && !this.tags.includes(value)) {
       this.tags.push(value);
       this.renderTags();
@@ -98,7 +98,7 @@ export default class extends Controller {
 
   addTags(values) {
     const incoming = (Array.isArray(values) ? values : [values])
-      .map((v) => String(v).trim().toLowerCase())
+      .map((v) => this._normalize(String(v)))
       .filter((v) => v.length > 0);
 
     let added = 0;
@@ -121,6 +121,16 @@ export default class extends Controller {
 
   focusTextBox() {
     this.inputTarget.focus();
+  }
+
+  /**
+   * Normalizes a tag name the same way the server does (Tag `normalizes :name`):
+   * collapses runs of whitespace, trims, and downcases.
+   * @param {string} value - The raw tag name.
+   * @returns {string} The normalized tag name.
+   */
+  _normalize(value) {
+    return value.replace(/\s+/g, ' ').trim().toLowerCase();
   }
 
   /**

@@ -544,7 +544,7 @@ class JobLeadTest < ActiveSupport::TestCase
     lead = create_job_lead
     lead.tag_list = " Fake, Tags, fake, , Right  Here "
 
-    assert_equal [ "fake", "tags", "right  here" ], lead.pending_tag_names
+    assert_equal [ "fake", "tags", "right here" ], lead.pending_tag_names
   end
 
   test "should assign tags after save" do

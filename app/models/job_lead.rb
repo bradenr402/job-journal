@@ -135,9 +135,9 @@ class JobLead < ApplicationRecord
       .where(interviews: { scheduled_at: start_date..end_date })
   end
 
-  scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name.downcase }) }
+  scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name.squish.downcase }) }
   scope :with_tags, ->(tag_names) {
-    tag_names = tag_names.map(&:downcase)
+    tag_names = tag_names.map { it.squish.downcase }
     return none if tag_names.empty?
 
     matching_ids = joins(:tags)
@@ -149,7 +149,7 @@ class JobLead < ApplicationRecord
     where(id: matching_ids)
   }
   scope :with_any_tags, ->(tag_names) {
-    tag_names = tag_names.map(&:downcase)
+    tag_names = tag_names.map { it.squish.downcase }
     return none if tag_names.empty?
 
     joins(:tags)
@@ -260,7 +260,7 @@ class JobLead < ApplicationRecord
   def tag_list = tags.pluck(:name).join(", ")
 
   def tag_list=(names)
-    @pending_tag_names = names.to_s.split(",").map { it.strip.downcase }.reject(&:blank?).uniq
+    @pending_tag_names = names.to_s.split(",").map { it.squish.downcase }.reject(&:blank?).uniq
   end
 
   def status_history

@@ -33,6 +33,20 @@ class TagTest < ActiveSupport::TestCase
     assert_equal "mixed", tag.reload.name
   end
 
+  test "name should be squished" do
+    tag = users(:one).tags.create!(name: "  Remote   First  Role ")
+
+    assert_equal "remote first role", tag.reload.name
+  end
+
+  test "names differing only by surrounding or repeated whitespace are duplicates" do
+    users(:one).tags.create!(name: "remote first")
+    duplicate = users(:one).tags.build(name: "  Remote   First  ")
+
+    assert_not duplicate.valid?
+    assert_includes duplicate.errors[:name], "has already been taken"
+  end
+
   test "should validate uniqueness of name for the same user case insensitively" do
     new_tag = users(:one).tags.build(name: @tag.name.upcase)
 

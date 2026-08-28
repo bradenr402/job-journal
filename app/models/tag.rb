@@ -5,7 +5,7 @@ class Tag < ApplicationRecord
   has_many :job_leads, through: :taggings
 
   # Normalizations
-  normalizes :name, with: -> { it.downcase }
+  normalizes :name, with: -> { it.squish.downcase }
 
   # Validations
   validates :name, presence: true
