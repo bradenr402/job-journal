@@ -10,17 +10,32 @@
 
   <div class="mb-4">
     <h2 class="heading">Edit Tag</h2>
-    <p class="text-sm text-muted mt-1">Rename this tag. The new name will be applied to all job leads that use this tag.</p>
+    <p class="text-sm text-muted mt-1">Rename this tag. The new name will be applied to all job leads that use this tag. Renaming it to a tag you already have will merge the two.</p>
   </div>
 
-  <%= form_with model: @tag, url: tag_path(@tag), method: :patch do |form| %>
+  <%= form_with model: @tag, url: tag_path(@tag), method: :patch, data: {
+        controller: 'merge-confirm',
+        merge_confirm_names_value: @mergeable_tag_names,
+        merge_confirm_current_name_value: @current_tag_name
+      } do |form| %>
     <div class="space-y-5">
       <div>
         <%= form.label :name, class: 'form-label' %>
-        <%= form.text_field :name, class: 'form-input', autofocus: true, required: true %>
+        <%= form.text_field :name, class: 'form-input', autofocus: true, required: true, data: {
+              merge_confirm_target: 'input',
+              action: 'input->merge-confirm#update'
+            } %>
         <% if @tag.errors[:name].any? %>
           <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= @tag.errors[:name].first %></p>
         <% end %>
+
+        <p data-merge-confirm-target="warning" class="hidden text-xs text-amber-700 dark:text-amber-500 mt-1">
+          You already have a tag named &ldquo;<span data-merge-confirm-target="targetName" class="font-semibold"></span>&rdquo;.
+          Saving will merge the two tags: every job lead tagged
+          &ldquo;<span class="font-semibold"><%= @current_tag_name %></span>&rdquo; will be tagged
+          &ldquo;<span data-merge-confirm-target="targetName" class="font-semibold"></span>&rdquo; instead, and
+          &ldquo;<span class="font-semibold"><%= @current_tag_name %></span>&rdquo; will be deleted.
+        </p>
       </div>
 
       <div class="flex gap-2">

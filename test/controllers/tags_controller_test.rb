@@ -26,6 +26,56 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "updated-remote", @tag.name
   end
 
+  test "should merge tag when updating to an existing tag name" do
+    existing_tag = tags(:rails)
+    old_tag_id = @tag.id
+
+    patch tag_url(@tag), params: { tag: { name: "Rails" } }
+    assert_redirected_to tags_url
+
+    assert_not Tag.exists?(old_tag_id)
+    assert Tag.exists?(existing_tag.id)
+    assert_equal "rails", existing_tag.reload.name
+  end
+
+  test "should flash a merge-specific message when merging tags" do
+    patch tag_url(@tag), params: { tag: { name: "Rails" } }
+
+    assert_equal "Tag 'remote' was merged into 'rails'.", flash[:success]
+  end
+
+  test "should flash a plain update message when only renaming" do
+    patch tag_url(@tag), params: { tag: { name: "updated-remote" } }
+
+    assert_equal "Tag was successfully updated.", flash[:success]
+  end
+
+  test "should escape tag names in the merge flash message" do
+    xss_tag = Tag.create!(user: @user, name: "<script>alert(1)</script>")
+
+    patch tag_url(xss_tag), params: { tag: { name: "remote" } }
+
+    assert_no_match "<script>", flash[:success]
+    assert_match "&lt;script&gt;", flash[:success]
+  end
+
+  test "edit form exposes the user's other tag names for merge confirmation" do
+    other_tag = Tag.create!(user: @user, name: "confirmable")
+    another_users_tag = Tag.create!(user: users(:two), name: "not mine")
+
+    get edit_tag_url(@tag)
+    assert_response :success
+
+    form = css_select("form[data-controller='merge-confirm']").first
+    assert form, "edit form should wire up the merge confirmation controller"
+
+    names = JSON.parse(form["data-merge-confirm-names-value"])
+    assert_includes names, other_tag.name
+    assert_not_includes names, @tag.name, "should not offer to merge a tag into itself"
+    assert_not_includes names, another_users_tag.name
+    assert_equal @tag.name, form["data-merge-confirm-current-name-value"]
+  end
+
   test "should not update tag with invalid name" do
     patch tag_url(@tag), params: { tag: { name: "" } }
     assert_response :unprocessable_content
