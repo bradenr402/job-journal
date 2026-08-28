@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_16_205000) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_28_120000) do
   create_table "interviews", force: :cascade do |t|
     t.integer "job_lead_id", null: false
     t.string "interviewer", null: false
@@ -77,7 +77,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_16_205000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["job_lead_id"], name: "index_taggings_on_job_lead_id"
-    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["tag_id", "job_lead_id"], name: "index_taggings_on_tag_id_and_job_lead_id", unique: true
   end
 
   create_table "tags", force: :cascade do |t|
