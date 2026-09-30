@@ -30,13 +30,13 @@
       <%= form.label :archiving_inactive_after_days, "Days of Inactivity Before Archiving", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
-          <%= icon "minus", class: "size-4 shrink-0" %>
+          <%= icon "minus", class: "form-number-icon" %>
         </button>
 
         <%= form.number_field :archiving_inactive_after_days, name: "settings[archiving][inactive][after_days]", value: @settings.dig(:archiving, :inactive, :after_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
-          <%= icon "plus", class: "size-4 shrink-0" %>
+          <%= icon "plus", class: "form-number-icon" %>
         </button>
       </div>
       <p class="text-xs text-muted mt-1">A lead is archived when this many days pass without any updates.</p>
@@ -56,13 +56,13 @@
       <%= form.label :archiving_stale_archive_after_days, "Days Stale Before Archiving", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
-          <%= icon "minus", class: "size-4 shrink-0" %>
+          <%= icon "minus", class: "form-number-icon" %>
         </button>
 
         <%= form.number_field :archiving_stale_archive_after_days, name: "settings[archiving][stale][archive_after_days]", value: @settings.dig(:archiving, :stale, :archive_after_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
-          <%= icon "plus", class: "size-4 shrink-0" %>
+          <%= icon "plus", class: "form-number-icon" %>
         </button>
       </div>
       <p class="text-xs text-muted mt-1">A stale lead is archived when this many days pass since you saved it.</p>

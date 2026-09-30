@@ -11,13 +11,13 @@
       <%= form.label :archiving_stale_mark_after_days, "Days Until a Lead Goes Stale", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
-          <%= icon "minus", class: "size-4 shrink-0" %>
+          <%= icon "minus", class: "form-number-icon" %>
         </button>
 
         <%= form.number_field :archiving_stale_mark_after_days, name: "settings[archiving][stale][mark_after_days]", value: @settings.dig(:archiving, :stale, :mark_after_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
-          <%= icon "plus", class: "size-4 shrink-0" %>
+          <%= icon "plus", class: "form-number-icon" %>
         </button>
       </div>
       <p class="text-xs text-muted mt-1">If you haven&#8217;t applied to a saved lead within this many days, it&#8217;s considered stale and a reminder appears on your home page.</p>
@@ -27,13 +27,13 @@
       <%= form.label :follow_ups_application_days, "Days Before an Application Follow-Up", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
-          <%= icon "minus", class: "size-4 shrink-0" %>
+          <%= icon "minus", class: "form-number-icon" %>
         </button>
 
         <%= form.number_field :follow_ups_application_days, name: "settings[follow_ups][application_days]", value: @settings.dig(:follow_ups, :application_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
-          <%= icon "plus", class: "size-4 shrink-0" %>
+          <%= icon "plus", class: "form-number-icon" %>
         </button>
       </div>
       <p class="text-xs text-muted mt-1">After you apply, you&#8217;ll be reminded to follow up once this many days have passed.</p>
@@ -43,13 +43,13 @@
       <%= form.label :follow_ups_interview_days, "Days Before an Interview Follow-Up", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
-          <%= icon "minus", class: "size-4 shrink-0" %>
+          <%= icon "minus", class: "form-number-icon" %>
         </button>
 
         <%= form.number_field :follow_ups_interview_days, name: "settings[follow_ups][interview_days]", value: @settings.dig(:follow_ups, :interview_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
-          <%= icon "plus", class: "size-4 shrink-0" %>
+          <%= icon "plus", class: "form-number-icon" %>
         </button>
       </div>
       <p class="text-xs text-muted mt-1">After an interview, you&#8217;ll be reminded to send a thank-you or follow-up once this many days have passed.</p>
@@ -59,13 +59,13 @@
       <%= form.label :follow_ups_suggestion_days, "Days to Keep Suggestions Visible", class: "form-label" %>
       <div class="form-number-frame" data-controller="number-field">
         <button type="button" class="form-number-decrement">
-          <%= icon "minus", class: "size-4 shrink-0" %>
+          <%= icon "minus", class: "form-number-icon" %>
         </button>
 
         <%= form.number_field :follow_ups_suggestion_days, name: "settings[follow_ups][suggestion_days]", value: @settings.dig(:follow_ups, :suggestion_days), min: 1, class: "form-number", data: { number_field_target: "input" } %>
 
         <button type="button" class="form-number-increment">
-          <%= icon "plus", class: "size-4 shrink-0" %>
+          <%= icon "plus", class: "form-number-icon" %>
         </button>
       </div>
       <p class="text-xs text-muted mt-1">Each suggestion stays on your home page for this many days, then disappears on its own.</p>

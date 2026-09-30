@@ -70,31 +70,43 @@
   }
 }
 
+/*
+  Number stepper: a single bordered field (matching `form-input`) with inset,
+  rounded −/+ buttons. The frame shows the focus ring when the input is focused.
+*/
 @utility form-number-frame {
   --form-number-radius: 0.625rem;
+  --form-number-border: 1px;
+  --form-number-padding: --spacing(0.75);
 
-  @apply relative w-full md:max-w-54 flex items-stretch shadow-sm rounded-(--form-number-radius) has-[.form-number:focus]:ring-2 has-[.form-number:focus]:ring-primary-600 select-none;
+  @apply relative w-full md:max-w-54 flex items-center gap-1 p-(--form-number-padding) rounded-(--form-number-radius) border-(length:--form-number-border) border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm select-none transition-shadow duration-80 has-[.form-number:focus]:ring-2 has-[.form-number:focus]:ring-primary-600;
 }
 
 @utility form-number {
-  @apply appearance-none grow block text-center border-y border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 focus:outline-hidden px-3 py-2 w-full caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
+  @apply appearance-none grow min-w-0 w-full bg-transparent text-center tabular-nums font-medium py-1 focus:outline-hidden caret-primary-600 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 placeholder:select-none placeholder:font-normal;
+  -moz-appearance: textfield;
 
   &::-webkit-inner-spin-button,
   &::-webkit-outer-spin-button {
-    @apply appearance-none;
+    @apply appearance-none m-0;
   }
 }
 
+/* Concentric with the frame: inner radius = outer radius − border − padding */
 @utility form-number-button {
-  @apply border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition duration-80 active:bg-neutral-200/70 dark:active:bg-neutral-800 cursor-pointer;
+  @apply shrink-0 grid place-items-center size-8.5 rounded-[calc(var(--form-number-radius)-var(--form-number-border)-var(--form-number-padding))] cursor-pointer bg-neutral-100 dark:bg-neutral-800 enabled:hover:bg-neutral-200/80 dark:enabled:hover:bg-neutral-700/80 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition-[background-color,opacity,scale] duration-80 enabled:active:scale-95 will-change-[scale,background-color] disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+@utility form-number-icon {
+  @apply size-4.5 stroke-[1.75] text-normal shrink-0;
 }
 
 @utility form-number-decrement {
-  @apply form-number-button rounded-l-(--form-number-radius);
+  @apply form-number-button;
 }
 
 @utility form-number-increment {
-  @apply form-number-button rounded-r-(--form-number-radius);
+  @apply form-number-button;
 }
 
 @utility star-active {
