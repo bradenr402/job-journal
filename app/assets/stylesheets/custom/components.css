@@ -388,17 +388,26 @@
     @apply relative mt-(--section-stack-divider-space);
 
     &::before {
-      @apply content-[""] absolute left-1/2 top-[calc((var(--section-stack-gap)+var(--section-stack-divider-space))/-2)] -translate-1/2 w-1/2 h-px pointer-events-none;
-      background: linear-gradient(
-        to right,
-        var(--section-stack-divider-color) 0 30%,
-        transparent 30% 35%,
-        var(--section-stack-divider-color) 35% 65%,
-        transparent 65% 70%,
-        var(--section-stack-divider-color) 70% 100%
-      );
+      @apply content-[""] absolute left-1/2 top-[calc((var(--section-stack-gap)+var(--section-stack-divider-space))/-2)] -translate-1/2 w-1/2 h-px pointer-events-none section-divider-line;
     }
   }
+}
+
+@utility section-divider-line {
+  --section-stack-divider-color: var(--color-neutral-200);
+
+  @variant dark {
+    --section-stack-divider-color: var(--color-neutral-800);
+  }
+
+  background: linear-gradient(
+    to right,
+    var(--section-stack-divider-color) 0 30%,
+    transparent 30% 35%,
+    var(--section-stack-divider-color) 35% 65%,
+    transparent 65% 70%,
+    var(--section-stack-divider-color) 70% 100%
+  );
 }
 
 @utility blanket-link {
