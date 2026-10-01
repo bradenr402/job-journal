@@ -61,10 +61,6 @@
   .minimal-item {
     @apply px-(--minimal-item-bleed);
   }
-
-  &:has(.minimal-item:hover) .minimal-item:not(:hover) {
-    @apply opacity-40;
-  }
 }
 
 @utility minimal-item {
