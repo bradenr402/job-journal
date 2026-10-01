@@ -1,0 +1,224 @@
+# Demo data for the landing page dashboard demo (app/assets/demo/JobJournal-demo.html).
+#
+# Regenerate the demo after editing this file:
+#
+#   bin/rails demo:dashboard
+#
+# Nothing here is saved: the records are created inside a database transaction,
+# rendered through the real dashboard, and rolled back.
+#
+# Times are relative to the demo's "now" (see `now` below), in the app's time
+# zone. Supported formats:
+#
+#   now
+#   today at 09:00
+#   3 days ago
+#   3 days ago at 14:30
+#   in 2 days at 17:16
+#
+# "3 days ago" without a time keeps the time of day from `now`.
+#
+# The dashboard's counts are computed from these records, so changing dates can
+# move leads and interviews between sections. Weeks start on Sunday
+# (config.beginning_of_week), and the numbers below assume the defaults for
+# follow-up (7/2/3 days), stale (7 days), and archiving settings.
+
+# The demo is always rendered as if it's this weekday and time in the current
+# week, so the "this week" / "last week" stats stay the same no matter which day
+# you regenerate it.
+now:
+  weekday: tuesday
+  time: "15:00"
+
+user:
+  name: Braden Roth
+  email: demo@jobjournal.app # shown in the sidebar of the screenshots
+  settings:
+    appearance:
+      layout: grid
+      style: cards
+    goals:
+      weekly_applications: 10
+
+job_leads:
+  # ─── Interviewing ───
+  - title: Software Engineer
+    company: Airbnb
+    source: Recruiter
+    location: Remote
+    tags: [remote, priority, enterprise]
+    created: 25 days ago at 09:00
+    applied: 20 days ago at 10:00
+    interviews:
+      - interviewer: James Park
+        scheduled: 2 days ago at 10:00
+        location: Remote
+        rating: 4
+        notes:
+          - content: "Prep: walk through the payments reconciliation project and prepare questions about on-call."
+            created: 8 days ago at 19:00
+      - interviewer: Lisa Wang
+        scheduled: in 4 days at 17:16
+        location: Remote
+    notes:
+      - content: Recruiter reached out on LinkedIn. Team works on the host payments platform.
+        created: 24 days ago at 11:00
+      - content: Brush up on distributed systems and system design before the onsite loop.
+        created: 18 days ago at 20:00
+
+  - title: Backend Engineer
+    company: Shopify
+    source: LinkedIn
+    location: Remote
+    tags: [remote, hybrid, priority]
+    created: 16 days ago at 09:00
+    applied: 14 days ago at 12:00
+    interviews:
+      - interviewer: Sarah Chen
+        scheduled: in 2 days at 17:16
+        location: Remote
+    notes:
+      - content: Ruby and Rails shop — highlight the background job and caching work.
+        created: 13 days ago at 18:00
+      - content: Hiring manager mentioned the team is growing fast this quarter.
+        created: 11 days ago at 12:00
+
+  # Added after applying, so it was created after its application date.
+  - title: Frontend Engineer
+    company: Stripe
+    source: Company Website
+    location: Hybrid
+    tags: [hybrid, priority]
+    created: 5 days ago at 09:00
+    applied: 10 days ago at 09:00
+    interviews:
+      - interviewer: Priya Patel
+        scheduled: 7 days ago at 13:00
+        location: Remote
+        rating: 5
+
+  # ─── Offer ───
+  - title: Full-Stack Engineer
+    company: Notion
+    source: Referral
+    location: Remote
+    tags: [remote, startup, referral]
+    created: 32 days ago at 09:00
+    applied: 30 days ago at 10:00
+    offer: 1 day ago at 11:00
+    offer_amount: 165000
+    interviews:
+      - interviewer: Marcus Lee
+        scheduled: 6 days ago at 14:00
+        location: Remote
+        rating: 4
+        notes:
+          - content: "Prep: review the product's collaborative editing model and have questions ready for Marcus."
+            created: 9 days ago at 19:00
+    notes:
+      - content: Referred by a former teammate. Mention the shared design systems project.
+        created: 31 days ago at 12:00
+
+  # ─── Accepted (archived) ───
+  - title: Software Engineer
+    company: Vercel
+    source: LinkedIn
+    location: Remote
+    tags: [remote, startup]
+    created: 38 days ago at 09:00
+    applied: 35 days ago at 10:00
+    offer: 3 days ago at 10:00
+    offer_amount: 150000
+    accepted: 2 days ago at 09:00
+    archived: 2 days ago at 09:05
+    interviews:
+      - interviewer: Emily Rodriguez
+        scheduled: 8 days ago at 11:00
+        location: Remote
+        rating: 4
+        notes:
+          - content: "Prep: be ready to talk through edge rendering and caching trade-offs."
+            created: 10 days ago at 20:00
+    notes:
+      - content: Strong team culture and a fully remote setup. Top choice.
+        created: 36 days ago at 17:00
+
+  # ─── Rejected (archived) ───
+  - title: Software Engineer II
+    company: Dropbox
+    source: Referral
+    location: San Francisco, CA
+    tags: [hybrid, enterprise]
+    created: 30 days ago at 09:00
+    applied: 28 days ago at 10:00
+    rejected: 1 day ago at 16:00
+    archived: 1 day ago at 16:00
+    interviews:
+      - interviewer: Tom Nguyen
+        scheduled: 4 days ago at 15:00
+        location: Remote
+        rating: 3
+    notes:
+      - content: Feedback was positive on the coding round, but they went with a more senior candidate.
+        created: 26 days ago at 14:00
+
+  # ─── Applied ───
+  - title: Product Engineer
+    company: Figma
+    source: Company Website
+    location: Remote
+    tags: [remote, hybrid, priority, startup]
+    created: 8 days ago at 20:00
+    applied: 7 days ago at 00:00
+
+  - title: Senior Software Engineer
+    company: GitHub
+    source: LinkedIn
+    location: Remote
+    tags: [remote, hybrid]
+    created: 2 days ago at 10:00
+    applied: today at 09:00
+
+  - title: Backend Engineer
+    company: Discord
+    location: Remote
+    tags: [remote]
+    created: 2 days ago at 10:00
+    applied: 1 day ago at 16:00
+
+  - title: Platform Engineer
+    company: Spotify
+    location: New York, NY
+    created: 6 days ago at 09:00
+    applied: 5 days ago at 10:00
+    archived: 2 days ago at 12:00
+
+  - title: Software Engineer
+    company: Atlassian
+    location: Remote
+    created: 45 days ago at 09:00
+    applied: 40 days ago at 10:00
+    archived: 12 days ago at 10:00
+    notes:
+      - content: No response after two follow-ups.
+        created: 25 days ago at 10:00
+
+  # ─── Saved leads ───
+  - title: Site Reliability Engineer
+    company: Datadog
+    source: LinkedIn
+    location: Remote
+    tags: [remote, hybrid]
+    created: 1 day ago at 09:30
+
+  - title: Software Engineer
+    company: Ramp
+    source: Referral
+    location: New York, NY
+    created: today at 10:00
+
+  - title: Web Developer
+    company: Asana
+    location: Remote
+    created: 1 day ago at 13:00
+    archived: today at 08:00
