@@ -2,12 +2,24 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [ :edit, :update, :destroy ]
   before_action :set_merge_context, only: [ :edit, :update ]
 
+  SORTS = %w[usage name].freeze
+  FILTER_THRESHOLD = 10
+
   def index
+    @query = params[:q].to_s.squish
+    @sort = SORTS.include?(params[:sort]) ? params[:sort] : SORTS.first
+
     @tags = Current.user.tags
       .joins(:taggings)
       .group(:id)
-      .select("tags.*, COUNT(taggings.id) as taggings_count")
-      .order("taggings_count DESC", :name)
+      .select("tags.*, COUNT(taggings.id) AS taggings_count")
+
+    counts = Current.user.tags.joins(:taggings).group(:id).count
+    @total_tag_count = counts.size
+    @max_taggings_count = counts.values.max.to_i
+
+    @tags = @tags.where("tags.name LIKE ? ESCAPE '\\'", "%#{Tag.sanitize_sql_like(@query.downcase)}%") if @query.present?
+    @tags = @sort == "name" ? @tags.order(:name) : @tags.order("taggings_count DESC", :name)
   end
 
   def edit

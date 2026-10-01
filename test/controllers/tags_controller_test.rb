@@ -18,6 +18,29 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index filters tags by name" do
+    get tags_url(q: "rem")
+    assert_response :success
+
+    names = css_select("#tags-list ul li a.tag").map { it.text.squish }
+    assert_includes names, "remote"
+    assert_not_includes names, "rails"
+  end
+
+  test "index treats LIKE wildcards in the filter literally" do
+    get tags_url(q: "%")
+    assert_response :success
+    assert_empty css_select("#tags-list ul li")
+  end
+
+  test "index sorts tags by name" do
+    get tags_url(sort: "name")
+    assert_response :success
+
+    names = css_select("#tags-list ul li a.tag").map { it.text.squish }
+    assert_equal names.sort, names
+  end
+
   test "should update tag" do
     patch tag_url(@tag), params: { tag: { name: "updated-remote" } }
     assert_redirected_to tags_url
