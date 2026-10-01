@@ -77,8 +77,6 @@ export default class extends Controller {
     if (this.precisionValue > 0) input.value = Number(input.value).toFixed(this.precisionValue);
   }
 
-  // Disables the decrement button at `min` and the increment button at `max`.
-  // A disabled button stops firing pointer events, so any hold in progress is stopped too.
   updateButtons() {
     const { value, min, max } = this.inputTarget;
     const number = parseFloat(value);

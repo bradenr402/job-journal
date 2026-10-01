@@ -2,7 +2,6 @@ module PagesHelper
   SUGGESTION_TILE_CLASSES = "bg-neutral-100 dark:bg-neutral-800/60 p-3 rounded-md transition-all duration-80 " \
                             "hover:bg-neutral-200/70 dark:hover:bg-neutral-700/30 active:scale-98"
 
-  # Dashboard suggestions render as tiles inside a card, or as minimal items when the Minimal style is on.
   def suggestion_grid_class_names(count)
     if minimal_style?
       collection_layout_class_names(layout: count > 1 ? "grid" : "list", count:, size: :small)

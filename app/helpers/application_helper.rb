@@ -15,7 +15,6 @@ module ApplicationHelper
 
   def minimal_style? = appearance_setting(:style) == "minimal"
 
-  # `layout` and `style` default to the current user's appearance settings.
   def collection_layout_class_names(count:, size: :large, layout: nil, style: nil)
     layout = resolve_appearance(LAYOUT_CLASSES, :layout, layout)
     style = resolve_appearance(STYLE_CLASSES, :style, style)

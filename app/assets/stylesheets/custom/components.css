@@ -40,15 +40,6 @@
   @apply hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70 hover:-translate-y-0.75 transition-all duration-80 active:scale-98 will-change-[transform,background-color,box-shadow];
 }
 
-/*
-  Minimal style: combined with `card-grid` or `card-list` for the layout.
-  Items are padded so their hover highlight extends past the text, and the list
-  is pulled out by the same amount so the text stays aligned with its surroundings.
-
-  In a grid, items also extend half the column gap into it so neighboring hover
-  areas meet exactly halfway between columns. The list is pulled out by that much
-  less to keep the outer text aligned.
-*/
 @utility minimal-item-list {
   --minimal-item-bleed: --spacing(4);
 
@@ -179,17 +170,10 @@
   }
 }
 
-/*
-  Segmented control: a track of radio options with a pill that slides to the
-  checked option via CSS Anchor Positioning. The pill is a real element (see the
-  WebKit notes on `anchor-overlay`). Browsers without anchor positioning fall
-  back to a static background on the checked option.
-*/
 @utility segmented-control {
   --segmented-control-radius: 0.625rem;
   --segmented-control-border: 1px;
   --segmented-control-padding: --spacing(0.5);
-  /* Concentric with the track: inner radius = outer radius − border − padding */
   --segmented-control-inner-radius: calc(var(--segmented-control-radius) - var(--segmented-control-border) - var(--segmented-control-padding));
 
   @apply relative isolate inline-flex p-(--segmented-control-padding) rounded-(--segmented-control-radius) bg-neutral-100 dark:bg-neutral-900 border-(length:--segmented-control-border) border-neutral-200 dark:border-neutral-800;
@@ -209,7 +193,6 @@
 @utility segmented-control-option {
   @apply relative z-10 flex rounded-(--segmented-control-inner-radius) cursor-pointer select-none whitespace-nowrap text-sm text-muted transition-colors duration-80 hover:text-normal;
 
-  /* Divider between options, hidden next to the checked option */
   & + &::before {
     @apply content-[""] absolute -left-px top-1/2 -translate-y-1/2 h-4 w-px bg-neutral-300 dark:bg-neutral-700 transition-opacity duration-200;
   }
@@ -232,7 +215,6 @@
     @apply ring-2 ring-primary-600;
   }
 
-  /* Scales the content rather than the option so the dividers stay put */
   .segmented-control-content {
     @apply flex items-center justify-center gap-1 pl-2 pr-2.5 py-1.5 transition-[scale] duration-80;
   }
@@ -242,11 +224,6 @@
   }
 }
 
-/*
-  Vertically stacked page sections. Add `section-stack-dividers` for a dashed
-  divider centered between each pair of sections, with extra room around it.
-  Override `--section-stack-gap` to change the base spacing.
-*/
 @utility section-stack {
   --section-stack-gap: --spacing(20);
 
@@ -264,7 +241,6 @@
   > * + * {
     @apply relative mt-(--section-stack-divider-space);
 
-    /* Three equal dashes separated by short gaps: ——— ——— ——— */
     &::before {
       @apply content-[""] absolute left-1/2 top-[calc((var(--section-stack-gap)+var(--section-stack-divider-space))/-2)] -translate-1/2 w-1/2 h-px pointer-events-none;
       background: linear-gradient(

@@ -256,7 +256,6 @@
         <p class="text-sm text-muted mt-1 text-pretty">A quick overview of all your job search activity to help you track progress and spot trends.</p>
       </div>
 
-      <%# Minimal items have no frame, so they need more room and a divider to read as separate sections %>
       <div class="@container section-stack <%= minimal_style? ? "section-stack-dividers [--section-stack-gap:calc(var(--spacing)*10)]" : "[--section-stack-gap:calc(var(--spacing)*3)]" %>">
         <div class="<%= collection_layout_class_names layout: "grid", count: 4 %>">
           <div class="relative <%= item_layout_class_names %> flex flex-col">

@@ -70,14 +70,7 @@
   }
 }
 
-/*
-  Switch: a checkbox styled as a track, followed by a `.form-switch-thumb` span
-  that slides across when checked.
-*/
-/*
-  Shared by the track and thumb. The thumb is a sibling of the track (not a
-  child), so it can't inherit custom properties from it.
-*/
+/* The thumb is a sibling of the track, so it can't inherit these from it */
 @utility form-switch-vars {
   --form-switch-radius: 0.375rem;
   --form-switch-inset: --spacing(0.5);
@@ -91,10 +84,6 @@
   }
 }
 
-/*
-  Wraps a switch with the field(s) it reveals. The dependent field is indented
-  under the switch with a connecting line centered on the track.
-*/
 @utility form-switch-group {
   @apply space-y-1;
 }
@@ -103,15 +92,10 @@
   @apply mt-4 ml-4.25 pl-4.5 border-l-2 border-neutral-200 dark:border-neutral-800;
 }
 
-/* Concentric with the track: inner radius = outer radius − inset */
 @utility form-switch-thumb {
   @apply form-switch-vars absolute top-(--form-switch-inset) left-(--form-switch-inset) size-4 rounded-[calc(var(--form-switch-radius)-var(--form-switch-inset))] bg-white shadow-sm ring-1 ring-neutral-900/5 pointer-events-none transition-[translate,scale] duration-150 ease-out peer-checked:translate-x-4 peer-active:not-peer-disabled:scale-x-125 origin-left peer-checked:origin-right;
 }
 
-/*
-  Number stepper: a single bordered field (matching `form-input`) with inset,
-  rounded −/+ buttons. The frame shows the focus ring when the input is focused.
-*/
 @utility form-number-frame {
   --form-number-radius: 0.625rem;
   --form-number-border: 1px;
@@ -130,7 +114,6 @@
   }
 }
 
-/* Concentric with the frame: inner radius = outer radius − border − padding */
 @utility form-number-button {
   @apply shrink-0 grid place-items-center size-8.5 rounded-[calc(var(--form-number-radius)-var(--form-number-border)-var(--form-number-padding))] cursor-pointer bg-neutral-100 dark:bg-neutral-800 enabled:hover:bg-neutral-200/80 dark:enabled:hover:bg-neutral-700/80 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-600 transition-[background-color,opacity,scale] duration-80 enabled:active:scale-95 will-change-[scale,background-color] disabled:cursor-not-allowed disabled:opacity-40;
 }

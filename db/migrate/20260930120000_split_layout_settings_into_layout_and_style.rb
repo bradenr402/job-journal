@@ -1,8 +1,3 @@
-# Replaces the per-section `layouts` settings (grid/list/minimal) with global
-# `appearance.layout` (grid/list) and `appearance.style` (cards/minimal).
-#
-# * Layout comes from the Job Leads section, with Minimal becoming List.
-# * Style is Minimal if any section was Minimal, otherwise Cards.
 class SplitLayoutSettingsIntoLayoutAndStyle < ActiveRecord::Migration[8.0]
   SECTIONS = %w[job_leads interviews notes].freeze
 
@@ -31,7 +26,7 @@ class SplitLayoutSettingsIntoLayoutAndStyle < ActiveRecord::Migration[8.0]
   private
 
   def migrate_settings(settings)
-    layouts = settings[:layouts].is_a?(Hash) ? settings[:layouts] : {}
+    layouts = settings[:layouts]
 
     appearance = {
       layout: layouts[:job_leads].in?(%w[list minimal]) ? "list" : "grid",
@@ -41,9 +36,8 @@ class SplitLayoutSettingsIntoLayoutAndStyle < ActiveRecord::Migration[8.0]
     settings.except(:layouts).merge(appearance:)
   end
 
-  # Lossy: Grid + Minimal has no legacy equivalent and becomes Minimal.
   def revert_settings(settings)
-    appearance = settings[:appearance].is_a?(Hash) ? settings[:appearance] : {}
+    appearance = settings[:appearance]
 
     layout =
       if appearance[:style] == "minimal"
