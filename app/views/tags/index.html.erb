@@ -1,5 +1,7 @@
 <% content_for :title, 'Tags' %>
 
+<% delete_confirm = ->(tag) { "Delete the tag '#{tag.name}'? It will be removed from #{pluralize(tag.taggings_count, 'job lead')}. This can't be undone." } %>
+
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
@@ -8,67 +10,102 @@
     <% end %>
   </div>
 
-  <div class="mb-4">
+  <div class="mb-6">
     <h2 class="heading">Tags</h2>
-    <p class="text-sm text-muted mt-1">Edit or delete your tags. Deleting a tag removes it from all job leads.</p>
-    <p class="mt-1 text-xs text-muted">
-      <span class="not-pointer-fine:hidden">Click</span>
-      <span class="not-pointer-coarse:hidden">Tap</span>
-      <span class="not-pointer-none:hidden">Select</span>
-      a tag to see your job leads filtered by that tag.
+    <p class="text-sm text-muted mt-1 text-pretty">
+      Rename, merge, or delete your tags.
+      <span class="not-pointer-fine:hidden">Click</span><span class="not-pointer-coarse:hidden">Tap</span><span class="not-pointer-none:hidden">Select</span>
+      a tag to see its job leads.
     </p>
   </div>
 
   <div class="@container">
     <% if @tags.any? %>
-      <div class="grid grid-cols-[auto_minmax(0,1fr)_auto] divide-y divide-neutral-200 dark:divide-neutral-800">
-        <% @tags.each do |tag| %>
-          <div class="col-span-3 grid grid-cols-subgrid items-center gap-2.5 py-2.5">
-            <div class="min-w-0">
-              <%= link_to job_leads_path(tags: tag.name), class: 'tag tag-filter', onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" do %>
-                <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
-                <%= tag.name %>
-              <% end %>
-            </div>
+      <% max_count = @tags.map(&:taggings_count).max.to_f %>
 
-            <p class="text-xs text-muted text-left">
-              <%= pluralize(tag.taggings_count, "job lead") %>
-            </p>
-
-            <div class="flex items-center justify-self-end gap-2.5 @max-sm:hidden">
-              <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary' do %>
-                <%= icon 'edit', class: 'size-4 shrink-0' %>
-                <span>Edit</span>
-              <% end %>
-
-              <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } }, class: 'btn btn-sm btn-destructive btn-muted' do %>
-                <%= icon 'trash', class: 'size-4 shrink-0' %>
-                <span>Delete</span>
-              <% end %>
-            </div>
-
-            <div class="ml-auto relative max-h-max @sm:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
-              <button data-dropdown-target="trigger" class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
-                <span class="sr-only">Actions for this tag</span>
-                <%= icon 'more-horizontal', class: 'size-5.5' %>
-              </button>
-
-              <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
-                <%= link_to edit_tag_path(tag), class: 'dropdown-option dropdown-option-secondary' do %>
-                  <%= icon 'edit', class: 'size-5 shrink-0' %>
-                  <span>Edit</span>
-                <% end %>
-
-                <div class="dropdown-divider"></div>
-
-                <%= button_to tag_path(tag), method: :delete, class: 'dropdown-option dropdown-option-destructive', data: { turbo_confirm: "Are you sure you want to delete the tag '#{tag.name}'? This will remove it from #{pluralize(tag.taggings_count, 'job lead')}." } do %>
-                  <%= icon 'trash', class: 'size-5 shrink-0' %>
-                  <span>Delete</span>
-                <% end %>
-              </div>
-            </div>
+      <div data-controller="list-filter" data-list-filter-singular-value="tag" data-list-filter-plural-value="tags">
+        <% if @tags.length > 5 %>
+          <div class="relative mb-2" data-controller="search-clear">
+            <input type="search"
+                   value="<%= params[:q] %>"
+                   placeholder="Filter tags"
+                   aria-label="Filter tags"
+                   autocomplete="off"
+                   class="peer form-input pl-9 pr-11"
+                   data-list-filter-target="input"
+                   data-search-clear-target="input"
+                   data-action="input->list-filter#filter keydown.esc->search-clear#clear">
+            <%= icon 'search', class: 'size-4.5 shrink-0 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted peer-focus:text-light transition-colors duration-80' %>
+            <button type="button" class="form-search-clear right-1.5" aria-label="Clear filter" data-action="search-clear#clear">
+              <%= icon 'x', class: 'form-search-clear-icon' %>
+            </button>
           </div>
         <% end %>
+
+        <p class="ml-1 mb-2 text-sm text-muted [view-transition-name:tag-count]" data-list-filter-target="count" aria-live="polite">
+          <%= pluralize(@tags.length, "tag") %>
+        </p>
+
+        <div>
+          <ul class="divide-y divide-neutral-200 dark:divide-neutral-800">
+            <% @tags.each do |tag| %>
+              <li class="flex items-center gap-3 py-3"
+                  data-list-filter-target="item"
+                  data-list-filter-key="<%= tag.name %>">
+                <div class="min-w-0 flex-1 flex flex-col gap-1.5">
+                  <div class="min-w-0">
+                    <%= link_to job_leads_path(tags: tag.name), class: 'tag tag-filter max-w-full', title: "View job leads tagged “#{tag.name}”", onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" do %>
+                      <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
+                      <span class="truncate"><%= tag.name %></span>
+                    <% end %>
+                  </div>
+
+                  <div class="flex items-center gap-2.5">
+                    <div class="h-1 w-full max-w-40 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden" aria-hidden="true">
+                      <div class="h-full rounded-full bg-primary-500/70" style="width: <%= [(tag.taggings_count / max_count * 100).round, 4].max %>%"></div>
+                    </div>
+                    <span class="text-xs text-muted tabular-nums whitespace-nowrap">
+                      <%= pluralize(tag.taggings_count, "job lead") %>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0 @max-sm:hidden">
+                  <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary', aria: { label: "Edit tag #{tag.name}" } do %>
+                    <%= icon 'edit', class: 'size-4 shrink-0' %>
+                    <span>Edit</span>
+                  <% end %>
+
+                  <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: delete_confirm.(tag) } }, class: 'btn btn-sm btn-destructive btn-muted', aria: { label: "Delete tag #{tag.name}" } do %>
+                    <%= icon 'trash', class: 'size-4 shrink-0' %>
+                    <span>Delete</span>
+                  <% end %>
+                </div>
+
+                <div class="relative shrink-0 @sm:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+                  <button data-dropdown-target="trigger" class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
+                    <span class="sr-only">Actions for tag <%= tag.name %></span>
+                    <%= icon 'more-horizontal', class: 'size-5.5' %>
+                  </button>
+
+                  <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
+                    <%= link_to edit_tag_path(tag), class: 'dropdown-option dropdown-option-secondary' do %>
+                      <%= icon 'edit', class: 'size-5 shrink-0' %>
+                      <span>Edit</span>
+                    <% end %>
+
+                    <div class="dropdown-divider"></div>
+
+                    <%= button_to tag_path(tag), method: :delete, class: 'dropdown-option dropdown-option-destructive', form: { data: { turbo_confirm: delete_confirm.(tag) } } do %>
+                      <%= icon 'trash', class: 'size-5 shrink-0' %>
+                      <span>Delete</span>
+                    <% end %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     <% else %>
       <div class="empty-state my-24">
@@ -77,7 +114,11 @@
         </div>
 
         <h2 class="subheading">No Tags Yet</h2>
-        <p class="max-w-md text-pretty leading-normal">Create tags by adding them to your job leads.</p>
+        <p class="max-w-md text-pretty leading-normal">Tags you add to job leads will show up here, where you can rename, merge, or delete them.</p>
+        <%= link_to job_leads_path, class: 'btn btn-sm btn-secondary' do %>
+          <span>Go to Job Leads</span>
+          <%= icon 'arrow-right', class: 'size-3.5 shrink-0' %>
+        <% end %>
       </div>
     <% end %>
   </div>
