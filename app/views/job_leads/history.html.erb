@@ -2,6 +2,39 @@
 
 <% content_for :title, page_title %>
 
+<%
+  closed = @job_lead.accepted_at? || @job_lead.rejected_at?
+
+  # Each entry is [status, attribute or interview, time]. Missing steps become
+  # placeholders while the job lead is still open.
+  entries = [ [ :lead, :created_at, @job_lead.created_at ] ]
+
+  if @job_lead.applied_at?
+    entries << [ :applied, :applied_at, @job_lead.applied_at ]
+  elsif !closed
+    entries << [ :applied, nil, nil ]
+  end
+
+  if @interviews.any?
+    @interviews.each { |interview| entries << [ :interview, interview, interview.scheduled_at ] }
+  elsif !closed
+    entries << [ :interview, nil, nil ]
+  end
+
+  if @job_lead.offer_at?
+    entries << [ :offer, :offer_at, @job_lead.offer_at ]
+  elsif !closed
+    entries << [ :offer, nil, nil ]
+  end
+
+  entries << [ :accepted, :accepted_at, @job_lead.accepted_at ] if @job_lead.accepted_at?
+  entries << [ :rejected, :rejected_at, @job_lead.rejected_at ] if @job_lead.rejected_at?
+
+  labels = { lead: "Added", applied: "Applied", interview: "Interview", offer: "Offer", accepted: "Accepted", rejected: "Rejected" }
+  label_class = "text-sm font-medium text-light"
+  previous_time = nil
+%>
+
 <div class="md:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
     <%= link_to @job_lead, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
@@ -10,89 +43,52 @@
     <% end %>
   </div>
 
-  <div class="mb-4">
-    <h1 class="heading">
-      <%= page_title %>
-    </h1>
-    <p class="text-sm text-muted mt-1">
-      Edit the timeline of events for this job lead.
+  <div class="mb-6">
+    <h1 class="heading">History</h1>
+    <p class="mt-1 text-light font-medium text-pretty">
+      <%= @job_lead.title %> <span class="text-muted font-normal">@</span> <%= @job_lead.company %>
+    </p>
+    <p class="text-sm text-muted mt-1 text-pretty">
+      Adjust when each step happened. Steps must stay in order, and interview changes update their scheduled times.
     </p>
   </div>
 
   <%= form_with model: @job_lead, url: update_history_job_lead_path(@job_lead) do |form| %>
-    <div class="space-y-6">
-      <div>
-        <%= form.label :created_at, class: "tag tag-lead mb-2" do %>
-          <%= icon_for_status :lead, class: "size-4 -ml-px shrink-0" %>
-          <%= tag.span "Lead" %>
+    <%= render "components/errors", resource: @job_lead %>
+
+    <ol>
+      <% entries.each_with_index do |(status, source, time), index| %>
+        <% last = index == entries.size - 1 %>
+
+        <% if source.nil? %>
+          <%= render "history_event", status:, last:,
+                label: tag.p(labels[status], class: "text-sm font-medium text-muted") %>
+        <% elsif source.is_a?(Interview) %>
+          <%= form.fields_for :interviews, source, child_index: index do |interview_fields| %>
+            <%= render "history_event", status:, last:, time:, previous_time:,
+                  label: interview_fields.label(:scheduled_at, class: label_class) {
+                    safe_join([ "Interview", (tag.span(" with #{source.interviewer}", class: "font-normal text-muted") if source.interviewer.present?) ].compact)
+                  },
+                  action: link_to(interview_path(source), class: "btn btn-sm btn-secondary btn-muted") {
+                    safe_join([ tag.span("View"), icon("arrow-up-right", class: "size-3.75 shrink-0 stroke-[1.75] -ml-0.5") ])
+                  },
+                  field: safe_join([
+                    interview_fields.datetime_field(:scheduled_at, include_seconds: false, class: "form-input"),
+                    interview_fields.hidden_field(:id)
+                  ]) %>
+          <% end %>
+        <% else %>
+          <%= render "history_event", status:, last:, time:, previous_time:,
+                label: form.label(source, labels[status], class: label_class),
+                field: form.datetime_field(source, include_seconds: false, class: "form-input") %>
         <% end %>
-        <%= form.datetime_field :created_at, include_seconds: false, class: "form-input" %>
-      </div>
 
-      <% if @job_lead.applied_at? %>
-        <div>
-          <%= form.label :applied_at, class: "tag tag-applied mb-2" do %>
-            <%= icon_for_status :applied, class: "size-4 -ml-px shrink-0" %>
-            <%= tag.span "Applied" %>
-          <% end %>
-          <%= form.datetime_field :applied_at, include_seconds: false, class: "form-input" %>
-        </div>
+        <% previous_time = time if time %>
       <% end %>
-
-      <% if @interviews.any? %>
-        <%= form.fields_for :interviews, @interviews do |interview_fields| %>
-          <% interview = interview_fields.object %>
-
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <%= interview_fields.label :scheduled_at, class: "tag tag-interview" do %>
-                <%= icon_for_status :interview, class: "size-4 -ml-px shrink-0" %>
-                <span>Interview - <span class="font-medium"><%= interview.interviewer %></span></span>
-              <% end %>
-              <%= link_to interview_path(interview), class: "btn btn-sm btn-secondary btn-muted" do %>
-                <span>View</span>
-                <%= icon "arrow-up-right", class: "size-3.75 shrink-0 stroke-[1.75] -ml-0.5" %>
-              <% end %>
-            </div>
-            <%= interview_fields.datetime_field :scheduled_at, include_seconds: false, class: "form-input" %>
-            <%= interview_fields.hidden_field :id %>
-          </div>
-        <% end %>
-      <% end %>
-
-      <% if @job_lead.offer_at? %>
-        <div>
-          <%= form.label :offer_at, class: "tag tag-offer mb-2" do %>
-            <%= icon_for_status :offer, class: "size-4 -ml-px shrink-0" %>
-            <%= tag.span "Offer" %>
-          <% end %>
-          <%= form.datetime_field :offer_at, include_seconds: false, class: "form-input" %>
-        </div>
-      <% end %>
-
-      <% if @job_lead.accepted_at? %>
-        <div>
-          <%= form.label :accepted_at, class: "tag tag-accepted mb-2" do %>
-            <%= icon_for_status :accepted, class: "size-4 -ml-px shrink-0" %>
-            <%= tag.span "Accepted" %>
-          <% end %>
-          <%= form.datetime_field :accepted_at, include_seconds: false, class: "form-input" %>
-        </div>
-      <% end %>
-
-      <% if @job_lead.rejected_at? %>
-        <div>
-          <%= form.label :rejected_at, class: "tag tag-rejected mb-2" do %>
-            <%= icon_for_status :rejected, class: "size-4 -ml-px shrink-0" %>
-            <%= tag.span "Rejected" %>
-          <% end %>
-          <%= form.datetime_field :rejected_at, include_seconds: false, class: "form-input" %>
-        </div>
-      <% end %>
-    </div>
+    </ol>
 
     <div class="sticky-form-footer mt-8">
-      <%= form.submit "Update History", class: "btn btn-primary w-full sm:w-auto" %>
+      <%= form.submit "Save History", class: "btn btn-primary w-full sm:w-auto" %>
     </div>
   <% end %>
 </div>
