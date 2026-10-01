@@ -2,6 +2,7 @@ class PasswordsController < ApplicationController
   layout "auth"
 
   allow_unauthenticated_access
+  rate_limit to: 5, within: 3.minutes, only: :create, with: -> { redirect_to new_password_path, alert: "Try again later." }
   before_action :set_user_by_token, only: %i[ edit update ]
 
   before_action only: %i[new create] do
@@ -27,7 +28,7 @@ class PasswordsController < ApplicationController
       terminate_sessions @user.sessions
       redirect_to new_session_path, notice: "Password has been reset."
     else
-      redirect_to edit_password_path(params[:token]), alert: "Passwords did not match."
+      redirect_to edit_password_path(params[:token]), alert: @user.errors.full_messages.to_sentence
     end
   end
 

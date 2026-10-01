@@ -184,3 +184,17 @@
 @utility form-search-clear-icon {
   @apply size-4 stroke-[1.75] shrink-0;
 }
+
+/* Show/hide button placed inside a `relative` wrapper after a password input. */
+@utility form-password-toggle {
+  @apply absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center size-8 rounded-md cursor-pointer text-muted hover:text-normal hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-500 transition-[color,background-color,scale] duration-80 active:scale-95;
+}
+
+/* A live requirement under a field; add `form-requirement-met` once satisfied. */
+@utility form-requirement {
+  @apply flex items-center gap-1 text-xs text-muted transition-colors duration-80;
+
+  &.form-requirement-met {
+    @apply text-primary-550 dark:text-primary-400;
+  }
+}

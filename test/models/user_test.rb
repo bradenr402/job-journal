@@ -69,6 +69,15 @@ class UserTest < ActiveSupport::TestCase
     assert_includes user.errors[:password], "can't be blank"
   end
 
+  test "should require passwords of at least six characters" do
+    @user.password = @user.password_confirmation = "short"
+    assert_not @user.valid?
+    assert_includes @user.errors[:password], "is too short (minimum is 6 characters)"
+
+    @user.password = @user.password_confirmation = "sixsix"
+    assert @user.valid?
+  end
+
   test "should allow update without changing password" do
     @user.name = "Updated Name"
 

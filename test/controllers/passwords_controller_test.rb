@@ -11,6 +11,14 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert_empty user.sessions.reload
   end
 
+  test "a reset with a too-short password explains why" do
+    user = users(:one)
+
+    patch password_url(user.password_reset_token), params: { password: "abc", password_confirmation: "abc" }
+
+    assert_match "too short", flash[:alert]
+  end
+
   test "a failed reset keeps sessions" do
     user = users(:one)
     session = user.sessions.create!

@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include Settings
 
+  PASSWORD_MIN_LENGTH = 6
+
   # Authentication
   has_secure_password
 
@@ -19,6 +21,7 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, on: :create
   validates :password, presence: true, on: :update, if: -> { password.present? || password_confirmation.present? }
+  validates :password, length: { minimum: PASSWORD_MIN_LENGTH }, allow_nil: true
 
   # Aliases
   alias_attribute :email, :email_address
