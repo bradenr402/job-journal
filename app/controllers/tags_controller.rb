@@ -1,7 +1,9 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [ :edit, :update, :destroy ]
   before_action :set_merge_context, only: [ :edit, :update ]
+  before_action :set_job_lead_preview, only: [ :edit, :update ]
 
+  JOB_LEAD_PREVIEW_LIMIT = 5
   SORTS = %w[usage name].freeze
   FILTER_THRESHOLD = 10
 
@@ -56,6 +58,12 @@ class TagsController < ApplicationController
   def set_merge_context
     @current_tag_name = @tag.name
     @mergeable_tag_names = Current.user.tags.where.not(id: @tag.id).pluck(:name)
+  end
+
+  def set_job_lead_preview
+    job_leads = @tag.job_leads
+    @job_lead_count = job_leads.count
+    @job_leads = job_leads.order(updated_at: :desc).limit(JOB_LEAD_PREVIEW_LIMIT)
   end
 
   # Flash messages are rendered as html_safe, so user-supplied tag names must be escaped.

@@ -41,6 +41,12 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
     assert_equal names.sort, names
   end
 
+  test "edit previews job leads using the tag" do
+    get edit_tag_url(@tag)
+    assert_select "section[aria-labelledby=tagged-job-leads-heading] li", minimum: 1
+    assert_select "datalist#existing-tags option[value=?]", tags(:rails).name
+  end
+
   test "should update tag" do
     patch tag_url(@tag), params: { tag: { name: "updated-remote" } }
     assert_redirected_to tags_url

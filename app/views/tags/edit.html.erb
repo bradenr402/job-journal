@@ -1,4 +1,6 @@
-<% content_for :title, "Edit Tag: #{@tag.name}" %>
+<% content_for :title, "Edit Tag: #{@current_tag_name}" %>
+
+<% usage = @job_lead_count %>
 
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
@@ -8,9 +10,15 @@
     <% end %>
   </div>
 
-  <div class="mb-4">
-    <h2 class="heading">Edit Tag</h2>
-    <p class="text-sm text-muted mt-1">Rename this tag. The new name will be applied to all job leads that use this tag. Renaming it to a tag you already have will merge the two.</p>
+  <div class="mb-6">
+    <h1 class="heading">Edit Tag</h1>
+    <div class="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+      <%= link_to job_leads_path(tags: @current_tag_name), class: 'tag tag-filter max-w-full', title: "View job leads tagged “#{@current_tag_name}”", style: "view-transition-name: tag-#{@current_tag_name.parameterize}" do %>
+        <%= icon 'tag', class: 'size-4 -ml-px shrink-0' %>
+        <span class="truncate"><%= @current_tag_name %></span>
+      <% end %>
+      <span class="text-sm text-muted">Used on <%= pluralize(usage, 'job lead') %></span>
+    </div>
   </div>
 
   <%= form_with model: @tag, url: tag_path(@tag), method: :patch, data: {
@@ -18,30 +26,90 @@
         merge_confirm_names_value: @mergeable_tag_names,
         merge_confirm_current_name_value: @current_tag_name
       } do |form| %>
-    <div class="space-y-5">
-      <div>
-        <%= form.label :name, class: 'form-label' %>
-        <%= form.text_field :name, class: 'form-input', autofocus: true, required: true, data: {
-              merge_confirm_target: 'input',
-              action: 'input->merge-confirm#update'
-            } %>
-        <% if @tag.errors[:name].any? %>
-          <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= @tag.errors[:name].first %></p>
+    <%= render 'components/errors', resource: @tag %>
+
+    <div>
+      <%= form.label :name, class: 'form-label' %>
+      <%= form.text_field :name, class: 'form-input', autofocus: true, required: true, autocomplete: 'off', list: 'existing-tags', aria: { describedby: 'tag-name-hint' }, data: {
+            merge_confirm_target: 'input',
+            action: 'input->merge-confirm#update'
+          } %>
+
+      <datalist id="existing-tags">
+        <% @mergeable_tag_names.sort.each do |name| %>
+          <option value="<%= name %>">
         <% end %>
+      </datalist>
 
-        <p data-merge-confirm-target="warning" class="hidden text-xs text-amber-700 dark:text-amber-500 mt-1">
-          You already have a tag named &ldquo;<span data-merge-confirm-target="targetName" class="font-semibold"></span>&rdquo;.
-          Saving will merge the two tags: every job lead tagged
-          &ldquo;<span class="font-semibold"><%= @current_tag_name %></span>&rdquo; will be tagged
-          &ldquo;<span data-merge-confirm-target="targetName" class="font-semibold"></span>&rdquo; instead, and
-          &ldquo;<span class="font-semibold"><%= @current_tag_name %></span>&rdquo; will be deleted.
-        </p>
-      </div>
+      <p id="tag-name-hint" class="text-xs text-muted mt-1.5 text-pretty" data-merge-confirm-target="hint">
+        Renaming updates every job lead with this tag. Use a name you already have to merge the two.
+      </p>
 
-      <div class="flex gap-2">
-        <%= form.submit 'Save Changes', class: 'btn btn-primary' %>
-        <%= link_to 'Cancel', tags_path, class: 'btn btn-secondary' %>
+      <div data-merge-confirm-target="warning" role="status" class="hidden mt-3 rounded-xl border border-amber-300/70 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 p-3 text-sm text-amber-800 dark:text-amber-300">
+        <div class="flex items-start gap-2.5">
+          <%= icon 'alert-triangle', class: 'size-4.5 shrink-0 mt-0.5' %>
+          <div class="min-w-0 space-y-2">
+            <p class="font-medium">This will merge two tags</p>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="tag max-w-full line-through decoration-1 opacity-75">
+                <%= icon 'tag', class: 'size-4 -ml-px shrink-0' %>
+                <span class="truncate"><%= @current_tag_name %></span>
+              </span>
+              <%= icon 'arrow-right', class: 'size-3.5 shrink-0' %>
+              <span class="tag max-w-full">
+                <%= icon 'tag', class: 'size-4 -ml-px shrink-0' %>
+                <span class="truncate" data-merge-confirm-target="targetName"></span>
+              </span>
+            </div>
+            <p class="text-xs text-pretty opacity-90">
+              <%= pluralize(usage, 'job lead') %> will move to the existing tag, and
+              &ldquo;<%= @current_tag_name %>&rdquo; will be deleted. This can't be undone.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="sticky-form-footer mt-8 flex flex-wrap items-center gap-2">
+      <%= form.submit 'Save Changes', class: 'btn btn-primary w-full sm:w-auto', data: { merge_confirm_target: 'submit', merge_label: 'Merge Tags' } %>
+      <%= link_to 'Cancel', tags_path, class: 'btn btn-secondary w-full sm:w-auto' %>
+      <button type="submit" form="delete-tag-form" class="btn btn-destructive btn-muted w-full sm:w-auto sm:ml-auto">
+        <%= icon 'trash', class: 'size-4 shrink-0' %>
+        <span>Delete Tag</span>
+      </button>
+    </div>
+  <% end %>
+
+  <% if @job_leads.any? %>
+    <section class="mt-10" aria-labelledby="tagged-job-leads-heading">
+      <div class="flex items-baseline justify-between gap-2 mb-1">
+        <h2 id="tagged-job-leads-heading" class="form-label mb-0">Job leads with this tag</h2>
+        <% if @job_lead_count > @job_leads.size %>
+          <%= link_to "View All #{@job_lead_count}", job_leads_path(tags: @current_tag_name), class: 'btn-link btn-link-primary text-sm' %>
+        <% end %>
+      </div>
+
+      <ul class="divide-y divide-neutral-200 dark:divide-neutral-800">
+        <% @job_leads.each do |job_lead| %>
+          <li>
+            <%= link_to job_lead, class: 'group flex items-center gap-3 py-2.5 outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg' do %>
+              <span class="min-w-0 flex-1 truncate text-sm">
+                <span class="font-medium text-light group-hover:underline"><%= job_lead.title %></span>
+                <span class="text-muted">@ <%= job_lead.company %></span>
+              </span>
+              <span class="tag tag-<%= job_lead.status %> shrink-0">
+                <%= icon_for_status job_lead.status, class: 'size-4 -ml-px shrink-0' %>
+                <%= job_lead.status.titlecase %>
+              </span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <%= form_with url: tag_path(@tag), method: :delete, id: 'delete-tag-form', class: 'hidden', data: {
+        turbo_confirm: "Delete the tag '#{@current_tag_name}'? It will be removed from #{pluralize(usage, 'job lead')}. This can't be undone."
+      } do %>
   <% end %>
 </div>

@@ -6,7 +6,7 @@ import { Controller } from '@hotwired/stimulus';
 // this one. That is destructive and irreversible, so warn inline while typing
 // and require a confirmation before the form is submitted.
 export default class extends Controller {
-  static targets = ['input', 'warning', 'targetName'];
+  static targets = ['input', 'warning', 'targetName', 'hint', 'submit'];
   static values = { names: Array, currentName: String };
 
   connect() {
@@ -23,12 +23,20 @@ export default class extends Controller {
 
     if (this.hasWarningTarget) this.warningTarget.classList.toggle('hidden', !merging);
     if (merging) this.targetNameTargets.forEach((el) => (el.textContent = name));
+    if (this.hasHintTarget) this.hintTarget.classList.toggle('hidden', merging);
+    if (this.hasSubmitTarget) this._updateSubmitLabel(merging);
 
     if (merging) {
       this.element.dataset.turboConfirm = this._confirmMessage(name);
     } else {
       delete this.element.dataset.turboConfirm;
     }
+  }
+
+  _updateSubmitLabel(merging) {
+    const submit = this.submitTarget;
+    submit.dataset.defaultLabel ??= submit.value;
+    submit.value = merging ? submit.dataset.mergeLabel : submit.dataset.defaultLabel;
   }
 
   _confirmMessage(name) {
