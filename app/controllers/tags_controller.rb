@@ -16,12 +16,14 @@ class TagsController < ApplicationController
       .group(:id)
       .select("tags.*, COUNT(taggings.id) AS taggings_count")
 
-    counts = Current.user.tags.joins(:taggings).group(:id).count
-    @total_tag_count = counts.size
-    @max_taggings_count = counts.values.max.to_i
-
+    all_tags = @tags
     @tags = @tags.where("tags.name LIKE ? ESCAPE '\\'", "%#{Tag.sanitize_sql_like(@query.downcase)}%") if @query.present?
     @tags = @sort == "name" ? @tags.order(:name) : @tags.order("taggings_count DESC", :name)
+
+    # Totals cover every tag, so filtering doesn't change the usage bars' scale.
+    counts = @query.present? ? all_tags.map(&:taggings_count) : @tags.map(&:taggings_count)
+    @total_tag_count = counts.size
+    @max_taggings_count = counts.max.to_i
   end
 
   def edit
