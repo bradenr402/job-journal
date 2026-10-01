@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session = Session.find_by(id: params[:session]) || Current.session
+    session = params[:session] ? Current.user.sessions.find(params[:session]) : Current.session
 
     terminate_session session
 
