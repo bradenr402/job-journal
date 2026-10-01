@@ -10,7 +10,7 @@ module Parsers
       return uri unless uri.host.to_s.downcase.in?(ALLOWED_HOSTS)
       return uri unless uri.path.start_with?("/jobs/collections/")
 
-      job_id = CGI.parse(uri.query.to_s)["currentJobId"]&.first
+      job_id = URI.decode_www_form(uri.query.to_s).assoc("currentJobId")&.last
       return uri unless job_id&.match?(/\A\d+\z/)
 
       uri.dup.tap do |canonical_uri|
@@ -58,9 +58,9 @@ module Parsers
       message_link =
         if href.present?
           uri = URI.parse href
-          params = CGI.parse uri.query.to_s
+          params = URI.decode_www_form uri.query.to_s
 
-          link = CGI.unescape params["session_redirect"]&.first.presence
+          link = CGI.unescape params.assoc("session_redirect")&.last.presence
           parsed = URI.parse(link.to_s) rescue nil
 
           parsed.to_s if parsed.is_a?(URI::HTTP) && parsed.host&.in?(ALLOWED_HOSTS)

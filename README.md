@@ -78,8 +78,8 @@ JobJournal is available for free at [job-journal.fly.dev](https://job-journal.fl
 
 ### Prerequisites
 
-- Ruby 3.4.3
-- Rails 8.0.2
+- Ruby 4.0.7
+- Rails 8.1.4
 
 ### Setup
 
