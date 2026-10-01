@@ -14,7 +14,14 @@ class UsersController < ApplicationController
 
     if @user.authenticate(current_password)
       if @user.update(user_params)
-        redirect_to edit_account_path, success: "Account updated successfully."
+        message = "Account updated successfully."
+
+        if @user.saved_change_to_password_digest?
+          terminate_sessions @user.sessions.where.not(id: Current.session.id)
+          message = "Account updated successfully. You’ve been signed out of all other sessions."
+        end
+
+        redirect_to edit_account_path, success: message
       else
         render :edit, status: :unprocessable_content, error: @user.errors.full_messages.join(", ")
       end
