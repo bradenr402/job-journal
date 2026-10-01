@@ -163,3 +163,19 @@
     @apply star-active;
   }
 }
+
+@layer base {
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    @apply appearance-none;
+  }
+}
+
+/* Place directly after a `peer` search input; hidden while the input is empty. */
+@utility form-search-clear {
+  @apply absolute top-1/2 -translate-y-1/2 grid place-items-center size-7 rounded-md cursor-pointer text-normal bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200/80 dark:hover:bg-neutral-700/80 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary-500 transition-[background-color,scale] duration-80 active:scale-95 will-change-[scale,background-color] peer-placeholder-shown:hidden;
+}
+
+@utility form-search-clear-icon {
+  @apply size-4 stroke-[1.75] shrink-0;
+}
