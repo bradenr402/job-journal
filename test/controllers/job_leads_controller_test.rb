@@ -414,6 +414,7 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
 
     patch update_history_job_lead_url(lead), params: {
       job_lead: {
+        created_at: 6.days.ago,
         applied_at: 5.days.ago,
         interviews_attributes: [
           { id: interview.id, scheduled_at: 4.days.ago }
@@ -425,6 +426,22 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     lead.reload
     assert_equal 5.days.ago.to_date, lead.applied_at.to_date
     assert_equal 4.days.ago.to_date, lead.interviews.first.scheduled_at.to_date
+  end
+
+  test "should reject history that is out of order" do
+    lead = @user.job_leads.create!(
+      title: "Example",
+      company: "Example co.",
+      application_url: "https://example.com/jobs/out-of-order",
+      created_at: 10.days.ago,
+      applied_at: 5.days.ago
+    )
+
+    patch update_history_job_lead_url(lead), params: { job_lead: { applied_at: 12.days.ago } }
+
+    assert_response :unprocessable_content
+    assert_select "#error_explanation", /Applied can't be before Added/
+    assert_equal 5.days.ago.to_date, lead.reload.applied_at.to_date
   end
 
   test "should not update history on another user's job lead" do

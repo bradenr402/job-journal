@@ -55,6 +55,7 @@ class JobLead < ApplicationRecord
 
   validate :single_terminal_status
   validate :offer_amount_presence_for_offer_at
+  validate :chronological_history, on: :history
 
   # Callbacks
   before_validation :update_status, on: :update
@@ -397,5 +398,35 @@ class JobLead < ApplicationRecord
 
   def offer_amount_presence_for_offer_at
     errors.add(:base, "cannot advance to Offer without specifying an offer amount") if offer_at? && !offer_amount?
+  end
+
+  # Each step must happen no earlier than the steps before it:
+  # added -> applied -> interviews -> offer -> accepted/rejected.
+  def chronological_history
+    floor = nil # [label, time] of the latest step so far
+
+    step = lambda do |label, time|
+      next if time.nil?
+
+      if floor && time < floor.last
+        errors.add(:base, "#{label} can't be before #{floor.first} (#{I18n.l(floor.last, format: :short)})")
+      else
+        floor = [ label, time ]
+      end
+    end
+
+    step.("Added", created_at)
+    step.("Applied", applied_at)
+
+    before_interviews = floor
+    interviews.reject(&:marked_for_destruction?).select(&:scheduled_at).sort_by(&:scheduled_at).each do |interview|
+      floor = before_interviews
+      step.([ "Interview", interview.interviewer.presence ].compact.join(" with "), interview.scheduled_at)
+    end
+    floor = [ before_interviews, floor ].compact.max_by(&:last)
+
+    step.("Offer", offer_at)
+    step.("Accepted", accepted_at)
+    step.("Rejected", rejected_at)
   end
 end

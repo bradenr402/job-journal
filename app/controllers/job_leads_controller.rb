@@ -210,10 +210,12 @@ class JobLeadsController < ApplicationController
   end
 
   def update_history
-    if @job_lead.update(job_lead_history_params)
+    @job_lead.assign_attributes(job_lead_history_params)
+
+    if @job_lead.save(context: [ :update, :history ])
       redirect_to @job_lead, success: "History updated successfully."
     else
-      @interviews = @job_lead.interviews.order(:scheduled_at)
+      @interviews = @job_lead.interviews.sort_by { it.scheduled_at || Time.current }
       render :history, status: :unprocessable_content, error: "Failed to update history."
     end
   end
