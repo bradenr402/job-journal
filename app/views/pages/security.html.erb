@@ -104,7 +104,7 @@
                     divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
                   ">
                     <span class="inline-flex items-center">Login:&nbsp;<span class="text-light"><%= session.created_at.now? ? 'now' : local_time(session.created_at) %></span></span>
-                    <span class="inline-flex items-center">Last seen:&nbsp;<span class="text-light" title="<%= session.updated_at.iso8601 %>"><%= session.updated_at.now? ? 'now' : "#{time_ago_in_words session.updated_at} ago" %></span></span>
+                    <span class="inline-flex items-center">Last seen:&nbsp;<span class="text-light" title="<%= session.updated_at.iso8601 %>"><%= session.recently_active? ? 'just now' : "#{time_ago_in_words session.updated_at} ago" %></span></span>
                   </div>
                 </div>
               </div>

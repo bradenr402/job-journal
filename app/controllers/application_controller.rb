@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
   private
 
   def touch_current_session
-    Current.session&.touch
+    Current.session&.record_activity(ip_address: request.remote_ip)
   end
 end
