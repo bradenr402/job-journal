@@ -50,16 +50,166 @@
     @apply gap-y-0;
   }
 
+  /* Each item draws the grid marks on its own top and left edges */
   &.card-grid {
+    --minimal-grid-mark-size: --spacing(4);
+    --minimal-grid-dot-spacing: 16px;
+    --minimal-grid-dot-clearance: --spacing(1.5);
+    --minimal-grid-mark-color: var(--color-neutral-200);
+
+    @variant dark {
+      --minimal-grid-mark-color: var(--color-neutral-800);
+    }
+
     @apply -mx-[calc(var(--minimal-item-bleed)-var(--card-grid-gap)/2)];
 
     > .minimal-item {
-      @apply -mx-[calc(var(--card-grid-gap)/2)];
+      --mark-size: var(--minimal-grid-mark-size);
+      --mark-half: calc(var(--mark-size) / 2);
+      --mark-line: calc(var(--mark-half) - 0.5px);
+      --dot-spacing: var(--minimal-grid-dot-spacing);
+      --dot-inset: calc(var(--mark-half) + var(--minimal-grid-dot-clearance));
+      --dot-half-length: calc(50% - var(--mark-size) * 5 / 4 - var(--minimal-grid-dot-clearance) * 2);
+      --dot-quarter-length: calc(25% - var(--mark-size) * 9 / 8 - var(--minimal-grid-dot-clearance) * 2);
+
+      --mark-left: transparent;
+      --mark-top: transparent;
+      --mark-plus: transparent;
+      --mark-top-split: transparent;
+      --mark-plus-right: transparent;
+
+      @apply relative -mx-[calc(var(--card-grid-gap)/2)];
+
+      /* `+` on the top-right corner of a last item with no item to its right */
+      &::before {
+        @apply content-[""] absolute top-[calc(var(--mark-half)*-1)] right-[calc(var(--mark-half)*-1)] size-(--mark-size) pointer-events-none;
+        background:
+          linear-gradient(var(--mark-plus-right), var(--mark-plus-right)) 0 var(--mark-line) / var(--mark-size) 1px no-repeat,
+          linear-gradient(var(--mark-plus-right), var(--mark-plus-right)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat;
+      }
+
+      &::after {
+        @apply content-[""] absolute top-[calc(var(--mark-half)*-1)] left-[calc(var(--mark-half)*-1)] right-0 bottom-0 pointer-events-none;
+        background:
+          /* `+` */
+          linear-gradient(var(--mark-plus), var(--mark-plus)) 0 var(--mark-line) / var(--mark-size) 1px no-repeat,
+          linear-gradient(var(--mark-plus), var(--mark-plus)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat,
+          /* `|` */
+          linear-gradient(var(--mark-left), var(--mark-left)) var(--mark-line) calc(50% + var(--mark-half) / 2) / 1px var(--mark-size) no-repeat,
+          /* `—` */
+          linear-gradient(var(--mark-top), var(--mark-top)) calc(50% + var(--mark-half) / 2) var(--mark-line) / var(--mark-size) 1px no-repeat,
+          /* `—  ┴  —` */
+          linear-gradient(var(--mark-top-split), var(--mark-top-split)) calc(25% + var(--mark-half) / 4) var(--mark-line) / var(--mark-size) 1px no-repeat,
+          linear-gradient(var(--mark-top-split), var(--mark-top-split)) calc(75% + var(--mark-half) * 3 / 4) var(--mark-line) / var(--mark-size) 1px no-repeat,
+          linear-gradient(var(--mark-top-split), var(--mark-top-split)) calc(50% + var(--mark-half) / 2) var(--mark-line) / var(--mark-size) 1px no-repeat,
+          linear-gradient(var(--mark-top-split), var(--mark-top-split)) calc(50% + var(--mark-half) / 2) 0 / 1px var(--mark-half) no-repeat,
+          /* Dotted lines on the left edge, from each end to the `|` */
+          repeating-linear-gradient(to bottom, var(--mark-left) 0 1px, transparent 1px var(--dot-spacing)) left var(--mark-line) top calc(var(--mark-half) + var(--dot-inset)) / 1px var(--dot-half-length) no-repeat,
+          repeating-linear-gradient(to top, var(--mark-left) 0 1px, transparent 1px var(--dot-spacing)) left var(--mark-line) bottom var(--dot-inset) / 1px var(--dot-half-length) no-repeat,
+          /* Dotted lines on the top edge, from each end to the `—` */
+          repeating-linear-gradient(to right, var(--mark-top) 0 1px, transparent 1px var(--dot-spacing)) left calc(var(--mark-half) + var(--dot-inset)) top var(--mark-line) / var(--dot-half-length) 1px no-repeat,
+          repeating-linear-gradient(to left, var(--mark-top) 0 1px, transparent 1px var(--dot-spacing)) right var(--dot-inset) top var(--mark-line) / var(--dot-half-length) 1px no-repeat,
+          /* Dotted lines on the top edge between each end, `—`, and `┴` */
+          repeating-linear-gradient(to right, var(--mark-top-split) 0 1px, transparent 1px var(--dot-spacing)) left calc(var(--mark-half) + var(--dot-inset)) top var(--mark-line) / var(--dot-quarter-length) 1px no-repeat,
+          repeating-linear-gradient(to right, var(--mark-top-split) 0 1px, transparent 1px var(--dot-spacing)) calc(100% / 3 + var(--mark-half) + var(--minimal-grid-dot-clearance) / 3) var(--mark-line) / var(--dot-quarter-length) 1px no-repeat,
+          repeating-linear-gradient(to left, var(--mark-top-split) 0 1px, transparent 1px var(--dot-spacing)) calc(200% / 3 - var(--minimal-grid-dot-clearance) / 3) var(--mark-line) / var(--dot-quarter-length) 1px no-repeat,
+          repeating-linear-gradient(to left, var(--mark-top-split) 0 1px, transparent 1px var(--dot-spacing)) right var(--dot-inset) top var(--mark-line) / var(--dot-quarter-length) 1px no-repeat;
+      }
+    }
+
+    /* 1 column */
+    > .minimal-item:nth-child(n + 2 of .minimal-item) {
+      --mark-top: var(--minimal-grid-mark-color);
+    }
+
+    /* 2 columns */
+    @variant @xl {
+      > .minimal-item:nth-child(n of .minimal-item) {
+        --mark-top: transparent;
+      }
+
+      > .minimal-item:nth-child(2n of .minimal-item) {
+        --mark-left: var(--minimal-grid-mark-color);
+      }
+
+      > .minimal-item:nth-child(n + 3 of .minimal-item) {
+        --mark-top: var(--minimal-grid-mark-color);
+      }
+
+      > .minimal-item:nth-child(2n + 4 of .minimal-item) {
+        --mark-plus: var(--minimal-grid-mark-color);
+      }
+
+      > .minimal-item:nth-child(2n + 3 of .minimal-item):nth-last-child(1 of .minimal-item) {
+        --mark-plus-right: var(--minimal-grid-mark-color);
+      }
+    }
+
+    /* 3 columns */
+    &.card-grid-md {
+      @variant @3xl {
+        @apply minimal-grid-marks-3-col;
+      }
+    }
+
+    &.card-grid-lg {
+      @variant @4xl {
+        @apply minimal-grid-marks-3-col;
+      }
     }
   }
 
   .minimal-item {
     @apply px-(--minimal-item-bleed);
+  }
+}
+
+@utility minimal-grid-marks-3-col {
+  > .minimal-item:nth-child(n of .minimal-item) {
+    --mark-left: transparent;
+    --mark-top: transparent;
+    --mark-plus: transparent;
+  }
+
+  > .minimal-item:nth-child(n of .minimal-item):nth-last-child(n of .minimal-item) {
+    --mark-plus-right: transparent;
+  }
+
+  > .minimal-item:is(:nth-child(3n + 2 of .minimal-item), :nth-child(3n + 3 of .minimal-item)) {
+    --mark-left: var(--minimal-grid-mark-color);
+  }
+
+  > .minimal-item:nth-child(n + 4 of .minimal-item) {
+    --mark-top: var(--minimal-grid-mark-color);
+  }
+
+  > .minimal-item:is(:nth-child(3n + 5 of .minimal-item), :nth-child(3n + 6 of .minimal-item)) {
+    --mark-plus: var(--minimal-grid-mark-color);
+  }
+
+  > .minimal-item:is(:nth-child(3n + 4 of .minimal-item), :nth-child(3n + 5 of .minimal-item)):nth-last-child(1 of .minimal-item) {
+    --mark-plus-right: var(--minimal-grid-mark-color);
+  }
+}
+
+/* The 2nd item moves to its own row and spans both columns between `@xl` and `@4xl` */
+@utility dashboard-stats-grid {
+  @variant @xl {
+    @variant @max-4xl {
+      &.minimal-item-list.card-grid > .minimal-item:nth-child(2 of .minimal-item) {
+        --mark-left: transparent;
+        --mark-top-split: var(--minimal-grid-mark-color);
+      }
+
+      &.minimal-item-list.card-grid > .minimal-item:nth-child(3 of .minimal-item) {
+        --mark-left: var(--minimal-grid-mark-color);
+        --mark-top: transparent;
+      }
+
+      &.minimal-item-list.card-grid > .minimal-item:nth-child(3 of .minimal-item):nth-last-child(n of .minimal-item) {
+        --mark-plus-right: transparent;
+      }
+    }
   }
 }
 
