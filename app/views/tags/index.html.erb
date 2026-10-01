@@ -1,11 +1,11 @@
-<% content_for :title, 'Tags' %>
+<% content_for :title, "Tags" %>
 
 <% delete_confirm = ->(tag) { "Delete the tag '#{tag.name}'? It will be removed from #{pluralize(tag.taggings_count, 'job lead')}. This can't be undone." } %>
 
 <div class="sm:w-7/8 w-full mx-auto">
   <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
-    <%= link_to dashboard_path, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
+    <%= link_to dashboard_path, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
+      <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
       <span>Back Home</span>
     <% end %>
   </div>
@@ -21,13 +21,13 @@
 
   <div class="@container">
     <% if @total_tag_count.positive? %>
-      <%= form_with url: tags_path, method: :get, class: 'mb-2 flex @max-md:flex-col items-stretch gap-2', data: { controller: 'auto-submit', auto_submit_target: 'form', turbo_frame: 'tags-list' } do |form| %>
+      <%= form_with url: tags_path, method: :get, class: "mb-2 flex @max-md:flex-col items-stretch gap-2", data: { controller: "auto-submit", auto_submit_target: "form", turbo_frame: "tags-list" } do |form| %>
         <% if @total_tag_count >= TagsController::FILTER_THRESHOLD %>
           <div class="relative grow" data-controller="search-clear">
-            <%= form.search_field :q, value: @query, placeholder: 'Filter tags', autocomplete: 'off', class: 'peer form-input pl-9 pr-11', aria: { label: 'Filter tags' }, data: { search_clear_target: 'input', action: 'input->auto-submit#submit keydown.esc->search-clear#clear' } %>
-            <%= icon 'search', class: 'size-4.5 shrink-0 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted peer-focus:text-light transition-colors duration-80' %>
+            <%= form.search_field :q, value: @query, placeholder: "Filter tags", autocomplete: "off", class: "peer form-input pl-9 pr-11", aria: { label: "Filter tags" }, data: { search_clear_target: "input", action: "input->auto-submit#submit keydown.esc->search-clear#clear" } %>
+            <%= icon "search", class: "size-4.5 shrink-0 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted peer-focus:text-light transition-colors duration-80" %>
             <button type="button" class="form-search-clear right-1.5" aria-label="Clear filter" data-action="search-clear#clear">
-              <%= icon 'x', class: 'form-search-clear-icon' %>
+              <%= icon "x", class: "form-search-clear-icon" %>
             </button>
           </div>
         <% end %>
@@ -35,12 +35,12 @@
         <div role="radiogroup" aria-label="Sort tags" class="segmented-control shrink-0">
           <span class="segmented-control-pill" aria-hidden="true"></span>
 
-          <% [ [ 'usage', 'Most Used', 'sort-usage' ], [ 'name', 'A–Z', 'sort-az' ] ].each do |value, text, icon_name| %>
+          <% [ [ "usage", "Most Used", "sort-usage" ], [ "name", "A–Z", "sort-az" ] ].each do |value, text, icon_name| %>
             <label class="segmented-control-option group @max-md:flex-1">
-              <%= form.radio_button :sort, value, checked: @sort == value, class: 'sr-only peer', data: { action: 'change->auto-submit#submit' } %>
+              <%= form.radio_button :sort, value, checked: @sort == value, class: "sr-only peer", data: { action: "change->auto-submit#submit" } %>
               <span class="segmented-control-content @max-md:w-full">
-                <%= icon icon_name, class: 'size-5 shrink-0 in-peer-checked:hidden' %>
-                <%= icon "#{icon_name}-filled", class: 'size-5 shrink-0 not-in-peer-checked:hidden' %>
+                <%= icon icon_name, class: "size-5 shrink-0 in-peer-checked:hidden" %>
+                <%= icon "#{icon_name}-filled", class: "size-5 shrink-0 not-in-peer-checked:hidden" %>
                 <span><%= text %></span>
               </span>
             </label>
@@ -48,9 +48,9 @@
         </div>
       <% end %>
 
-      <%= turbo_frame_tag 'tags-list', target: '_top' do %>
+      <%= turbo_frame_tag "tags-list", target: "_top" do %>
         <p class="ml-1 mb-2 text-sm text-muted [view-transition-name:tag-count]" aria-live="polite">
-          <%= pluralize(@tags.length, 'tag').sub(/\A0/, 'No') %>
+          <%= pluralize(@tags.length, "tag").sub(/\A0/, "No") %>
           <% if @query.present? %>
             matching <span class="font-semibold text-light"><%= quote(@query) %></span>
           <% end %>
@@ -61,8 +61,8 @@
             <li class="group flex items-center gap-3 py-3">
               <div class="min-w-0 flex-1 flex flex-col gap-1.5">
                 <div class="min-w-0">
-                  <%= link_to job_leads_path(tags: tag.name), class: 'tag tag-filter max-w-full', title: "View job leads tagged “#{tag.name}”", onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" do %>
-                    <%= icon 'tag', class: 'size-4 -ml-px shrink-0' %>
+                  <%= link_to job_leads_path(tags: tag.name), class: "tag tag-filter max-w-full", title: "View job leads tagged “#{tag.name}”", onclick: "this.style.viewTransitionName = 'tag-#{tag.name.parameterize}'" do %>
+                    <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
                     <span class="truncate"><%= tag.name %></span>
                   <% end %>
                 </div>
@@ -72,20 +72,20 @@
                     <div class="h-full rounded-full bg-primary-500/70" style="width: <%= [ (tag.taggings_count * 100.0 / @max_taggings_count).round, 4 ].max %>%"></div>
                   </div>
                   <span class="text-xs text-muted tabular-nums whitespace-nowrap">
-                    <%= pluralize(tag.taggings_count, 'job lead') %>
+                    <%= pluralize(tag.taggings_count, "job lead") %>
                   </span>
                 </div>
               </div>
 
               <%# Mouse users see actions on hover/focus; touch devices always show them. %>
               <div class="flex items-center gap-2 shrink-0 @max-sm:hidden pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100 pointer-fine:group-focus-within:opacity-100">
-                <%= link_to edit_tag_path(tag), class: 'btn btn-sm btn-secondary', aria: { label: "Edit tag #{tag.name}" } do %>
-                  <%= icon 'edit', class: 'size-4 shrink-0' %>
+                <%= link_to edit_tag_path(tag), class: "btn btn-sm btn-secondary", aria: { label: "Edit tag #{tag.name}" } do %>
+                  <%= icon "edit", class: "size-4 shrink-0" %>
                   <span>Edit</span>
                 <% end %>
 
-                <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: delete_confirm.(tag) } }, class: 'btn btn-sm btn-destructive btn-muted', aria: { label: "Delete tag #{tag.name}" } do %>
-                  <%= icon 'trash', class: 'size-4 shrink-0' %>
+                <%= button_to tag_path(tag), method: :delete, form: { data: { turbo_confirm: delete_confirm.(tag) } }, class: "btn btn-sm btn-destructive btn-muted", aria: { label: "Delete tag #{tag.name}" } do %>
+                  <%= icon "trash", class: "size-4 shrink-0" %>
                   <span>Delete</span>
                 <% end %>
               </div>
@@ -93,19 +93,19 @@
               <div class="relative shrink-0 @sm:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
                 <button data-dropdown-target="trigger" class="dropdown-trigger" type="button" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
                   <span class="sr-only">Actions for tag <%= tag.name %></span>
-                  <%= icon 'more-horizontal', class: 'size-5.5' %>
+                  <%= icon "more-horizontal", class: "size-5.5" %>
                 </button>
 
                 <div class="dropdown-menu dropdown-menu-bottom-left dropdown-hidden" data-dropdown-target="menu">
-                  <%= link_to edit_tag_path(tag), class: 'dropdown-option dropdown-option-secondary' do %>
-                    <%= icon 'edit', class: 'size-5 shrink-0' %>
+                  <%= link_to edit_tag_path(tag), class: "dropdown-option dropdown-option-secondary" do %>
+                    <%= icon "edit", class: "size-5 shrink-0" %>
                     <span>Edit</span>
                   <% end %>
 
                   <div class="dropdown-divider"></div>
 
-                  <%= button_to tag_path(tag), method: :delete, class: 'dropdown-option dropdown-option-destructive', form: { data: { turbo_confirm: delete_confirm.(tag) } } do %>
-                    <%= icon 'trash', class: 'size-5 shrink-0' %>
+                  <%= button_to tag_path(tag), method: :delete, class: "dropdown-option dropdown-option-destructive", form: { data: { turbo_confirm: delete_confirm.(tag) } } do %>
+                    <%= icon "trash", class: "size-5 shrink-0" %>
                     <span>Delete</span>
                   <% end %>
                 </div>
@@ -117,14 +117,14 @@
     <% else %>
       <div class="empty-state my-24">
         <div class="rounded-full p-6 bg-neutral-100 dark:bg-neutral-800">
-          <%= icon 'tag', class: 'size-16 text-muted dark:text-soft' %>
+          <%= icon "tag", class: "size-16 text-muted dark:text-soft" %>
         </div>
 
         <h2 class="subheading">No Tags Yet</h2>
         <p class="max-w-md text-pretty leading-normal">Tags you add to job leads will show up here, where you can rename, merge, or delete them.</p>
-        <%= link_to job_leads_path, class: 'btn btn-sm btn-secondary' do %>
+        <%= link_to job_leads_path, class: "btn btn-sm btn-secondary" do %>
           <span>Go to Job Leads</span>
-          <%= icon 'arrow-right', class: 'size-3.5 shrink-0' %>
+          <%= icon "arrow-right", class: "size-3.5 shrink-0" %>
         <% end %>
       </div>
     <% end %>

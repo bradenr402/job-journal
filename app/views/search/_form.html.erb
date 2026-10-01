@@ -1,13 +1,13 @@
 <%# locals: (query:) %>
 
-<%= form_with url: search_path, method: :get, data: { controller: 'auto-submit', auto_submit_target: 'form', turbo_frame: 'search-results', turbo_action: 'advance', turbo_stream: true } do |form| %>
+<%= form_with url: search_path, method: :get, data: { controller: "auto-submit", auto_submit_target: "form", turbo_frame: "search-results", turbo_action: "advance", turbo_stream: true } do |form| %>
   <div class="relative [view-transition-name:search-input]" data-controller="search-clear">
-    <%= form.search_field :q, value: query, autofocus: true, placeholder: 'Search for anything', class: 'peer form-input-transparent -my-2 pl-7 pr-9 text-light', data: { action: 'input->auto-submit#submit', search_clear_target: 'input' } %>
-    <%= icon 'search', class: 'size-5 shrink-0 pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted peer-[:placeholder-shown]:text-muted peer-focus:text-light transition-colors duration-80' %>
+    <%= form.search_field :q, value: query, autofocus: true, placeholder: "Search for anything", class: "peer form-input-transparent -my-2 pl-7 pr-9 text-light", data: { action: "input->auto-submit#submit", search_clear_target: "input" } %>
+    <%= icon "search", class: "size-5 shrink-0 pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted peer-[:placeholder-shown]:text-muted peer-focus:text-light transition-colors duration-80" %>
     <button type="button" class="form-search-clear right-0" aria-label="Clear search" data-action="search-clear#clear">
-      <%= icon 'x', class: 'form-search-clear-icon' %>
+      <%= icon "x", class: "form-search-clear-icon" %>
     </button>
   </div>
 
-  <%= render 'filters' %>
+  <%= render "filters" %>
 <% end %>
