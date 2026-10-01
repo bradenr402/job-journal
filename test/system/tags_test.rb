@@ -9,6 +9,7 @@ class TagsTest < ApplicationSystemTestCase
     fill_in "Email Address", with: @user.email_address
     fill_in "Password", with: "password"
     click_on "Sign In"
+    assert_current_path dashboard_path
   end
 
   test "warns and asks for confirmation before merging a tag into an existing one" do
