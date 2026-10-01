@@ -34,43 +34,84 @@
   </div>
 
   <div class="@container">
-    <ul class="flex flex-col gap-2">
-      <% @sessions.each do |session| %>
-        <li class="card card-sm flex justify-between" style='view-transition-name: session-<%= session.id %>'>
-          <div>
-            <div>
-              <span class="font-semibold">
-                <%
-                  detector = DeviceDetector.new(session.user_agent)
-                  browser = detector.name
-                  os = detector.os_name
-                  device = detector.device_type
-                %>
-                <%= "#{browser} on #{os}" %> <span class="text-sm text-muted font-normal">(<%= device %>)</span>
-              </span>
-              <% if session == Current.session %>
-                <span class="ml-0.5 tag tag-accepted">
-                  <%= icon "check-circle", class: "size-4 -ml-px shrink-0" %>
-                  <span>Current Session</span>
-                </span>
+    <div class="flex flex-col">
+      <% @session_groups.each_with_index do |(mark, sessions), index| %>
+        <% if index > 0 %>
+          <div class="py-8 flex flex-wrap items-center justify-between gap-3 @4xl:grid @4xl:grid-cols-[1fr_50%_1fr]">
+            <span class="text-xs font-medium text-muted whitespace-nowrap justify-self-start"><%= session_group_label(mark) %></span>
+            <div class="section-divider-line h-px hidden @4xl:block"></div>
+            <div class="justify-self-end">
+              <%= button_to destroy_inactive_sessions_path(since: mark),
+                  method: :delete,
+                  data: { turbo_confirm: "Are you sure you want to terminate all sessions that have been inactive for over #{mark.humanize(capitalize: false)}?" },
+                  class: 'btn btn-sm btn-destructive btn-muted whitespace-nowrap' do %>
+                <%= icon 'logout', class: 'size-4 shrink-0' %>
+                <span>Log Out Older Than <%= mark.humanize.titleize %></span>
               <% end %>
             </div>
-            <div class="mt-2">
-              <p class="text-xs text-muted">IP Address: <span class="font-semibold text-soft"><%= session.ip_address %></span></p>
-              <p class="text-xs text-muted">Logged in: <span class="font-semibold text-soft"><%= session.created_at.now? ? 'now' : local_time(session.created_at) %></span></p>
-              <p class="text-xs text-muted">Last active: <span class="font-semibold text-soft"><%= session.updated_at.now? ? 'now' : "#{time_ago_in_words session.updated_at} ago" %></span> (<%= local_time session.updated_at %>)</p>
-            </div>
           </div>
+        <% end %>
+        <ul class="flex flex-col gap-3">
+          <% sessions.each do |session| %>
+            <% device = DeviceInfo.new(session.user_agent) %>
+            <% current = session == Current.session %>
+            <li class="rounded-2xl border border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950 not-dark:shadow-2xs" style="view-transition-name: session-<%= session.id %>">
+              <div class="flex items-center justify-between gap-3 px-3 py-2.5">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <%= icon device.icon_name, class: 'size-5 shrink-0 text-muted' %>
+                  <span class="
+                    flex items-center font-semibold min-w-0
+                    divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
+                  ">
+                    <% device.label.each do |part| %>
+                      <span class="inline-flex items-center truncate"><%= part %></span>
+                    <% end %>
+                  </span>
+                </div>
 
-          <%= button_to session_path(session: session),
-              method: :delete,
-              data: { turbo_confirm: "Are you sure you want to terminate #{session == Current.session ? 'your current' : 'this'} session?" },
-              class: 'btn btn-sm btn-destructive btn-muted whitespace-nowrap' do %>
-              <%= icon 'logout', class: 'size-4 shrink-0' %>
-              <span>Log Out</span>
+                <div class="flex items-center gap-2 shrink-0">
+                  <% if current %>
+                    <span class="tag tag-accepted">
+                      <%= icon 'check-circle', class: 'size-4 -ml-px shrink-0' %>
+                      <span>Current Session</span>
+                    </span>
+                  <% end %>
+                  <%= button_to session_path(session: session),
+                      method: :delete,
+                      data: { turbo_confirm: "Are you sure you want to terminate #{current ? 'your current' : 'this'} session?" },
+                      class: 'btn btn-sm btn-destructive btn-muted whitespace-nowrap' do %>
+                    <%= icon 'logout', class: 'size-4 shrink-0' %>
+                    <span>Log Out</span>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="card card-sm border-x-0 border-b-0 rounded-t-2xl rounded-b-[calc(var(--radius-2xl)-1px)] shadow-none! flex flex-col gap-px px-3.5! py-3! text-sm text-muted">
+                <div class="flex items-center gap-2.5">
+                  <%= icon 'globe', class: 'size-4 shrink-0' %>
+                  <div class="
+                    flex flex-wrap items-center
+                    divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
+                  ">
+                    <span class="inline-flex items-center">Browser:&nbsp;<span class="text-light"><%= device.browser %></span></span>
+                    <span class="inline-flex items-center">IP address:&nbsp;<span class="text-light break-all"><%= session.ip_address %></span></span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <%= icon 'clock', class: 'size-4 shrink-0' %>
+                  <div class="
+                    flex flex-wrap items-center
+                    divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
+                  ">
+                    <span class="inline-flex items-center">Login:&nbsp;<span class="text-light"><%= session.created_at.now? ? 'now' : local_time(session.created_at) %></span></span>
+                    <span class="inline-flex items-center">Last seen:&nbsp;<span class="text-light" title="<%= session.updated_at.iso8601 %>"><%= session.updated_at.now? ? 'now' : "#{time_ago_in_words session.updated_at} ago" %></span></span>
+                  </div>
+                </div>
+              </div>
+            </li>
           <% end %>
-        </li>
+        </ul>
       <% end %>
-    </ul>
+    </div>
   </div>
 </div>

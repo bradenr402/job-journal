@@ -34,4 +34,34 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal icons, JOB_JOURNAL_ICONS.as_json, "Expected embedded icons JSON to match JOB_JOURNAL_ICONS"
   end
+
+  test "security page groups sessions by last seen" do
+    user = users(:one)
+    user.sessions.delete_all
+    post session_url, params: { email_address: user.email_address, password: "password" }
+
+    { 3.days => "recent", 2.weeks => "week", 2.months => "month", 4.months => "quarter", 1.year => "old" }.each do |age, name|
+      user.sessions.create!(user_agent: name).update_columns(updated_at: age.ago)
+    end
+
+    get security_url
+
+    assert_response :success
+    labels = css_select("span.text-xs.font-medium").map { it.text.strip }
+    assert_equal [ "1 Week – 1 Month Ago", "1–3 Months Ago", "3–6 Months Ago", "Over 6 Months Ago" ], labels
+    groups = css_select("ul").select { |ul| ul.at_css("> li[style*='session-']") }
+    assert_equal [ 2, 1, 1, 1, 1 ], groups.map { it.css("> li").size }
+  end
+
+  test "security page skips empty groups" do
+    user = users(:one)
+    user.sessions.delete_all
+    post session_url, params: { email_address: user.email_address, password: "password" }
+    user.sessions.create!.update_columns(updated_at: 1.year.ago)
+
+    get security_url
+
+    assert_select "form[action=?]", destroy_inactive_sessions_path(since: "6_months")
+    assert_select "form[action=?]", destroy_inactive_sessions_path(since: "1_week"), count: 0
+  end
 end

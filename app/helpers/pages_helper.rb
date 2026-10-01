@@ -13,4 +13,15 @@ module PagesHelper
   def suggestion_item_class_names
     class_names("relative flex flex-col gap-5", minimal_style? ? item_layout_class_names : SUGGESTION_TILE_CLASSES)
   end
+
+  SESSION_GROUP_LABELS = {
+    "1_week" => "1 Week – 1 Month Ago",
+    "1_month" => "1–3 Months Ago",
+    "3_months" => "3–6 Months Ago",
+    "6_months" => "Over 6 Months Ago"
+  }.freeze
+
+  def session_group_label(mark)
+    SESSION_GROUP_LABELS.fetch(mark)
+  end
 end
