@@ -120,7 +120,7 @@ JobJournal is available for free at [job-journal.fly.dev](https://job-journal.fl
 
    This starts the Rails server and the Tailwind CSS watcher.
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
+The app will be available at [http://localhost:3001](http://localhost:3001).
 
 ### Running Tests
 
