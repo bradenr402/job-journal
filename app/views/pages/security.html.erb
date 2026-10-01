@@ -56,31 +56,31 @@
             <% device = DeviceInfo.new(session.user_agent) %>
             <% current = session == Current.session %>
             <li class="rounded-2xl border border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950 not-dark:shadow-2xs" style="view-transition-name: session-<%= session.id %>">
-              <div class="flex items-center justify-between gap-3 px-3 py-2.5">
+              <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-3 py-2.5">
                 <div class="flex items-center gap-2.5 min-w-0">
-                  <%= icon device.icon_name, class: 'size-5 shrink-0 text-muted' %>
+                  <%= icon device.icon_name, class: 'size-4.5 shrink-0 text-muted' %>
                   <span class="
-                    flex items-center font-semibold min-w-0
+                    flex items-center text-sm font-semibold min-w-0
                     divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
                   ">
                     <% device.label.each do |part| %>
-                      <span class="inline-flex items-center truncate"><%= part %></span>
+                      <span class="inline-flex items-center shrink-0 whitespace-nowrap"><%= part %></span>
                     <% end %>
                   </span>
                 </div>
 
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="flex items-center gap-2 shrink-0 ml-auto">
                   <% if current %>
                     <span class="tag tag-accepted">
-                      <%= icon 'check-circle', class: 'size-4 -ml-px shrink-0' %>
-                      <span>Current Session</span>
+                      <%= icon 'check-circle', class: 'size-3.75 -ml-px shrink-0' %>
+                      <span>Current <span class="@max-md:hidden">Session</span></span>
                     </span>
                   <% end %>
                   <%= button_to session_path(session: session),
                       method: :delete,
                       data: { turbo_confirm: "Are you sure you want to terminate #{current ? 'your current' : 'this'} session?" },
                       class: 'btn btn-sm btn-destructive btn-muted whitespace-nowrap' do %>
-                    <%= icon 'logout', class: 'size-4 shrink-0' %>
+                    <%= icon 'logout', class: 'size-3.75 shrink-0' %>
                     <span>Log Out</span>
                   <% end %>
                 </div>
@@ -88,23 +88,23 @@
 
               <div class="card card-sm border-x-0 border-b-0 rounded-t-2xl rounded-b-[calc(var(--radius-2xl)-1px)] shadow-none! flex flex-col gap-px px-3.5! py-3! text-sm text-muted">
                 <div class="flex items-center gap-2.5">
-                  <%= icon 'globe', class: 'size-4 shrink-0' %>
+                  <%= icon 'globe', class: 'size-3.75 shrink-0' %>
                   <div class="
                     flex flex-wrap items-center
                     divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
                   ">
                     <span class="inline-flex items-center">Browser:&nbsp;<span class="text-light"><%= device.browser %></span></span>
-                    <span class="inline-flex items-center">IP address:&nbsp;<span class="text-light break-all"><%= session.ip_address %></span></span>
+                    <span class="inline-flex items-center">IP Address:&nbsp;<span class="text-light break-all"><%= session.ip_address %></span></span>
                   </div>
                 </div>
                 <div class="flex items-center gap-2.5">
-                  <%= icon 'clock', class: 'size-4 shrink-0' %>
+                  <%= icon 'clock', class: 'size-3.75 shrink-0' %>
                   <div class="
                     flex flex-wrap items-center
                     divide-dot divide-dot-gap-2 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600
                   ">
                     <span class="inline-flex items-center">Login:&nbsp;<span class="text-light"><%= session.created_at.now? ? 'now' : local_time(session.created_at) %></span></span>
-                    <span class="inline-flex items-center">Last seen:&nbsp;<span class="text-light" title="<%= session.updated_at.iso8601 %>"><%= session.recently_active? ? 'just now' : "#{time_ago_in_words session.updated_at} ago" %></span></span>
+                    <span class="inline-flex items-center"><span><span class="@max-md:hidden">Last</span> Seen:</span>&nbsp;<span class="text-light" title="<%= session.updated_at.iso8601 %>"><%= session.recently_active? ? 'just now' : "#{time_ago_in_words session.updated_at} ago" %></span></span>
                   </div>
                 </div>
               </div>
