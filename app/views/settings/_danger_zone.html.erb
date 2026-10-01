@@ -11,8 +11,8 @@
       <p class="text-xs text-muted mt-1">Restore every setting to its default value. Your job leads, interviews, and notes are not affected.</p>
     </div>
     <div>
-      <%= button_to "Delete Account", registrations_path, method: :delete, data: { turbo_confirm: "Are you absolutely sure you want to delete your account? This action cannot be undone." }, class: "btn btn-destructive w-full sm:w-auto" %>
-      <p class="text-xs text-muted mt-1">Permanently delete your account and all of your data&mdash;job leads, interviews, notes, and settings. This cannot be undone.</p>
+      <h3 id="delete-account-heading" class="font-semibold text-light mb-2">Delete Account</h3>
+      <%= render "users/delete_account", heading: false %>
     </div>
   </div>
 </div>

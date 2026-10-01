@@ -1,0 +1,45 @@
+<%# locals: (class: nil, heading: true) %>
+
+<section class="<%= binding.local_variable_get(:class) %>" aria-labelledby="delete-account-heading">
+  <% if heading %>
+    <div class="mb-4">
+      <h2 id="delete-account-heading" class="subheading">Danger Zone</h2>
+      <p class="text-sm text-muted mt-1">This action is immediate and can&#8217;t be undone.</p>
+    </div>
+  <% end %>
+
+  <%= form_with url: registrations_path, method: :delete, data: { controller: "delete-confirm" } do |form| %>
+    <div class="rounded-xl border @container border-rose-300/70 dark:border-rose-500/30 bg-rose-50/60 dark:bg-rose-500/5 p-3.75 space-y-4 [&_.form-input]:bg-white dark:[&_.form-input]:bg-neutral-900">
+      <p class="text-sm text-light text-pretty">
+        Permanently delete your account and all of your data&mdash;job leads, interviews, notes, and settings.
+        <%= link_to "Export your data", account_export_path, class: "btn-link btn-link-primary" %> first if you want to keep a copy.
+      </p>
+
+      <div class="grid grid-cols-1 @xl:grid-cols-2 gap-4">
+        <div>
+          <%= render "shared/password_field", form:, attribute: :current_password, label: "Current Password", autocomplete: "current-password", required: true,
+                data: { delete_confirm_target: "password", action: "input->delete-confirm#update" } %>
+        </div>
+
+        <div>
+          <%= form.label :confirm_delete, class: "form-label" do %>
+            Type <span class="font-semibold text-normal">DELETE</span> to confirm
+          <% end %>
+          <%= form.text_field :confirm_delete, autocomplete: "off", spellcheck: false, autocapitalize: "characters", required: true, class: "form-input", data: { delete_confirm_target: "phrase", action: "input->delete-confirm#update" } %>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <%= form.button type: "submit", class: "btn btn-destructive w-full sm:w-auto" do %>
+          <%= icon "trash", class: "size-4.5 shrink-0" %>
+          <span>Delete Account</span>
+        <% end %>
+        <p class="form-requirement" data-delete-confirm-target="status" aria-live="polite">
+          <span data-met="false"><%= icon "x-mini", class: "size-3.5 shrink-0" %></span>
+          <span data-met="true" hidden><%= icon "check-mini", class: "size-3.5 shrink-0" %></span>
+          <span data-delete-confirm-target="message">Enter your password and type DELETE</span>
+        </p>
+      </div>
+    </div>
+  <% end %>
+</section>

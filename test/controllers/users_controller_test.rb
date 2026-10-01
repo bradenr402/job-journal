@@ -42,6 +42,52 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert Session.exists?(other.id)
   end
 
+  test "changing only the name does not require the current password" do
+    patch account_update_url(@user), params: { user: { name: "New Name" } }
+
+    assert_redirected_to edit_account_url
+    assert_equal "New Name", @user.reload.name
+  end
+
+  test "changing the email signs out other sessions and notifies the old address" do
+    other = @user.sessions.create!
+    old_email = @user.email_address
+
+    assert_enqueued_email_with UsersMailer, :email_changed, args: [ @user, { previous_email: old_email } ] do
+      patch account_update_url(@user), params: { user: { email_address: "new@example.com", current_password: "password" } }
+    end
+
+    assert_redirected_to edit_account_url
+    assert_not Session.exists?(other.id)
+  end
+
+  test "changing only the name sends no email" do
+    assert_no_enqueued_emails do
+      patch account_update_url(@user), params: { user: { name: "Someone" } }
+    end
+  end
+
+  test "changing the email requires the current password" do
+    patch account_update_url(@user), params: { user: { email_address: "new@example.com", current_password: "wrong" } }
+
+    assert_response :unprocessable_content
+    assert_not_equal "new@example.com", @user.reload.email_address
+  end
+
+  test "changing the password requires the current password" do
+    patch account_update_url(@user), params: { user: { password: "new-password", password_confirmation: "new-password" } }
+
+    assert_response :unprocessable_content
+    assert @user.reload.authenticate("password")
+  end
+
+  test "account page shows stats and links" do
+    get account_url
+
+    assert_select "dl dt", 5
+    assert_select "a.blanket-link[href=?]", security_path
+  end
+
   test "export page lists download options" do
     get account_export_url
 
@@ -76,8 +122,22 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should delete account" do
     id = @user.id
 
-    delete registrations_url
+    delete registrations_url, params: { current_password: "password", confirm_delete: "DELETE" }
 
     assert_nil User.find_by(id:)
+  end
+
+  test "does not delete the account without the password and typed confirmation" do
+    [
+      {},
+      { current_password: "password", confirm_delete: "delete" },
+      { current_password: "wrong", confirm_delete: "DELETE" },
+      { confirm_delete: "DELETE" }
+    ].each do |params|
+      delete registrations_url, params: params
+
+      assert_redirected_to edit_account_url
+      assert User.exists?(@user.id)
+    end
   end
 end

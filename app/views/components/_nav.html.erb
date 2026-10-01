@@ -42,13 +42,14 @@
     <div class="relative max-md:hidden nav-section" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
       <button
         type="button"
-        class="group/account-dropdown dropdown-trigger w-full justify-between text-left px-3 py-2 active:scale-99"
+        class="group/account-dropdown dropdown-trigger w-full gap-2.5 text-left px-3 py-2 active:scale-99"
         data-dropdown-target="trigger"
         data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
       >
-        <div>
+        <%= render "users/avatar", user: Current.user, size: "size-9 text-sm" %>
+        <div class="min-w-0 flex-1">
           <span class="in-focus-visible:text-light block text-xs text-muted transition-colors duration-80"><%= Current.user.name.presence || "Logged in as" %></span>
-          <span class="in-focus-visible:text-normal font-semibold text-light transition-colors duration-80"><%= Current.user.email_address %></span>
+          <span class="block truncate in-focus-visible:text-normal font-semibold text-light transition-colors duration-80"><%= Current.user.email_address %></span>
         </div>
         <%= icon "chevron-down", class: "opacity-0 group-hover/account-dropdown:opacity-100 group-focus/account-dropdown:opacity-100 in-toggle-has-open-dropdown:opacity-100 size-4.5 shrink-0 in-toggle-has-open-dropdown:rotate-180 [transition:opacity_80ms,rotate_120ms]" %>
       </button>
