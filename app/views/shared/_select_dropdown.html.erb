@@ -1,0 +1,57 @@
+<%#
+  A form field built on the app's dropdown component. A hidden input holds the
+  value; choosing an option sets it and fires `change`, so
+  `data-action="change->…"` on the field works like a native <select>.
+
+  options: [{ label:, value:, icon:, required: }, …] or { "Group" => [ … ] }
+%>
+<%# locals: (name:, id:, options:, selected: nil, blank: nil, blank_icon: nil, label: nil, invalid: false, describedby: nil, data: {}) %>
+
+<%
+  groups = options.is_a?(Hash) ? options : { nil => options }
+  selected = selected.to_s.presence
+  current = groups.values.flatten.find { it[:value].to_s == selected }
+
+  content = ->(option) do
+    safe_join([
+      (icon(option[:icon], class: "size-4 shrink-0") if option[:icon]),
+      tag.span(class: "truncate") { safe_join([ option[:label], (tag.span("*", class: "text-rose-500 ml-0.5", aria_hidden: true) if option[:required]) ].compact) },
+      (tag.span(" (required)", class: "sr-only") if option[:required])
+    ].compact)
+  end
+  blank_option = { label: blank, value: "", icon: blank_icon }
+%>
+
+<div class="relative min-w-0" data-controller="dropdown select-dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+  <%= hidden_field_tag name, selected, id:, data: { select_dropdown_target: "input", **data } %>
+
+  <button
+    type="button"
+    class="<%= class_names "dropdown-trigger-outline w-full", "ring-2 ring-rose-400": invalid %>"
+    data-dropdown-target="trigger"
+    data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown"
+    aria-haspopup="listbox"
+    <%= tag.attributes(aria: { label:, describedby:, invalid: (true if invalid) }) %>
+  >
+    <span class="<%= class_names "flex flex-1 min-w-0 items-center gap-1.5 text-left", "text-muted": current.nil? %>" data-select-dropdown-target="label"><%= content.(current || blank_option) %></span>
+    <%= icon "chevron-down", class: "size-4 shrink-0 -mr-0.75 in-toggle-has-open-dropdown:rotate-180 transition-all duration-120" %>
+  </button>
+
+  <div class="dropdown-menu dropdown-menu-bottom-right dropdown-hidden translate-y-0.75 max-h-80 overflow-y-auto" data-dropdown-target="menu" role="listbox">
+    <% options_list = (blank ? [ [ nil, [ blank_option ] ] ] : []) + groups.to_a %>
+    <% options_list.each_with_index do |(group, items), index| %>
+      <% if group %>
+        <% if index.positive? %><div class="dropdown-divider"></div><% end %>
+        <p class="px-3 pt-1.5 pb-1 text-xs font-medium text-muted"><%= group %></p>
+      <% end %>
+      <% items.each do |option| %>
+        <% on = option[:value].to_s == selected.to_s %>
+        <button type="button" role="option" aria-selected="<%= on %>"
+                class="<%= class_names "dropdown-option dropdown-option-secondary", "dropdown-option-selected": on %>"
+                data-value="<%= option[:value] %>" data-action="select-dropdown#choose dropdown#close">
+          <span class="flex min-w-0 items-center gap-1.5" data-select-dropdown-content><%= content.(option) %></span>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
