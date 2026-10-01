@@ -47,6 +47,8 @@ Rails.application.routes.draw do
   get "account", to: "users#account"
   get "account/edit", to: "users#edit", as: :edit_account
   patch "account/update", to: "users#update"
+  get "account/export", to: "users#export", as: :account_export
+  get "account/export/download(/:dataset)", to: "users#download_export", as: :download_account_export, constraints: { format: /json|csv/ }
 
   get "security", to: "pages#security"
 

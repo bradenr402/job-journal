@@ -1,6 +1,34 @@
 class UsersController < ApplicationController
+  rate_limit to: 10, within: 1.minute, only: :download_export, by: -> { Current.user.id },
+    with: -> { redirect_to account_export_path, alert: "Too many downloads. Try again in a minute." }
+
   def account
     @user = Current.user
+  end
+
+  def export
+    @export_counts = {
+      job_leads: Current.user.job_leads.count,
+      interviews: Current.user.interviews.count,
+      notes: Current.user.notes.count
+    }
+  end
+
+  def download_export
+    export = AccountExport.new(Current.user)
+    date = Date.current.iso8601
+
+    respond_to do |format|
+      format.json do
+        send_data export.to_json, filename: "jobjournal-export-#{date}.json", type: :json
+      end
+      format.csv do
+        dataset = params.expect(:dataset)
+        raise ActionController::RoutingError, "Unknown export" unless dataset.in?(AccountExport::DATASETS)
+
+        send_data export.to_csv(dataset), filename: "jobjournal-#{dataset.dasherize}-#{date}.csv", type: :csv
+      end
+    end
   end
 
   def edit

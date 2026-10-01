@@ -1,0 +1,66 @@
+<% content_for :title, "Export Your Data" %>
+
+<%
+  csv_datasets = [
+    { key: :job_leads, label: "Job Leads", icon: "briefcase", description: "One row per job lead, including status dates, offer, and tags." },
+    { key: :interviews, label: "Interviews", icon: "interview", description: "One row per interview, with its job lead and rating." },
+    { key: :notes, label: "Notes", icon: "quill", description: "One row per note, with what it's attached to." }
+  ]
+%>
+
+<div class="sm:w-7/8 w-full mx-auto">
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to account_path, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
+      <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
+      <span>Back to Account</span>
+    <% end %>
+  </div>
+
+  <div class="mb-6">
+    <h1 class="heading">Export Your Data</h1>
+    <p class="text-sm text-muted mt-1 text-pretty">Download a copy of everything you&#8217;ve saved in JobJournal.</p>
+  </div>
+
+  <div class="<%= class_names "section-stack", "section-stack-dividers": minimal_style? %>">
+    <section aria-labelledby="export-json-heading">
+      <div class="mb-4">
+        <h2 id="export-json-heading" class="subheading">Everything (JSON)</h2>
+        <p class="text-sm text-muted mt-1 text-pretty">One file with your account details, settings, tags, and job leads, including their interviews and notes. Best for backups or moving to another tool.</p>
+      </div>
+
+      <%= link_to download_account_export_path(format: :json), class: "btn btn-primary w-full sm:w-auto", data: { turbo: false } do %>
+        <%= icon "braces", class: "size-4.5 shrink-0" %>
+        <span>Download JSON</span>
+      <% end %>
+    </section>
+
+    <section aria-labelledby="export-csv-heading">
+      <div class="mb-4">
+        <h2 id="export-csv-heading" class="subheading">Spreadsheets (CSV)</h2>
+        <p class="text-sm text-muted mt-1 text-pretty">Separate files you can open in Excel, Numbers, or Google Sheets.</p>
+      </div>
+
+      <div class="@container">
+        <div class="<%= collection_layout_class_names layout: "grid", count: csv_datasets.size, size: :medium %>">
+          <% csv_datasets.each do |dataset| %>
+            <% count = @export_counts[dataset[:key]] %>
+            <div class="<%= item_layout_class_names %> flex flex-col gap-3">
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="font-semibold"><%= dataset[:label] %></p>
+                  <p class="text-xs text-muted tabular-nums"><%= pluralize(number_with_delimiter(count), "row") %></p>
+                </div>
+                <%= icon dataset[:icon], class: "size-5 shrink-0" %>
+              </div>
+              <p class="text-sm text-muted text-pretty"><%= dataset[:description] %></p>
+              <%= link_to download_account_export_path(dataset[:key], format: :csv), class: "btn btn-sm btn-secondary mt-auto self-start", data: { turbo: false }, aria: { label: "Download #{dataset[:label]} CSV" } do %>
+                <%= icon "csv", class: "size-4 shrink-0" %>
+                <span>Download CSV</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -42,6 +42,37 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert Session.exists?(other.id)
   end
 
+  test "export page lists download options" do
+    get account_export_url
+
+    assert_response :success
+    assert_select "a[href=?]", download_account_export_path(format: :json)
+    assert_select "a[href=?]", download_account_export_path("job_leads", format: :csv)
+  end
+
+  test "downloads a json export" do
+    get download_account_export_url(format: :json)
+
+    assert_response :success
+    assert_equal "application/json", response.media_type
+    assert_match "attachment", response.headers["Content-Disposition"]
+    assert_equal @user.email_address, JSON.parse(response.body).dig("account", "email_address")
+  end
+
+  test "downloads a csv export" do
+    get download_account_export_url("interviews", format: :csv)
+
+    assert_response :success
+    assert_equal "text/csv", response.media_type
+    assert_match "jobjournal-interviews-", response.headers["Content-Disposition"]
+  end
+
+  test "rejects unknown csv datasets" do
+    get download_account_export_url("sessions", format: :csv)
+
+    assert_response :not_found
+  end
+
   test "should delete account" do
     id = @user.id
 
