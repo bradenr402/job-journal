@@ -15,11 +15,12 @@
 
 <%# Replace the SVG with the adjusted arc %>
 <div class="relative flex flex-col items-center" style="margin-bottom: <%= -radius / 5 %>px;">
+  <%# 270º arc, so rotating 135º makes the arc start at 7:30 on a clock %>
   <svg
     width="<%= radius * 2 %>"
     height="<%= radius * 2 %>"
     class="block text-primary-500 overflow-visible"
-    style="transform: rotate(135deg);" <!-- 270º arc, so 135º aligns the arc to start at 7:30 on a clock -->
+    style="transform: rotate(135deg);"
   >
     <!-- Background arc (partial circle) -->
     <circle
