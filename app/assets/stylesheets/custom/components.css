@@ -32,7 +32,7 @@
   }
 
   &:has(> .blanket-link:focus-visible) {
-    @apply ring-2 ring-primary-600;
+    @apply ring-2 ring-primary-500;
   }
 }
 
@@ -221,7 +221,7 @@
   }
 
   &:has(> .blanket-link:focus-visible) {
-    @apply ring-2 ring-primary-600;
+    @apply ring-2 ring-primary-500;
   }
 }
 
@@ -358,7 +358,7 @@
   }
 
   &:has(:focus-visible) {
-    @apply ring-2 ring-primary-600;
+    @apply ring-2 ring-primary-500;
   }
 
   .segmented-control-content {
@@ -518,7 +518,7 @@
   }
 
   a:focus-visible & {
-    @apply ring-2 ring-primary-600 text-normal;
+    @apply ring-2 ring-primary-500 text-normal;
   }
 
   a:has(&) {
@@ -547,7 +547,7 @@
 }
 
 @utility flash-success {
-  @apply bg-primary-100 dark:bg-primary-950/70 text-primary-600 dark:text-primary-500;
+  @apply bg-primary-100 dark:bg-primary-950/70 text-primary-550 dark:text-primary-500;
 }
 
 @utility flash-error {
@@ -619,7 +619,7 @@
   }
 
   button[aria-selected="true"] & {
-    @apply text-primary-600 dark:text-primary-500 bg-primary-200/40 dark:bg-primary-950/40;
+    @apply text-primary-550 dark:text-primary-500 bg-primary-200/40 dark:bg-primary-950/40;
 
     &.tab-link-destructive {
       @apply bg-rose-200/40 dark:bg-rose-950/40 text-rose-600 dark:text-rose-500;
@@ -631,7 +631,7 @@
   }
 
   button:focus-visible & {
-    @apply bg-transparent ring-2 ring-primary-600;
+    @apply bg-transparent ring-2 ring-primary-500;
 
     &.tab-link-destructive {
       @apply ring-rose-500;
@@ -686,7 +686,7 @@
   &:focus-visible,
   a:focus-visible > &,
   &:has(> .blanket-link:focus-visible) {
-    @apply ring-2 ring-primary-600;
+    @apply ring-2 ring-primary-500;
   }
 
   /* Default (neutral) tag style */
@@ -698,7 +698,7 @@
 
   /* Filterable tags */
   &.tag-filter:not(.demo) {
-    @apply cursor-pointer hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-500 active:scale-94;
+    @apply cursor-pointer hover:border-primary-100 dark:hover:border-primary-900 hover:bg-primary-50/80 dark:hover:bg-primary-900/80 hover:text-primary-550 dark:hover:text-primary-500 active:scale-94;
   }
 
   /* Selected state for non-status tags */
@@ -710,7 +710,7 @@
       .tag-rejected,
       .tag-accepted
     ) {
-    @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-600;
+    @apply border-primary-200 dark:border-primary-900 bg-primary-100/80 dark:bg-primary-950/80 text-primary-550 dark:text-primary-500;
 
     > svg:not([class*="size-"]) {
       @apply size-4 first:-ml-1 last:-mr-1 cursor-pointer rounded-full p-0.5 transition-all duration-80 in-[.tag-selected:hover]:bg-rose-200/70 dark:in-[.tag-selected:hover]:bg-rose-900/70 in-[.tag-selected:hover]:text-rose-600 dark:in-[.tag-selected:hover]:text-rose-500;
@@ -888,7 +888,7 @@ static hover backgrounds.
 */
 
 @utility dropdown-trigger {
-  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 toggle-has-open-dropdown:bg-neutral-200 dark:toggle-has-open-dropdown:bg-neutral-800 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96 will-change-[scale,background-color];
+  @apply inline-flex gap-1.5 cursor-pointer items-center justify-center rounded-lg p-1.25 text-sm font-medium bg-neutral-100 dark:bg-neutral-900 text-light hover:bg-neutral-200 dark:hover:bg-neutral-800 toggle-has-open-dropdown:bg-neutral-200 dark:toggle-has-open-dropdown:bg-neutral-800 transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none active:scale-96 will-change-[scale,background-color];
 
   .nav-panel & {
     @apply bg-transparent hover:bg-neutral-100 toggle-has-open-dropdown:bg-neutral-100 dark:bg-transparent dark:hover:bg-neutral-900 dark:toggle-has-open-dropdown:bg-neutral-900;
@@ -970,7 +970,7 @@ static hover backgrounds.
     @apply anchor relative z-10 inline-flex gap-1.5 cursor-pointer items-center w-full rounded-lg px-3 py-2 text-sm font-medium no-underline focus:ring-2 focus:outline-none;
 
     &.dropdown-option-primary {
-      @apply text-primary-600 dark:text-primary-500 focus:ring-primary-500 anchor-color-primary-200/40 dark:anchor-color-primary-900/40 active:bg-primary-200/60 dark:active:bg-primary-900/60;
+      @apply text-primary-550 dark:text-primary-500 focus:ring-primary-500 anchor-color-primary-200/40 dark:anchor-color-primary-900/40 active:bg-primary-200/60 dark:active:bg-primary-900/60;
     }
 
     &.dropdown-option-secondary {
@@ -1046,7 +1046,7 @@ static hover backgrounds.
 }
 
 @utility sort-direction-toggle {
-  @apply inline-flex items-center rounded-lg bg-neutral-100 dark:bg-neutral-900 p-0.5 text-xs font-medium text-muted select-none outline-none focus-visible:ring-2 focus-visible:ring-primary-600;
+  @apply inline-flex items-center rounded-lg bg-neutral-100 dark:bg-neutral-900 p-0.5 text-xs font-medium text-muted select-none outline-none focus-visible:ring-2 focus-visible:ring-primary-500;
 
   > .sort-direction-option {
     @apply inline-flex items-center gap-1 rounded-md px-2 py-1;

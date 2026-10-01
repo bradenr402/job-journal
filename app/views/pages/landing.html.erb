@@ -3,8 +3,8 @@
 <%# ─── NAV ─── %>
 <nav class="floating-nav fixed top-0 inset-x-0 z-50">
   <div class="floating-nav-bar max-w-8xl max-md:mx-4 md:mx-auto py-3 pl-4.5 pr-3 flex items-center justify-between backdrop-blur-sm">
-    <%= link_to root_path, class: 'focus-visible:ring-2 focus-visible:ring-primary-600 outline-none p-2 -m-2 rounded-lg flex items-center max-md:gap-0.75 md:gap-1.5' do %>
-      <%= icon 'note-filled', class: 'max-md:size-4.5 md:size-6 shrink-0 text-primary-600' %>
+    <%= link_to root_path, class: 'focus-visible:ring-2 focus-visible:ring-primary-500 outline-none p-2 -m-2 rounded-lg flex items-center max-md:gap-0.75 md:gap-1.5' do %>
+      <%= icon 'note-filled', class: 'max-md:size-4.5 md:size-6 shrink-0 text-primary-500' %>
       <span class="max-md:text-base md:text-xl font-extrabold tracking-tight text-normal">JobJournal</span>
     <% end %>
 
@@ -97,7 +97,7 @@
               "The more applications you add, the harder they are to maintain&mdash;and the less useful they become."
             ].each do |text| %>
               <li class="flex gap-3 items-start">
-                <span class="mt-2.5 size-1.5 rounded-full bg-primary-600 shrink-0"></span>
+                <span class="mt-2.5 size-1.5 rounded-full bg-primary-500 shrink-0"></span>
                 <span><%= text.html_safe %></span>
               </li>
             <% end %>
@@ -107,7 +107,7 @@
 
       <%# ── Solution ── %>
       <div>
-        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-primary-600 text-balance leading-tight">
+        <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-primary-550 dark:text-primary-500 text-balance leading-tight">
           JobJournal flips that&nbsp;script.
         </h2>
 
@@ -128,7 +128,7 @@
   <%# ─── DEMO: DASHBOARD STATS ─── %>
   <section id="demo" class="py-28 md:py-36 px-6">
     <div class="max-w-8xl mx-auto">
-      <p class="text-center text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Your dashboard at a glance</p>
+      <p class="text-center text-sm font-semibold uppercase tracking-[-0.015em] text-primary-550 dark:text-primary-500 mb-3">Your dashboard at a glance</p>
       <h2 class="text-center text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-12">
         See where you stand&mdash;instantly.
       </h2>
@@ -210,7 +210,7 @@
   <%# ─── DEMO: JOB LEADS & INTERVIEWS ─── %>
   <section class="py-28 md:py-36 px-6">
     <div class="max-w-8xl mx-auto">
-      <p class="text-sm font-semibold uppercase tracking-[-0.015em] text-primary-600 mb-3">Track every opportunity</p>
+      <p class="text-sm font-semibold uppercase tracking-[-0.015em] text-primary-550 dark:text-primary-500 mb-3">Track every opportunity</p>
       <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight mb-4">
         From first lead to final&nbsp;offer.
       </h2>
@@ -562,7 +562,7 @@
         <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-muted dark:text-soft">Resources</p>
         <ul>
           <li>
-            <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-600 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-80' do %>
+            <%= link_to 'https://github.com/bradenr402/job-journal', target: '_blank', rel: 'noopener noreferrer', class: 'inline-flex items-center gap-1 text-base font-semibold text-neutral-700 hover:text-primary-550 dark:text-neutral-200 dark:hover:text-primary-400 transition-colors duration-80' do %>
               <%= icon 'github', class: 'size-4 shrink-0' %>
               <span>GitHub</span>
             <% end %>
@@ -575,7 +575,7 @@
         <p class="text-xs uppercase tracking-[-0.015em] font-semibold text-muted dark:text-soft">Contact</p>
         <ul>
           <li>
-            <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-600 dark:text-white dark:hover:text-primary-400 transition-colors duration-80' do %>
+            <%= mail_to 'jobjournalapp@gmail.com', class: 'inline-flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900 hover:text-primary-550 dark:text-white dark:hover:text-primary-400 transition-colors duration-80' do %>
               <%= icon 'mail', class: 'size-4 shrink-0' %>
               <span>jobjournalapp@gmail.com</span>
             <% end %>
@@ -590,7 +590,7 @@
       <p>
         Created with
         <%= icon 'heart-filled', class: 'inline align-middle size-3.75 mx-px mb-px motion-safe:animate-heartbeat text-rose-500' %>
-        by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-normal hover:text-primary-500 transition-colors duration-80' %>
+        by <%= link_to 'Braden Roth', 'https://bradenroth.com', target: '_blank', rel: 'noopener noreferrer', class: 'text-normal hover:text-primary-550 dark:hover:text-primary-500 transition-colors duration-80' %>
       </p>
     </div>
   </div>

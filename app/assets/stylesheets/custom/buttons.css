@@ -1,5 +1,5 @@
 @utility btn {
-  @apply inline-flex cursor-pointer items-center justify-center font-medium no-underline transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:outline-none active:scale-96;
+  @apply inline-flex cursor-pointer items-center justify-center font-medium no-underline transition-all duration-80 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none active:scale-96;
 
   &:not(.btn-xs, .btn-sm, .btn-lg) {
     @apply gap-2 px-4 py-2 text-sm rounded-lg;
@@ -42,7 +42,7 @@
 
 @utility btn-primary {
   &:not(.btn-muted) {
-    @apply bg-primary-600 dark:bg-primary-700 text-white hover:bg-primary-700 dark:hover:bg-primary-600 focus-visible:ring-offset-2;
+    @apply bg-primary-500 dark:bg-primary-550 text-white hover:bg-primary-550 dark:hover:bg-primary-600 focus-visible:ring-offset-2;
 
     &:not(.btn-sm, .btn-lg) {
       @apply not-dark:shadow-md;
@@ -58,7 +58,7 @@
   }
 
   &.btn-muted {
-    @apply text-primary-600 dark:text-primary-500 bg-primary-200/40 hover:bg-primary-200/60 active:bg-primary-200/80 dark:bg-primary-900/40 dark:hover:bg-primary-900/60 dark:active:bg-primary-900/80;
+    @apply text-primary-550 dark:text-primary-500 bg-primary-200/40 hover:bg-primary-200/60 active:bg-primary-200/80 dark:bg-primary-900/40 dark:hover:bg-primary-900/60 dark:active:bg-primary-900/80;
   }
 }
 
@@ -82,7 +82,7 @@
   @apply bg-transparent;
 
   &:not(.btn-muted) {
-    @apply text-primary-600 hover:bg-primary-200/40 active:bg-primary-200/60 dark:hover:bg-primary-900/40 dark:active:bg-primary-900/60;
+    @apply text-primary-550 dark:text-primary-500 hover:bg-primary-200/40 active:bg-primary-200/60 dark:hover:bg-primary-900/40 dark:active:bg-primary-900/60;
   }
 
   &.btn-muted {
@@ -91,11 +91,11 @@
 }
 
 @utility btn-link {
-  @apply cursor-pointer text-light hover:text-normal underline text-sm underline transition-colors duration-80 focus-visible:ring-2 focus-visible:ring-primary-600 outline-none rounded-sm p-0.5 -m-0.5;
+  @apply cursor-pointer text-light hover:text-normal underline text-sm underline transition-colors duration-80 focus-visible:ring-2 focus-visible:ring-primary-500 outline-none rounded-sm p-0.5 -m-0.5;
 }
 
 @utility btn-link-primary {
-  @apply text-primary-600 focus:ring-primary-500 hover:text-primary-500 underline;
+  @apply text-primary-550 dark:text-primary-500 focus:ring-primary-500 hover:text-primary-600 dark:hover:text-primary-400 underline;
 }
 
 @utility btn-link-muted {
