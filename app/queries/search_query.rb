@@ -54,7 +54,7 @@ class SearchQuery
   end
 
   def search_job_leads
-    scope = filtered(:job_leads, @user.job_leads.includes(:tags))
+    scope = filtered(:job_leads, @user.job_leads.includes(:notes, :tags))
     where_terms(scope, job_lead_conditions)
   end
 
@@ -78,7 +78,7 @@ class SearchQuery
   end
 
   def search_interviews
-    scope = filtered(:interviews, @user.interviews.includes(:job_lead).order(scheduled_at: :desc))
+    scope = filtered(:interviews, @user.interviews.includes(:job_lead, :notes).order(scheduled_at: :desc))
     where_terms(scope, interview_conditions)
   end
 
@@ -100,7 +100,7 @@ class SearchQuery
   end
 
   def search_notes
-    scope = filtered(:notes, @user.notes)
+    scope = filtered(:notes, @user.notes.includes(notable: :job_lead))
 
     where_terms(scope, "LOWER(content) LIKE :term")
   end

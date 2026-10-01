@@ -57,7 +57,7 @@ class DashboardStats
       interviews_last_week_count: all_interviews.where(scheduled_at: last_week).size,
       follow_up_suggestions: follow_up_suggestions,
       stale_leads: all_job_leads.stale_for_user(user).order(updated_at: :asc),
-      upcoming_interviews: all_interviews.upcoming.order(scheduled_at: :asc),
+      upcoming_interviews: all_interviews.upcoming.includes(:notes).order(scheduled_at: :asc),
       recent_interviews: recent_interviews,
       recent_notes: all_notes.recent.order(updated_at: :desc).limit(15),
       top_sources: all_job_leads.top_sources_by_quality,
