@@ -22,6 +22,7 @@ A privacy-first job search tracker. Organize every lead, application, and interv
   - [Smart Search & Filters](#smart-search--filters)
   - [Insights](#insights)
   - [Autofill From URL](#autofill-from-url)
+  - [Import & Export](#import--export)
 - [Privacy & Security](#privacy--security)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -142,7 +143,8 @@ bin/rails test test/models/user_test.rb
 ### Job Lead Management
 
 - Track key details: company, title, salary, contact, location, etc.
-- Automatically records a timeline of status changes, with manual overrides when needed.
+- Automatically records a timeline of status changes, which you can edit (steps must stay in order)
+- Rename, merge, or delete tags from one place
 - Categorize job leads with unlimited tags for easy filtering and searching
 - Add unlimited notes for additional job details, company research, or anything else you want to remember
 
@@ -171,7 +173,7 @@ bin/rails test test/models/user_test.rb
 ### Smart Search & Filters
 
 - Search across job leads, interviews, and notes
-- Narrow resutls with filters:
+- Narrow results with filters:
   - Job Leads by tag, status, and archive state
   - Interviews by date
   - Notes by parent type and archive state
@@ -184,13 +186,30 @@ bin/rails test test/models/user_test.rb
 - Currently supports **Indeed** and **LinkedIn**, with more sources on the way
   - Want autofill for another source? Feel free to [open an issue](https://github.com/bradenr402/job-journal/issues/new) or contribute a PR!
 
+### Import & Export
+
+- **Import from CSV:** bring your job search over from any spreadsheet in four steps (Upload, Match Columns, Review, Summary)
+  - Match each column to a field yourself, or let Auto-Match fill them in from your headers; sample values help you check each match
+  - Ambiguous dates (like `03/04/2026`) are detected, and you choose month-first or day-first
+  - Fix problem rows in place (missing fields, bad dates, unknown statuses) or skip them
+  - For rows matching a job lead you already have, see exactly what would change, then update it or skip the row
+  - Your progress is saved, so you can refresh or come back to an import later
+  - Every new and updated job lead is tagged (e.g. `imported-2026-10-01`) so you can find the batch later
+- **Export anytime** from your Account page:
+  - **JSON:** one file with your account details, settings, tags, and job leads, including their interviews and notes&mdash;ideal for backups or moving to another tool
+  - **CSV:** separate spreadsheets for job leads, interviews, and notes that open in Excel, Numbers, or Google Sheets
+
 ---
 
 ## Privacy & Security
 
 Your job search data should be _yours alone_. JobJournal is **privacy-first** by design—no third-party sharing, no data selling, no recruiter analytics.
 
-Your data stays scoped to your account, and you can delete it all at any time.
+Your data stays scoped to your account. You can import it from a spreadsheet, export all of it as JSON or CSV, and delete it all at any time.
+
+- Email alerts for new sign-ins and email address changes
+- Changing your password or email address signs out every other session
+- Account deletion requires your password and typing `DELETE` to confirm
 
 ---
 

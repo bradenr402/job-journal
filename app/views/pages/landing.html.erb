@@ -250,7 +250,7 @@
       },
       {
         title: 'Your Data is Truly Yours.'.html_safe,
-        body: 'JobJournal is <strong class="text-normal font-semibold">privacy-first</strong> by design&mdash;no third-party sharing, no data selling, no recruiter analytics. Your data stays scoped to your account, and you can delete it all at any time.'.html_safe,
+        body: 'JobJournal is <strong class="text-normal font-semibold">privacy-first</strong> by design&mdash;no third-party sharing, no data selling, no recruiter analytics. Your data stays scoped to your account, you can <strong class="text-normal font-semibold">export it all as JSON or CSV</strong> whenever you like, and you can delete it all at any time.'.html_safe,
       }
     ] %>
 
@@ -435,6 +435,62 @@
     </div>
   </section>
 
+  <%# ─── IMPORT & EXPORT ─── %>
+  <section class="py-28 md:py-36 px-6">
+    <div class="max-w-8xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div>
+          <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+            Bring your spreadsheet. Take&nbsp;everything with&nbsp;you.
+          </h2>
+          <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed text-pretty">
+            Import your job search from a CSV: match your columns, review every row, and choose what happens to leads you already have. Export everything as JSON or CSV whenever you like. No lock-in, ever.
+          </p>
+        </div>
+
+        <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="card">
+            <div class="flex items-start justify-between mb-4">
+              <h3 class="font-semibold text-normal">Import From CSV</h3>
+              <div class="rounded-md p-1.5 -m-0.75 bg-teal-100/70 dark:bg-teal-900/40 inline-flex">
+                <%= icon "file-import", class: "size-4.5 text-teal-600 dark:text-teal-500" %>
+              </div>
+            </div>
+            <ul class="divide-y divide-neutral-200 dark:divide-neutral-800 text-sm">
+              <% [ [ "Job Title", "Position" ], [ "Company", "Employer" ], [ "Application URL", "Link" ], [ "Applied", "Date Applied" ] ].each do |field, header| %>
+                <li class="flex items-center justify-between gap-2 py-2">
+                  <span class="text-muted truncate"><%= header %></span>
+                  <%= icon "arrow-right", class: "size-3.5 shrink-0 text-muted" %>
+                  <span class="font-medium text-light truncate"><%= field %></span>
+                </li>
+              <% end %>
+            </ul>
+            <p class="mt-3 text-xs text-muted">Match columns with one click. Review every row before anything is saved.</p>
+          </div>
+
+          <div class="card">
+            <div class="flex items-start justify-between mb-4">
+              <h3 class="font-semibold text-normal">Export Anytime</h3>
+              <div class="rounded-md p-1.5 -m-0.75 bg-rose-100/70 dark:bg-rose-900/40 inline-flex">
+                <%= icon "file-export", class: "size-4.5 text-rose-600 dark:text-rose-500" %>
+              </div>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <% [ [ "jobjournal-export.json", "Everything, in one file" ], [ "job-leads.csv", "Spreadsheet" ], [ "interviews.csv", "Spreadsheet" ], [ "notes.csv", "Spreadsheet" ] ].each do |file, kind| %>
+                <li class="flex items-center gap-2 min-w-0">
+                  <%= icon "file-export", class: "size-4 shrink-0 text-muted" %>
+                  <span class="font-medium text-light truncate"><%= file %></span>
+                  <span class="ml-auto text-xs text-muted whitespace-nowrap"><%= kind %></span>
+                </li>
+              <% end %>
+            </ul>
+            <p class="mt-3 text-xs text-muted">Your data is yours&mdash;download a full copy whenever you like.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <%# ─── MORE FEATURES ─── %>
   <section class="py-28 md:py-36 px-6">
     <div class="max-w-8xl mx-auto">
@@ -451,7 +507,7 @@
             icon_bg: 'bg-sky-100/70 dark:bg-sky-900/40',
             icon_color: 'text-sky-600 dark:text-sky-500',
             title: 'Job Lead Management',
-            description: 'Capture important details like company, title, salary, contact, and location. Track each opportunity through a simple progression from lead to accepted. Tag and annotate with unlimited notes.'
+            description: 'Capture important details like company, title, salary, contact, and location. Track each opportunity from lead to accepted, with an editable timeline of every step. Tag and annotate with unlimited notes.'
           },
           {
             icon: 'globe',
