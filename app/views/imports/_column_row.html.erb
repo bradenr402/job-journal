@@ -1,0 +1,39 @@
+<%# locals: (column:, field_options:, auto:) %>
+
+<%
+  index, field, samples = column.values_at(:index, :field, :samples)
+  described_by = [ ("column_#{index}_samples" if samples.any?), ("column_#{index}_auto" if auto) ].compact.join(" ").presence
+%>
+
+<div style="view-transition-name: import-column-<%= index %>"
+     class="relative has-[.dropdown-show]:z-20 py-3 grid grid-cols-1 @xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] @xl:items-center gap-x-4 gap-y-2">
+  <div class="min-w-0">
+    <p class="text-sm truncate" title="<%= column[:header] %>">
+      <span class="text-muted">Import</span>
+      <span class="font-semibold text-normal"><%= column[:header] %></span>
+    </p>
+    <% if samples.any? %>
+      <p id="column_<%= index %>_samples" class="text-xs text-muted truncate" title="<%= samples.join(", ") %>"><%= samples.join(", ") %></p>
+    <% end %>
+  </div>
+
+  <div class="min-w-0 flex items-center gap-2">
+    <span class="text-sm text-muted shrink-0" aria-hidden="true">as</span>
+    <%= render "shared/select_dropdown",
+          name: "column_mapping[#{index}]",
+          id: "column_mapping_#{index}",
+          options: field_options,
+          selected: field,
+          blank: "Don’t Import",
+          blank_icon: "minus",
+          label: "JobJournal field for the #{column[:header]} column",
+          describedby: described_by,
+          data: { action: "change->submit-on-change#exclusive change->submit-on-change#submit" } %>
+    <% if auto %>
+      <span id="column_<%= index %>_auto" class="inline-flex items-center gap-1 text-xs text-muted shrink-0 whitespace-nowrap" title="Matched automatically from your header">
+        <%= icon "check", class: "size-3.5 shrink-0", aria_hidden: true %>
+        Auto-matched
+      </span>
+    <% end %>
+  </div>
+</div>

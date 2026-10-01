@@ -1,0 +1,120 @@
+<%# locals: (import:, auto_mapping: {}, show_unmatched: false) %>
+
+<%
+  missing = import.missing_required_fields
+  field_for_column = import.mapping.invert
+  auto_field_for_column = auto_mapping.to_h.to_h { |field, index| [ index.to_i, field.to_s ] }
+  field_options = JobLeadImport::FIELD_GROUPS.to_h do |group, fields|
+    options = fields.map do |field|
+      { label: JobLeadImport.field_label(field), value: field, icon: JobLeadImport::FIELD_ICONS[field], required: field.in?(JobLeadImport::REQUIRED_FIELDS) }
+    end
+    [ group, options ]
+  end
+  manual_choices = import.mapping.reject { |field, index| auto_mapping.to_h[field].to_s == index.to_s }
+  columns = import.headers.each_with_index.map do |header, index|
+    { index:, header: header.presence || "Column #{index + 1}", field: field_for_column[index], samples: import.samples_for(index) }
+  end
+  matched, unmatched = columns.partition { it[:field] }
+  collapse_unmatched = unmatched.size > 4 && missing.none?
+
+  column_row = ->(column) do
+    auto = column[:field] && auto_field_for_column[column[:index]] == column[:field]
+    render "imports/column_row", column:, field_options:, auto:
+  end
+%>
+
+<div id="import-columns" class="@container transition-opacity duration-120 [form[aria-busy=true]_&]:opacity-60">
+  <section aria-labelledby="import-columns-heading">
+    <div class="mb-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+      <div class="min-w-0">
+        <h2 id="import-columns-heading" class="subheading">Columns</h2>
+        <p class="text-sm text-muted mt-1 text-pretty">Choose a JobJournal field for each column you want to import.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 w-full @xl:w-auto">
+        <%= tag.button type: "submit", name: "clear_mapping", value: "1", formnovalidate: true, class: "btn btn-sm btn-destructive btn-muted flex-1 @xl:flex-none",
+              data: { turbo_confirm: ("Clear all #{pluralize(import.mapping.size, "column choice")}?" if import.mapping.any?) } do %>
+          <%= icon "eraser", class: "size-4 shrink-0" %>
+          <span>Clear Selections</span>
+        <% end %>
+        <%= tag.button type: "submit", name: "auto_match", value: "1", formnovalidate: true, class: "btn btn-sm btn-secondary flex-1 @xl:flex-none",
+              data: { turbo_confirm: ("Replace your #{pluralize(manual_choices.size, "column choice")} with auto-matched ones?" if manual_choices.any?) } do %>
+          <%= icon "auto-columns", class: "size-4 shrink-0" %>
+          <span>Auto-Match Columns</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-y-1 text-sm text-muted divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600" aria-live="polite">
+      <span class="inline-flex items-center gap-1"><span class="font-semibold text-light tabular-nums"><%= matched.size %></span> matched</span>
+      <span class="inline-flex items-center gap-1"><span class="font-semibold text-light tabular-nums"><%= unmatched.size %></span> not imported</span>
+      <% if missing.any? %>
+        <span class="inline-flex items-center gap-1 text-rose-600 dark:text-rose-400">
+          <%= icon "x-circle", class: "size-3.5 shrink-0", aria_hidden: true %>
+          Still needed: <%= missing.map { JobLeadImport.field_label(it) }.to_sentence %>
+        </span>
+      <% else %>
+        <span class="inline-flex items-center gap-1 text-primary-550 dark:text-primary-400">
+          <%= icon "check", class: "size-3.5 shrink-0", aria_hidden: true %>
+          All required fields set
+        </span>
+      <% end %>
+    </div>
+
+    <div class="hidden @xl:grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-x-4 pb-2 border-b border-neutral-200 dark:border-neutral-800 text-xs font-medium text-muted" aria-hidden="true">
+      <span>Column in Your File</span>
+      <span class="pl-6">JobJournal Field</span>
+    </div>
+    <div class="divide-y divide-neutral-200 dark:divide-neutral-800 border-b border-neutral-200 dark:border-neutral-800">
+      <% (collapse_unmatched ? matched : columns).each do |column| %>
+        <%= column_row.(column) %>
+      <% end %>
+    </div>
+
+    <% if collapse_unmatched %>
+      <%= hidden_field_tag :show_unmatched, show_unmatched ? "1" : "0", id: "show_unmatched" %>
+      <details class="group/more" <%= "open" if show_unmatched %> data-action="toggle->submit-on-change#rememberOpen">
+        <summary class="mt-3 mx-auto w-fit flex btn btn-sm btn-secondary btn-muted list-none [&::-webkit-details-marker]:hidden">
+          <span class="group-open/more:hidden">Show <%= unmatched.size %> Not-Imported Columns</span>
+          <span class="hidden group-open/more:inline">Hide Not-Imported Columns</span>
+          <%= icon "chevron-down", class: "size-3.5 shrink-0 group-open/more:rotate-180 transition-transform duration-120", aria_hidden: true %>
+        </summary>
+        <div class="mt-3 divide-y divide-neutral-200 dark:divide-neutral-800 border-y border-neutral-200 dark:border-neutral-800">
+          <% unmatched.each do |column| %>
+            <%= column_row.(column) %>
+          <% end %>
+        </div>
+      </details>
+    <% end %>
+
+    <% if import.ambiguous_date_example %>
+      <div class="mt-6 rounded-2xl border border-amber-300/70 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 pl-4 pr-2 py-2 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-start gap-2.5 min-w-0">
+          <%= icon "calendar", class: "size-4.5 shrink-0 mt-0.5 text-amber-700 dark:text-amber-400" %>
+          <p class="text-sm text-light text-pretty">
+            <% first, second, year = import.ambiguous_date_example.split("/").map(&:to_i) %>
+            <% readings = { "mdy" => (Date.new(year, first, second) rescue nil), "dmy" => (Date.new(year, second, first) rescue nil) } %>
+            Dates like <span class="font-semibold"><%= import.ambiguous_date_example %></span> can be read two ways. Which does your file use?
+            <% unless import.date_format_known? || import.date_format_chosen? %>
+              <span class="text-muted">We assumed month first.</span>
+            <% end %>
+          </p>
+        </div>
+        <div role="radiogroup" aria-label="Date format" class="segmented-control text-xs shrink-0 w-full @xl:w-auto *:flex-1 @xl:*:flex-none">
+          <span class="segmented-control-pill" aria-hidden="true"></span>
+          <% [ [ "mdy", "Month First" ], [ "dmy", "Day First" ] ].each do |value, text| %>
+            <label class="segmented-control-option justify-center">
+              <%= radio_button_tag :date_format, value, import.date_format == value, class: "sr-only peer", data: { action: "submit-on-change#submit" } %>
+              <span class="segmented-control-content w-full justify-center px-2.5 py-1 @max-md:flex-col gap-0">
+                <span><%= text %></span>
+                <% date = readings[value] %>
+                <span class="font-normal opacity-75 tabular-nums">
+                  (<%= tag.span date&.strftime("%b %-d") if date %>)
+                </span>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</div>

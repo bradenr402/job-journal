@@ -48,6 +48,12 @@ Rails.application.routes.draw do
   get "account/edit", to: "users#edit", as: :edit_account
   patch "account/update", to: "users#update"
   get "account/export", to: "users#export", as: :account_export
+  get "account/import", to: "imports#new", as: :new_account_import
+  post "account/import", to: "imports#create", as: :account_imports
+  get "account/import/:id/columns", to: "imports#columns", as: :columns_account_import
+  get "account/import/:id/review", to: "imports#review", as: :review_account_import
+  get "account/import/:id/summary", to: "imports#summary", as: :summary_account_import
+  patch "account/import/:id", to: "imports#update", as: :account_import
   get "account/export/download(/:dataset)", to: "users#download_export", as: :download_account_export, constraints: { format: /json|csv/ }
 
   get "security", to: "pages#security"

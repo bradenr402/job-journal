@@ -1,0 +1,13 @@
+<% content_for :title, "Import Summary" %>
+
+<div class="sm:w-7/8 w-full mx-auto @container">
+  <%= render "imports/header", step: 3, draft: @draft, description: "Check what will happen, then import. Nothing is saved until you do." %>
+
+  <%= form_with url: account_import_path(@draft), method: :patch, data: { controller: "submit-on-change" } do |form| %>
+    <button type="submit" class="sr-only" tabindex="-1" aria-hidden="true" formnovalidate data-submit-on-change-target="submitter"></button>
+    <%= hidden_field_tag :page, "summary" %>
+
+    <%= render "imports/review", import: @import, part: "summary" %>
+    <%= render "imports/footer", import: @import, page: "summary" %>
+  <% end %>
+</div>

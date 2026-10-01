@@ -1,0 +1,14 @@
+<%= turbo_stream.update "import-errors", partial: "imports/errors" %>
+<% if @page == "columns" %>
+  <%= turbo_stream.replace "import-columns", method: :morph do %>
+    <%= render "imports/columns", import: @import, auto_mapping: @draft[:auto_mapping], show_unmatched: @draft[:show_unmatched] == "1" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "import-body", method: :morph do %>
+    <%= render "imports/review", import: @import, part: @page %>
+  <% end %>
+  <%= turbo_stream.replace "import-footer", method: :morph do %>
+    <%= render "imports/footer", import: @import, page: @page %>
+  <% end %>
+  <%= turbo_stream.update "import-status", @status.to_s %>
+<% end %>

@@ -1,0 +1,350 @@
+<%# locals: (import:, part: "review") %>
+
+<%
+  rows = import.rows
+  summary = import.summary
+  attention_rows = import.review_rows
+  problem_rows = attention_rows.reject(&:duplicate?)
+  existing_rows = attention_rows.select(&:duplicate?)
+  ready_rows = rows.select { it.action == :create }
+  update_rows = rows.select { it.action == :update }
+  skipped_rows = rows.select { it.action == :skip }
+
+  action_tags = {
+    create: { label: "New", class: "tag-import-new", icon: "plus" },
+    update: { label: "Update", class: "tag-import-update", icon: "refresh" },
+    skip: { label: "Skipped", class: "tag-import-skip", icon: "minus" },
+    fix: { label: "Needs Fix", class: "tag-import-fix", icon: "alert-triangle" }
+  }
+  row_classes = "scroll-mt-24 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+  divided_list = "divide-y divide-neutral-200 dark:divide-neutral-800"
+  section_heading = "text-base font-semibold text-normal"
+  count = ->(n) { tag.span("(#{number_with_delimiter n})", class: "font-normal text-muted tabular-nums") }
+
+  display = ->(value) do
+    case value
+    when nil, "", [] then tag.span("empty", class: "italic text-muted")
+    when Time, ActiveSupport::TimeWithZone then local_date_short(value)
+    when BigDecimal then number_to_currency(value, precision: 0)
+    when Array then value.join(", ")
+    else value.to_s
+    end
+  end
+
+# A value the user typed on Review, e.g. "Applied: Jun 10".
+fixed_value = ->(field, value) do
+  next "Importing as Applied" if field == "offer_choice"
+
+  shown =
+    if field.in?(JobLeadImport::DATE_FIELDS) then (local_date_short(Date.parse(value)) rescue value)
+    elsif field == "status" then value.titlecase
+    else value
+    end
+  safe_join([ "#{JobLeadImport.field_label(field)}: ", tag.span(shown, class: "text-light") ])
+end
+
+  outcome_tag = ->(row) do
+    action = action_tags[row.action]
+    tag.span(class: "tag #{action[:class]} shrink-0") do
+      safe_join([ tag.span("Outcome: ", class: "sr-only"), icon(action[:icon], class: "size-3.5 -ml-px shrink-0", aria_hidden: true), action[:label] ])
+    end
+  end
+
+  row_heading = ->(row) do
+    lead = row.job_lead
+    safe_join([
+      tag.p("Row #{row.line}", class: "text-xs text-muted tabular-nums"),
+      tag.p(class: "truncate text-sm text-muted", title: [ lead.title, lead.company ].compact_blank.join(" @ ")) {
+        safe_join([ tag.span(lead.title.presence || "Untitled", class: "font-medium text-light"), " @ ", lead.company.presence || "—" ])
+      }
+    ])
+  end
+
+  message_list = ->(row) do
+    safe_join(
+      row.errors.each_with_index.map { |message, index|
+        tag.p(id: "row_#{row.line}_error_#{index}", class: "flex items-start gap-1 text-xs text-rose-600 dark:text-rose-400 text-pretty") {
+          safe_join([ icon("x-circle", class: "size-3.5 shrink-0 mt-px", aria_hidden: true), message ])
+        }
+      } +
+      row.warnings.map { |message|
+        tag.p(class: "flex items-start gap-1 text-xs text-amber-700 dark:text-amber-500 text-pretty") {
+          safe_join([ icon("alert-triangle", class: "size-3.5 shrink-0 mt-px", aria_hidden: true), message ])
+        }
+      }
+    )
+  end
+
+  skip_button = ->(row, size: "btn-sm") do
+    include = row.skipped
+    tag.button(type: "submit", name: "rows[#{row.line}][skip]", value: include ? "0" : "1", formnovalidate: true,
+               class: "btn #{size} btn-secondary btn-muted", aria: { label: "#{include ? "Include" : "Skip"} row #{row.line}" }) do
+      safe_join([ icon(include ? "refresh" : "minus", class: "size-3.5 shrink-0"), tag.span(include ? "Include Row" : "Skip Row") ])
+    end
+  end
+
+  # Long files list at most this many rows per section; the rest are still imported.
+  render_limit = 200
+  not_shown = ->(count) { tag.p("And #{number_with_delimiter count} more #{"row".pluralize(count)}.", class: "mt-3 text-center text-xs text-muted") if count.positive? }
+
+  show_more = ->(items, &render_item) do
+    tag.details(class: "group/more") do
+      safe_join([
+        tag.summary(class: "mt-3 mx-auto w-fit flex btn btn-sm btn-secondary btn-muted list-none [&::-webkit-details-marker]:hidden") {
+          safe_join([
+            tag.span("Show #{number_with_delimiter items.size} More", class: "group-open/more:hidden"),
+            tag.span("Show Fewer", class: "hidden group-open/more:inline"),
+            icon("chevron-down", class: "size-3.5 shrink-0 group-open/more:rotate-180 transition-transform duration-120", aria_hidden: true)
+          ])
+        },
+        tag.ul(class: "#{divided_list} mt-3 border-t border-neutral-200 dark:border-neutral-800") { safe_join(items.map(&render_item)) }
+      ])
+    end
+  end
+
+  summary_item = ->(row) do
+    tag.li(id: "import-row-#{row.line}", style: "view-transition-name: import-row-#{row.line}", class: "flex items-start gap-3 py-3 #{row_classes} focus-visible:ring-inset", tabindex: -1) do
+      lead = row.job_lead
+      safe_join([
+        tag.div(class: "min-w-0 flex-1") {
+          safe_join([
+            row_heading.(row),
+            (tag.p(class: "flex items-center min-w-0 text-xs text-muted divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600") {
+              safe_join([ tag.span(lead.status.titlecase, class: "inline-flex items-center shrink-0"), (tag.span(lead.pending_tag_names.join(", "), class: "inline-flex items-center min-w-0 truncate") if lead.pending_tag_names.present?) ].compact)
+            } unless row.action == :skip),
+            (tag.p("No changes from the existing job lead", class: "text-xs text-muted") if row.duplicate? && row.changes.blank?),
+            (tag.div(class: "mt-1 space-y-0.5") { message_list.(row) } if row.errors.any? || row.warnings.any?)
+          ].compact)
+        },
+        tag.div(class: "flex @max-xl:flex-col items-end @xl:items-center justify-end gap-2 shrink-0") {
+          # Identical existing leads are skipped automatically, so there's nothing to include.
+          toggle = skip_button.(row) if row.skipped || row.action.in?(%i[create update])
+          safe_join([ outcome_tag.(row), toggle ].compact)
+        }
+      ])
+    end
+  end
+%>
+
+<div id="import-body" class="transition-opacity duration-120 [form[aria-busy=true]_&]:opacity-60 [form[aria-busy=true]_&]:pointer-events-none">
+  <% if part == "summary" %>
+    <section aria-labelledby="import-summary-heading">
+      <div class="mb-4">
+        <h2 id="import-summary-heading" class="subheading" tabindex="-1">Summary</h2>
+        <p class="mt-1.5 flex flex-wrap items-center text-sm text-muted divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600">
+          <span class="inline-flex items-center gap-1"><span class="font-semibold text-light"><%= summary[:create] %></span> new</span>
+          <span class="inline-flex items-center gap-1"><span class="font-semibold text-light"><%= summary[:update] %></span> to update</span>
+          <span class="inline-flex items-center gap-1"><span class="font-semibold text-light"><%= summary[:skip] %></span> skipped</span>
+        </p>
+      </div>
+
+      <div class="space-y-8 *:not-first:pt-8 *:not-first:border-t *:not-first:border-neutral-200 dark:*:not-first:border-neutral-800">
+        <% [ [ "New Job Leads", ready_rows ], [ "Updates to Existing Leads", update_rows ] ].each do |title, list| %>
+          <% next if list.empty? %>
+          <div>
+            <h3 class="<%= section_heading %>"><%= title %> <%= count.(list.size) %></h3>
+            <ul class="<%= divided_list %> mt-1">
+              <% list.first(JobLeadImport::PREVIEW_ROWS).each do |row| %>
+                <%= summary_item.(row) %>
+              <% end %>
+            </ul>
+            <% if list.size > JobLeadImport::PREVIEW_ROWS %>
+              <%= show_more.(list.drop(JobLeadImport::PREVIEW_ROWS).first(render_limit - JobLeadImport::PREVIEW_ROWS), &summary_item) %>
+              <%= not_shown.(list.size - render_limit) %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if skipped_rows.any? %>
+          <details class="group/skipped" <%= "open" if (ready_rows + update_rows).none? %>>
+            <summary class="flex items-center justify-between gap-2 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+              <h3 class="<%= section_heading %>">Skipped <%= count.(skipped_rows.size) %></h3>
+              <span class="btn btn-sm btn-secondary btn-muted">
+                <span class="group-open/skipped:hidden">Show</span>
+                <span class="hidden group-open/skipped:inline">Hide</span>
+                <%= icon "chevron-down", class: "size-3.5 shrink-0 group-open/skipped:rotate-180 transition-transform duration-120", aria_hidden: true %>
+              </span>
+            </summary>
+            <ul class="<%= divided_list %> mt-1">
+              <% skipped_rows.first(render_limit).each do |row| %>
+                <%= summary_item.(row) %>
+              <% end %>
+            </ul>
+            <%= not_shown.(skipped_rows.size - render_limit) %>
+          </details>
+        <% end %>
+      </div>
+
+      <% if (ready_rows + update_rows).none? %>
+        <p class="mt-6 text-sm text-muted text-pretty">Every row is skipped. Include rows above, or go back to change your choices.</p>
+      <% end %>
+    </section>
+  <% else %>
+    <section aria-labelledby="import-summary-heading">
+      <h2 id="import-summary-heading" class="sr-only" tabindex="-1">Review</h2>
+
+      <% if attention_rows.none? %>
+        <div class="empty-state my-12">
+          <%= icon "check-circle", class: "size-10 text-primary-550 dark:text-primary-400" %>
+          <p class="text-pretty">Nothing needs your attention. Continue to the summary to import.</p>
+        </div>
+      <% end %>
+
+      <%
+        review_groups = [
+          [ "Needs Attention", "These rows have missing or invalid data. Fix them, or skip them.", problem_rows ],
+          [ "Already in JobJournal", "These rows match job leads you already have. Update them with your file’s details, or skip them.", existing_rows ]
+        ]
+      %>
+      <% review_groups.each_with_index do |(title, description, group), group_index| %>
+        <% next if group.empty? %>
+        <% if group_index == 1 && problem_rows.any? %>
+          <div class="section-divider-line h-px w-1/2 mx-auto my-10" aria-hidden="true"></div>
+        <% end %>
+        <div>
+          <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-2 mb-3">
+            <div>
+              <% open = group_index.zero? ? group.count { it.action == :fix } : group.size %>
+              <h3 class="<%= section_heading %>"><%= group_index.zero? && open.zero? ? "Problem Rows" : title %> <%= count.(group_index.zero? && open.zero? ? group.size : open) %></h3>
+              <% if description %><p class="text-sm text-muted text-pretty mt-0.5"><%= description %></p><% end %>
+            </div>
+            <% if group_index.zero? && open > 1 %>
+              <div class="flex flex-wrap items-center gap-2 w-full @xl:w-auto">
+                <button type="submit" name="bulk_skip" value="problems" class="btn btn-sm btn-secondary btn-muted flex-1 @xl:flex-none" formnovalidate>
+                  <%= icon "minus", class: "size-3.5 shrink-0" %>
+                  <span>Skip All</span>
+                </button>
+              </div>
+            <% end %>
+            <% if group_index == 1 && group.size > 1 %>
+              <div class="flex flex-wrap items-center gap-2 w-full @xl:w-auto">
+                <button type="submit" name="bulk_duplicate" value="skip" class="btn btn-sm btn-secondary btn-muted flex-1 @xl:flex-none" formnovalidate>
+                  <%= icon "minus", class: "size-3.5 shrink-0" %>
+                  <span>Skip All</span>
+                </button>
+                <button type="submit" name="bulk_duplicate" value="update" class="btn btn-sm btn-secondary btn-muted flex-1 @xl:flex-none" formnovalidate>
+                  <%= icon "refresh", class: "size-3.5 shrink-0" %>
+                  <span>Update All</span>
+                </button>
+              </div>
+            <% end %>
+          </div>
+
+          <ul class="<%= divided_list %> border-t border-neutral-200 dark:border-neutral-800">
+            <% group.each do |row| %>
+              <% needs_fix = row.action == :fix %>
+
+              <%# Rows with nothing left to decide: skipped, identical, or already fixed. %>
+              <% if row.skipped || (row.duplicate? && row.changes.blank?) || (row.valid? && !row.duplicate?) %>
+                <li id="import-row-<%= row.line %>" style="view-transition-name: import-row-<%= row.line %>" tabindex="-1" class="relative has-[.dropdown-show]:z-20 py-3 <%= row_classes %> focus-visible:ring-inset flex items-start gap-3">
+                  <div class="min-w-0 flex-1">
+                    <%= row_heading.(row) %>
+                    <% if row.skipped %>
+                      <p class="inline-flex items-center gap-1 text-xs text-muted">
+                        <%= icon "minus", class: "size-3.5 shrink-0", aria_hidden: true %>
+                        You skipped this row.
+                      </p>
+                    <% elsif row.duplicate? %>
+                      <p class="text-xs text-muted">No changes from the existing job lead.</p>
+                    <% else %>
+                      <% fixed = import.overrides_for(row.line).except("skip", "duplicate") %>
+                      <p class="inline-flex items-center gap-1 text-xs text-primary-550 dark:text-primary-400">
+                        <%= icon "check", class: "size-3.5 shrink-0", aria_hidden: true %>
+                        Fixed and ready to import.
+                      </p>
+                      <% if fixed.any? %>
+                        <p class="text-xs text-muted text-pretty">
+                          <%= safe_join(fixed.map { |field, value| fixed_value.(field, value) }, ", ") %>
+                        </p>
+                      <% end %>
+                    <% end %>
+                    <% unless row.duplicate? && row.changes.blank? %>
+                      <div class="mt-3"><%= skip_button.(row) %></div>
+                    <% end %>
+                  </div>
+                  <%= outcome_tag.(row) %>
+                </li>
+                <% next %>
+              <% end %>
+
+              <li id="import-row-<%= row.line %>" style="view-transition-name: import-row-<%= row.line %>" tabindex="-1" class="relative has-[.dropdown-show]:z-20 py-4 <%= row_classes %> focus-visible:ring-inset">
+                <div class="flex items-start gap-3">
+                  <div class="min-w-0 flex-1">
+                    <%= row_heading.(row) %>
+                    <% if row.errors.any? || row.warnings.any? %>
+                      <div class="mt-1 space-y-0.5"><%= message_list.(row) %></div>
+                    <% end %>
+                  </div>
+                  <%= outcome_tag.(row) %>
+                </div>
+
+                <% if row.fixable.any? %>
+                  <div class="mt-3 grid grid-cols-1 @xl:grid-cols-2 gap-3" data-controller="offer-amount-toggle">
+                    <% row.fixable.each do |field| %>
+                      <%= render "imports/field_input", row:, field: %>
+                    <% end %>
+                  </div>
+                  <% if row.offer_choice_needed %>
+                    <p class="mt-2 text-xs text-muted text-pretty">
+                      Don&#8217;t know the amount?
+                      <button type="submit" name="rows[<%= row.line %>][offer_choice]" value="applied" class="btn-link btn-link-primary font-medium" formnovalidate>Import it as Applied instead</button>
+                      (you can add the offer later).
+                    </p>
+                  <% end %>
+                <% end %>
+
+                <% if row.duplicate? %>
+                  <div class="mt-3 space-y-1.5">
+                    <p class="text-xs text-light">
+                      Matches <%= link_to row.duplicate.title, job_lead_path(row.duplicate), class: "btn-link btn-link-primary", target: "_blank" %> in JobJournal. Updating it will change:
+                    </p>
+                    <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs rounded-lg bg-neutral-50 dark:bg-neutral-800/50 px-3 py-2">
+                      <% row.changes.each do |field, (old_value, new_value)| %>
+                        <dt class="text-muted"><%= JobLeadImport.field_label(field) %></dt>
+                        <dd class="min-w-0 flex flex-wrap items-center gap-1.5">
+                          <% if field == "tags" %>
+                            <%= icon "plus", class: "size-3 shrink-0 text-muted", aria_hidden: true %>
+                            <span class="font-medium text-light"><%= new_value.join(", ") %></span>
+                          <% else %>
+                            <span class="line-through decoration-1 text-muted break-all"><%= display.(old_value) %></span>
+                            <%= icon "arrow-right", class: "size-3 shrink-0 text-muted", aria_hidden: true %>
+                            <span class="font-medium text-light break-all"><%= display.(new_value) %></span>
+                          <% end %>
+                        </dd>
+                      <% end %>
+                    </dl>
+                  </div>
+                <% end %>
+
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  <%= skip_button.(row) %>
+                  <div class="ml-auto flex flex-wrap items-center justify-end gap-2">
+                    <% if row.duplicate? && row.valid? %>
+                      <% if row.action == :update %>
+                        <p class="inline-flex items-center gap-1 text-xs font-medium text-sky-700 dark:text-sky-400">
+                          <%= icon "check", class: "size-3.5 shrink-0", aria_hidden: true %>
+                          Will update on import
+                        </p>
+                      <% else %>
+                        <button type="submit" name="rows[<%= row.line %>][duplicate]" value="update" class="btn btn-sm btn-primary" formnovalidate>
+                          <%= icon "refresh", class: "size-3.5 shrink-0" %>
+                          <span>Update Existing</span>
+                        </button>
+                      <% end %>
+                    <% end %>
+                    <% if needs_fix && row.fixable.any? %>
+                      <button type="submit" class="btn btn-sm btn-primary" formnovalidate>
+                        <%= icon "check", class: "size-3.5 shrink-0" %>
+                        <span>Apply Fix</span>
+                      </button>
+                    <% end %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+</div>

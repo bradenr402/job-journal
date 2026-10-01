@@ -1,0 +1,22 @@
+<%# locals: (row:, field:) %>
+
+<% name = "rows[#{row.line}][#{field}]" %>
+<% id = "row_#{row.line}_#{field}" %>
+<% value = row.values[field] %>
+<% aria = { invalid: row.errors.any? || nil, describedby: row.errors.each_index.map { "row_#{row.line}_error_#{it}" }.join(" ").presence } %>
+
+<div <%= tag.attributes(data: { offer_amount_toggle_target: ("amount" if field == "offer_amount") }, hidden: field == "offer_amount" && row.fixable.include?("status") && row.values["status"].to_s.downcase != "offer") %>>
+  <%= label_tag id, JobLeadImport.field_label(field), class: "form-label text-xs" %>
+  <% if field.in?(JobLeadImport::DATE_FIELDS) %>
+    <% date = (Time.zone.parse(value.to_s) rescue nil) %>
+    <%= date_field_tag name, date&.to_date, id:, class: "form-input py-1.5 text-sm", aria: %>
+  <% elsif field == "status" %>
+    <%= render "shared/select_dropdown", name:, id:, options: JobLead::STATUSES.without("interview", "lead").map { { label: it.titlecase, value: it, icon: icon_name_for_status(it) } },
+          selected: (value.to_s.downcase.presence_in(JobLead::STATUSES)), blank: "Lead", blank_icon: icon_name_for_status(:lead), invalid: aria[:invalid],
+          describedby: aria[:describedby], label: "Status for row #{row.line}",
+          data: { offer_amount_toggle_target: "status", action: "change->offer-amount-toggle#update" } %>
+  <% else %>
+    <%= text_field_tag name, value, id:, class: "form-input py-1.5 text-sm", aria:, autocomplete: "off",
+          placeholder: { "application_url" => "https://…", "offer_amount" => "105000" }[field] %>
+  <% end %>
+</div>

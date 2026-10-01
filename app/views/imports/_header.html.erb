@@ -1,0 +1,65 @@
+<%# locals: (description:, step: 0, draft: nil) %>
+
+<%
+  steps = [
+    [ "Upload", new_account_import_path ],
+    [ "Match Columns", (columns_account_import_path(draft) if draft) ],
+    [ "Review", (review_account_import_path(draft) if draft) ],
+    [ "Summary", (summary_account_import_path(draft) if draft) ]
+  ]
+
+  # A step can be reached once every step before it is complete.
+  columns_done = draft && @import && @import.missing_required_fields.none?
+  review_done = columns_done && @import.summary[:fix].zero?
+  reachable = [ true, draft.present?, columns_done, review_done ]
+%>
+
+<div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+  <%= link_to account_path, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
+    <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
+    <span>Back to Account</span>
+  <% end %>
+</div>
+
+<div class="mb-6">
+  <h1 class="heading [view-transition-name:import-heading]">Import Job Leads</h1>
+  <nav aria-label="Import steps">
+    <ol class="[view-transition-name:import-steps] mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+      <% steps.each_with_index do |(name, path), index| %>
+        <% current = index == step %>
+        <% if index.positive? %>
+          <li aria-hidden="true"><%= icon "chevron-right", class: "size-3.5 text-muted" %></li>
+        <% end %>
+        <li>
+          <% content = capture do %>
+            <span class="<%= class_names "grid place-items-center size-4.5 rounded-full text-[0.625rem] tabular-nums", "bg-primary-500 text-white [view-transition-name:import-step-dot]": current, "bg-neutral-200 dark:bg-neutral-800": !current %>"><%= index + 1 %></span>
+            <span class="<%= "@max-xl:sr-only" unless current %>"><%= name %></span>
+          <% end %>
+          <% if index != step && path && reachable[index] %>
+            <%= link_to content, path,
+                  title: ("Start over with a new file" if index.zero?),
+                  data: (index.zero? && draft ? { turbo_method: :get, turbo_confirm: "Start over? Your column choices and fixes will be lost." } : {}),
+                  class: "inline-flex items-center gap-1.5 rounded-md text-muted hover:text-normal [&:hover>span:last-child]:underline underline-offset-2 transition-colors duration-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500" %>
+          <% else %>
+            <span class="<%= class_names "inline-flex items-center gap-1.5", "font-semibold text-normal": current, "text-muted": !current %>" <%= "aria-current=step" if current %>><%= content %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  </nav>
+  <% if draft&.[](:filename) %>
+    <p class="[view-transition-name:import-file] mt-2 flex items-start gap-1.5 text-sm text-muted">
+      <%= icon "csv", class: "size-4 shrink-0 mt-0.5", aria_hidden: true %>
+      <span class="min-w-0 flex flex-wrap items-center divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600">
+        <span class="inline-flex items-center font-medium text-light break-all [view-transition-name:import-filename]"><%= draft[:filename] %></span>
+        <% if (rows = draft[:row_count]) %>
+          <span class="inline-flex items-center whitespace-nowrap"><%= pluralize(rows, "row") %></span>
+        <% end %>
+        <span class="inline-flex items-center whitespace-nowrap @max-xl:hidden">saved for <%= distance_of_time_in_words(ImportDraft::TTL) %></span>
+      </span>
+    </p>
+  <% end %>
+  <p class="text-sm text-muted mt-2 text-pretty"><%= description %></p>
+</div>
+
+<div id="import-errors" role="alert"><%= render "imports/errors" %></div>

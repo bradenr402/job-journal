@@ -1,0 +1,7 @@
+<% if @error %>
+  <div id="error_explanation" tabindex="-1" <%= "autofocus" unless request.format.turbo_stream? %>
+       class="flex items-start gap-2 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 p-4 border border-rose-300 dark:border-rose-500/30 rounded-2xl mb-6 text-sm focus:outline-none">
+    <%= icon "x-circle", class: "size-4.5 shrink-0 mt-px", aria_hidden: true %>
+    <span><%= @error %></span>
+  </div>
+<% end %>

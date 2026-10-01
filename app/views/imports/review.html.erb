@@ -1,0 +1,16 @@
+<% content_for :title, "Review Import" %>
+
+<div class="sm:w-7/8 w-full mx-auto @container">
+  <%= render "imports/header", step: 2, draft: @draft, description: "Fix or skip problem rows, and choose what happens to job leads you already have." %>
+
+  <%= form_with url: account_import_path(@draft), method: :patch, data: { controller: "submit-on-change" } do |form| %>
+    <%# Default submitter: pressing Enter in a fix field re-checks the rows. %>
+    <button type="submit" class="sr-only" tabindex="-1" aria-hidden="true" formnovalidate data-submit-on-change-target="submitter"></button>
+    <%= hidden_field_tag :page, "review" %>
+
+    <p id="import-status" class="sr-only" role="status"></p>
+
+    <%= render "imports/review", import: @import, part: "review" %>
+    <%= render "imports/footer", import: @import, page: "review" %>
+  <% end %>
+</div>

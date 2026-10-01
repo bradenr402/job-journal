@@ -1102,3 +1102,20 @@ static hover backgrounds.
   --divide-dot-icon-gap: --spacing(--value(number));
   --divide-dot-icon-gap: --value([length]);
 }
+
+/* Import row outcomes. Deliberately not the job status colors. */
+@utility tag-import-new {
+  @apply bg-primary-100/70 text-primary-700 border-primary-300/60 dark:bg-primary-500/10 dark:text-primary-400 dark:border-primary-500/30;
+}
+
+@utility tag-import-update {
+  @apply bg-sky-100/70 text-sky-700 border-sky-300/60 dark:bg-sky-500/10 dark:text-sky-400 dark:border-sky-500/30;
+}
+
+@utility tag-import-skip {
+  @apply bg-neutral-100 text-neutral-500 border-neutral-300/70 dark:bg-neutral-800/60 dark:text-neutral-400 dark:border-neutral-700;
+}
+
+@utility tag-import-fix {
+  @apply bg-amber-100/70 text-amber-700 border-amber-300/60 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/30;
+}

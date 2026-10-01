@@ -1,0 +1,61 @@
+<%# locals: (import:, page:) %>
+
+<%
+  summary = import.summary
+  importable = summary[:create] + summary[:update]
+  start_over = { turbo_method: :get, turbo_confirm: "Start over? Your column choices and fixes will be lost." }
+
+  if page == "review"
+    blocker = "#{pluralize(summary[:fix], "row")} still #{summary[:fix] == 1 ? "needs" : "need"} a fix or skip." if summary[:fix].positive?
+    back = [ "columns", "Back to Columns" ]
+  else
+    blocker = "Every row is skipped, so there’s nothing to import." if importable.zero?
+    back = import.needs_review? ? [ "review", "Back to Review" ] : [ "columns", "Back to Columns" ]
+    unless blocker
+      parts = [
+        ("add #{pluralize(summary[:create], "new job lead")}" if summary[:create].positive?),
+        ("update #{pluralize(summary[:update], "existing job lead")}" if summary[:update].positive?)
+      ].compact
+      confirm = "#{parts.to_sentence.upcase_first}?"
+    end
+  end
+%>
+
+<div id="import-footer" class="[view-transition-name:import-footer] sticky-form-footer mt-8 space-y-3">
+  <% if blocker %>
+    <p id="import-blocker" class="flex items-center gap-1 text-sm text-amber-700 dark:text-amber-500">
+      <%= icon "alert-triangle", class: "size-4 shrink-0", aria_hidden: true %>
+      <%= blocker %>
+    </p>
+  <% elsif page == "summary" %>
+    <p class="text-xs text-muted text-pretty">
+      Every new and updated job lead will be tagged <span class="font-medium text-light">imported-<%= Date.current.iso8601 %></span>, so you can find the batch later.
+    </p>
+  <% end %>
+
+  <div class="flex flex-wrap items-center gap-2">
+    <%= link_to new_account_import_path, class: "[view-transition-name:import-start-over] btn btn-destructive btn-muted w-full @xl:w-auto", data: start_over do %>
+      <%= icon "link-backward", class: "size-4 shrink-0" %>
+      <span>Start Over</span>
+    <% end %>
+    <button type="submit" name="step" value="<%= back[0] %>" class="[view-transition-name:import-back] btn btn-secondary btn-muted w-full @xl:w-auto" formnovalidate>
+      <%= icon "arrow-left", class: "size-4 shrink-0" %>
+      <span><%= back[1] %></span>
+    </button>
+
+    <% primary = "[view-transition-name:import-primary] btn btn-primary w-full @xl:w-auto @xl:ml-auto [form[aria-busy=true]_&]:pointer-events-none [form[aria-busy=true]_&]:opacity-60" %>
+    <% if page == "review" %>
+      <%= tag.button type: "submit", name: "step", value: "summary", formnovalidate: true, class: primary, aria: { describedby: ("import-blocker" if blocker) } do %>
+        <span>Continue to Summary</span>
+        <%= icon "arrow-right", class: "size-4 shrink-0" %>
+      <% end %>
+    <% else %>
+      <%= tag.button type: "submit", name: "step", value: "import", formnovalidate: true, class: primary,
+            aria: { describedby: ("import-blocker" if blocker) },
+            data: { turbo_submits_with: "Importing…", turbo_confirm: confirm } do %>
+        <%= icon "file-import", class: "size-4 shrink-0" %>
+        <span><%= importable.zero? ? "Nothing to Import" : "Import #{pluralize(importable, "Job Lead")}" %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>

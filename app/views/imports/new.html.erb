@@ -1,0 +1,73 @@
+<% content_for :title, "Import Job Leads" %>
+
+<div class="sm:w-7/8 w-full mx-auto @container">
+  <%= render "imports/header", description: "Import job leads from a spreadsheet. Nothing is saved until the last step." %>
+
+  <%= form_with url: account_imports_path, multipart: true do |form| %>
+    <div class="space-y-6">
+      <div>
+        <%= form.label :file, "CSV File", class: "form-label" %>
+        <div class="group relative flex flex-col items-center justify-center gap-3 min-h-56 p-8 text-center rounded-2xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50/60 dark:bg-neutral-900/60 hover:border-primary-400 hover:bg-primary-50/40 dark:hover:bg-primary-500/5 has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary-500 has-[input:focus-visible]:ring-offset-2 dark:has-[input:focus-visible]:ring-offset-neutral-950 transition-colors duration-120"
+             data-controller="file-drop" data-file-drop-auto-submit-value="true"
+             data-file-drop-dragging-class="border-primary-500! bg-primary-50! dark:bg-primary-500/10! motion-safe:scale-[1.01]"
+             data-action="dragenter->file-drop#dragenter dragleave->file-drop#dragleave drop->file-drop#drop">
+          <%= form.file_field :file, accept: ".csv,text/csv", required: true, aria: { describedby: "import-file-hint" },
+                class: "absolute inset-0 size-full opacity-0 cursor-pointer",
+                data: { file_drop_target: "input", action: "change->file-drop#update" } %>
+
+          <div class="pointer-events-none flex flex-col items-center gap-3" data-file-drop-target="empty">
+            <div class="grid place-items-center size-16 rounded-full bg-white dark:bg-neutral-800 shadow-xs ring-1 ring-neutral-900/5 dark:ring-white/5 group-hover:scale-105 transition-transform duration-120">
+              <%= icon "csv", class: "size-8 text-primary-550 dark:text-primary-400" %>
+            </div>
+            <div>
+              <p class="font-semibold text-normal">Drop your CSV here</p>
+              <p class="text-sm text-muted mt-0.5">or <span class="font-medium text-primary-550 dark:text-primary-400 underline underline-offset-2">browse your files</span></p>
+            </div>
+          </div>
+
+          <div class="pointer-events-none flex flex-col items-center gap-3" data-file-drop-target="selected" role="status" hidden>
+            <div class="grid place-items-center size-16 rounded-full bg-primary-100 dark:bg-primary-500/15 motion-safe:animate-pulse">
+              <%= icon "csv-filled", class: "size-8 text-primary-550 dark:text-primary-400" %>
+            </div>
+            <div class="min-w-0 max-w-full">
+              <p class="font-semibold text-normal break-all" data-file-drop-target="name" style="view-transition-name: import-filename"></p>
+              <p class="text-sm text-muted mt-0.5 tabular-nums" data-file-drop-target="size"></p>
+            </div>
+          </div>
+        </div>
+        <p id="import-file-hint" class="text-xs text-muted mt-1.5 text-pretty">
+          Up to <%= number_to_human_size JobLeadImport::MAX_BYTES %> and <%= number_with_delimiter JobLeadImport::MAX_ROWS %> rows. Using Excel, Numbers, or Google Sheets? Export as CSV first.
+        </p>
+      </div>
+
+      <section class="card" aria-labelledby="importable-heading">
+        <h2 id="importable-heading" class="text-base font-semibold text-normal mb-3">What Can Be Imported</h2>
+
+        <dl class="grid grid-cols-1 @xl:grid-cols-[auto_1fr] gap-x-4 gap-y-3 text-sm">
+          <dt class="flex items-center gap-1.5 font-medium text-light">
+            <%= icon "check-circle", class: "size-4 shrink-0 text-primary-550 dark:text-primary-400" %>
+            Required
+          </dt>
+          <dd class="text-soft text-pretty">Job title, company, and application URL</dd>
+
+          <dt class="flex items-center gap-1.5 font-medium text-light">
+            <%= icon "plus-circle", class: "size-4 shrink-0 text-sky-600 dark:text-sky-400" %>
+            Optional
+          </dt>
+          <dd class="text-soft text-pretty">Status, location, posted salary, offer amount, source, contact, tags, and the date of each step</dd>
+
+          <dt class="flex items-center gap-1.5 font-medium text-light">
+            <%= icon "x-circle", class: "size-4 shrink-0 text-rose-600 dark:text-rose-400" %>
+            Not Imported
+          </dt>
+          <dd class="text-soft text-pretty">Interviews and notes</dd>
+        </dl>
+
+        <p class="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-800 text-sm text-light text-pretty">
+          Job leads <%= link_to "exported from JobJournal", account_export_path, class: "btn-link btn-link-primary" %> as a CSV will import as-is.
+        </p>
+      </section>
+    </div>
+
+  <% end %>
+</div>

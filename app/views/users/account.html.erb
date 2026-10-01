@@ -14,7 +14,8 @@
     { label: "Security", description: "#{pluralize(@sessions_count, "active session")}", icon: "security", path: security_path },
     { label: "Manage Tags", description: @tags_count.zero? ? "No tags yet" : pluralize(@tags_count, "tag"), icon: "tag", path: tags_path },
     { label: "Archived Job Leads", description: @archived_count.zero? ? "Nothing archived" : "#{@archived_count} archived", icon: "archive", path: job_leads_path(job_lead_state: "archived") },
-    { label: "Export Your Data", description: "Download as JSON or CSV", icon: "file-export", path: account_export_path }
+    { label: "Export Your Data", description: "Download as JSON or CSV", icon: "file-export", path: account_export_path },
+    { label: "Import Job Leads", description: "Add job leads from a CSV file", icon: "file-import", path: new_account_import_path }
   ]
 %>
 

@@ -1,0 +1,24 @@
+<% content_for :title, "Import Job Leads" %>
+
+<div class="sm:w-7/8 w-full mx-auto @container">
+  <%= render "imports/header", step: 1, draft: @draft, description: "Match each JobJournal field to a column in your file." %>
+
+  <%= form_with url: account_import_path(@draft), method: :patch, data: { controller: "submit-on-change" } do |form| %>
+    <%# Default submitter: pressing Enter or changing a field refreshes this step. %>
+    <button type="submit" class="sr-only" tabindex="-1" aria-hidden="true" formnovalidate data-submit-on-change-target="submitter"></button>
+    <%= hidden_field_tag :page, "columns" %>
+
+    <%= render "imports/columns", import: @import, auto_mapping: @draft[:auto_mapping], show_unmatched: @draft[:show_unmatched] == "1" %>
+
+    <div class="[view-transition-name:import-footer] sticky-form-footer mt-8 flex flex-wrap items-center gap-2">
+      <%= link_to new_account_import_path, class: "[view-transition-name:import-start-over] btn btn-destructive btn-muted w-full @xl:w-auto", data: { turbo_method: :get, turbo_confirm: "Start over? Your column choices and fixes will be lost." } do %>
+        <%= icon "link-backward", class: "size-4 shrink-0" %>
+        <span>Start Over</span>
+      <% end %>
+      <button type="submit" name="step" value="review" class="[view-transition-name:import-primary] btn btn-primary w-full @xl:w-auto @xl:ml-auto">
+        <span>Continue to Review</span>
+        <%= icon "arrow-right", class: "size-4 shrink-0" %>
+      </button>
+    </div>
+  <% end %>
+</div>
