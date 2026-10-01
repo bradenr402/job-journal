@@ -61,6 +61,16 @@
       --minimal-grid-mark-color: var(--color-neutral-800);
     }
 
+    /*
+      In a single column the bleed already reaches the page edge, so the corner
+      marks (which overhang by half their size) would cause horizontal scrolling.
+      Shrink the bleed by that overhang; item padding uses the same variable, so
+      content stays aligned.
+    */
+    @variant @max-xl {
+      --minimal-item-bleed: calc(--spacing(4) - var(--minimal-grid-mark-size) / 2);
+    }
+
     @apply -mx-[calc(var(--minimal-item-bleed)-var(--card-grid-gap)/2)];
 
     > .minimal-item {
