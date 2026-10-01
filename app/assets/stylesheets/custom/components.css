@@ -242,6 +242,43 @@
   }
 }
 
+/*
+  Vertically stacked page sections. Add `section-stack-dividers` for a dashed
+  divider centered between each pair of sections, with extra room around it.
+  Override `--section-stack-gap` to change the base spacing.
+*/
+@utility section-stack {
+  --section-stack-gap: --spacing(20);
+
+  @apply flex flex-col gap-(--section-stack-gap);
+}
+
+@utility section-stack-dividers {
+  --section-stack-divider-space: --spacing(8);
+  --section-stack-divider-color: var(--color-neutral-200);
+
+  @variant dark {
+    --section-stack-divider-color: var(--color-neutral-800);
+  }
+
+  > * + * {
+    @apply relative mt-(--section-stack-divider-space);
+
+    /* Three equal dashes separated by short gaps: ——— ——— ——— */
+    &::before {
+      @apply content-[""] absolute left-1/2 top-[calc((var(--section-stack-gap)+var(--section-stack-divider-space))/-2)] -translate-1/2 w-1/2 h-px pointer-events-none;
+      background: linear-gradient(
+        to right,
+        var(--section-stack-divider-color) 0 30%,
+        transparent 30% 35%,
+        var(--section-stack-divider-color) 35% 65%,
+        transparent 65% 70%,
+        var(--section-stack-divider-color) 70% 100%
+      );
+    }
+  }
+}
+
 @utility blanket-link {
   @apply absolute inset-0 z-10 outline-none;
 }

@@ -1,6 +1,6 @@
 <% content_for :title, 'Home' %>
 
-<div class="sm:w-7/8 w-full mx-auto space-y-20">
+<div class="sm:w-7/8 w-full mx-auto section-stack <%= "section-stack-dividers" if minimal_style? %>">
   <% if @all_job_leads.empty? %>
     <div>
       <div class="mb-4">
@@ -256,8 +256,8 @@
         <p class="text-sm text-muted mt-1 text-pretty">A quick overview of all your job search activity to help you track progress and spot trends.</p>
       </div>
 
-      <%# Minimal items have no frame, so they need more room to read as separate sections %>
-      <div class="@container <%= minimal_style? ? "space-y-6" : "space-y-3" %>">
+      <%# Minimal items have no frame, so they need more room and a divider to read as separate sections %>
+      <div class="@container section-stack <%= minimal_style? ? "section-stack-dividers [--section-stack-gap:calc(var(--spacing)*10)]" : "[--section-stack-gap:calc(var(--spacing)*3)]" %>">
         <div class="<%= collection_layout_class_names layout: "grid", count: 4 %>">
           <div class="relative <%= item_layout_class_names %> flex flex-col">
             <%= link_to "", job_leads_path(job_lead_state: "all"), class: "blanket-link", aria: { label: "View all job leads" } %>
