@@ -1,9 +1,17 @@
 require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
+  include ActionMailer::TestHelper
+
   setup do
     @user = users(:one)
     @user.sessions.delete_all
+  end
+
+  test "signing in sends a new login email" do
+    assert_enqueued_email_with SessionsMailer, :new_login, args: ->(args) { args.first.user == @user } do
+      sign_in
+    end
   end
 
   test "can log out one of your own sessions" do

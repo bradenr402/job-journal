@@ -13,7 +13,8 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate_by(params.permit(:email_address, :password))
-      start_new_session_for user
+      session = start_new_session_for user
+      SessionsMailer.new_login(session).deliver_later
       redirect_to after_authentication_url
     else
       redirect_to new_session_path, error: "Invalid email address or password. Please try again."

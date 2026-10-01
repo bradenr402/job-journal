@@ -1,0 +1,18 @@
+<div class="email-wrapper">
+  <h1 class="email-heading">New sign-in to your JobJournal account</h1>
+  <p class="email-text">
+    Your account was just signed into from a new session:
+  </p>
+  <p class="email-text">
+    <strong>Device:</strong> <%= @device.label.join(" · ") %><br>
+    <strong>Browser:</strong> <%= @device.browser %><br>
+    <strong>IP address:</strong> <%= @session.ip_address %><br>
+    <strong>Time:</strong> <%= @session.created_at.to_fs(:long) %> UTC
+  </p>
+  <a href="<%= security_url %>" class="email-button">
+    Review Active Sessions
+  </a>
+  <p class="email-footer">
+    If this was you, you can ignore this email. If you don’t recognize this sign-in, log out the session from the link above and change your password.
+  </p>
+</div>
