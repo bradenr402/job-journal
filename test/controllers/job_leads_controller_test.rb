@@ -377,6 +377,41 @@ class JobLeadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal flash[:alert], "Cannot advance rejected lead to Offer."
   end
 
+  def lead_ready_for_offer
+    lead = @user.job_leads.create!(title: "Example", company: "Example co.", application_url: "https://example.com/jobs/offer", created_at: 10.days.ago, applied_at: 8.days.ago)
+    lead.interviews.create!(interviewer: "John Doe", scheduled_at: 5.days.ago)
+    lead
+  end
+
+  test "should set offer with a custom offer date" do
+    lead = lead_ready_for_offer
+
+    patch set_offer_job_lead_url(lead), params: { job_lead: { offer_amount: 120_000, offer_at: 2.days.ago } }
+
+    assert_redirected_to job_lead_url(lead)
+    assert_equal 2.days.ago.to_date, lead.reload.offer_at.to_date
+  end
+
+  test "should reject an offer dated before the last interview" do
+    lead = lead_ready_for_offer
+
+    patch set_offer_job_lead_url(lead), params: { job_lead: { offer_amount: 120_000, offer_at: 6.days.ago } }
+
+    assert_response :unprocessable_content
+    assert_select "#error_explanation", /Offer can't be before/
+    assert_nil lead.reload.offer_at
+  end
+
+  test "should re-render the offer form when the amount is missing" do
+    lead = lead_ready_for_offer
+
+    patch set_offer_job_lead_url(lead), params: { job_lead: { offer_amount: "" } }
+
+    assert_response :unprocessable_content
+    assert_select "#error_explanation", /Offer amount must be greater than 0/
+    assert_nil lead.reload.offer_at
+  end
+
   test "should not set offer on another user's job lead" do
     sign_in_as users(:two)
 

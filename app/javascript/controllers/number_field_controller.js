@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 // Connects to data-controller="number-field"
 export default class extends Controller {
   static targets = ['input'];
-  static values = { step: { type: Number, default: 1 }, precision: { type: Number, default: 0 } };
+  static values = { step: { type: Number, default: 1 }, precision: { type: Number, default: 0 }, roundTo: { type: Number, default: 0 } };
 
   connect() {
     this.holdInterval = null;
@@ -59,17 +59,31 @@ export default class extends Controller {
 
   increment() {
     const input = this.inputTarget;
-    input.stepUp(this.stepValue);
+    if (this.roundToValue) this.stepToMultiple(1);
+    else input.stepUp(this.stepValue);
     this.formatInputValue();
     input.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
   decrement() {
     const input = this.inputTarget;
-    input.stepDown(this.stepValue);
+    if (this.roundToValue) this.stepToMultiple(-1);
+    else input.stepDown(this.stepValue);
     this.formatInputValue();
     input.dispatchEvent(new Event('input', { bubbles: true }));
   }
+
+// Moves to the next multiple of `roundTo` (1.00 -> 1,000 -> 2,000), staying within min/max.
+stepToMultiple(direction) {
+  const input = this.inputTarget;
+  const round = this.roundToValue;
+  const value = parseFloat(input.value) || 0;
+  let next = direction > 0 ? Math.floor(value / round) * round + round : Math.ceil(value / round) * round - round;
+
+  if (input.min !== '') next = Math.max(next, parseFloat(input.min));
+  if (input.max !== '') next = Math.min(next, parseFloat(input.max));
+  input.value = next;
+}
 
   formatInputValue() {
     const input = this.inputTarget;

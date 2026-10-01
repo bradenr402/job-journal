@@ -122,6 +122,11 @@
   @apply size-4.5 stroke-[1.75] text-normal shrink-0;
 }
 
+/* Unit shown beside the value inside a form-number-frame, e.g. a currency symbol. */
+@utility form-number-affix {
+  @apply shrink-0 pl-1.5 -mr-1 font-medium text-muted select-none;
+}
+
 @utility form-number-decrement {
   @apply form-number-button;
 }

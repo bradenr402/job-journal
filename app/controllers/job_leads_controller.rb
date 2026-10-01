@@ -193,15 +193,21 @@ class JobLeadsController < ApplicationController
 
     return redirect_to @job_lead, alert: message if message
 
-    offer_amount = params[:job_lead][:offer_amount].to_f
+    offer = params.expect(job_lead: [ :offer_amount, :offer_at ])
+    @job_lead.offer_amount = offer[:offer_amount]
+    @job_lead.offer_at = offer[:offer_at].presence || Time.current
 
-    return redirect_back fallback_location: @job_lead, alert: "Offer amount is required." unless offer_amount.positive?
+    unless @job_lead.offer_amount.to_f.positive?
+      @job_lead.errors.add(:offer_amount, "must be greater than 0")
+      return render :offer, status: :unprocessable_content
+    end
 
-    if @job_lead.update(offer_at: Time.current, offer_amount:)
+    # The :history context keeps the offer date after the applied and interview dates.
+    if @job_lead.save(context: [ :update, :history ])
       flash.clear
       redirect_to @job_lead, success: "Offer amount set successfully."
     else
-      render :offer, status: :unprocessable_content, error: "Failed to set offer amount."
+      render :offer, status: :unprocessable_content
     end
   end
 

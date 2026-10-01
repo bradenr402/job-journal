@@ -1,38 +1,90 @@
-<% content_for :title, "Set Offer Amount - #{@job_lead.title} @ #{@job_lead.company}" %>
+<% content_for :title, "Set Offer - #{@job_lead.title} @ #{@job_lead.company}" %>
+
+<% last_step_at = [ @job_lead.applied_at, @job_lead.interviews.maximum(:scheduled_at) ].compact.max %>
 
 <div class="sm:w-7/8 w-full mx-auto">
-  <div class="mb-4">
-    <%= link_to @job_lead, class: 'btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]' do %>
-      <%= icon 'arrow-left', class: 'size-3.5 shrink-0' %>
+  <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
+    <%= link_to @job_lead, class: "btn btn-sm btn-secondary btn-muted gap-1.5 [view-transition-name:back-btn]" do %>
+      <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
       <span>Back to Job Lead</span>
     <% end %>
   </div>
 
-  <h1 class="heading mb-6"><%= page_title %></h1>
+  <div class="mb-6">
+    <h1 class="heading">Set Offer</h1>
+    <p class="mt-1 text-light font-medium text-pretty">
+      <%= @job_lead.title %> <span class="text-muted font-normal">@</span> <%= @job_lead.company %>
+    </p>
+    <p class="text-sm text-muted mt-1 text-pretty">
+      Record the offer you received to move this job lead to Offer.
+    </p>
+  </div>
 
-  <%= form_with(model: @job_lead, url: set_offer_job_lead_path(@job_lead), class: '@container mx-auto mt-6') do |form| %>
-    <%= render 'components/errors', resource: @job_lead %>
+  <%= form_with model: @job_lead, url: set_offer_job_lead_path(@job_lead), class: "@container" do |form| %>
+    <%= render "components/errors", resource: @job_lead %>
 
-    <div class="mb-5">
-      <%= form.label :offer_amount, 'Offer Amount', class: 'form-label' %>
+    <div class="space-y-5">
+      <div data-controller="amount-preview">
+        <%= form.label :offer_amount, "Offer Amount", class: "form-label" %>
 
-      <div class="form-number-frame" data-controller="number-field" data-number-field-step-value="100000">
-        <button type="button" class="form-number-decrement">
-          <%= icon 'minus', class: "form-number-icon" %>
-        </button>
+        <div class="form-number-frame" data-controller="number-field" data-number-field-step-value="100000" data-number-field-precision-value="2" data-number-field-round-to-value="1000">
+          <button type="button" class="form-number-decrement" aria-label="Decrease by $1,000">
+            <%= icon "minus", class: "form-number-icon" %>
+          </button>
 
-        <%= form.number_field :offer_amount, class: 'form-number', step: '0.01', min: 0.01, placeholder: '105000', value: 0, data: { number_field_target: 'input' } %>
+          <span class="form-number-affix" aria-hidden="true">$</span>
 
-        <button type="button" class="form-number-increment">
-          <%= icon 'plus', class: "form-number-icon" %>
-        </button>
+          <%= form.number_field :offer_amount,
+                class: "form-number",
+                step: "0.01",
+                min: 0.01,
+                required: true,
+                autofocus: true,
+                inputmode: "decimal",
+                placeholder: "105,000",
+                value: (@job_lead.offer_amount? ? number_with_precision(@job_lead.offer_amount, precision: 2) : nil),
+                aria: { describedby: "offer-amount-hint" },
+                data: { number_field_target: "input", amount_preview_target: "input", action: "input->amount-preview#update" } %>
+
+          <button type="button" class="form-number-increment" aria-label="Increase by $1,000">
+            <%= icon "plus", class: "form-number-icon" %>
+          </button>
+        </div>
+
+        <p class="mt-1.5 text-sm font-medium text-light tabular-nums empty:hidden" data-amount-preview-target="output" aria-live="polite"></p>
+        <p id="offer-amount-hint" class="mt-1 flex flex-wrap items-center text-xs text-muted divide-dot divide-dot-gap-1.5 divide-dot-size-0.5 divide-dot-neutral-400 dark:divide-dot-neutral-600">
+          <% if @job_lead.salary? %>
+            <span class="inline-flex items-center gap-1">Posted salary: <span class="font-medium text-light"><%= @job_lead.salary %></span></span>
+          <% end %>
+          <span class="inline-flex items-center">Annual base salary in USD</span>
+        </p>
       </div>
 
-      <p class="text-xs text-muted mt-1">Set an offer amount to advance this job lead to Offer.</p>
+      <div>
+        <%= form.label :offer_at, "Offer Received", class: "form-label" %>
+        <%= form.datetime_field :offer_at,
+              include_seconds: false,
+              class: "form-input",
+              value: (@job_lead.offer_at || Time.current).strftime("%Y-%m-%dT%H:%M"),
+              min: last_step_at&.strftime("%Y-%m-%dT%H:%M"),
+              max: Time.current.strftime("%Y-%m-%dT%H:%M"),
+              aria: { describedby: "offer-at-hint" } %>
+        <p id="offer-at-hint" class="text-xs text-muted mt-1.5 text-pretty">
+          <% if last_step_at %>
+            Must be after <span class="font-semibold text-light"><%= local_time_short last_step_at %></span>, the last step in this job lead's history.
+          <% else %>
+            When you received the offer.
+          <% end %>
+        </p>
+      </div>
     </div>
 
-    <div class="sticky-form-footer mt-8">
-      <%= form.submit 'Advance to Offer', class: 'btn btn-primary w-full sm:w-auto' %>
+    <div class="sticky-form-footer mt-8 flex flex-wrap items-center gap-2">
+      <%= form.button type: "submit", class: "btn btn-primary w-full sm:w-auto" do %>
+        <%= icon_for_status :offer, class: "size-4.5 shrink-0" %>
+        <span>Advance to Offer</span>
+      <% end %>
+      <%= link_to "Cancel", @job_lead, class: "btn btn-secondary w-full sm:w-auto" %>
     </div>
   <% end %>
 </div>
