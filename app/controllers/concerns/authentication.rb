@@ -51,4 +51,8 @@ module Authentication
       session.destroy
       cookies.delete(SESSION_COOKIE_NAME) if session == Current.session
     end
+
+    def terminate_sessions(sessions)
+      sessions.to_a.each { |session| terminate_session session }.size
+    end
 end

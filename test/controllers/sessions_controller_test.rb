@@ -12,7 +12,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     delete session_url(session: other)
 
-    assert_redirected_to account_url
+    assert_redirected_to security_url
     assert_not Session.exists?(other.id)
   end
 
@@ -24,6 +24,55 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
     assert Session.exists?(other.id)
+  end
+
+  test "log out all keeps the current session" do
+    current = sign_in
+    2.times { @user.sessions.create! }
+    foreign = users(:two).sessions.create!
+
+    delete destroy_other_sessions_url
+
+    assert_redirected_to security_url
+    assert_equal "Terminated 2 sessions.", flash[:notice]
+    assert_equal [ current ], @user.sessions.reload.to_a
+    assert Session.exists?(foreign.id)
+  end
+
+  test "log out inactive sessions only removes sessions older than the mark" do
+    current = sign_in
+    current.update_columns(updated_at: 2.weeks.ago)
+    recent = @user.sessions.create!
+    stale = @user.sessions.create!
+    stale.update_columns(updated_at: 2.months.ago)
+
+    delete destroy_inactive_sessions_url(since: "1_month")
+
+    assert_redirected_to security_url
+    assert_equal "Terminated 1 session inactive for over 1 month.", flash[:notice]
+    assert_equal [ current, recent ].sort_by(&:id), @user.sessions.reload.sort_by(&:id)
+  end
+
+  test "log out inactive sessions never removes the current session" do
+    current = sign_in
+    current.update_columns(updated_at: 1.year.ago)
+
+    delete destroy_inactive_sessions_url(since: "6_months")
+
+    assert_equal "No sessions to terminate.", flash[:notice]
+    assert Session.exists?(current.id)
+  end
+
+  test "log out inactive sessions rejects unknown time ranges" do
+    sign_in
+    stale = @user.sessions.create!
+    stale.update_columns(updated_at: 1.year.ago)
+
+    delete destroy_inactive_sessions_url(since: "1_day")
+
+    assert_redirected_to security_url
+    assert_equal "Invalid time range.", flash[:error]
+    assert Session.exists?(stale.id)
   end
 
   private

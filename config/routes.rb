@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :passwords, only: [ :new, :create, :edit, :update ], param: :token
 
   delete "sessions/others", to: "sessions#destroy_other_sessions", as: :destroy_other_sessions
+  delete "sessions/inactive", to: "sessions#destroy_inactive_sessions", as: :destroy_inactive_sessions
 
   resources :job_leads do
     collection do

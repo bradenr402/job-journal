@@ -28,15 +28,30 @@ class SessionsController < ApplicationController
     if session == Current.session
       redirect_to new_session_path, notice: "You&#8217;ve been signed out."
     else
-      redirect_back fallback_location: account_path, notice: "Session successfully terminated."
+      redirect_back fallback_location: security_path, notice: "Session successfully terminated."
     end
   end
 
   def destroy_other_sessions
-    Session.where(user_id: Current.user.id).where.not(id: Current.session.id).find_each do |session|
-      terminate_session session
-    end
+    count = terminate_sessions Current.user.sessions.where.not(id: Current.session.id)
 
-    redirect_to account_path, notice: "All other sessions have been terminated."
+    redirect_to security_path, notice: termination_notice(count)
+  end
+
+  def destroy_inactive_sessions
+    mark = params[:since]
+    return redirect_to(security_path, error: "Invalid time range.") unless Session::RECENCY_MARKS.key?(mark)
+
+    count = terminate_sessions Current.user.sessions.inactive_since(mark).where.not(id: Current.session.id)
+
+    redirect_to security_path, notice: termination_notice(count, "inactive for over #{mark.humanize(capitalize: false)}")
+  end
+
+  private
+
+  def termination_notice(count, qualifier = nil)
+    return "No sessions to terminate." if count.zero?
+
+    [ "Terminated #{count} #{"session".pluralize(count)}", qualifier ].compact.join(" ") + "."
   end
 end
