@@ -16,10 +16,10 @@ class TagsTest < ApplicationSystemTestCase
     visit edit_tag_url(@tag)
 
     fill_in "Name", with: "Rails"
-    assert_text "You already have a tag named “rails”. Saving will merge the two tags: " \
-                "every job lead tagged “remote” will be tagged “rails” instead, and “remote” will be deleted."
+    assert_text "This will merge two tags"
+    assert_text "2 job leads will move to the existing tag, and “remote” will be deleted."
 
-    message = dismiss_confirm { click_on "Save Changes" }
+    message = dismiss_confirm { click_on "Merge Tags" }
     assert_equal "Merge the 'remote' tag into 'rails'?\n\n" \
                  "Every job lead tagged 'remote' will be tagged 'rails' instead, " \
                  "and the 'remote' tag will be deleted. This can't be undone.", message
@@ -27,7 +27,7 @@ class TagsTest < ApplicationSystemTestCase
     assert_current_path edit_tag_path(@tag)
     assert Tag.exists?(@tag.id), "dismissing the confirmation should leave the tag alone"
 
-    accept_confirm { click_on "Save Changes" }
+    accept_confirm { click_on "Merge Tags" }
 
     assert_text "Tag 'remote' was merged into 'rails'."
     assert_not Tag.exists?(@tag.id)
@@ -37,7 +37,7 @@ class TagsTest < ApplicationSystemTestCase
     visit edit_tag_url(@tag)
 
     fill_in "Name", with: "work from home"
-    assert_no_text "You already have a tag named"
+    assert_no_text "This will merge two tags"
 
     click_on "Save Changes"
 
@@ -49,9 +49,9 @@ class TagsTest < ApplicationSystemTestCase
     visit edit_tag_url(@tag)
 
     fill_in "Name", with: "  RAILS  "
-    assert_text "You already have a tag named"
+    assert_text "This will merge two tags"
 
-    accept_confirm { click_on "Save Changes" }
+    accept_confirm { click_on "Merge Tags" }
 
     assert_text "Tag 'remote' was merged into 'rails'."
   end
