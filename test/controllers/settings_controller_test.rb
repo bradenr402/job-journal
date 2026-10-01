@@ -25,6 +25,15 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "input#filters_job_leads_all[name='settings[filters][job_leads]']"
   end
 
+  test "should update appearance layout and style" do
+    patch settings_url(tab: "appearance"), params: { settings: { appearance: { layout: "list", style: "minimal" } } }
+
+    assert_redirected_to settings_path(tab: "appearance")
+    @user.reload
+    assert_equal "list", @user.get_setting(:appearance, :layout)
+    assert_equal "minimal", @user.get_setting(:appearance, :style)
+  end
+
   test "should fall back to default tab for an invalid tab param" do
     get settings_url(tab: "bogus")
     assert_response :success

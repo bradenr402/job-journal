@@ -1,56 +1,37 @@
 module ApplicationHelper
   LAYOUT_CLASSES = {
-    "grid" => {
-      collection: "card-grid",
-      item: "card"
-    },
-    "list" => {
-      collection: "card-list",
-      item: "card"
-    },
-    "minimal" => {
-      collection: "minimal-item-list",
-      item: "minimal-item"
-    }
+    "grid" => "card-grid",
+    "list" => "card-list"
   }
 
-  def resolve_layout(layout)
-    unless layout.is_a?(String) || layout.is_a?(Symbol)
-      raise ArgumentError, "Expected layout to be a String or Symbol, got #{layout.class.name}"
-    end
+  STYLE_CLASSES = {
+    "cards" => { collection: nil, item: "card" },
+    "minimal" => { collection: "minimal-item-list", item: "minimal-item" }
+  }
 
-    if layout.is_a?(Symbol)
-      layout = user_setting(:layouts, layout) || User::DEFAULT_SETTINGS.dig(:layouts, layout)
-    end
-
-    unless LAYOUT_CLASSES.key?(layout)
-      raise ArgumentError, "Unknown layout: #{layout.inspect}. Expected one of: #{LAYOUT_CLASSES.keys.join(", ")}"
-    end
-
-    layout
+  def appearance_setting(key)
+    user_setting(:appearance, key) || User::DEFAULT_SETTINGS.dig(:appearance, key)
   end
 
-  def collection_layout_class_names(layout, count:, size: :large)
-    layout = resolve_layout(layout)
-
-    layout_class = LAYOUT_CLASSES.dig(layout, :collection)
-    return layout_class unless layout == "grid"
+  # `layout` and `style` default to the current user's appearance settings.
+  def collection_layout_class_names(count:, size: :large, layout: nil, style: nil)
+    layout = resolve_appearance(LAYOUT_CLASSES, :layout, layout)
+    style = resolve_appearance(STYLE_CLASSES, :style, style)
 
     third_col_class = {
       medium: "card-grid-md",
       large: "card-grid-lg"
-    }[size.to_sym]
+    }[size.to_sym] if layout == "grid" && count >= 3 && count != 4
 
     [
-      layout_class,
-      (third_col_class if count >= 3 && count != 4)
+      LAYOUT_CLASSES[layout],
+      third_col_class,
+      STYLE_CLASSES.dig(style, :collection)
     ].compact.join(" ")
   end
 
-  def item_layout_class_names(layout)
-    layout = resolve_layout(layout)
-
-    LAYOUT_CLASSES.dig(layout, :item)
+  def item_layout_class_names(style: nil)
+    STYLE_CLASSES.dig(resolve_appearance(STYLE_CLASSES, :style, style), :item)
   end
 
   def page_title
@@ -203,5 +184,17 @@ module ApplicationHelper
 
   def back_path(fallback: root_path)
     request.referer || fallback
+  end
+
+  private
+
+  def resolve_appearance(classes, key, value)
+    value = (value || appearance_setting(key)).to_s
+
+    unless classes.key?(value)
+      raise ArgumentError, "Unknown #{key}: #{value.inspect}. Expected one of: #{classes.keys.join(", ")}"
+    end
+
+    value
   end
 end

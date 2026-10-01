@@ -12,10 +12,9 @@ module User::Settings
       notes: { default: "all", allowed: %w[all active archived] }
     },
 
-    layouts: {
-      job_leads: { default: "grid", allowed: %w[grid list minimal] },
-      interviews: { default: "grid", allowed: %w[grid list minimal] },
-      notes: { default: "grid", allowed: %w[grid list minimal] }
+    appearance: {
+      layout: { default: "grid", allowed: %w[grid list] },
+      style: { default: "cards", allowed: %w[cards minimal] }
     },
 
     archiving: {

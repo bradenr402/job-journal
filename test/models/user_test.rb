@@ -119,7 +119,7 @@ class UserTest < ActiveSupport::TestCase
   test "update_settings should persist valid nested values and preserve untouched siblings" do
     assert @user.update_settings(
       filters: { job_leads: "active", notes: "archived" },
-      layouts: { interviews: "minimal", notes: "list" },
+      appearance: { layout: "list", style: "minimal" },
       goals: { weekly_applications: 1001 },
       archiving: { rejected: { enabled: false }, stale: { archive_after_days: 366 } }
     )
@@ -127,8 +127,8 @@ class UserTest < ActiveSupport::TestCase
     @user.reload
     assert_equal "active", @user.get_setting(:filters, :job_leads)
     assert_equal "archived", @user.get_setting(:filters, :notes)
-    assert_equal "minimal", @user.get_setting(:layouts, :interviews)
-    assert_equal "list", @user.get_setting(:layouts, :notes)
+    assert_equal "list", @user.get_setting(:appearance, :layout)
+    assert_equal "minimal", @user.get_setting(:appearance, :style)
     assert_equal 1001, @user.get_setting(:goals, :weekly_applications)
     assert_equal false, @user.get_setting(:archiving, :rejected, :enabled)
     assert_equal 366, @user.get_setting(:archiving, :stale, :archive_after_days)
@@ -138,7 +138,7 @@ class UserTest < ActiveSupport::TestCase
   test "update_settings should ignore invalid payload values while persisting valid siblings" do
     @user.update_settings(
       filters: { job_leads: "active" },
-      layouts: { notes: "list" },
+      appearance: { layout: "list" },
       goals: { weekly_applications: 12 },
       archiving: { rejected: { enabled: false } },
       follow_ups: { application_days: 9 }
@@ -146,7 +146,7 @@ class UserTest < ActiveSupport::TestCase
 
     @user.update_settings(
       filters: { job_leads: "missing", notes: "archived" },
-      layouts: { notes: "masonry" },
+      appearance: { layout: "masonry" },
       goals: { weekly_applications: "10" },
       archiving: { rejected: { enabled: "false" } },
       follow_ups: { application_days: 9.5 }
@@ -155,7 +155,7 @@ class UserTest < ActiveSupport::TestCase
     @user.reload
     assert_equal "active", @user.get_setting(:filters, :job_leads)
     assert_equal "archived", @user.get_setting(:filters, :notes)
-    assert_equal "list", @user.get_setting(:layouts, :notes)
+    assert_equal "list", @user.get_setting(:appearance, :layout)
     assert_equal 12, @user.get_setting(:goals, :weekly_applications)
     assert_equal false, @user.get_setting(:archiving, :rejected, :enabled)
     assert_equal 9, @user.get_setting(:follow_ups, :application_days)
@@ -189,7 +189,7 @@ class UserTest < ActiveSupport::TestCase
   test "invalid assigned settings should fall back to defaults and not persist" do
     @user.settings = {
       filters: { job_leads: "bogus" },
-      layouts: { notes: "masonry" },
+      appearance: { layout: "masonry", style: "plain" },
       goals: { weekly_applications: "1001" },
       archiving: { stale: { enabled: "true", mark_after_days: 1.5 } }
     }
@@ -198,7 +198,7 @@ class UserTest < ActiveSupport::TestCase
     @user.reload
 
     assert_equal "all", @user.get_setting(:filters, :job_leads)
-    assert_equal "grid", @user.get_setting(:layouts, :notes)
+    assert_equal "grid", @user.get_setting(:appearance, :layout)
     assert_equal 10, @user.get_setting(:goals, :weekly_applications)
     assert_equal true, @user.get_setting(:archiving, :stale, :enabled)
     assert_equal 7, @user.get_setting(:archiving, :stale, :mark_after_days)

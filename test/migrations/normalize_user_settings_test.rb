@@ -31,7 +31,7 @@ class NormalizeUserSettingsTest < ActiveSupport::TestCase
 
     assert_equal 12, sanitized.dig(:goals, :weekly_applications)
     assert_equal "active", sanitized.dig(:filters, :job_leads)
-    assert_equal "minimal", sanitized.dig(:layouts, :notes)
+    assert_equal "minimal", migrated.dig(:layouts, :notes)
     assert_equal false, sanitized.dig(:archiving, :rejected, :enabled)
     assert_equal 45, sanitized.dig(:archiving, :inactive, :after_days)
   end

@@ -3,16 +3,25 @@
 <%= form_with url: settings_path(tab: "appearance"), method: :patch do |form| %>
   <div class="mb-4">
     <h2 class="subheading">Appearance Preferences</h2>
-    <p class="text-sm text-muted">Arrange each section in a multi-column grid, single-column list, or minimal compact layout.</p>
-    <p class="text-xs text-muted mt-1">On smaller screens, everything appears in a single column.</p>
+    <p class="text-sm text-muted">Choose how job leads, interviews, and notes are arranged and styled throughout JobJournal.</p>
   </div>
 
   <div class="space-y-5">
-    <% display_options = options("grid", "list") + [ option("minimal", icon: "menu") ] %>
+    <%=
+      render "settings/radio_group",
+      form:,
+      setting_path: %i[appearance layout],
+      help_text: "Arrange items in a multi-column grid or a single-column list. On smaller screens, everything appears in a single column.",
+      options: options("grid", "list")
+    %>
 
-    <%= render "settings/radio_group", form:, setting_path: %i[layouts job_leads], options: display_options %>
-    <%= render "settings/radio_group", form:, setting_path: %i[layouts interviews], options: display_options %>
-    <%= render "settings/radio_group", form:, setting_path: %i[layouts notes], options: display_options %>
+    <%=
+      render "settings/radio_group",
+      form:,
+      setting_path: %i[appearance style],
+      help_text: "Show each item on a card, or keep things minimal with no frame until you hover over an item.",
+      options: [ option("cards"), option("minimal", icon: "menu") ]
+    %>
   </div>
 
   <div class="sticky-form-footer mt-8">

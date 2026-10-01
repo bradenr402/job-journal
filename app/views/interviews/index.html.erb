@@ -22,7 +22,7 @@
 
     <div id="interviews" class="@container min-w-0 @3xl:flex-1">
       <% if @interviews.any? %>
-        <div class="<%= collection_layout_class_names :interviews, count: @interviews.size, size: :large %>">
+        <div class="<%= collection_layout_class_names count: @interviews.size, size: :large %>">
           <%= render @interviews %>
         </div>
       <% elsif !Current.user.interviews.exists? %>

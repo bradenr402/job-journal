@@ -1,0 +1,14 @@
+<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M6 4.25H18A3.75 3.75 0 0 1 21.75 8V16A3.75 3.75 0 0 1 18 19.75H6A3.75 3.75 0 0 1 2.25 16V8A3.75 3.75 0 0 1 6 4.25ZM7.5 9A1 1 0 0 0 7.5 11H16.5A1 1 0 0 0 16.5 9ZM7.5 13A1 1 0 0 0 7.5 15H12.5A1 1 0 0 0 12.5 13Z"
+    fill="currentColor"
+  />
+</svg>

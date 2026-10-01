@@ -11,77 +11,79 @@ class ApplicationHelperTest < ActionView::TestCase
     Current.reset
   end
 
-  test "resolve_layout returns valid string layouts" do
-    assert_equal "grid", resolve_layout("grid")
-    assert_equal "list", resolve_layout("list")
-    assert_equal "minimal", resolve_layout("minimal")
+  test "appearance_setting reads the current user's appearance settings" do
+    Current.user.settings = { appearance: { layout: "list", style: "minimal" } }
+
+    assert_equal "list", appearance_setting(:layout)
+    assert_equal "minimal", appearance_setting(:style)
   end
 
-  test "resolve_layout looks up symbol layouts from current user settings" do
-    Current.user.settings = { layouts: { job_leads: "minimal" } }
+  test "appearance_setting falls back to defaults for missing or invalid settings" do
+    Current.user.settings = { appearance: { layout: "masonry" } }
 
-    assert_equal "minimal", resolve_layout(:job_leads)
+    assert_equal "grid", appearance_setting(:layout)
+    assert_equal "cards", appearance_setting(:style)
   end
 
-  test "resolve_layout uses default user settings for missing symbol settings" do
-    Current.user.settings = {}
-
-    assert_equal "grid", resolve_layout(:job_leads)
-  end
-
-  test "resolve_layout uses default settings when no current user is present" do
+  test "appearance_setting uses defaults when no current user is present" do
     Current.reset
 
-    assert_equal "grid", resolve_layout(:job_leads)
+    assert_equal "grid", appearance_setting(:layout)
+    assert_equal "cards", appearance_setting(:style)
   end
 
-  test "resolve_layout rejects non string and non symbol layouts" do
-    error = assert_raises(ArgumentError) { resolve_layout(nil) }
+  test "collection_layout_class_names uses the current user's appearance by default" do
+    Current.user.settings = { appearance: { layout: "list", style: "minimal" } }
 
-    assert_equal "Expected layout to be a String or Symbol, got NilClass", error.message
+    assert_equal "card-list minimal-item-list", collection_layout_class_names(count: 8)
   end
 
-  test "resolve_layout rejects unknown layouts" do
-    error = assert_raises(ArgumentError) { resolve_layout("masonry") }
-
-    assert_equal "Unknown layout: \"masonry\". Expected one of: grid, list, minimal", error.message
-  end
-
-  test "resolve_layout falls back to default for invalid symbol settings" do
-    Current.user.settings = { layouts: { job_leads: "masonry" } }
-
-    assert_equal "grid", resolve_layout(:job_leads)
-  end
-
-  test "collection_layout_class_names returns list collection class" do
-    assert_equal "card-list", collection_layout_class_names("list", count: 8)
-  end
-
-  test "collection_layout_class_names returns minimal collection class" do
-    assert_equal "minimal-item-list", collection_layout_class_names("minimal", count: 8)
+  test "collection_layout_class_names combines each layout with each style" do
+    assert_equal "card-list", collection_layout_class_names(layout: "list", style: "cards", count: 8)
+    assert_equal "card-list minimal-item-list", collection_layout_class_names(layout: "list", style: "minimal", count: 8)
+    assert_equal "card-grid", collection_layout_class_names(layout: "grid", style: "cards", count: 2)
+    assert_equal "card-grid minimal-item-list", collection_layout_class_names(layout: "grid", style: "minimal", count: 2)
   end
 
   test "collection_layout_class_names returns base grid class for small and four item grids" do
-    assert_equal "card-grid", collection_layout_class_names("grid", count: 2)
-    assert_equal "card-grid", collection_layout_class_names("grid", count: 4)
+    assert_equal "card-grid", collection_layout_class_names(layout: "grid", style: "cards", count: 2)
+    assert_equal "card-grid", collection_layout_class_names(layout: "grid", style: "cards", count: 4)
   end
 
   test "collection_layout_class_names adds large grid class for three or more items except four" do
-    assert_equal "card-grid card-grid-lg", collection_layout_class_names("grid", count: 3)
-    assert_equal "card-grid card-grid-lg", collection_layout_class_names("grid", count: 5)
+    assert_equal "card-grid card-grid-lg", collection_layout_class_names(layout: "grid", style: "cards", count: 3)
+    assert_equal "card-grid card-grid-lg minimal-item-list", collection_layout_class_names(layout: "grid", style: "minimal", count: 5)
   end
 
   test "collection_layout_class_names adds medium grid class when requested" do
-    assert_equal "card-grid card-grid-md", collection_layout_class_names("grid", count: 3, size: :medium)
+    assert_equal "card-grid card-grid-md", collection_layout_class_names(layout: "grid", style: "cards", count: 3, size: :medium)
   end
 
   test "collection_layout_class_names skips unknown grid size classes" do
-    assert_equal "card-grid", collection_layout_class_names("grid", count: 3, size: :small)
+    assert_equal "card-grid", collection_layout_class_names(layout: "grid", style: "cards", count: 3, size: :small)
   end
 
-  test "item_layout_class_names returns default item class" do
-    assert_equal "card", item_layout_class_names("grid")
-    assert_equal "minimal-item", item_layout_class_names("minimal")
+  test "collection_layout_class_names skips grid size classes for lists" do
+    assert_equal "card-list", collection_layout_class_names(layout: "list", style: "cards", count: 3)
+  end
+
+  test "collection_layout_class_names rejects unknown layouts and styles" do
+    error = assert_raises(ArgumentError) { collection_layout_class_names(layout: "masonry", count: 1) }
+    assert_equal "Unknown layout: \"masonry\". Expected one of: grid, list", error.message
+
+    error = assert_raises(ArgumentError) { collection_layout_class_names(style: "plain", count: 1) }
+    assert_equal "Unknown style: \"plain\". Expected one of: cards, minimal", error.message
+  end
+
+  test "item_layout_class_names returns the item class for a style" do
+    assert_equal "card", item_layout_class_names(style: "cards")
+    assert_equal "minimal-item", item_layout_class_names(style: "minimal")
+  end
+
+  test "item_layout_class_names uses the current user's style by default" do
+    Current.user.settings = { appearance: { style: "minimal" } }
+
+    assert_equal "minimal-item", item_layout_class_names
   end
 
   test "page_title defaults to app name" do
@@ -101,9 +103,9 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test "user_setting returns the current user's setting value" do
-    Current.user.settings = { layouts: { job_leads: "list" } }
+    Current.user.settings = { appearance: { layout: "list" } }
 
-    assert_equal "list", user_setting(:layouts, :job_leads)
+    assert_equal "list", user_setting(:appearance, :layout)
   end
 
   test "number_with_sign prefixes positive and negative numbers" do

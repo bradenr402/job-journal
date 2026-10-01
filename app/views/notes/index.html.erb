@@ -34,7 +34,7 @@
 
     <div id="notes" class="@container min-w-0 @3xl:flex-1">
       <% if @notes.any? %>
-        <div class="<%= collection_layout_class_names :notes, count: @notes.size, size: :medium %>">
+        <div class="<%= collection_layout_class_names count: @notes.size, size: :medium %>">
           <%= render @notes %>
         </div>
       <% elsif !Current.user.notes.exists? %>
