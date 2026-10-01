@@ -71,40 +71,6 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "14319928ba8b7420b3c4405da565bd054afdd3c0fcf3d6b308a1ddc46ef9061d",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/views/job_leads/index.html.erb",
-      "line": 40,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => ((Current.user.job_leads.includes(:notes, :tags).select(:id, :created_at, :updated_at, :applied_at, :offer_at, :rejected_at, :accepted_at, :archived_at, :title, :company, :application_url).order_by_latest_status(:desc).active or Current.user.job_leads.includes(:notes, :tags).select(:id, :created_at, :updated_at, :applied_at, :offer_at, :rejected_at, :accepted_at, :archived_at, :title, :company, :application_url).order_by_latest_status(:desc).archived) or scope).with_tags(params[:tags].to_s.split(\",\").map(&:strip).uniq).with_status(params[:status]), {})",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "JobLeadsController",
-          "method": "index",
-          "line": 47,
-          "file": "app/controllers/job_leads_controller.rb",
-          "rendered": {
-            "name": "job_leads/index",
-            "file": "app/views/job_leads/index.html.erb"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "job_leads/index"
-      },
-      "user_input": "params[:status]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
       "fingerprint": "7187acd897205886676593131ad75c1dbef1f4e5e0e146a0b1bb0deda90cc4dd",
       "check_name": "Render",
       "message": "Render path contains parameter value",
