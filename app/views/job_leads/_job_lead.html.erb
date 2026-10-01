@@ -3,7 +3,7 @@
 <% job_lead_page = current_page?(job_lead_path(job_lead)) %>
 
 <div id="<%= dom_id job_lead %>" class="relative <%= item_layout_class_names(style: ("cards" if @demo)) %> flex flex-col" style="view-transition-name: job_lead-<%= job_lead.id %>;">
-  <%= link_to "", job_lead, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View job lead" } unless @demo || job_lead_page %>
+  <%= blanket_link job_lead, label: "View job lead", data: { turbo_frame: "_top" } unless @demo || job_lead_page %>
 
   <div class="flex gap-x-4 gap-y-2 w-full mb-2">
     <div class="<%= job_lead_page ? 'subheading' : 'text-lg font-semibold leading-snug mb-1' %>">
@@ -181,7 +181,7 @@
               <%= icon_for_status status_entry[:status], class: "size-4 -ml-px shrink-0" %>
               <%= status_entry[:status].titlecase %>: <span class="text-xs opacity-65"><%= local_date_short status_entry[:timestamp] %></span>
               <% if status_entry[:status] == 'interview' && job_lead_page %>
-                <%= link_to "", interview_path(status_entry[:interview]), class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View interview" } %>
+                <%= blanket_link interview_path(status_entry[:interview]), label: "View interview", data: { turbo_frame: "_top" } %>
               <% end %>
             </span>
           </div>

@@ -7,7 +7,7 @@
 
 <div id="<%= dom_id note %>" class="relative <%= item_layout_class_names(style: ("cards" if @demo)) %> flex flex-col" style="view-transition-name: note-<%= note.id %>;">
   <% unless note_page || @demo %>
-    <%= link_to "", note, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View note" } %>
+    <%= blanket_link note, label: "View note", data: { turbo_frame: "_top" } %>
   <% end %>
 
   <% if display_title %>

@@ -38,7 +38,7 @@
       <div class="@container">
         <div class="<%= collection_layout_class_names layout: "grid", count: 3, size: :large %> dashboard-stats-grid">
           <div class="relative <%= item_layout_class_names %> flex flex-col">
-            <%= link_to "", job_leads_path, class: "blanket-link", aria: { label: "View all job leads" } %>
+            <%= blanket_link job_leads_path, label: "View all job leads" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Job Leads This Week</p>
@@ -51,7 +51,7 @@
           </div>
 
           <div class="relative <%= item_layout_class_names %> flex flex-col @xl:@max-4xl:order-1 @xl:@max-4xl:col-span-2">
-            <%= link_to "", job_leads_path(status: "applied"), class: "blanket-link", aria: { label: "View all applications" } %>
+            <%= blanket_link job_leads_path(status: "applied"), label: "View all applications" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Applications This Week</p>
@@ -77,7 +77,7 @@
           </div>
 
           <div class="relative <%= item_layout_class_names %> flex flex-col">
-            <%= link_to "", interviews_path, class: "blanket-link", aria: { label: "View all interviews" } %>
+            <%= blanket_link interviews_path, label: "View all interviews" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Interviews This Week</p>
@@ -153,7 +153,7 @@
                   Rate your experience and jot down any reflection notes while it&#8217;s still fresh.
                 </p>
 
-                <%= link_to "", interview_path(interview), class: "blanket-link", aria: { label: "View interview" } %>
+                <%= blanket_link interview_path(interview), label: "View interview" %>
               </div>
             <% end %>
           </div>
@@ -209,7 +209,7 @@
                   Consider sending a follow-up email, or archive it if you&#8217;re no longer interested.
                 </p>
 
-                <%= link_to "", job_lead_path(suggestion), class: "blanket-link", aria: { label: "View job lead" } %>
+                <%= blanket_link job_lead_path(suggestion), label: "View job lead" %>
               </div>
             <% end %>
           </div>
@@ -259,7 +259,7 @@
       <div class="@container section-stack <%= minimal_style? ? "section-stack-dividers [--section-stack-gap:calc(var(--spacing)*10)]" : "[--section-stack-gap:calc(var(--spacing)*3)]" %>">
         <div class="<%= collection_layout_class_names layout: "grid", count: 4 %>">
           <div class="relative <%= item_layout_class_names %> flex flex-col">
-            <%= link_to "", job_leads_path(job_lead_state: "all"), class: "blanket-link", aria: { label: "View all job leads" } %>
+            <%= blanket_link job_leads_path(job_lead_state: "all"), label: "View all job leads" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Job Leads</p>
@@ -275,7 +275,7 @@
           </div>
 
           <div class="relative <%= item_layout_class_names %> flex flex-col">
-            <%= link_to "", job_leads_path(status: "applied"), class: "blanket-link", aria: { label: "View all applications" } %>
+            <%= blanket_link job_leads_path(status: "applied"), label: "View all applications" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Applications</p>
@@ -291,7 +291,7 @@
           </div>
 
           <div class="relative <%= item_layout_class_names %> flex flex-col">
-            <%= link_to "", interviews_path, class: "blanket-link", aria: { label: "View all interviews" } %>
+            <%= blanket_link interviews_path, label: "View all interviews" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Interviews</p>
@@ -318,7 +318,7 @@
           </div>
 
           <div class="relative <%= item_layout_class_names %> flex flex-col">
-            <%= link_to "", notes_path, class: "blanket-link", aria: { label: "View all notes" } %>
+            <%= blanket_link notes_path, label: "View all notes" %>
 
             <div class="flex items-start justify-between mb-5">
               <p class="font-semibold">Total Notes</p>

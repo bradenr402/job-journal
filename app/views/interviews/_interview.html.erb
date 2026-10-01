@@ -4,7 +4,7 @@
 <% job_lead = interview.job_lead %>
 
 <div id="<%= dom_id interview %>" class="relative <%= item_layout_class_names(style: ("cards" if @demo)) %> flex flex-col" style="view-transition-name: interview-<%= interview.id %>;">
-  <%= link_to "", interview, class: "blanket-link", data: { turbo_frame: "_top" }, aria: { label: "View interview" } unless @demo || interview_page %>
+  <%= blanket_link interview, label: "View interview", data: { turbo_frame: "_top" } unless @demo || interview_page %>
 
   <div class="flex items-start gap-x-4 gap-y-2 w-full mb-2">
     <div class="mb-2">

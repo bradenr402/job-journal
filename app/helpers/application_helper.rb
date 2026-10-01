@@ -35,6 +35,13 @@ module ApplicationHelper
     STYLE_CLASSES.dig(resolve_appearance(STYLE_CLASSES, :style, style), :item)
   end
 
+  def blanket_link(url, label:, **options)
+    options[:class] = class_names "blanket-link", options[:class]
+    options[:aria] = { label: }.merge options.fetch(:aria, {})
+
+    link_to "", url, **options
+  end
+
   def page_title
     title = content_for(:title).presence || "JobJournal"
     "JobJournal".in?(title) ? title : "#{title} • JobJournal"
