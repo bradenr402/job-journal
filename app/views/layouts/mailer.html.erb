@@ -3,6 +3,14 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style>
+      <% { 500 => "Aspekta-500", 800 => "Aspekta-800" }.each do |weight, file| %>
+        @font-face {
+          font-family: 'Aspekta';
+          font-weight: <%= weight %>;
+          src: url('<%= root_url %>fonts/<%= file %>.woff2') format('woff2');
+        }
+      <% end %>
+
       h1, p, a {
         margin: 0;
         padding: 0;
@@ -25,15 +33,23 @@
       }
 
       .email-wordmark {
-        font-size: 1.125rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: #0a0a0a;
+        display: inline-block;
         margin-bottom: 2rem;
       }
 
+      .email-wordmark img {
+        width: 28px;
+        height: 28px;
+        vertical-align: middle;
+      }
+
       .email-wordmark span {
-        color: #009966;
+        margin-left: 6px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        color: #262626;
+        vertical-align: middle;
       }
 
       .email-heading {
@@ -59,13 +75,15 @@
 
       .email-button {
         display: inline-block;
-        padding: 0.625rem 1.125rem;
-        background-color: #009966;
+        padding: 0.5rem 1rem;
+        background-color: #00bc7d;
         color: #ffffff;
-        font-size: 0.9375rem;
-        font-weight: 600;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
         border-radius: 0.5rem;
         text-decoration: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
       }
 
       .email-fallback {
@@ -101,7 +119,7 @@
 
   <body>
     <div class="email-wrapper">
-      <p class="email-wordmark"><span>Job</span>Journal</p>
+      <a href="<%= root_url %>" class="email-wordmark"><img src="<%= root_url %>icon.png" alt=""><span>JobJournal</span></a>
 
       <%= yield %>
 
