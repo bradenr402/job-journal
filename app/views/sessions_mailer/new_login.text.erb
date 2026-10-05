@@ -1,10 +1,7 @@
-Your JobJournal account was just signed into from a new session:
+New sign-in to your account
 
-Device: <%= @device.label.join(" · ") %>
-Browser: <%= @device.browser %>
-IP address: <%= @session.ip_address %>
-Time: <%= @session.created_at.to_fs(:long) %> UTC
+Your JobJournal account was just signed into from <%= @device.browser %> on <%= @device.label.join(" · ") %> at <%= @session.created_at.to_fs(:long) %> UTC (IP address <%= @session.ip_address %>).
 
 Review your active sessions: <%= security_url %>
 
-If this was you, you can ignore this email. If you don’t recognize this sign-in, log out the session from the link above and change your password.
+If this was you, there’s nothing to do. If it wasn’t, sign that session out from the link above and change your password.

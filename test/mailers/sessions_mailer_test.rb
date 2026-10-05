@@ -10,7 +10,7 @@ class SessionsMailerTest < ActionMailer::TestCase
     mail = SessionsMailer.new_login(session)
 
     assert_equal [ "one@example.com" ], mail.to
-    assert_equal "New sign-in to your JobJournal account", mail.subject
+    assert_equal "New sign-in to JobJournal from Chrome on Mac", mail.subject
     assert_match "Desktop · Mac", mail.text_part.body.to_s
     assert_match "Chrome", mail.text_part.body.to_s
     assert_match "203.0.113.7", mail.html_part.body.to_s

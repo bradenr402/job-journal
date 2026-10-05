@@ -1,12 +1,12 @@
-<div class="email-wrapper">
-  <h1 class="email-heading">Reset your JobJournal password</h1>
-  <p class="email-text">
-    You can reset your password using the secure link below. This link is valid for the next 15 minutes.
-  </p>
-  <a href="<%= edit_password_url(@user.password_reset_token) %>" class="email-button">
-    Reset Password
-  </a>
-  <p class="email-footer">
-    If you didn’t request this, you can ignore this email. Your password won’t change until you access the link above and set a new one.
-  </p>
-</div>
+<h1 class="email-heading">Reset your password</h1>
+<p class="email-text">
+  Someone (hopefully you) asked to reset the password for your JobJournal account. This link works for the next 15 minutes.
+</p>
+<a href="<%= edit_password_url(@user.password_reset_token) %>" class="email-button">Choose a New Password</a>
+<p class="email-fallback">
+  Or paste this link into your browser:<br>
+  <a href="<%= edit_password_url(@user.password_reset_token) %>"><%= edit_password_url(@user.password_reset_token) %></a>
+</p>
+<p class="email-note">
+  If it wasn’t you, ignore this email. Your password won’t change unless the link is used.
+</p>
