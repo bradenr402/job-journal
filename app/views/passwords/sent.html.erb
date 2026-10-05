@@ -1,0 +1,30 @@
+<% content_for :title, "Check Your Email" %>
+<% content_for :tagline do %>Almost <em>there</em>.<% end %>
+<% content_for :tagline_fact, "Reset links expire after 15 minutes, and nothing changes until you use one." %>
+
+<div class="flex items-center justify-center size-12 mb-6 rounded-xl bg-primary-50 dark:bg-primary-950/60 text-primary-550 dark:text-primary-500">
+  <%= icon "mail", class: "size-6 shrink-0" %>
+</div>
+
+<h1 class="heading leading-tight text-balance">Check your email</h1>
+
+<div class="mt-1.5 space-y-3 text-sm text-soft text-pretty">
+  <p>
+    If an account exists for
+    <% if @email_address %>
+      <strong class="font-semibold text-normal"><%= masked_email(@email_address) %></strong>,
+    <% else %>
+      that address,
+    <% end %>
+    a reset link is on its way. It works for the next 15 minutes.
+  </p>
+  <p>
+    Nothing yet? Check your spam folder, or
+    <%= link_to "try again", new_password_path(email_address: @email_address), class: "btn-link btn-link-primary" %>.
+  </p>
+</div>
+
+<%= link_to new_session_path, class: "btn btn-secondary w-full mt-8 gap-1.5" do %>
+  <%= icon "arrow-left", class: "size-3.5 shrink-0" %>
+  <span>Back to Sign In</span>
+<% end %>

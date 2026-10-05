@@ -1,26 +1,24 @@
 <% content_for :title, "Sign Up" %>
+<% content_for :tagline do %>A job search is a lot to keep in your head. <em>Write it down.</em><% end %>
+<% content_for :tagline_fact, "Free. No ads. We don’t sell your data." %>
 
-<div class="card">
-  <h1 class="subheading">Sign Up</h1>
-  <p class="text-soft">Sign up to create your account and level up your job search.</p>
+<div data-controller="email-handoff">
+  <%= render "shared/auth_header", title: "Create your account", subtitle: "Track every lead, interview, and offer in one private place." %>
 
-  <%= form_with url: registrations_url, model: @user, method: :post, class: "contents" do |form| %>
-    <% if @user.errors.any? %>
-      <div class="mt-5"><%= render "components/errors", resource: @user %></div>
-    <% end %>
-    <div class="my-5">
+  <%= form_with url: registrations_url, model: @user, method: :post, class: "space-y-5" do |form| %>
+    <%= render "components/errors", resource: @user %>
+
+    <div>
       <%= form.label :email_address, "Email Address", class: "form-label" %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", placeholder: "Enter your email address", value: params[:email_address].presence || @user.email_address, class: "form-input" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address].presence || @user.email_address, class: "form-input", data: { email_handoff_target: "email" } %>
     </div>
 
-    <%= render "shared/new_password_fields", form:, placeholder: "Enter your password", confirmation_placeholder: "Repeat your password" %>
+    <%= render "shared/new_password_fields", form: %>
 
-    <div class="flex w-full items-center justify-between gap-2">
-      <%= form.submit "Sign Up", class: "grow btn btn-primary" %>
-    </div>
+    <%= form.submit "Create Account", class: "btn btn-primary w-full" %>
   <% end %>
 
-  <div class="flex flex-col items-center gap-2 mt-4">
-    <%= link_to "Already have an account? Sign in", new_session_path, class: "btn-link btn-link-muted" %>
-  </div>
+  <p class="mt-8 text-sm text-soft text-center">
+    Already have an account? <%= link_to "Sign in", new_session_path, class: "btn-link btn-link-primary", data: { action: "email-handoff#carry" } %>
+  </p>
 </div>

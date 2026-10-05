@@ -5,7 +5,9 @@ Rails.application.routes.draw do
 
   resource :session, only: [ :new, :create, :destroy ]
   resource :registrations, only: [ :new, :create, :destroy ]
-  resources :passwords, only: [ :new, :create, :edit, :update ], param: :token
+  resources :passwords, only: [ :new, :create, :edit, :update ], param: :token do
+    get :sent, on: :collection
+  end
 
   delete "sessions/others", to: "sessions#destroy_other_sessions", as: :destroy_other_sessions
   delete "sessions/inactive", to: "sessions#destroy_inactive_sessions", as: :destroy_inactive_sessions

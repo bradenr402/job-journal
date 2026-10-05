@@ -1,18 +1,16 @@
-<% content_for :title, "Update Password" %>
+<% content_for :title, "Choose a New Password" %>
+<% content_for :tagline do %>A <em>fresh</em> start.<% end %>
+<% content_for :tagline_fact, "Saving signs you out on every other device." %>
 
-<div class="card">
-  <h1 class="subheading">Update Your Password</h1>
-  <p class="text-soft">Enter your new password below.</p>
+<%= render "shared/auth_header", title: "Choose a new password", subtitle: "For #{@user.email_address}. You’ll be signed in once it’s saved." %>
 
-  <%= form_with url: password_path(params[:token]), method: :put, class: "contents" do |form| %>
-    <%= render "shared/new_password_fields", form:, placeholder: "Enter new password", confirmation_placeholder: "Repeat new password" %>
+<%= form_with url: password_path(params[:token]), method: :put, class: "space-y-5" do |form| %>
+  <%= render "components/errors", resource: @user %>
 
-    <div class="flex w-full items-center justify-between">
-      <%= form.submit "Save Password", class: "grow btn btn-primary" %>
-    </div>
-  <% end %>
+  <%# Lets password managers save the new password under the right account %>
+  <%= tag.input type: "text", value: @user.email_address, autocomplete: "username", readonly: true, tabindex: -1, aria: { hidden: true }, class: "sr-only" %>
 
-  <div class="flex flex-col items-center gap-2 mt-4">
-    <%= link_to "Back to sign in", new_session_path, class: "btn-link btn-link-muted" %>
-  </div>
-</div>
+  <%= render "shared/new_password_fields", form:, label: "New Password", confirmation_label: "Confirm New Password" %>
+
+  <%= form.submit "Save and Sign In", class: "btn btn-primary w-full" %>
+<% end %>

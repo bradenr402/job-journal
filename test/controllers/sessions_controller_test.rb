@@ -14,6 +14,15 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "failed sign in keeps the email and explains why" do
+    post session_url, params: { email_address: @user.email_address, password: "wrong" }
+
+    assert_response :unprocessable_content
+    assert_match "don’t match", flash[:error]
+    assert_select "input[name=email_address][value=?]", @user.email_address
+    assert_empty @user.sessions.reload
+  end
+
   test "can log out one of your own sessions" do
     sign_in
     other = @user.sessions.create!

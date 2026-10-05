@@ -1,26 +1,25 @@
 <% content_for :title, "Sign In" %>
+<% content_for :tagline do %>Pick up where you <em>left off</em>.<% end %>
+<% content_for :tagline_fact, "Your leads, notes, and interviews are exactly how you left them." %>
 
-<div class="card">
-  <h1 class="subheading">Sign In</h1>
-  <p class="text-soft">Sign in to continue your job search.</p>
+<div data-controller="email-handoff">
+  <%= render "shared/auth_header", title: "Welcome back", subtitle: "Sign in to continue your job search." %>
 
-  <%= form_with url: session_url, model: false, method: :post, class: "contents", data: { turbo: false } do |form| %>
-    <div class="my-5">
+  <%= form_with url: session_url, model: false, method: :post, class: "space-y-5" do |form| %>
+    <div>
       <%= form.label :email_address, "Email Address", class: "form-label" %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", placeholder: "Enter your email address", value: params[:email_address], class: "form-input" %>
+      <%= form.email_field :email_address, required: true, autofocus: params[:email_address].blank?, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address], class: "form-input", data: { email_handoff_target: "email" } %>
     </div>
 
-    <div class="my-5">
-      <%= render "shared/password_field", form:, attribute: :password, required: true, autocomplete: "current-password", placeholder: "Enter your password" %>
+    <div>
+      <%= render "shared/password_field", form:, attribute: :password, required: true, autofocus: params[:email_address].present?, autocomplete: "current-password",
+            label_action: link_to("Forgot password?", new_password_path, class: "btn-link text-xs no-underline hover:underline", data: { action: "email-handoff#carry" }) %>
     </div>
 
-    <div class="flex w-full items-center justify-between gap-2">
-      <%= form.submit "Sign In", class: "grow btn btn-primary" %>
-    </div>
+    <%= form.submit "Sign In", class: "btn btn-primary w-full" %>
   <% end %>
 
-  <div class="flex flex-col items-center gap-2 mt-4">
-    <%= link_to "Forgot password?", new_password_path, class: "btn-link" %>
-    <%= link_to "Don’t have an account? Sign up", new_registrations_path, class: "btn-link btn-link-muted" %>
-  </div>
+  <p class="mt-8 text-sm text-soft text-center">
+    New here? <%= link_to "Create an account", new_registrations_path, class: "btn-link btn-link-primary", data: { action: "email-handoff#carry" } %>
+  </p>
 </div>

@@ -1,21 +1,20 @@
-<% content_for :title, 'Forgot Password' %>
+<% content_for :title, "Forgot Password" %>
+<% content_for :tagline do %>It <em>happens</em>.<% end %>
+<% content_for :tagline_fact, "Reset links expire after 15 minutes, and nothing changes until you use one." %>
 
-<div class="card">
-  <h1 class="font-bold text-2xl">Forgot Your Password?</h1>
-  <p class="text-soft">Enter your email address and we&#8217;ll send you instructions to reset your password.</p>
+<div data-controller="email-handoff">
+  <%= render "shared/auth_header", title: "Reset your password", subtitle: "Enter your email address and we’ll send you a link to choose a new one." %>
 
-  <%= form_with url: passwords_path, class: 'contents' do |form| %>
-    <div class="my-5">
-      <%= form.label :email_address, 'Email Address', class: 'form-label' %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: 'email', placeholder: 'Enter your email address', value: params[:email_address], class: 'form-input' %>
+  <%= form_with url: passwords_path, class: "space-y-5" do |form| %>
+    <div>
+      <%= form.label :email_address, "Email Address", class: "form-label" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address], class: "form-input", data: { email_handoff_target: "email" } %>
     </div>
 
-    <div class="flex w-full items-center justify-between">
-      <%= form.submit 'Send Reset Instructions', class: 'grow btn btn-primary' %>
-    </div>
+    <%= form.submit "Send Reset Link", class: "btn btn-primary w-full" %>
   <% end %>
 
-  <div class="flex flex-col items-center gap-2 mt-4">
-    <%= link_to 'Back to sign in', new_session_path, class: 'btn-link btn-link-muted' %>
-  </div>
+  <p class="mt-8 text-sm text-soft text-center">
+    Remembered it? <%= link_to "Back to sign in", new_session_path, class: "btn-link btn-link-primary", data: { action: "email-handoff#carry" } %>
+  </p>
 </div>
