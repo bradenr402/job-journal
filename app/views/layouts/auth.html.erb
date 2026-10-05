@@ -6,10 +6,14 @@
 
   <body class="bg-white dark:bg-neutral-950">
     <div class="min-h-svh grid grid-cols-1 lg:grid-cols-[24rem_1fr] xl:grid-cols-[28rem_1fr]">
-      <aside class="max-lg:hidden flex flex-col justify-between gap-12 p-10 bg-neutral-50 dark:bg-neutral-925 border-r border-neutral-200 dark:border-neutral-800 [view-transition-name:auth-aside]">
-        <%= render "layouts/auth_wordmark" %>
+      <aside class="max-lg:hidden flex flex-col bg-neutral-50 dark:bg-neutral-925 border-r border-neutral-200 dark:border-neutral-800 [view-transition-name:auth-aside]">
+        <div class="px-10 pt-10 pb-6">
+          <%= render "layouts/auth_wordmark" %>
+        </div>
 
-        <p class="max-w-xs text-sm/6 text-light text-pretty"><%= yield :tagline %></p>
+        <div class="flex-1 flex items-end px-10 pb-8 bg-ruled">
+          <p class="max-w-xs text-sm/8 text-light text-pretty"><%= yield :tagline %></p>
+        </div>
       </aside>
 
       <main class="flex flex-col px-6 py-10 sm:py-16">

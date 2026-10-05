@@ -552,6 +552,23 @@
   }
 }
 
+/* Faint notebook rules and margin line, anchored to the bottom so text set at a 2rem line height sits on the rules */
+@utility bg-ruled {
+  --ruled-color: var(--color-neutral-200);
+  --ruled-margin-color: var(--color-primary-200);
+  background-image:
+    linear-gradient(to right, transparent 1.75rem, var(--ruled-margin-color) 1.75rem calc(1.75rem + 1px), transparent calc(1.75rem + 1px)),
+    linear-gradient(to bottom, transparent 25px, var(--ruled-color) 25px 26px, transparent 26px);
+  background-size: 100% 100%, 100% 2rem;
+  background-repeat: no-repeat, repeat-y;
+  background-position: left, bottom;
+
+  @variant dark {
+    --ruled-color: var(--color-neutral-800);
+    --ruled-margin-color: var(--color-primary-950);
+  }
+}
+
 @utility flash {
   @apply -mx-(--main-padding) w-screen md:w-full py-3 px-6 font-medium text-center text-pretty;
 }
