@@ -7,7 +7,7 @@
   <%= form_with url: passwords_path, class: "space-y-5" do |form| %>
     <div>
       <%= form.label :email_address, "Email Address", class: "form-label" %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address], class: "form-input", data: { email_handoff_target: "email" } %>
+      <%= form.text_field :email_address, inputmode: "email", required: true, autofocus: true, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address], class: "form-input", data: { email_handoff_target: "email" } %>
     </div>
 
     <%= form.submit "Send Reset Link", class: "btn btn-primary w-full" %>

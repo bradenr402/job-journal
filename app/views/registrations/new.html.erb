@@ -9,7 +9,7 @@
 
     <div>
       <%= form.label :email_address, "Email Address", class: "form-label" %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address].presence || @user.email_address, class: "form-input", data: { email_handoff_target: "email" } %>
+      <%= form.text_field :email_address, inputmode: "email", required: true, autofocus: true, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address].presence || @user.email_address, class: "form-input", data: { email_handoff_target: "email" } %>
     </div>
 
     <%= render "shared/new_password_fields", form: %>

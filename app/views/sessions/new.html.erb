@@ -7,7 +7,7 @@
   <%= form_with url: session_url, model: false, method: :post, class: "space-y-5" do |form| %>
     <div>
       <%= form.label :email_address, "Email Address", class: "form-label" %>
-      <%= form.email_field :email_address, required: true, autofocus: params[:email_address].blank?, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address], class: "form-input", data: { email_handoff_target: "email" } %>
+      <%= form.text_field :email_address, inputmode: "email", required: true, autofocus: params[:email_address].blank?, autocomplete: "username", autocapitalize: "none", spellcheck: false, value: params[:email_address], class: "form-input", data: { email_handoff_target: "email" } %>
     </div>
 
     <div>

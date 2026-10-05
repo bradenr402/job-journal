@@ -35,7 +35,7 @@
 
           <div>
             <%= form.label :email_address, "Email Address", class: "form-label" %>
-            <%= form.email_field :email_address, autocomplete: "username", spellcheck: false, required: true, placeholder: "jane@example.com", class: "form-input", data: { credentials_confirm_target: "email", action: "input->credentials-confirm#update" } %>
+            <%= form.text_field :email_address, inputmode: "email", autocomplete: "username", autocapitalize: "none", spellcheck: false, required: true, placeholder: "jane@example.com", class: "form-input", data: { credentials_confirm_target: "email", action: "input->credentials-confirm#update" } %>
           </div>
         </div>
       </section>
