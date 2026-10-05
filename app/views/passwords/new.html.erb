@@ -1,6 +1,5 @@
 <% content_for :title, "Forgot Password" %>
-<% content_for :tagline do %>It <em>happens</em>.<% end %>
-<% content_for :tagline_fact, "Reset links expire after 15 minutes, and nothing changes until you use one." %>
+<% content_for :tagline, "It happens. We’ll email you a link that works for 15 minutes." %>
 
 <div data-controller="email-handoff">
   <%= render "shared/auth_header", title: "Reset your password", subtitle: "Enter your email address and we’ll send you a link to choose a new one." %>

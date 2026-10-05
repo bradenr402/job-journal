@@ -1,8 +1,7 @@
 <% content_for :title, "Choose a New Password" %>
-<% content_for :tagline do %>A <em>fresh</em> start.<% end %>
-<% content_for :tagline_fact, "Saving signs you out on every other device." %>
+<% content_for :tagline, "Saving your new password signs you out on every other device." %>
 
-<%= render "shared/auth_header", title: "Choose a new password", subtitle: "For #{@user.email_address}. You’ll be signed in once it’s saved." %>
+<%= render "shared/auth_header", title: "Choose a new password", subtitle: safe_join([ "For ", tag.strong(@user.email_address, class: "font-semibold text-normal"), ". You’ll be signed in once it’s saved." ]) %>
 
 <%= form_with url: password_path(params[:token]), method: :put, class: "space-y-5" do |form| %>
   <%= render "components/errors", resource: @user %>

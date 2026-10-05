@@ -1,4 +1,4 @@
-<%# locals: (rounded: true) %>
+<%# locals: (inline: false) %>
 
 <%
   flash_classes = {
@@ -14,9 +14,9 @@
     tag.p(
       message.html_safe,
       class: [
-        "flash",
+        inline ? "mb-6 py-3 px-4 rounded-lg font-medium text-sm text-pretty" : "flash",
         flash_classes[key],
-        ("md:rounded-t-xl" if rounded),
+        ("md:rounded-t-xl" unless inline),
       ],
       style: "view-transition-name: flash-#{key}",
       id: key

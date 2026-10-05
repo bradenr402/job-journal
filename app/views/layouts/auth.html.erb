@@ -5,19 +5,11 @@
   </head>
 
   <body class="bg-white dark:bg-neutral-950">
-    <%= render "components/flash", rounded: false %>
-
-    <div class="min-h-svh grid grid-cols-1 lg:grid-cols-2">
-      <aside class="max-lg:hidden flex flex-col justify-between gap-12 p-12 bg-neutral-50 dark:bg-neutral-925 border-r border-neutral-200 dark:border-neutral-800 [view-transition-name:auth-aside]">
+    <div class="min-h-svh grid grid-cols-1 lg:grid-cols-[24rem_1fr] xl:grid-cols-[28rem_1fr]">
+      <aside class="max-lg:hidden flex flex-col justify-between gap-12 p-10 bg-neutral-50 dark:bg-neutral-925 border-r border-neutral-200 dark:border-neutral-800 [view-transition-name:auth-aside]">
         <%= render "layouts/auth_wordmark" %>
 
-        <div class="max-w-md">
-          <time datetime="<%= Date.current.iso8601 %>" class="block mb-4 text-sm font-medium text-primary-550 dark:text-primary-500"><%= Date.current.strftime("%a, %b %-d") %></time>
-          <p class="text-4xl/tight font-semibold tracking-tight text-balance text-neutral-900 dark:text-neutral-100 [&_em]:not-italic [&_em]:text-primary-550 dark:[&_em]:text-primary-500"><%= yield :tagline %></p>
-          <% if content_for?(:tagline_fact) %>
-            <p class="mt-4 text-light text-pretty"><%= yield :tagline_fact %></p>
-          <% end %>
-        </div>
+        <p class="max-w-xs text-sm/6 text-light text-pretty"><%= yield :tagline %></p>
       </aside>
 
       <main class="flex flex-col px-6 py-10 sm:py-16">
@@ -26,12 +18,12 @@
         </div>
 
         <div class="w-full max-w-sm mx-auto lg:my-auto">
+          <%= render "components/flash", inline: true %>
+
           <%= yield %>
         </div>
 
-        <% if content_for?(:tagline_fact) %>
-          <p class="lg:hidden mt-auto pt-12 text-sm text-soft text-center text-pretty"><%= yield :tagline_fact %></p>
-        <% end %>
+        <p class="lg:hidden mt-auto pt-12 max-w-xs mx-auto text-sm text-soft text-center text-pretty"><%= yield :tagline %></p>
       </main>
     </div>
   </body>
