@@ -72,6 +72,11 @@ ENV DATABASE_URL="sqlite3:///mnt/sqlite/production.sqlite3"
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start server via Thruster by default, this can be overwritten at runtime
+# Thruster listens on 8080 (Fly's internal_port) because the non-root user can't bind port 80,
+# and proxies to Puma on its configured port.
+ENV HTTP_PORT="8080" \
+    PORT="3001" \
+    TARGET_PORT="3001"
 EXPOSE 8080
-CMD ["./bin/thrust", "./bin/rails", "server", "-b", "0.0.0.0", "-p", "8080"]
+CMD ["./bin/thrust", "./bin/rails", "server"]
 
