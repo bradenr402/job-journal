@@ -87,15 +87,28 @@
       --mark-plus: transparent;
       --mark-top-split: transparent;
       --mark-plus-right: transparent;
+      --mark-tee-right: transparent;
+      --mark-tee-down: transparent;
+      --mark-tee-left: transparent;
+      --mark-right: transparent;
 
       @apply relative -mx-[calc(var(--card-grid-gap)/2)];
 
-      /* `+` on the top-right corner of a last item with no item to its right */
+      /*
+        Along the right edge, which only needs marks beside an item to the right
+        that spans rows: on the top-right corner, `+` for a last item with no
+        item to its right or `┤`; and the right edge's own `|` and dotted lines
+      */
       &::before {
-        @apply content-[""] absolute top-[calc(var(--mark-half)*-1)] right-[calc(var(--mark-half)*-1)] size-(--mark-size) pointer-events-none;
+        @apply content-[""] absolute top-[calc(var(--mark-half)*-1)] right-[calc(var(--mark-half)*-1)] bottom-0 w-(--mark-size) pointer-events-none;
         background:
           linear-gradient(var(--mark-plus-right), var(--mark-plus-right)) 0 var(--mark-line) / var(--mark-size) 1px no-repeat,
-          linear-gradient(var(--mark-plus-right), var(--mark-plus-right)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat;
+          linear-gradient(var(--mark-plus-right), var(--mark-plus-right)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat,
+          linear-gradient(var(--mark-tee-left), var(--mark-tee-left)) 0 var(--mark-line) / calc(var(--mark-half) + 0.5px) 1px no-repeat,
+          linear-gradient(var(--mark-tee-left), var(--mark-tee-left)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat,
+          linear-gradient(var(--mark-right), var(--mark-right)) var(--mark-line) calc(50% + var(--mark-half) / 2) / 1px var(--mark-size) no-repeat,
+          repeating-linear-gradient(to bottom, var(--mark-right) 0 1px, transparent 1px var(--dot-spacing)) left var(--mark-line) top calc(var(--mark-half) + var(--dot-inset)) / 1px var(--dot-half-length) no-repeat,
+          repeating-linear-gradient(to top, var(--mark-right) 0 1px, transparent 1px var(--dot-spacing)) left var(--mark-line) bottom var(--dot-inset) / 1px var(--dot-half-length) no-repeat;
       }
 
       &::after {
@@ -104,6 +117,12 @@
           /* `+` */
           linear-gradient(var(--mark-plus), var(--mark-plus)) 0 var(--mark-line) / var(--mark-size) 1px no-repeat,
           linear-gradient(var(--mark-plus), var(--mark-plus)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat,
+          /* `├` beside an item to the left that spans rows */
+          linear-gradient(var(--mark-tee-right), var(--mark-tee-right)) var(--mark-line) var(--mark-line) / calc(var(--mark-half) + 0.5px) 1px no-repeat,
+          linear-gradient(var(--mark-tee-right), var(--mark-tee-right)) var(--mark-line) 0 / 1px var(--mark-size) no-repeat,
+          /* `┬` below an item that spans columns */
+          linear-gradient(var(--mark-tee-down), var(--mark-tee-down)) 0 var(--mark-line) / var(--mark-size) 1px no-repeat,
+          linear-gradient(var(--mark-tee-down), var(--mark-tee-down)) var(--mark-line) var(--mark-line) / 1px calc(var(--mark-half) + 0.5px) no-repeat,
           /* `|` */
           linear-gradient(var(--mark-left), var(--mark-left)) var(--mark-line) calc(50% + var(--mark-half) / 2) / 1px var(--mark-size) no-repeat,
           /* `—` */

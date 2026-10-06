@@ -189,6 +189,7 @@
 /*
   Grid marks for the bento layout of the "Everything else" section, which the
   `minimal-item-list` index rules can't infer because tiles span rows and columns.
+  Every interior grid point gets a corner mark: `+`, `├`, `┬`, `┤`, or `┴`.
   Tile order: Job Lead Management, Autofill, Interviews, Installable App, Search, Tags, Security.
 
   md (2 columns):            xl (4 columns):
@@ -205,6 +206,7 @@
   └─────────────┘
 */
 @utility bento-grid {
+
   @variant md {
     &.minimal-item-list.card-grid > .minimal-item:nth-child(n of .minimal-item) {
       --mark-left: transparent;
@@ -212,14 +214,23 @@
       --mark-plus: transparent;
       --mark-plus-right: transparent;
       --mark-top-split: transparent;
+      --mark-tee-right: transparent;
+      --mark-tee-down: transparent;
+      --mark-tee-left: transparent;
     }
 
+    /* Edges */
     &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(2 of .minimal-item), :nth-child(3 of .minimal-item), :nth-child(5 of .minimal-item), :nth-child(6 of .minimal-item)) {
       --mark-left: var(--minimal-grid-mark-color);
     }
 
     &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(3 of .minimal-item), :nth-child(4 of .minimal-item), :nth-child(5 of .minimal-item), :nth-child(6 of .minimal-item)) {
       --mark-top: var(--minimal-grid-mark-color);
+    }
+
+    /* Corners */
+    &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(3 of .minimal-item), :nth-child(6 of .minimal-item)) {
+      --mark-tee-right: var(--minimal-grid-mark-color);
     }
 
     &.minimal-item-list.card-grid > .minimal-item:nth-child(5 of .minimal-item) {
@@ -237,18 +248,38 @@
       --mark-top: transparent;
       --mark-plus: transparent;
       --mark-top-split: transparent;
+      --mark-tee-right: transparent;
+      --mark-tee-down: transparent;
+      --mark-tee-left: transparent;
+      --mark-right: transparent;
     }
 
-    &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(2 of .minimal-item), :nth-child(3 of .minimal-item), :nth-child(4 of .minimal-item), :nth-child(6 of .minimal-item), :nth-child(7 of .minimal-item)) {
+    /* Edges */
+    &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(2 of .minimal-item), :nth-child(3 of .minimal-item), :nth-child(6 of .minimal-item), :nth-child(7 of .minimal-item)) {
       --mark-left: var(--minimal-grid-mark-color);
+    }
+
+    /* Installable App spans two rows, so its neighbors mark their own right edges instead */
+    &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(3 of .minimal-item), :nth-child(7 of .minimal-item)) {
+      --mark-right: var(--minimal-grid-mark-color);
     }
 
     &.minimal-item-list.card-grid > .minimal-item:nth-child(n + 3 of .minimal-item) {
       --mark-top: var(--minimal-grid-mark-color);
     }
 
+    /* Corners */
+    &.minimal-item-list.card-grid > .minimal-item:nth-child(3 of .minimal-item) {
+      --mark-tee-right: var(--minimal-grid-mark-color);
+    }
+
+    &.minimal-item-list.card-grid > .minimal-item:is(:nth-child(4 of .minimal-item), :nth-child(6 of .minimal-item)) {
+      --mark-tee-down: var(--minimal-grid-mark-color);
+    }
+
     &.minimal-item-list.card-grid > .minimal-item:nth-child(7 of .minimal-item) {
       --mark-plus: var(--minimal-grid-mark-color);
+      --mark-tee-left: var(--minimal-grid-mark-color);
     }
   }
 }
