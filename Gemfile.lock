@@ -137,7 +137,7 @@ GEM
       logger
       ostruct
     ice_cube (0.17.0)
-    importmap-rails (2.1.0)
+    importmap-rails (2.2.3)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
