@@ -206,6 +206,15 @@
   └─────────────┘
 */
 @utility bento-grid {
+  /*
+    The highlight's container is isolated, so blend modes only see what's painted
+    inside it; an opaque page color here gives `bento-chip` the true backdrop
+  */
+  background-color: var(--color-white);
+
+  @variant dark {
+    background-color: var(--color-neutral-950);
+  }
 
   @variant md {
     &.minimal-item-list.card-grid > .minimal-item:nth-child(n of .minimal-item) {
@@ -281,6 +290,31 @@
       --mark-plus: var(--minimal-grid-mark-color);
       --mark-tee-left: var(--minimal-grid-mark-color);
     }
+  }
+}
+
+/*
+  A tile's icon chip, tinted with `--chip-color` like its hover highlight
+  (`anchor-color-*`). The chip is the highlight's color composited onto the
+  page, and the blend mode keeps whichever is darker (lighter in dark mode), so
+  it shows on the page but disappears into the matching highlight instead of
+  stacking on it.
+*/
+@utility bento-chip {
+  /*
+    Composites the highlight's exact translucent color over the page color, so
+    both end up as the same pixels even for wide-gamut colors
+  */
+  background:
+    linear-gradient(--alpha(var(--chip-color) / 70%), --alpha(var(--chip-color) / 70%)),
+    var(--color-white);
+  mix-blend-mode: darken;
+
+  @variant dark {
+    background:
+      linear-gradient(--alpha(var(--chip-color) / 40%), --alpha(var(--chip-color) / 40%)),
+      var(--color-neutral-950);
+    mix-blend-mode: lighten;
   }
 }
 

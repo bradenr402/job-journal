@@ -1,10 +1,9 @@
 <%# locals: (title:, icon:, icon_classes:, chip_classes:, highlight_classes:, description:, span: nil, visual: nil) %>
 
-<div class="group/tile minimal-item anchor flex flex-col <%= highlight_classes %> <%= span %>" data-action="pointerenter->bento-hover#play">
+<div class="minimal-item anchor flex flex-col <%= highlight_classes %> <%= span %>" data-action="pointerenter->bento-hover#play">
   <div class="flex items-start justify-between mb-4">
     <h3 class="font-semibold text-normal"><%= title %></h3>
-    <%# The chip fades into the matching hover highlight instead of stacking on it %>
-    <div class="rounded-md p-1.5 -m-0.75 <%= chip_classes %> inline-flex transition-colors duration-80 group-hover/tile:bg-transparent dark:group-hover/tile:bg-transparent">
+    <div class="bento-chip rounded-md p-1.5 -m-0.75 <%= chip_classes %> inline-flex">
       <%= icon icon, class: "size-4.5 #{icon_classes}" %>
     </div>
   </div>
