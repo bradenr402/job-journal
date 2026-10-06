@@ -1,0 +1,83 @@
+<section class="py-28 md:py-36 px-6">
+  <div class="max-w-8xl mx-auto">
+    <div class="max-w-3xl mb-14">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+        Along with everything else you’d expect—and more.
+      </h2>
+    </div>
+
+    <div class="bento-grid card-grid minimal-item-list md:grid-cols-2 xl:grid-cols-4" data-controller="bento-hover" data-bento-hover-playing-class="bento-playing" data-bento-hover-leaving-class="bento-leaving">
+
+      <%= render "pages/landing/feature_card",
+            title: "Job Lead Management",
+            icon: "briefcase",
+            chip_classes: "bg-sky-100/70 dark:bg-sky-900/40",
+            highlight_classes: "anchor-color-sky-100/70 dark:anchor-color-sky-900/40",
+            icon_classes: "text-sky-600 dark:text-sky-500",
+            span: "md:row-span-2 xl:col-span-2",
+            description: "Company, title, salary, contact, location: everything about a job in one place. Follow it from lead to accepted on a timeline you can edit, and add as many notes as you want.",
+            visual: render("pages/landing/job_lead_visual") %>
+
+      <%= render "pages/landing/feature_card",
+            title: "Autofill From URL",
+            icon: "link",
+            chip_classes: "bg-cyan-100/70 dark:bg-cyan-900/40",
+            highlight_classes: "anchor-color-cyan-100/70 dark:anchor-color-cyan-900/40",
+            icon_classes: "text-cyan-600 dark:text-cyan-500",
+            span: "xl:col-span-2",
+            description: safe_join([
+              "Paste a job posting link and we’ll fill in the company, title, location, and more. Works with ",
+              Constants::SUPPORTED_AUTOFILL_SOURCES.map { tag.strong it, class: %w[ text-normal font-semibold ] }.to_sentence.html_safe,
+              ", with more on the way."
+            ]),
+            visual: render("pages/landing/autofill_visual") %>
+
+      <%= render "pages/landing/feature_card",
+            title: "Interview Tracking",
+            icon: "interview",
+            chip_classes: "bg-purple-100/70 dark:bg-purple-900/40",
+            highlight_classes: "anchor-color-purple-100/70 dark:anchor-color-purple-900/40",
+            icon_classes: "text-purple-600 dark:text-purple-500",
+            description: "Log the interviewer, date, and call link, add it to your calendar in one click, then rate how it went.",
+            visual: render("pages/landing/interview_visual") %>
+
+      <%= render "pages/landing/feature_card",
+            title: "Installable App",
+            icon: "smartphone",
+            chip_classes: "bg-indigo-100/70 dark:bg-indigo-900/40",
+            highlight_classes: "anchor-color-indigo-100/70 dark:anchor-color-indigo-900/40",
+            icon_classes: "text-indigo-600 dark:text-indigo-500",
+            span: "md:row-span-2",
+            description: "Add JobJournal to your iPhone home screen or your desktop and it opens like any other app, in its own window. Nothing to download from an app store.",
+            visual: render("pages/landing/home_screen_visual") %>
+
+      <%= render "pages/landing/feature_card",
+            title: "Smart Search & Filters",
+            icon: "search",
+            chip_classes: "bg-amber-100/70 dark:bg-amber-900/40",
+            highlight_classes: "anchor-color-amber-100/70 dark:anchor-color-amber-900/40",
+            icon_classes: "text-amber-600 dark:text-amber-500",
+            description: "Search leads, interviews, and notes at once. Filter by tag, status, date, or archived.",
+            visual: render("pages/landing/search_visual") %>
+
+      <%= render "pages/landing/feature_card",
+            title: "Tags",
+            icon: "tag",
+            chip_classes: "bg-emerald-100/70 dark:bg-emerald-900/40",
+            highlight_classes: "anchor-color-emerald-100/70 dark:anchor-color-emerald-900/40",
+            icon_classes: "text-emerald-600 dark:text-emerald-500",
+            description: "Tag leads however you like, filter by them, and rename or merge tags as your search changes.",
+            visual: render("pages/landing/tags_visual") %>
+
+      <%= render "pages/landing/feature_card",
+            title: "Account Security",
+            span: "md:col-span-2 xl:col-span-1",
+            icon: "security",
+            chip_classes: "bg-rose-100/70 dark:bg-rose-900/40",
+            highlight_classes: "anchor-color-rose-100/70 dark:anchor-color-rose-900/40",
+            icon_classes: "text-rose-600 dark:text-rose-500",
+            description: "See every device signed into your account and sign any of them out. We email you about every new sign-in.",
+            visual: render("pages/landing/security_visual") %>
+    </div>
+  </div>
+</section>

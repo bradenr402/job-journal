@@ -1,0 +1,11 @@
+<%# Real cards that re-deal and pop their status on hover %>
+<div class="space-y-3 text-left">
+  <% @demo.feature_leads.each_with_index do |job_lead, index| %>
+    <div class="bento-hover-[bento-deal_500ms_cubic-bezier(0.22,1,0.36,1)] [&_.tag]:bento-hover-[bento-pop_450ms_ease-out]" style="--bento-index: <%= index %>">
+      <%= render "job_leads/job_lead", job_lead: %>
+    </div>
+  <% end %>
+  <div class="bento-hover-[bento-deal_500ms_cubic-bezier(0.22,1,0.36,1)]" style="--bento-index: <%= @demo.feature_leads.size %>">
+    <%= render @demo.feature_note %>
+  </div>
+</div>

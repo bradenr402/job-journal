@@ -1,0 +1,9 @@
+<%# The app's tag chips, which hop and wiggle on hover %>
+<div class="flex flex-wrap gap-1.5">
+  <% [ "remote", "dream job", "hybrid", "referral", "fintech", "series b" ].each_with_index do |name, index| %>
+    <span class="tag origin-bottom bento-hover-[bento-hop_450ms_ease-out]" style="--bento-index: <%= index %>; --bento-tilt: <%= index.even? ? -3 : 3 %>deg">
+      <%= icon "tag", class: "size-4 -ml-px shrink-0" %>
+      <span><%= name %></span>
+    </span>
+  <% end %>
+</div>

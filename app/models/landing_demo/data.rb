@@ -119,6 +119,44 @@ class LandingDemo
       }
     ].freeze
 
+    # Shown in the "everything else" feature grid, distinct from the records above
+    FEATURE_LEADS = [
+      {
+        id: 1101, title: "Product Engineer", company: "Linear",
+        application_url: "https://linear.app/careers/2468",
+        applied_at: -> { 9.days.ago + 10.hours + 12.minutes },
+        created_at: -> { 13.days.ago + 15.hours + 40.minutes },
+        updated_at: -> { 1.day.ago + 9.hours + 26.minutes },
+        status: "interview", status_at: -> { 4.days.ago + 13.hours + 2.minutes },
+        tags: [ "remote", "dream job" ], notes_count: 3
+      },
+      {
+        id: 1102, title: "Frontend Engineer", company: "Figma",
+        application_url: "https://figma.com/careers/1357",
+        applied_at: -> { 6.days.ago + 11.hours + 45.minutes },
+        created_at: -> { 9.days.ago + 8.hours + 17.minutes },
+        updated_at: -> { 6.days.ago + 11.hours + 45.minutes },
+        status: "applied", status_at: -> { 6.days.ago + 11.hours + 45.minutes },
+        tags: [ "hybrid" ], notes_count: 1
+      }
+    ].freeze
+
+    FEATURE_INTERVIEW = {
+      id: 2101, lead_index: 0, interviewer: "Priya Patel",
+      scheduled_at: -> { 3.days.from_now + 11.hours },
+      location: "Zoom",
+      created_at: -> { 4.days.ago + 13.hours + 2.minutes },
+      updated_at: -> { 4.days.ago + 13.hours + 2.minutes },
+      notes_count: 2
+    }.freeze
+
+    FEATURE_NOTE = {
+      id: 3101, notable: [ :feature_leads, 1 ],
+      content: "Referred by a former teammate. The role focuses on the editor's performance, so brush up on rendering and profiling before the recruiter call.",
+      created_at: -> { 6.days.ago + 12.hours + 3.minutes },
+      updated_at: -> { 6.days.ago + 12.hours + 3.minutes }
+    }.freeze
+
     JOB_LEAD_STATS = { count: 12, change: "+4 from last week" }.freeze
     APPLICATION_STATS = { count: 7, change: "+3 from last week", goal: 10 }.freeze
     INTERVIEW_STATS = { count: 3, change: "+1 from last week", average_rating: 4.0 }.freeze

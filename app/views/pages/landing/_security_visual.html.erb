@@ -1,0 +1,8 @@
+<%# One device icon per signed-in session; on hover one signs out, and it returns on mouse-out %>
+<div class="flex items-center justify-center gap-3">
+  <% %w[computer smartphone tablet computer].each_with_index do |device_icon, index| %>
+    <span class="grid place-items-center shrink-0 w-12 h-12 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950 not-dark:shadow-2xs <%= "bento-hover-[bento-sign-out_700ms_cubic-bezier(0.22,1,0.36,1)] bento-leave-[bento-sign-in_450ms_cubic-bezier(0.22,1,0.36,1)]" if index == 3 %>">
+      <%= icon device_icon, class: "size-5 shrink-0 text-muted" %>
+    </span>
+  <% end %>
+</div>

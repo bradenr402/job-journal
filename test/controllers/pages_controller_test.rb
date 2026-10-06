@@ -6,6 +6,23 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should show every feature tile on the landing page" do
+    get root_url
+
+    [ "Job Lead Management", "Autofill From URL", "Interview Tracking", "Installable App", "Smart Search & Filters", "Tags", "Account Security" ].each do |title|
+      assert_select ".bento-grid h3", title
+    end
+    assert_select ".bento-grid", text: /Works with #{Constants::SUPPORTED_AUTOFILL_SOURCES.to_sentence}/
+  end
+
+  test "should show records in the feature tiles that differ from the other demos" do
+    get root_url
+
+    assert_select ".bento-grid", text: /Product Engineer/
+    assert_select ".bento-grid", text: /Interview with Priya Patel/
+    assert_select ".bento-grid", text: /Stripe|Vercel|Sarah Chen/, count: 0
+  end
+
   test "should get landing page when signed in" do
     sign_in_as users(:one)
     get root_url

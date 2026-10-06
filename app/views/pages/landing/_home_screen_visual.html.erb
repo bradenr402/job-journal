@@ -1,0 +1,37 @@
+<%#
+  A generic phone home screen (4×6 apps and a 4-app dock) with JobJournal installed.
+  Only the app icons are squircles. The dock and device are concentric round rects:
+  dock = app + dock padding, screen = dock + screen padding, device = screen + bezel.
+%>
+<div class="
+  mx-auto w-48 aspect-[9/19] flex flex-col
+  border-4 border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-950
+  [--app-size:2rem] [--dock-padding:--spacing(1.5)] [--screen-padding:--spacing(2)]
+  [--app-radius:calc(var(--app-size)*0.22)]
+  [--dock-radius:calc(var(--app-radius)+var(--dock-padding))]
+  [--screen-radius:calc(var(--dock-radius)+var(--screen-padding))]
+  rounded-[calc(var(--screen-radius)+4px)]
+  px-[calc(var(--screen-padding)+var(--dock-padding))] pt-3 pb-(--screen-padding)
+">
+  <div class="mx-auto mb-4 size-2 shrink-0 rounded-full bg-neutral-300 dark:bg-neutral-800"></div>
+
+  <div class="grid grid-cols-4 gap-y-2.5">
+    <% 24.times do |index| %>
+      <div class="flex flex-col items-center gap-1">
+        <% if index == 9 %>
+          <%= image_tag "icon.png", alt: "", class: "size-(--app-size) rounded-squircle not-dark:shadow-sm bento-hover-[bento-launch_500ms_ease-out]" %>
+          <span class="text-[7px] font-medium leading-none text-normal">JobJournal</span>
+        <% else %>
+          <span class="size-(--app-size) rounded-squircle bg-neutral-200 dark:bg-neutral-800"></span>
+          <span class="h-[5px] w-5 rounded-full bg-neutral-200 dark:bg-neutral-800"></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-auto -mx-(--dock-padding) p-(--dock-padding) grid grid-cols-4 justify-items-center rounded-(--dock-radius) bg-neutral-200/60 dark:bg-neutral-800/60">
+    <% 4.times do %>
+      <span class="size-(--app-size) rounded-squircle bg-neutral-300/70 dark:bg-neutral-700/70"></span>
+    <% end %>
+  </div>
+</div>

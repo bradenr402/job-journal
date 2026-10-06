@@ -18,6 +18,16 @@ class LandingDemo
     @notes ||= Data::NOTES.map { |attributes| note(attributes) }
   end
 
+  def feature_leads
+    @feature_leads ||= Data::FEATURE_LEADS.map { |attributes| lead(attributes) }
+  end
+
+  def feature_interview
+    @feature_interview ||= interview(Data::FEATURE_INTERVIEW, leads: feature_leads)
+  end
+
+  def feature_note = @feature_note ||= note(Data::FEATURE_NOTE)
+
   def job_lead_stats = Data::JOB_LEAD_STATS
   def application_stats = Data::APPLICATION_STATS
   def interview_stats = Data::INTERVIEW_STATS
@@ -35,7 +45,7 @@ class LandingDemo
     record_builder.lead(materialized.merge(user:))
   end
 
-  def interview(attributes)
+  def interview(attributes, leads: self.leads)
     materialized = materialize(attributes)
     record_builder.interview(materialized.except(:lead_index).merge(job_lead: leads.fetch(materialized.fetch(:lead_index))))
   end
