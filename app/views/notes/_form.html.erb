@@ -15,8 +15,8 @@
 
   <div style="view-transition-name: note-<%= note.id %>;">
     <%= form.label :content, 'Note', class: 'sr-only' %>
-    <div class="form-textarea-wrap" data-replicated-value="<%= form.object.content.to_s %>">
-      <%= form.text_area :content, autofocus: true, class: 'form-textarea', rows: 6, placeholder: placeholder[note.notable_type], oninput: 'this.parentNode.dataset.replicatedValue = this.value' %>
+    <div class="form-textarea-wrap form-textarea-ruled" data-replicated-value="<%= form.object.content.to_s %>">
+      <%= form.text_area :content, autofocus: true, class: 'form-textarea bg-ruled bg-ruled-top', rows: 6, placeholder: placeholder[note.notable_type], oninput: 'this.parentNode.dataset.replicatedValue = this.value' %>
     </div>
 
     <div class="flex items-start gap-1 text-muted ml-1 mt-3">

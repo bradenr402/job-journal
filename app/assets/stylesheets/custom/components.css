@@ -425,7 +425,9 @@
 }
 
 @utility empty-state {
-  @apply flex flex-col items-center justify-center gap-5 text-center text-pretty my-12 text-muted;
+  @apply flex flex-col items-center justify-center gap-5 text-center text-pretty my-12 text-muted ruled-backdrop bg-ruled-plain;
+  --ruled-inset: 100% 0 -6rem;
+  --ruled-mask: radial-gradient(farthest-side at 50% 0, black 20%, transparent);
 }
 
 /*
@@ -552,20 +554,49 @@
   }
 }
 
-/* Faint notebook rules and margin line, anchored to the bottom so text set at a 2rem line height sits on the rules */
+/*
+  Faint notebook rules and margin line. Text set at a 2rem line height sits on
+  the rules. Rules anchor to the bottom of the content box unless `bg-ruled-top`
+  is also set; `bg-ruled-plain` drops the margin line.
+*/
 @utility bg-ruled {
   --ruled-color: var(--color-neutral-200);
   --ruled-margin-color: var(--color-primary-200);
   background-image:
-    linear-gradient(to right, transparent 1.75rem, var(--ruled-margin-color) 1.75rem calc(1.75rem + 1px), transparent calc(1.75rem + 1px)),
+    linear-gradient(to right, transparent 1.75rem, var(--ruled-margin-color) 1.75rem calc(1.75rem + var(--ruled-margin-width, 1px)), transparent calc(1.75rem + var(--ruled-margin-width, 1px))),
     linear-gradient(to bottom, transparent 25px, var(--ruled-color) 25px 26px, transparent 26px);
   background-size: 100% 100%, 100% 2rem;
-  background-repeat: no-repeat, repeat-y;
-  background-position: left, bottom;
+  background-repeat: no-repeat, repeat;
+  background-position: left, var(--ruled-anchor, bottom);
+  background-origin: border-box, content-box;
 
   @variant dark {
     --ruled-color: var(--color-neutral-800);
     --ruled-margin-color: var(--color-primary-950);
+  }
+}
+
+@utility bg-ruled-top {
+  --ruled-anchor: top;
+}
+
+@utility bg-ruled-plain {
+  --ruled-margin-width: 0px;
+}
+
+/* Rules painted behind the content and faded out by `--ruled-mask`, extending past the box by `--ruled-inset` */
+@utility ruled-backdrop {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: var(--ruled-inset, 0);
+    z-index: -1;
+    pointer-events: none;
+    mask-image: var(--ruled-mask, linear-gradient(to bottom, black, transparent));
+    @apply bg-ruled bg-ruled-top;
   }
 }
 

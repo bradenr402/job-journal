@@ -145,3 +145,31 @@
     @apply block w-full my-6 h-0.5 border-none bg-neutral-200 dark:bg-neutral-800;
   }
 }
+
+/* Snaps `prose` to the 2rem grid of `bg-ruled`, skipping a line between blocks */
+@utility prose-ruled {
+  line-height: 2rem;
+
+  &.prose :is(h1, h2, h3, h4, h5, h6, p, ul, ol, li, blockquote, pre) {
+    margin-block: 0;
+    line-height: 2rem;
+  }
+
+  &.prose > :not(:first-child) {
+    margin-top: 2rem;
+  }
+
+  &.prose :is(blockquote) {
+    padding-block: 0;
+  }
+
+  &.prose :is(br) {
+    display: inline;
+    margin: 0;
+  }
+
+  &.prose :is(hr) {
+    margin-block: calc(1rem - 1px);
+    height: 2px;
+  }
+}

@@ -50,6 +50,13 @@
   /* Inherit all other styles from .form-textarea */
 }
 
+/* Writes on `bg-ruled` lines, clear of the margin line; the replica must match so the height stays right */
+.form-textarea-ruled > textarea,
+.form-textarea-ruled::after {
+  line-height: 2rem;
+  padding-left: 3rem;
+}
+
 @utility form-footer {
   --form-footer-vertical-padding: --spacing(4);
   @apply bg-white dark:bg-neutral-925 border-t border-neutral-200 dark:border-neutral-800 py-(--form-footer-vertical-padding) max-md:-mx-(--main-padding) max-md:px-(--main-padding);
