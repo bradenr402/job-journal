@@ -26,6 +26,7 @@ Notes for coding agents working on JobJournal, a privacy-first job search tracke
 - `bin/rails db:seed` creates a demo account: `demo@jobjournal.app` / `password`.
 - Bullet is active in development: fix N+1 warnings your change introduces. Mail opens via `letter_opener`.
 - Deploy is Fly.io only (`fly.toml`, `lib/tasks/fly.rake`). `config/deploy.yml` / `.kamal/` are unused Kamal boilerplate — don't edit them as if they were live.
+- In production, Thruster listens on 8080 (Fly's `internal_port`) and proxies to Puma on 3001 (`HTTP_PORT`/`PORT`/`TARGET_PORT` in the `Dockerfile`). `bin/docker-entrypoint` runs `db:prepare` (and so migrations) on boot only when the command ends in `./bin/rails server`; keep the `CMD` that way.
 - Production SMTP reads Gmail credentials from `Rails.application.credentials`.
 
 ## Architecture map
