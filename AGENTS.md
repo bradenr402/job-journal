@@ -52,6 +52,7 @@ Notes for coding agents working on JobJournal, a privacy-first job search tracke
 
 - Run the app and click through every page your change affects, at desktop and mobile widths, including the PWA/iOS variants when touching layout.
 - Think about UI/UX flow, not just correctness; follow existing design conventions. Show the user before and after screenshots for UI changes.
+- For manual testing, sign in as `agent@jobjournal.app` / `password`, a local account set aside for agents.
 
 ## Code style
 
