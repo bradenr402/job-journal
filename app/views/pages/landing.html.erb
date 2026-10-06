@@ -177,7 +177,7 @@
               </p>
               <p class="text-xs text-muted"><%= @demo.application_stats[:change] %></p>
             </div>
-            <% percent = applications_count.to_f / applications_goal.to_f * 100  %>
+            <% percent = applications_count.to_f / applications_goal.to_f * 100 %>
             <%= render 'shared/progress_dial', percent: percent %>
           </div>
         </div>
@@ -449,42 +449,44 @@
         </div>
 
         <div aria-hidden="true" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="card">
+          <div class="card flex flex-col">
             <div class="flex items-start justify-between mb-4">
               <h3 class="font-semibold text-normal">Import From CSV</h3>
               <div class="rounded-md p-1.5 -m-0.75 bg-teal-100/70 dark:bg-teal-900/40 inline-flex">
                 <%= icon "file-import", class: "size-4.5 text-teal-600 dark:text-teal-500" %>
               </div>
             </div>
-            <ul class="divide-y divide-neutral-200 dark:divide-neutral-800 text-sm">
-              <% [ [ "Job Title", "Position" ], [ "Company", "Employer" ], [ "Application URL", "Link" ], [ "Applied", "Date Applied" ] ].each do |field, header| %>
-                <li class="flex items-center justify-between gap-2 py-2">
+            <ul class="grid grid-cols-[auto_1fr_auto] gap-x-3 divide-y divide-neutral-200 dark:divide-neutral-800 text-sm">
+              <% [ [ "Position", "Job Title", "briefcase" ], [ "Employer", "Company", "company" ], [ "Link", "Application URL", "link" ], [ "Date Applied", "Applied", "application" ] ].each do |header, field, field_icon| %>
+                <li class="col-span-3 grid grid-cols-subgrid items-center py-2">
                   <span class="text-muted truncate"><%= header %></span>
-                  <%= icon "arrow-right", class: "size-3.5 shrink-0 text-muted" %>
-                  <span class="font-medium text-light truncate"><%= field %></span>
+                  <%= icon "arrow-right", class: "size-3.5 shrink-0 text-muted justify-self-center" %>
+                  <span class="flex items-center gap-1.5 min-w-0 font-medium text-light">
+                    <%= icon field_icon, class: "size-4 shrink-0 text-muted" %>
+                    <span class="truncate"><%= field %></span>
+                  </span>
                 </li>
               <% end %>
             </ul>
-            <p class="mt-3 text-xs text-muted">Match columns with one click. Review every row before anything is saved.</p>
+            <p class="mt-auto pt-3 text-xs text-muted">Match columns with one click. Review every row before anything is saved.</p>
           </div>
 
-          <div class="card">
+          <div class="card flex flex-col">
             <div class="flex items-start justify-between mb-4">
               <h3 class="font-semibold text-normal">Export Anytime</h3>
               <div class="rounded-md p-1.5 -m-0.75 bg-rose-100/70 dark:bg-rose-900/40 inline-flex">
                 <%= icon "file-export", class: "size-4.5 text-rose-600 dark:text-rose-500" %>
               </div>
             </div>
-            <ul class="space-y-2 text-sm">
-              <% [ [ "jobjournal-export.json", "Everything, in one file" ], [ "job-leads.csv", "Spreadsheet" ], [ "interviews.csv", "Spreadsheet" ], [ "notes.csv", "Spreadsheet" ] ].each do |file, kind| %>
-                <li class="flex items-center gap-2 min-w-0">
-                  <%= icon "file-export", class: "size-4 shrink-0 text-muted" %>
-                  <span class="font-medium text-light truncate"><%= file %></span>
-                  <span class="ml-auto text-xs text-muted whitespace-nowrap"><%= kind %></span>
+            <ul class="divide-y divide-neutral-200 dark:divide-neutral-800 text-sm">
+              <% [ [ "jobjournal-export.json", "braces" ], [ "job-leads.csv", "csv" ], [ "interviews.csv", "csv" ], [ "notes.csv", "csv" ] ].each do |file, file_icon| %>
+                <li class="flex items-center gap-1.5 min-w-0 py-2 font-medium text-light">
+                  <%= icon file_icon, class: "size-4 shrink-0 text-muted" %>
+                  <span class="truncate"><%= file %></span>
                 </li>
               <% end %>
             </ul>
-            <p class="mt-3 text-xs text-muted">Your data is yours&mdash;download a full copy whenever you like.</p>
+            <p class="mt-auto pt-3 text-xs text-muted">Your data is yours&mdash;download a full copy whenever you like.</p>
           </div>
         </div>
       </div>
@@ -567,17 +569,19 @@
   </section>
 
   <%# ─── FINAL CTA ─── %>
-  <section class="py-28 md:py-36 px-6">
+  <section class="py-32 md:py-40 px-6 ruled-backdrop bg-ruled-plain [--ruled-mask:radial-gradient(closest-side,black_30%,transparent)]">
+    <%# Every box is a multiple of the 2rem rules so the text sits on them %>
     <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-tight">
+      <h2 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 text-balance leading-16 relative top-[calc(22.33px_-_0.333em)]">
         Ready to ditch the&nbsp;spreadsheet?
       </h2>
 
-      <p class="mt-4 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-relaxed">
+      <p class="mt-8 text-[clamp(1rem,1.2vw,1.125rem)] text-light leading-8">
       Stay organized, stay motivated, and stay private&NoBreak;&mdash;&NoBreak;free forever.
       </p>
 
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <%# Puts the button's center on a rule %>
+      <div class="mt-[33px] flex flex-wrap items-center justify-center gap-4">
         <%= link_to authenticated? ? dashboard_path : new_registrations_path, data: { turbo: false }, class: 'btn btn-lg btn-primary' do %>
           <span>Take Control of Your Search</span>
           <%= icon 'arrow-right', class: 'size-5 shrink-0' %>
