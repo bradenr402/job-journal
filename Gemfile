@@ -68,7 +68,7 @@ group :test do
   gem "selenium-webdriver"
 
   # Minitest 6 extracted minitest/mock into a separate gem and is incompatible with Rails 8.0
-  gem "minitest", "~> 5.25"
+  gem "minitest", "~> 6.0"
 end
 
 gem "inline_svg", "~> 1.10"
