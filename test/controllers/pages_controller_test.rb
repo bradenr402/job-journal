@@ -23,6 +23,12 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".bento-grid", text: /Stripe|Vercel|Sarah Chen/, count: 0
   end
 
+  test "should separate landing page sections with dividers" do
+    get root_url
+
+    assert_select "main.landing-section-dividers"
+  end
+
   test "should get landing page when signed in" do
     sign_in_as users(:one)
     get root_url

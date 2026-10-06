@@ -342,3 +342,22 @@
   100% { scale: 1; opacity: 1; width: 3rem; margin-left: 0; }
 }
 
+/* Dashed divider between landing page sections */
+@utility landing-section-dividers {
+  > section + section {
+    position: relative;
+
+    /* `::after`, since `ruled-backdrop` uses `::before` */
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      translate: -50% 0;
+      width: min(50%, 48rem);
+      height: 1px;
+      pointer-events: none;
+      @apply section-divider-line;
+    }
+  }
+}
