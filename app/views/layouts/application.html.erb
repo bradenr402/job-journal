@@ -19,7 +19,7 @@
     </div>
 
     <% if authenticated? %>
-      <div class="absolute [body:has(#success,#error,#notice,#alert)_&]:top-15 top-3 left-3 md:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
+      <div class="absolute top-3 left-3 md:hidden" data-controller="dropdown" data-dropdown-hide-dropdown-class="dropdown-hidden" data-dropdown-show-dropdown-class="dropdown-show">
         <button data-dropdown-target="trigger" class="dropdown-trigger" data-action="mousedown->dropdown#toggle keydown->dropdown#handleKeydown">
           <span class="sr-only">Menu</span>
           <%= icon 'menu', class: 'size-6' %>
@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div class="absolute [body:has(#success,#error,#notice,#alert)_&]:top-16 top-4 left-1/2 -translate-x-1/2 md:hidden">
+      <div class="absolute top-4 left-1/2 -translate-x-1/2 md:hidden">
         <%= link_to root_path, class: 'flex items-center gap-1', tabindex: -1 do %>
           <%= icon 'note-filled', class: 'size-5 shrink-0 text-primary-500' %>
           <span class="text-lg font-extrabold tracking-tight text-normal">JobJournal</span>

@@ -619,24 +619,57 @@
   }
 }
 
+/*
+  On desktop the toasts center over the main content, not the sidebar.
+*/
+@utility flash-region {
+  @apply fixed z-60 inset-x-4 top-4 flex flex-col items-center gap-2 pointer-events-none md:top-6;
+
+  @variant md {
+    body:has(.nav-container) & {
+      left: calc(var(--sidebar-width) + var(--body-padding));
+    }
+  }
+}
+
 @utility flash {
-  @apply -mx-(--main-padding) w-screen md:w-full py-3 px-6 font-medium text-center text-pretty;
+  --flash-radius: var(--radius-xl);
+  --flash-border: 1px;
+  --flash-padding-y: --spacing(2.5);
+  /* Matches the inset of the buttons in `form-number-frame`. */
+  --flash-close-inset: --spacing(0.75);
+
+  @apply pointer-events-auto flex items-start gap-3 w-full max-w-sm py-(--flash-padding-y) pl-3.5 pr-(--flash-close-inset) rounded-(--flash-radius) border-(length:--flash-border) text-sm font-medium text-normal bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 shadow-lg;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: flash-enter 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+
+    &.flash-leaving {
+      animation: flash-leave 180ms ease-in both;
+    }
+  }
+
+  &.flash-leaving {
+    @apply pointer-events-none;
+  }
 }
 
-@utility flash-success {
-  @apply bg-primary-100 dark:bg-primary-950/70 text-primary-550 dark:text-primary-500;
+@utility flash-close {
+  @apply -my-[calc(var(--flash-padding-y)-var(--flash-close-inset))] shrink-0 grid place-items-center size-8.5 rounded-[calc(var(--flash-radius)-var(--flash-border)-var(--flash-close-inset))] text-soft hover:text-normal hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500;
 }
 
-@utility flash-error {
-  @apply bg-rose-100 dark:bg-rose-950/70 text-rose-600 dark:text-rose-500;
+@keyframes flash-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem) scale(0.97);
+  }
 }
 
-@utility flash-notice {
-  @apply bg-blue-100 dark:bg-blue-950/70 text-blue-600 dark:text-blue-500;
-}
-
-@utility flash-alert {
-  @apply bg-yellow-100 dark:bg-yellow-950/70 text-yellow-600 dark:text-yellow-500;
+@keyframes flash-leave {
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
 }
 
 /*

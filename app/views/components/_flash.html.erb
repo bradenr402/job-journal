@@ -1,43 +1,34 @@
-<%# locals: (inline: false) %>
-
 <%
-  flash_classes = {
-    success: "flash-success",
-    error: "flash-error",
-    notice: "flash-notice",
-    alert: "flash-alert"
+  flash_styles = {
+    success: { icon: "check-circle-filled", color: "text-primary-500", timeout: 6000 },
+    notice: { icon: "check-circle-filled", color: "text-blue-500", timeout: 6000 },
+    error: { icon: "x-circle-filled", color: "text-rose-500", timeout: 10000 },
+    alert: { icon: "alert-triangle-filled", color: "text-yellow-500", timeout: 10000 }
   }.stringify_keys
 %>
 
-<% flash.each do |key, message| %>
-  <%=
-    tag.p(
-      message.html_safe,
-      class: [
-        inline ? "mb-6 py-3 px-4 rounded-lg font-medium text-sm text-pretty" : "flash",
-        flash_classes[key],
-        ("md:rounded-t-xl" unless inline),
-      ],
-      style: "view-transition-name: flash-#{key}",
-      id: key
-    )
-  %>
-<% end %>
-
-<% if success || error || notice || alert %>
-  <script>
-    setTimeout(() => {
-      const flashes = [
-        { id: 'success', timeout: 6000 },
-        { id: 'notice', timeout: 6000 },
-        { id: 'error', timeout: 10000 },
-        { id: 'alert', timeout: 10000 }
-      ]
-
-      flashes.forEach(flash => {
-        const el = document.getElementById(flash.id)
-        if (el) setTimeout(() => el.remove(), flash.timeout)
-      })
-    }, 0)
-  </script>
+<% if flash.any? %>
+  <div class="flash-region" data-turbo-temporary>
+    <% flash.each do |key, message| %>
+      <% style = flash_styles.fetch(key, flash_styles["notice"]) %>
+      <%= tag.div(
+        id: key,
+        class: "flash",
+        role: (%w[error alert].include?(key) ? "alert" : "status"),
+        style: "view-transition-name: flash-#{key}",
+        data: {
+          controller: "flash",
+          flash_timeout_value: style[:timeout],
+          action: "mouseenter->flash#pause mouseleave->flash#resume focusin->flash#pause focusout->flash#resume"
+        }
+      ) do %>
+        <%= icon style[:icon], class: [ "size-5 shrink-0", style[:color] ] %>
+        <p class="flex-1 text-pretty"><%= message.html_safe %></p>
+        <button type="button" class="flash-close" data-action="flash#dismiss">
+          <span class="sr-only">Dismiss</span>
+          <%= icon "x", class: "size-4" %>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
